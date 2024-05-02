@@ -1,4 +1,5 @@
 {
-  "name": "healthpro-backend",  
+  "name": "healthpro-backend",
+  "builds": [{"src": "server.js", "use": "@now/node"}],
   "routes": [{"src": "/(.*)","dest": "/server.js"}]
 }

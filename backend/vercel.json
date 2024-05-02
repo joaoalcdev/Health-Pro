@@ -1,7 +1,4 @@
 {
-  "name": "myapp",  
-  "scripts": {
-    "start": "node server.js"
-  },
+  "name": "healthpro-backend",  
   "routes": [{"src": "/(.*)","dest": "/server.js"}]
 }

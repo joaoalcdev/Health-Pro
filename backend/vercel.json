@@ -1,5 +1,5 @@
 {
   "name": "healthpro-backend",
-  "builds": [{"src": "server.js", "use": "@now/node"}],
-  "routes": [{"src": "/(.*)","dest": "/server.js"}]
+  "builds": [{"src": "index.js", "use": "@now/node"}],
+  "routes": [{"src": "/(.*)","dest": "./index.js"}]
 }

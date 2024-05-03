@@ -3,14 +3,11 @@
   "version": "1.0.0",
   "type": "module",
   "description": "",
-  "main": "src/server.ts",
-  "engines": {
-    "node": ">=20.12.2"
-  },
+  "main": "index.js",
   "scripts": {
     "dev": "tsx src/server.ts",
-    "start": "node dist/server.cjs",
-    "build": "tsup src"
+    "start": "node public/server.cjs",
+    "build": "tsup src --format cjs --out-dir public"
   },
   "keywords": [],
   "author": "",

@@ -4,9 +4,6 @@
   "type": "module",
   "description": "",
   "main": "/backend/src/server.ts",
-  "engine": {
-    "node": ">=18"
-  },
   "scripts": {
     "dev": "tsx src/server.ts",
     "start": "node dist/server.cjs",

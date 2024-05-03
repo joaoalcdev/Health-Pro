@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "tsx src/server.ts",
     "start": "node dist/server.cjs",
-    "build": "tsup src"
+    "build": "tsup src/server.ts"
   },
   "keywords": [],
   "author": "",

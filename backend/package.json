@@ -4,6 +4,9 @@
   "type": "module",
   "description": "",
   "main": "src/server.ts",
+  "engines": {
+    "node": ">=20.12.2"
+  },
   "scripts": {
     "dev": "tsx src/server.ts",
     "start": "node dist/server.cjs",

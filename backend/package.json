@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "tsx src/server.ts",
-    "start": "node dist/server.cjs",
+    "start": "node public/server.cjs",
     "build": "tsup src"
   },
   "keywords": [],

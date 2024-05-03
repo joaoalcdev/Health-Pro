@@ -1,3 +1,16 @@
 {
-  "name": "healthpro-backend"
+  "name": "healthpro-backend",
+  "builds": [
+    {
+      "src": "./src/server.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "./src/server.ts"
+    }
+  ]
 }
+

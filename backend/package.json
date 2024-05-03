@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx src/server.ts",
-    "start": "node dist/server.cjs",
+    "start": "tsx src/server.ts",
     "build": "tsup src --format cjs --out-dir dist"
   },
   "keywords": [],

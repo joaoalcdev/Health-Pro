@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@supabase/supabase-js": "^2.43.0",
+    "@supabase/supabase-js": "^2.43.1",
     "@types/node": "^20.12.8",
     "dotenv": "^16.4.5",
     "fastify": "^4.26.2",

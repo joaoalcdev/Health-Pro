@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
     "build": "tsup src --format cjs --out-dir dist"
   },
@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "^9.0.1",
     "@supabase/supabase-js": "^2.43.1",
     "@types/node": "^20.12.8",
     "dotenv": "^16.4.5",

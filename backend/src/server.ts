@@ -1,15 +1,22 @@
 import fastify from "fastify";
+import cors from "@fastify/cors"
 
 import { supabase } from "./supabaseConnection";
 
 const app = fastify()
 
+app.register(cors, {
+  origin:'*',
+  methods: ['POST', 'GET']
+})
+
 app.get("/users", async () => {
 
   try {
-    const { data: users } = await supabase.from("users").select("*")
+    const { data} = await supabase.from("users").select("*")
+    
 
-    return { value: users }
+    return data ? data : null 
   } catch (error) {
     console.error(error)
     throw error
@@ -17,22 +24,43 @@ app.get("/users", async () => {
 
 })
 
-app.post("/users", async (request, response) => {
+app.post("/users", async (req, res) => {
   try {
-    const { name, email } = request.body as Users
+    const {
+      firstName, 
+      lastName, 
+      phoneNumber, 
+      email, 
+      password, 
+      roleId, 
+      address, 
+      city, 
+      region, 
+      state
+    } = req.body as Users
 
-    const { data: createdUser } = await supabase.from("users").insert([{
-      name,
-      email
-    }]).select()
+    const { data:userAuth, error } = await supabase.auth.signUp({
+      email,
+      password,
+    })
 
-    // return { value: createdUser }
-    if (createdUser) {
-      return { value: createdUser[0] }
-    } else {
-      return { value: null }
+    if (userAuth){
+      const { data: createdUser } = await supabase.from("users").insert([{
+        id: userAuth.user?.id,
+        firstName, 
+        lastName, 
+        phoneNumber, 
+        email, 
+        password, 
+        roleId, 
+        address, 
+        city, 
+        region, 
+        state
+      }]).select()
+      
+      return createdUser ? createdUser[0] : null
     }
-
   } catch (error) {
     console.error(error)
     throw error

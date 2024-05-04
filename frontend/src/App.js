@@ -37,6 +37,7 @@ import Receptions from './screens/Receptions';
 import NewMedicalRecode from './screens/Patients/NewMedicalRecode';
 import NotFound from './screens/NotFound';
 import Login from './screens/Login';
+import Users from './screens/Users';
 
 function App() {
   Aos.init();
@@ -49,6 +50,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          {/* users */}
+          <Route path="/users" element={<Users />} />
           {/* invoce */}
           <Route path="/invoices" element={<Invoices />} />
           <Route path="/invoices/create" element={<CreateInvoice />} />

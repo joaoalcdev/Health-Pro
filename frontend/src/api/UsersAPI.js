@@ -1,12 +1,14 @@
-import { apiBaseUrl } from "./apiConfig"
+import { apiBaseUrl2 } from "./apiConfig"
 import axios from "axios"
 
+import { apiBaseUrl } from "./apiConfig"
 
 //Users
 
 export const getUsers = async () => {
   try {
-    const res = await axios.get(`${apiBaseUrl}/users`)
+    // const res = await axios.get(`${apiBaseUrl}`)
+    const res = await axios.get(apiBaseUrl())
     const data = res.data
     return data
   } catch (error) {
@@ -18,7 +20,7 @@ export const getUsers = async () => {
 export const createUser = async (newUser) => {
   console.log(newUser)
   try {
-    const res = await axios.post(`${apiBaseUrl}/users`, newUser)
+    const res = await axios.post(apiBaseUrl(), newUser)
 
     return res
   } catch (error) {

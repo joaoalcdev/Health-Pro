@@ -5,38 +5,56 @@ import { BiPlus } from 'react-icons/bi';
 import Layout from '../Layout';
 import { Button } from '../components/Form';
 import { UsersTable } from '../components/Tables';
-import { receptionsData } from '../components/Datas';
 import AddUserModal from '../components/Modals/AddUserModal';
+import ViewUserModal from '../components/Modals/ViewUserModal';
 import { getUsers } from '../api/UsersAPI';
+import { receptionsData } from '../components/Datas';
+import { FaKaaba } from 'react-icons/fa';
 
 function Users() {
+  const [isViewOpen, setIsViewOpen] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
-  const [data, setData] = React.useState({});
+  const [status, setStatus] = React.useState(true)
+  const [data, setData] = React.useState([]);
+  const [user, setUser] = React.useState();
 
   const fetch = async () => {
     const response = await getUsers()
-
-    if (response) {
-      setData(response.data)
-    }
+    setData(response)
+    setStatus(false)
   }
 
   useEffect(() => {
     fetch()
-  }, [])
+  }, [status])
 
   const onCloseModal = () => {
     setIsOpen(false);
-    setData({});
+    setIsViewOpen(false);
+    //setData({});
   };
 
   const preview = (data) => {
-    setIsOpen(true);
-    setData(data);
+    setIsViewOpen(true);
+    setUser(data)
   };
+
+  const onStatus = () => {
+    setStatus(true)
+  }
 
   return (
     <Layout>
+      {
+        //view user modal
+        isViewOpen && (
+          <ViewUserModal
+            closeModal={onCloseModal}
+            isViewOpen={isViewOpen}
+            user={user}
+          />
+        )
+      }
       {
         // add user modal
         isOpen && (
@@ -45,6 +63,7 @@ function Users() {
             isOpen={isOpen}
             doctor={false}
             datas={data}
+            status={onStatus}
           />
         )
       }

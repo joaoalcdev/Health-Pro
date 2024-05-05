@@ -470,7 +470,7 @@ export function UsersTable({ data, functions, user }) {
             <td className={tdclass}>
               <p className="text-textGray">{item.phoneNumber}</p>
             </td>
-            <td className={tdclass}>{item.roleId}</td>
+            <td className={tdclass}>{item.roleId === 1 ? "Super Admin" : item.roleId === 2 ? "Recepcionista" : "Prestador"}</td>
             <td className={tdclass}>12 May, 2021</td>
 
             <td className={tdclass}>

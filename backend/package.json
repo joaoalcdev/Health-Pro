@@ -1,8 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "type": "module",
-  "module": "commonjs",
+  "type": ".cjs",
   "description": "",
   "main": "index.js",
   "scripts": {

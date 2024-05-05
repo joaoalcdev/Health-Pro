@@ -128,7 +128,7 @@ function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }
               <Select
                 selectedPerson={role}
                 setSelectedPerson={setRole}
-                datas={roleOptions.roles}
+                datas={["Super Admin", "Recepcionista", "Prestador"]}
               >
                 <div className="w-full flex-btn text-textGray text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
                   {role.name} <BiChevronDown className="text-xl" />

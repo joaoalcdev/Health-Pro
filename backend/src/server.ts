@@ -15,7 +15,6 @@ app.get("/users", async () => {
 
   try {
     const { data} = await supabase.from("users").select("*")
-    
 
     return data ? data : null 
   } catch (error) {

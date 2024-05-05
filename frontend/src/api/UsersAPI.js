@@ -7,8 +7,8 @@ import axios from "axios"
 export const getUsers = async () => {
   try {
     const res = await axios.get(`${apiBaseUrl}/users`)
-    console.log(res)
-    return res ? res : null
+    const data = res.data
+    return data
   } catch (error) {
     console.log(error)
   }

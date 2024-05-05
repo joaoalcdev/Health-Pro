@@ -3,14 +3,14 @@ import React from 'react';
 import { BiLoaderCircle } from 'react-icons/bi';
 import DatePicker from 'react-datepicker';
 import { FaCheck } from 'react-icons/fa';
+import { roleOptions } from './Datas';
 
 export function Input({ label, name, type, color, placeholder, register }) {
   return (
     <div className="text-sm w-full">
       <label
-        className={`${
-          color ? 'text-black text-sm' : 'text-white font-semibold'
-        } `}
+        className={`${color ? 'text-black text-sm' : 'text-white font-semibold'
+          } `}
       >
         {label}
       </label>
@@ -19,9 +19,8 @@ export function Input({ label, name, type, color, placeholder, register }) {
         {...register}
         type={type}
         placeholder={placeholder}
-        className={`w-full bg-transparent text-sm mt-3 p-4 border ${
-          color ? 'border-border font-light' : 'border-white text-white'
-        } rounded-lg focus:border focus:border-subMain`}
+        className={`w-full bg-transparent text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
+          } rounded-lg focus:border focus:border-subMain`}
       />
     </div>
   );
@@ -185,9 +184,8 @@ export function Checkbox({ label, name, onChange, checked }) {
           className="absolute opacity-0 w-0 h-0"
         />
         <span
-          className={` border rounded  w-5 h-5 flex flex-shrink-0 justify-center items-center mr-2 ${
-            checked ? 'border-subMain bg-subMain' : 'border-gray-300 bg-white'
-          }`}
+          className={` border rounded  w-5 h-5 flex flex-shrink-0 justify-center items-center mr-2 ${checked ? 'border-subMain bg-subMain' : 'border-gray-300 bg-white'
+            }`}
         >
           <FaCheck
             className={`text-[10px] ${checked ? 'block text-white' : 'hidden'}`}
@@ -211,9 +209,8 @@ export function FromToDate({ label, startDate, onChange, endDate, bg }) {
         startDate={startDate}
         endDate={endDate}
         onChange={onChange}
-        className={`w-full ${
-          bg ? bg : 'bg-transparent'
-        }  text-xs px-4 h-14 border border-border text-main font-normal rounded-lg focus:border focus:border-subMain`}
+        className={`w-full ${bg ? bg : 'bg-transparent'
+          }  text-xs px-4 h-14 border border-border text-main font-normal rounded-lg focus:border focus:border-subMain`}
       />
     </div>
   );

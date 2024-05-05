@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createUser } from '../../api/UsersAPI';
 import Modal from './Modal';
 import { Button, Input, Select } from '../Form';
 import { BiChevronDown } from 'react-icons/bi';
 import { roleOptions, brStateDatas } from '../Datas';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
+
 
 function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }) {
 
@@ -16,17 +18,43 @@ function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }
   const [region, setRegion] = useState("")
   const [city, setCity] = useState("")
   const [state, setState] = useState(brStateDatas.states[5]);
-  const [password, setPassword] = useState()
-  const [role, setRole] = useState(roleOptions.roles[1]);
-
+  const [password, setPassword] = useState("")
+  const [roleId, setRoleId] = useState(roleOptions.roles[1]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isAdd) {
       toast.error("Editar usuario falta implementar")
     } else {
-      console.log("Falta implementar")
+      await createUser(
+        {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phoneNumber: phoneNumber,
+          password: password,
+          roleId: roleId.id,
+          address: address,
+          region: region,
+          city: city,
+          state: state.UF,
+        }
+      )
+
+      // console.log({
+      //   firstName: firstName,
+      //   lastName: lastName,
+      //   email: email,
+      //   phoneNumber: phoneNumber,
+      //   password: password,
+      //   roleId: roleId.id,
+      //   address: address,
+      //   region: region,
+      //   city: city,
+      //   state: state.UF,
+      // })
       closeModal(true)
+      status(true)
       toast.success("Usuário criado com sucesso!", {
         position: "top-center",
       })
@@ -126,12 +154,12 @@ function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }
             <div className="flex w-full flex-col gap-3">
               <p className="text-black text-sm">Permissão</p>
               <Select
-                selectedPerson={role}
-                setSelectedPerson={setRole}
-                datas={["Super Admin", "Recepcionista", "Prestador"]}
+                selectedPerson={roleId}
+                setSelectedPerson={setRoleId}
+                datas={roleOptions.roles}
               >
                 <div className="w-full flex-btn text-textGray text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
-                  {role.name} <BiChevronDown className="text-xl" />
+                  {roleId.name} <BiChevronDown className="text-xl" />
                 </div>
               </Select>
             </div>

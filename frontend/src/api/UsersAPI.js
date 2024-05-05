@@ -15,9 +15,16 @@ export const getUsers = async () => {
 
 }
 
-// export const createUser = async (uid, newUser) => {
-//   return setDoc(doc(db, "Users", uid), newUser);
-// }
+export const createUser = async (newUser) => {
+  console.log(newUser)
+  try {
+    const res = await axios.post(`${apiBaseUrl}/users`, newUser)
+
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 
 // // Providers

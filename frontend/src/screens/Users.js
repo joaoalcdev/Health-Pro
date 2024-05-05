@@ -14,7 +14,8 @@ import { FaKaaba } from 'react-icons/fa';
 function Users() {
   const [isViewOpen, setIsViewOpen] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
-  const [status, setStatus] = React.useState(true)
+  const [isAdd, setIsAdd] = React.useState(false);
+  const [status, setStatus] = React.useState(true);
   const [data, setData] = React.useState([]);
   const [user, setUser] = React.useState();
 
@@ -31,6 +32,7 @@ function Users() {
   const onCloseModal = () => {
     setIsOpen(false);
     setIsViewOpen(false);
+    setIsAdd(false)
     //setData({});
   };
 
@@ -64,12 +66,16 @@ function Users() {
             doctor={false}
             datas={data}
             status={onStatus}
+            isAdd={isAdd}
           />
         )
       }
       {/* add button */}
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          setIsOpen(true)
+          setIsAdd(true)
+        }}
         className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
       >
         <BiPlus className="text-2xl" />

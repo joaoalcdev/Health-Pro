@@ -1,3 +1,4 @@
+// restored the server.ts file
 import fastify from "fastify";
 import cors from "@fastify/cors"
 

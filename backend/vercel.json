@@ -1,16 +1,24 @@
 {
-  "name": "healthpro-backend",
+  "version": 2,
+  "name": "healthpro-server",
   "builds": [
     {
-      "src": "./src/server.ts",
+      "src": "src/server.ts",
       "use": "@vercel/node"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "maxDuration": 120, "distDir": "dist" }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "./src/server.ts"
+      "dest": "src/server.ts"
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
-

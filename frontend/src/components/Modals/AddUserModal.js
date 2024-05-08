@@ -6,6 +6,7 @@ import { BiChevronDown } from 'react-icons/bi';
 import { roleOptions, brStateDatas } from '../Datas';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
+import { InputMaskComp } from '../Form';
 
 
 function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }) {
@@ -40,19 +41,6 @@ function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }
           state: state.UF,
         }
       )
-
-      // console.log({
-      //   firstName: firstName,
-      //   lastName: lastName,
-      //   email: email,
-      //   phoneNumber: phoneNumber,
-      //   password: password,
-      //   roleId: roleId.id,
-      //   address: address,
-      //   region: region,
-      //   city: city,
-      //   state: state.UF,
-      // })
       closeModal(true)
       status(true)
       toast.success("Usuário criado com sucesso!", {
@@ -94,15 +82,16 @@ function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <Input
+            <InputMaskComp
               label="Telefone"
               color={true}
-              placeholder="( )_____-____"
+              mask="(99) 9 9999-9999"
+              placeholder={'(__) _ ____-____'}
               required={true}
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
+              className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
             />
-
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4 w-full">
@@ -134,8 +123,8 @@ function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }
                 setSelectedPerson={setState}
                 datas={brStateDatas.states}
               >
-                <div className="w-full flex-btn text-textGray text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
-                  {state.name} <BiChevronDown className="text-xl" />
+                <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
+                  {state.name} ({state.UF}) <BiChevronDown className="text-xl" />
                 </div>
               </Select>
             </div>
@@ -143,7 +132,7 @@ function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }
           </div>
 
           {/* password and permission*/}
-          <div className="grid sm:grid-cols-2 gap-4 w-full">
+          <div className="grid sm:grid-cols-2 gap-4 w-full mb-6">
             <Input
               label="Definir senha"
               color={true}
@@ -158,7 +147,7 @@ function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }
                 setSelectedPerson={setRoleId}
                 datas={roleOptions.roles}
               >
-                <div className="w-full flex-btn text-textGray text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
+                <div className="w-full flex-btn text-black text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
                   {roleId.name} <BiChevronDown className="text-xl" />
                 </div>
               </Select>

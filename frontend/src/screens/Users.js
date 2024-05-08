@@ -8,8 +8,6 @@ import { UsersTable } from '../components/Tables';
 import AddUserModal from '../components/Modals/AddUserModal';
 import ViewUserModal from '../components/Modals/ViewUserModal';
 import { getUsers } from '../api/UsersAPI';
-import { receptionsData } from '../components/Datas';
-import { FaKaaba } from 'react-icons/fa';
 
 function Users() {
   const [isViewOpen, setIsViewOpen] = React.useState(false);
@@ -33,6 +31,7 @@ function Users() {
     setIsOpen(false);
     setIsViewOpen(false);
     setIsAdd(false)
+    console.log("Close modal")
     //setData({});
   };
 
@@ -45,6 +44,13 @@ function Users() {
     setStatus(true)
   }
 
+  const onEdit = (user) => {
+    setUser(user)
+    setIsOpen(true)
+    setIsViewOpen(false)
+    setIsAdd(false)
+  }
+
   return (
     <Layout>
       {
@@ -53,6 +59,7 @@ function Users() {
           <ViewUserModal
             closeModal={onCloseModal}
             isViewOpen={isViewOpen}
+            onEdit={onEdit}
             user={user}
           />
         )
@@ -64,7 +71,7 @@ function Users() {
             closeModal={onCloseModal}
             isOpen={isOpen}
             doctor={false}
-            datas={data}
+            datas={isAdd ? data : user}
             status={onStatus}
             isAdd={isAdd}
           />
@@ -95,19 +102,10 @@ function Users() {
           <div className="md:col-span-5 grid lg:grid-cols-4 items-center gap-6">
             <input
               type="text"
-              placeholder='Search "Amina Mwakio"'
+              placeholder='Pesquise por nome...'
               className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
             />
           </div>
-
-          {/* export */}
-          <Button
-            label="Export"
-            Icon={MdOutlineCloudDownload}
-            onClick={() => {
-              toast.error('Exporting is not available yet');
-            }}
-          />
         </div>
         <div className="mt-8 w-full overflow-x-scroll">
           <UsersTable

@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createUser } from '../../api/UsersAPI';
 import Modal from './Modal';
 import { Button, Input, Select } from '../Form';
 import { BiChevronDown } from 'react-icons/bi';
 import { roleOptions, brStateDatas } from '../Datas';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
+import { PiPassword } from "react-icons/pi";
 import { toast } from 'react-hot-toast';
 
 
-function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }) {
+function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
 
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -17,14 +18,29 @@ function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }
   const [address, setAddress] = useState("")
   const [region, setRegion] = useState("")
   const [city, setCity] = useState("")
-  const [state, setState] = useState(brStateDatas.states[5]);
+  const [state, setState] = useState(brStateDatas.states[7]);
   const [password, setPassword] = useState("")
   const [roleId, setRoleId] = useState(roleOptions.roles[1]);
+
+  useEffect(() => {
+    if (datas) {
+      setFirstName(datas.firstName || "");
+      setLastName(datas.lastName || "");
+      setEmail(datas.email || "");
+      setPhoneNumber(datas.phoneNumber || "");
+      setAddress(datas.address || "");
+      setRegion(datas.region || "");
+      setCity(datas.city || "");
+      setState(brStateDatas.states[datas.state - 1] || brStateDatas.states[7]);
+      setRoleId(roleOptions.roles[datas.roleId - 1] || roleOptions.roles[1]);
+    }
+  }, [datas]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isAdd) {
       toast.error("Editar usuario falta implementar")
+      console.log(datas.id, roleId, state, firstName, lastName, email, phoneNumber, address, region, city)
     } else {
       await createUser(
         {
@@ -40,35 +56,29 @@ function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }
           state: state.UF,
         }
       )
-
-      // console.log({
-      //   firstName: firstName,
-      //   lastName: lastName,
-      //   email: email,
-      //   phoneNumber: phoneNumber,
-      //   password: password,
-      //   roleId: roleId.id,
-      //   address: address,
-      //   region: region,
-      //   city: city,
-      //   state: state.UF,
-      // })
-      closeModal(true)
-      status(true)
+      //closeModal(true)
+      //status(true)
       toast.success("Usuário criado com sucesso!", {
         position: "top-center",
       })
     }
   };
 
+  const handleResetPassword = () => {
+    setPassword("senha1234")
+    console.log(datas.id)
+    toast.success("Senha redefinida com sucesso!")
+  };
+
+
   return (
     <Modal
       closeModal={closeModal}
       isOpen={isOpen}
-      title={datas?.name ? 'Editar Usuário' : 'Adicionar Usuário'}
+      title={datas?.firstName ? 'Editar Usuário' : 'Adicionar Usuário'}
       width={'max-w-3xl'}
     >
-      <form onSubmit={handleSubmit}>
+      <form >
 
         <div className="flex-colo gap-6">
           <div className="grid sm:grid-cols-2 gap-4 w-full">
@@ -91,6 +101,7 @@ function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }
               label="Email"
               color={true}
               required={true}
+              disabled={!isAdd ? true : false}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -144,13 +155,22 @@ function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }
 
           {/* password and permission*/}
           <div className="grid sm:grid-cols-2 gap-4 w-full">
-            <Input
+            {isAdd ? <Input
               label="Definir senha"
               color={true}
               required={true}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-            />
+            /> : <div className='text-sm'>
+              <h1 className='mb-3'>Senha</h1>
+              <button
+                type='button'
+                onClick={handleResetPassword}
+                className="bg-subMain bg-opacity-5 text-subMain border w-full text-sm p-4 rounded-lg font-light"
+              >
+                Redefinir Senha
+              </button>
+            </div>}
             <div className="flex w-full flex-col gap-3">
               <p className="text-black text-sm">Permissão</p>
               <Select
@@ -175,6 +195,7 @@ function AddUserModal({ closeModal, isOpen, user, datas, lenght, isAdd, status }
               Cancel
             </button>
             <Button
+              onClick={handleSubmit}
               label="Salvar"
               Icon={HiOutlineCheckCircle}
             />

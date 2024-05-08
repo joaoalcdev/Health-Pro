@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import { FaCheck } from 'react-icons/fa';
 import { roleOptions } from './Datas';
 
-export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength }) {
+export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, disabled }) {
   return (
     <div className="text-sm w-full">
       <label
@@ -22,6 +22,7 @@ export function Input({ label, name, type, color, placeholder, register, value, 
         {...register}
         type={type}
         value={value}
+        disabled={disabled}
         placeholder={placeholder}
         className={`w-full bg-transparent text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
           } rounded-lg focus:border focus:border-subMain`}

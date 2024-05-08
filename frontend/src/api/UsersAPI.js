@@ -21,13 +21,20 @@ export const createUser = async (newUser) => {
   console.log(newUser)
   try {
     const res = await axios.post(apiBaseUrl(), newUser)
-
     return res
   } catch (error) {
     console.log(error)
   }
 }
 
+export const editUser = async (userId, User) => {
+  try {
+    const res = await axios.put(apiBaseUrl(), userId, User)
+    return res
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 // // Providers
 

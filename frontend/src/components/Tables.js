@@ -5,6 +5,7 @@ import { FiEdit, FiEye } from 'react-icons/fi';
 import { RiDeleteBin6Line, RiDeleteBinLine } from 'react-icons/ri';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { formatPhoneNumber } from '../utils/formatPhoneNumber';
 
 const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
 const tdclass = 'text-start text-sm py-4 px-2 whitespace-nowrap';
@@ -468,7 +469,7 @@ export function UsersTable({ data, functions, user }) {
             </td>
             <td className={tdclass}>{item.email}</td>
             <td className={tdclass}>
-              <p className="text-textGray">{item.phoneNumber}</p>
+              <p className="text-textGray">{formatPhoneNumber(item.phoneNumber)}</p>
             </td>
             <td className={tdclass}>{item.roleId === 1 ? "Administrador" : item.roleId === 2 ? "Recepcionista" : "Prestador"}</td>
             <td className={tdclass}>12 May, 2021</td>

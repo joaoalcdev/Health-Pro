@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createUser } from '../../api/UsersAPI';
+import { createUser, updateUser } from '../../api/UsersAPI';
 import Modal from './Modal';
 import { Button, Input, Select } from '../Form';
 import { BiChevronDown } from 'react-icons/bi';
@@ -39,25 +39,45 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isAdd) {
-      toast.error("Editar usuario falta implementar")
-      console.log(datas.id, roleId, state, firstName, lastName, email, phoneNumber, address, region, city)
-    } else {
-      await createUser(
+      await updateUser(
         {
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          phoneNumber: phoneNumber,
-          password: password,
+          id: datas.id,
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          password,
           roleId: roleId.id,
-          address: address,
-          region: region,
-          city: city,
+          address,
+          region,
+          city,
           state: state.UF,
         }
       )
-      //closeModal(true)
-      //status(true)
+
+      closeModal(true)
+      status(true)
+      toast.success("Usuário atualizado com sucesso!", {
+        position: "top-center",
+      })
+    } else {
+      await createUser(
+        {
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          password,
+          roleId: roleId.id,
+          address,
+          region,
+          city,
+          state: state.UF,
+        }
+      )
+
+      closeModal(true)
+      status(true)
       toast.success("Usuário criado com sucesso!", {
         position: "top-center",
       })
@@ -166,9 +186,10 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
               <button
                 type='button'
                 onClick={handleResetPassword}
-                className="bg-subMain bg-opacity-5 text-subMain border w-full text-sm p-4 rounded-lg font-light"
+                className="bg-subMain bg-opacity-5 text-subMain border w-full text-sm p-4 rounded-lg flex space-x-4 justify-center  font-light"
               >
-                Redefinir Senha
+                <h1>Redefinir Senha</h1>
+                <PiPassword className="text-xl" />
               </button>
             </div>}
             <div className="flex w-full flex-col gap-3">

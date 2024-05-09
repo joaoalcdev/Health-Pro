@@ -98,18 +98,18 @@ export const roleOptions = {
   roles: [
     {
       id: 1,
-      name: 'Super Admin',
+      name: 'Administrador',
       description: 'All permissions'
     },
     {
       id: 2,
-      name: 'Scheduler',
+      name: 'Recepcionista',
       description: 'Paciente, Consulta '
 
     },
     {
       id: 3,
-      name: 'Provider',
+      name: 'Prestador',
       description: 'Dashboard'
     }
 

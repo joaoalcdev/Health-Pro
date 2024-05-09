@@ -427,14 +427,14 @@ export function PatientTable({ data, functions, used }) {
 export function UsersTable({ data, functions, user }) {
   const DropDown1 = [
     {
-      title: 'View',
+      title: 'Ver',
       icon: FiEye,
       onClick: (data) => {
         functions.preview(data);
       },
     },
     {
-      title: 'Delete',
+      title: 'Deletar',
       icon: RiDeleteBin6Line,
       onClick: () => {
         toast.error('This feature is not available yet');
@@ -470,7 +470,7 @@ export function UsersTable({ data, functions, user }) {
             <td className={tdclass}>
               <p className="text-textGray">{item.phoneNumber}</p>
             </td>
-            <td className={tdclass}>{item.roleId === 1 ? "Super Admin" : item.roleId === 2 ? "Recepcionista" : "Prestador"}</td>
+            <td className={tdclass}>{item.roleId === 1 ? "Administrador" : item.roleId === 2 ? "Recepcionista" : "Prestador"}</td>
             <td className={tdclass}>12 May, 2021</td>
 
             <td className={tdclass}>

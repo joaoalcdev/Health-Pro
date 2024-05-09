@@ -131,6 +131,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
               color={true}
               mask="(99) 9 9999-9999"
               placeholder={'(__) _ ____-____'}
+              unmask={true}
               required={true}
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}

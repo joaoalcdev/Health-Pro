@@ -6,7 +6,7 @@ import { FaCheck } from 'react-icons/fa';
 import { roleOptions } from './Datas';
 import { InputMask } from 'primereact/inputmask';
 
-export function InputMaskComp({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, mask }) {
+export function InputMaskComp({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, mask, unmask }) {
   return (
     <div className="text-sm w-full">
       <label
@@ -20,6 +20,7 @@ export function InputMaskComp({ label, name, type, color, placeholder, register,
         required={required}
         maxLength={maxLength}
         onChange={onChange}
+        unmask={unmask}
         {...register}
         type={type}
         value={value}

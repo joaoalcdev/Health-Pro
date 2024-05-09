@@ -8,13 +8,13 @@ const app = fastify()
 
 app.register(cors, {
   origin:'*',
-  methods: ['POST', 'GET']
+  methods: ['POST', 'GET', 'PUT', 'DELETE'	],
 })
 
 app.get("/users", async () => {
 
   try {
-    const { data} = await supabase.from("users").select("*")
+    const { data} = await supabase.from("users").select("*").order("firstName", {ascending: true})
 
     return data ? data : null 
   } catch (error) {
@@ -45,7 +45,7 @@ app.post("/users", async (req, res) => {
     })
 
     if (userAuth){
-      const { data: createdUser } = await supabase.from("users").insert([{
+      const { data: createdUser, error } = await supabase.from("users").insert([{
         id: userAuth.user?.id,
         firstName, 
         lastName, 
@@ -59,11 +59,50 @@ app.post("/users", async (req, res) => {
         state
       }]).select()
       
-      return createdUser ? createdUser[0] : null
+      if (error){
+        throw error  
+      }  
+      else return res.status(200).send(createdUser ? createdUser[0] : null)
+      //return res.status(200).send(createdUser ? createdUser[0] : null)
     }
   } catch (error) {
-    console.error(error)
-    throw error
+    return res.status(400).send(error)
+  }
+})
+
+app.put("/users", async (req, res) => {
+  try {
+    const {
+      id,
+      firstName, 
+      lastName, 
+      email, 
+      phoneNumber,  
+      roleId, 
+      address, 
+      region, 
+      city, 
+      state
+    } = req.body as Users
+
+    const { data: User, error } = await supabase.from("users").update({
+        firstName, 
+        lastName, 
+        phoneNumber, 
+        email,  
+        roleId, 
+        address, 
+        city, 
+        region, 
+        state
+      }).eq("id", id).select()
+      
+      if (error){
+        throw error  
+      }  
+      else return res.status(200).send(User ? User : null)
+  } catch (error) {
+    return res.status(400).send(error)
   }
 })
 

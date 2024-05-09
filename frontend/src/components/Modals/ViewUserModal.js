@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Modal from './Modal';
 import { FaRegEdit } from "react-icons/fa";
 import { Button } from '../Form';
 
-import { toast } from 'react-hot-toast';
-
-function ViewUserModal({ closeModal, isViewOpen, user }) {
+function ViewUserModal({ closeModal, isViewOpen, user, onEdit }) {
 
   return (
     <Modal
@@ -57,6 +55,7 @@ function ViewUserModal({ closeModal, isViewOpen, user }) {
         <Button
           label="Editar"
           Icon={FaRegEdit}
+          onClick={() => onEdit(user)}
         />
       </div>
     </Modal >

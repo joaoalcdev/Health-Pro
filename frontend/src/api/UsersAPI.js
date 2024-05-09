@@ -20,14 +20,22 @@ export const getUsers = async () => {
 export const createUser = async (newUser) => {
   console.log(newUser)
   try {
-    const res = await axios.post(apiBaseUrl(), newUser)
-
-    return res
+    const data = await axios.post(apiBaseUrl(), newUser)
+    return data
   } catch (error) {
-    console.log(error)
+    return error
   }
 }
 
+export const updateUser = async (User) => {
+  console.log(User)
+  try {
+    const data = await axios.put(apiBaseUrl(), User)
+    return data
+  } catch (error) {
+    return error
+  }
+}
 
 // // Providers
 

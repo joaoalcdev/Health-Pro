@@ -32,7 +32,7 @@ export function InputMaskComp({ label, name, type, color, placeholder, register,
   );
 }
 
-export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength }) {
+export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, disabled }) {
   return (
     <div className="text-sm w-full">
       <label
@@ -49,6 +49,7 @@ export function Input({ label, name, type, color, placeholder, register, value, 
         {...register}
         type={type}
         value={value}
+        disabled={disabled}
         placeholder={placeholder}
         className={`w-full bg-transparent text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
           } rounded-lg focus:border focus:border-subMain hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}

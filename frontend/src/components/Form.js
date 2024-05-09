@@ -4,6 +4,33 @@ import { BiLoaderCircle } from 'react-icons/bi';
 import DatePicker from 'react-datepicker';
 import { FaCheck } from 'react-icons/fa';
 import { roleOptions } from './Datas';
+import { InputMask } from 'primereact/inputmask';
+
+export function InputMaskComp({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, mask }) {
+  return (
+    <div className="text-sm w-full">
+      <label
+        className={`${color ? 'text-black text-sm' : 'text-white font-semibold'
+          } `}
+      >
+        {label}
+      </label>
+      <InputMask
+        name={name}
+        required={required}
+        maxLength={maxLength}
+        onChange={onChange}
+        {...register}
+        type={type}
+        value={value}
+        mask={mask}
+        placeholder={placeholder}
+        className={`w-full bg-white text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
+          } rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+      />
+    </div>
+  );
+}
 
 export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, disabled }) {
   return (
@@ -25,7 +52,7 @@ export function Input({ label, name, type, color, placeholder, register, value, 
         disabled={disabled}
         placeholder={placeholder}
         className={`w-full bg-transparent text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
-          } rounded-lg focus:border focus:border-subMain`}
+          } rounded-lg focus:border focus:border-subMain hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
       />
     </div>
   );
@@ -84,10 +111,10 @@ export function Select({ children, selectedPerson, setSelectedPerson, datas }) {
       <div className="w-full">
         <Listbox value={selectedPerson} onChange={setSelectedPerson}>
           <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
-          <Listbox.Options className="flex  flex-col gap-4 top-10 z-50 absolute left-0 w-full bg-white rounded-md shadow-lg py-4 px-6 ring-1 ring-border focus:outline-none">
+          <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded-md shadow-lg py-2 px-6 ring-1 ring-border focus:outline-none">
             {datas.map((person) => (
               <Listbox.Option
-                className={`cursor-pointer text-xs hover:text-subMain`}
+                className={`cursor-pointer text-xs hover:text-subMain hover:bg-black hover:bg-opacity-5 py-2 px-1`}
                 key={person.id}
                 value={person}
                 disabled={person.unavailable}

@@ -120,7 +120,7 @@ export function Select({ children, selectedPerson, setSelectedPerson, datas }) {
                 value={person}
                 disabled={person.unavailable}
               >
-                {person.name}
+                {person.name?`${person.name} (${person.UF})`:`${person.name}`}
               </Listbox.Option>
             ))}
           </Listbox.Options>

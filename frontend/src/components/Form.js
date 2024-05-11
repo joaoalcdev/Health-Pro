@@ -61,9 +61,10 @@ export function Input({ label, name, type, color, placeholder, register, value, 
 
 // button
 
-export function Button({ label, onClick, loading, Icon }) {
+export function Button({ label, onClick, loading, Icon, type }) {
   return (
     <button
+      type={type}
       disabled={loading}
       onClick={onClick}
       className={`w-full flex-rows gap-4 hover:opacity-80 transitions bg-subMain text-white text-sm font-medium px-2 py-4 rounded`}

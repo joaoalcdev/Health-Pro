@@ -39,6 +39,8 @@ app.post("/users", async (req, res) => {
       state
     } = req.body as Users
 
+    const createdAt = new Date()
+
     const { data:userAuth, error } = await supabase.auth.signUp({
       email,
       password,
@@ -56,7 +58,8 @@ app.post("/users", async (req, res) => {
         address, 
         city, 
         region, 
-        state
+        state,
+        createdAt
       }]).select()
       
       if (error){

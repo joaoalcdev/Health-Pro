@@ -1,4 +1,3 @@
-import { apiBaseUrl2 } from "./apiConfig"
 import axios from "axios"
 
 import { apiBaseUrl } from "./apiConfig"

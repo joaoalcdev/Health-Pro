@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Input } from '../components/Form';
 import { BiLogInCircle } from 'react-icons/bi';
-import { useNavigate } from 'react-router-dom';
+
+
+import { userSignIn } from '../api/signInAPI';
 
 function Login() {
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const {session, user} = await userSignIn({ email, password })
+    console.log(session,user)
+  }
+
 
   return (
     <div className="w-full h-screen flex-colo bg-dry">
@@ -18,20 +29,25 @@ function Login() {
           <Input
             label="Email"
             type="email"
+            value={email}
             color={true}
             placeholder={'admin@gmail.com'}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Input
-            label="Password"
+            label="Senha"
             type="password"
+            value={password}
             color={true}
             placeholder={'*********'}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <Button
           label="Login"
           Icon={BiLogInCircle}
-          onClick={() => navigate('/')}
+          type="submit"
+          onClick={handleLogin}
         />
       </form>
     </div>

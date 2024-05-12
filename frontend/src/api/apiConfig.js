@@ -1,10 +1,8 @@
-export const apiBaseUrl2 = 'http://localhost:3333'
-
-
-export function apiBaseUrl() {
+export function apiBaseUrl(routeAPI) {
   if (process.env.NODE_ENV === 'development') {
-    return 'http://localhost:3333/users'
+    return (`http://localhost:3333/${routeAPI}`)
+    // return 'http://localhost:3333/users'
   } else {
-    return 'https://healthpro-backend.vercel.app/users'
+    return (`https://healthpro-backend.vercel.app/${routeAPI}`)
   }
 }

@@ -39,6 +39,7 @@ import NotFound from './screens/NotFound';
 import Login from './screens/Login';
 import Users from './screens/Users';
 
+
 function App() {
   Aos.init();
 
@@ -50,6 +51,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path='/home' element={<Dashboard />} />
           {/* users */}
           <Route path="/users" element={<Users />} />
           {/* invoce */}

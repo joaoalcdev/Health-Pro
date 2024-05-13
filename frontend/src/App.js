@@ -36,9 +36,14 @@ import DoctorProfile from './screens/Doctors/DoctorProfile';
 import Receptions from './screens/Receptions';
 import NewMedicalRecode from './screens/Patients/NewMedicalRecode';
 import NotFound from './screens/NotFound';
-import Login from './screens/Login';
 import Users from './screens/Users';
 
+// AuthProvider
+// import Login from './screens/Login';
+import Login from './screens/Login.tsx';
+import { AuthProvider } from './hooks/Auth';
+import ProtectedRoute from "./components/ProtectedRoute";
+import RootLayout from './components/RootLayout';
 
 function App() {
   Aos.init();
@@ -49,39 +54,43 @@ function App() {
       <Toast />
       {/* Routes */}
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path='/home' element={<Dashboard />} />
-          {/* users */}
-          <Route path="/users" element={<Users />} />
-          {/* invoce */}
-          <Route path="/invoices" element={<Invoices />} />
-          <Route path="/invoices/create" element={<CreateInvoice />} />
-          <Route path="/invoices/edit/:id" element={<EditInvoice />} />
-          <Route path="/invoices/preview/:id" element={<PreviewInvoice />} />
-          {/* payments */}
-          <Route path="/payments" element={<Payments />} />
-          <Route path="/payments/edit/:id" element={<EditPayment />} />
-          <Route path="/payments/preview/:id" element={<PreviewPayment />} />
-          {/* patient */}
-          <Route path="/patients" element={<Patients />} />
-          <Route path="/patients/preview/:id" element={<PatientProfile />} />
-          <Route path="/patients/create" element={<CreatePatient />} />
-          <Route path="/patients/visiting/:id" element={<NewMedicalRecode />} />
-          {/* doctors */}
-          <Route path="/doctors" element={<Doctors />} />
-          <Route path="/doctors/preview/:id" element={<DoctorProfile />} />
-          {/* reception */}
-          <Route path="/receptions" element={<Receptions />} />
-          {/* others */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/appointments" element={<Appointments />} />
-          <Route path="/campaigns" element={<Campaings />} />
-          <Route path="/medicine" element={<Medicine />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <RootLayout>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/home" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              {/* users */}
+              <Route path="/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
+              {/* invoce */}
+              <Route path="/invoices" element={<ProtectedRoute><Invoices /></ProtectedRoute>} />
+              <Route path="/invoices/create" element={<ProtectedRoute><CreateInvoice /></ProtectedRoute>} />
+              <Route path="/invoices/edit/:id" element={<ProtectedRoute><EditInvoice /></ProtectedRoute>} />
+              <Route path="/invoices/preview/:id" element={<ProtectedRoute><PreviewInvoice /></ProtectedRoute>} />
+              {/* payments */}
+              <Route path="/payments" element={<ProtectedRoute><Payments /></ProtectedRoute>} />
+              <Route path="/payments/edit/:id" element={<ProtectedRoute><EditPayment /></ProtectedRoute>} />
+              <Route path="/payments/preview/:id" element={<ProtectedRoute><PreviewPayment /></ProtectedRoute>} />
+              {/* patient */}
+              <Route path="/patients" element={<ProtectedRoute><Patients /></ProtectedRoute>} />
+              <Route path="/patients/preview/:id" element={<ProtectedRoute><PatientProfile /></ProtectedRoute>} />
+              <Route path="/patients/create" element={<ProtectedRoute><CreatePatient /></ProtectedRoute>} />
+              <Route path="/patients/visiting/:id" element={<ProtectedRoute><NewMedicalRecode /></ProtectedRoute>} />
+              {/* doctors */}
+              <Route path="/doctors" element={<ProtectedRoute><Doctors /></ProtectedRoute>} />
+              <Route path="/doctors/preview/:id" element={<ProtectedRoute><DoctorProfile /></ProtectedRoute>} />
+              {/* reception */}
+              <Route path="/receptions" element={<ProtectedRoute><Receptions /></ProtectedRoute>} />
+              {/* others */}
+              <Route path="/appointments" element={<ProtectedRoute><Appointments /></ProtectedRoute>} />
+              <Route path="/campaigns" element={<ProtectedRoute><Campaings /></ProtectedRoute>} />
+              <Route path="/medicine" element={<ProtectedRoute><Medicine /></ProtectedRoute>} />
+              <Route path="/services" element={<ProtectedRoute><Services /></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </RootLayout>
+        </AuthProvider>
       </BrowserRouter>
     </>
   );

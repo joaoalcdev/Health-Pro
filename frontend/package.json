@@ -6,6 +6,7 @@
     "@headlessui/react": "^1.7.13",
     "@hookform/resolvers": "^3.0.1",
     "@reduxjs/toolkit": "^1.9.3",
+    "@supabase/supabase-js": "^2.43.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -31,7 +32,9 @@
     "react-spinners": "^0.13.8",
     "react-tooltip": "^5.11.1",
     "redux": "^4.2.1",
+    "rsuite": "^5.60.2",
     "swiper": "^9.2.0",
+    "typescript": "^5.4.5",
     "web-vitals": "^2.1.4",
     "yup": "^1.1.0"
   },

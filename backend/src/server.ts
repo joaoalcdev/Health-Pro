@@ -3,8 +3,13 @@ import fastify from "fastify";
 import cors from "@fastify/cors"
 
 import { supabase } from "./supabaseConnection";
+import { FastifyRequest } from "fastify";
 
 const app = fastify()
+
+interface RequestParams {
+  id: string;
+}
 
 app.register(cors, {
   origin: '*',
@@ -27,6 +32,7 @@ app.post("/login", async (req, res) => {
     if (error) {
       throw error
     }else{
+
       return res.status(200).send(data ? data : null)
     }
 
@@ -36,6 +42,19 @@ app.post("/login", async (req, res) => {
 })
 
 
+app.get("/user/:id", async (req, res) => {
+
+  try {
+    const userId = (req.params as RequestParams).id;
+
+    const { data } = await supabase.from("users").select("*").eq("id", userId).single()
+
+    return res.status(200).send(data ? data : null) 
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+})
 
 app.get("/users", async () => {
 
@@ -49,6 +68,7 @@ app.get("/users", async () => {
   }
 
 })
+
 
 app.post("/users", async (req, res) => {
   try {

@@ -7,11 +7,11 @@ import { apiBaseUrl } from "./apiConfig"
 export const getUsers = async () => {
   try {
     // const res = await axios.get(`${apiBaseUrl}`)
-    const res = await axios.get(apiBaseUrl())
+    const res = await axios.get(apiBaseUrl('users'))
     const data = res.data
     return data
   } catch (error) {
-    console.log(error)
+    return error
   }
 
 }
@@ -19,7 +19,7 @@ export const getUsers = async () => {
 export const createUser = async (newUser) => {
   console.log(newUser)
   try {
-    const data = await axios.post(apiBaseUrl(), newUser)
+    const data = await axios.post(apiBaseUrl('users'), newUser)
     return data
   } catch (error) {
     return error
@@ -29,7 +29,7 @@ export const createUser = async (newUser) => {
 export const updateUser = async (User) => {
   console.log(User)
   try {
-    const data = await axios.put(apiBaseUrl(), User)
+    const data = await axios.put(apiBaseUrl('users'), User)
     return data
   } catch (error) {
     return error

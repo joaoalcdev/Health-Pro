@@ -438,8 +438,8 @@ export function UsersTable({ data, functions, user }) {
     {
       title: 'Deletar',
       icon: RiDeleteBin6Line,
-      onClick: () => {
-        toast.error('This feature is not available yet');
+      onClick: (data) => {
+        functions.deleteUser(data);
       },
     },
   ];

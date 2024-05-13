@@ -10,7 +10,6 @@ export const userSignIn = async (user) => {
     if (data.status !== 200) {
       throw new Error(data.status)
     } else {
-      localStorage.setItem('token', data.data.session.access_token)
       const userData = await axios.get(apiBaseUrl(`user/${data.data.user.id}`), {
         headers: {
           Authorization: `Bearer ${data.data.token}`

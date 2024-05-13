@@ -6,6 +6,7 @@ import { RiDeleteBin6Line, RiDeleteBinLine } from 'react-icons/ri';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { formatPhoneNumber } from '../utils/formatPhoneNumber';
+import { formatDate } from '../utils/formatDate';
 
 const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
 const tdclass = 'text-start text-sm py-4 px-2 whitespace-nowrap';
@@ -472,7 +473,7 @@ export function UsersTable({ data, functions, user }) {
               <p className="text-textGray">{formatPhoneNumber(item.phoneNumber)}</p>
             </td>
             <td className={tdclass}>{item.roleId === 1 ? "Administrador" : item.roleId === 2 ? "Recepcionista" : "Prestador"}</td>
-            <td className={tdclass}>12 May, 2021</td>
+            <td className={tdclass}>{item.createdAt ? formatDate(new Date(item.createdAt)) : "-"}</td>
 
             <td className={tdclass}>
               <MenuSelect datas={DropDown1} item={item}>

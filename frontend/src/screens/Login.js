@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
 import { Button, Input } from '../components/Form';
 import { BiLogInCircle } from 'react-icons/bi';
-
-
+import { useNavigate } from 'react-router-dom';
 import { userSignIn } from '../api/signInAPI';
 
 function Login() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const navigate = useNavigate()
+
+  const [email, setEmail] = useState('marilia@test.com')
+  const [password, setPassword] = useState('senha1234')
+
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const {session, user} = await userSignIn({ email, password })
-    console.log(session,user)
+    const userAuth = await userSignIn({ email, password })
+    if (userAuth) {
+      console.log(userAuth)
+      navigate('/home')
+    }
   }
 
 

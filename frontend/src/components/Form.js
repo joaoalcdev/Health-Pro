@@ -33,7 +33,7 @@ export function InputMaskComp({ label, name, type, color, placeholder, register,
   );
 }
 
-export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, disabled }) {
+export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, disabled, autoComplete }) {
   return (
     <div className="text-sm w-full">
       <label
@@ -44,6 +44,7 @@ export function Input({ label, name, type, color, placeholder, register, value, 
       </label>
       <input
         name={name}
+        autoComplete={autoComplete}
         required={required}
         maxLength={maxLength}
         onChange={onChange}
@@ -121,7 +122,7 @@ export function Select({ children, selectedPerson, setSelectedPerson, datas }) {
                 value={person}
                 disabled={person.unavailable}
               >
-                {person.name?`${person.name} (${person.UF})`:`${person.name}`}
+                {person.name ? `${person.name} (${person.UF})` : `${person.name}`}
               </Listbox.Option>
             ))}
           </Listbox.Options>

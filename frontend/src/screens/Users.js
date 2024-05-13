@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { MdOutlineCloudDownload } from 'react-icons/md';
 import { toast } from 'react-hot-toast';
 import { BiPlus } from 'react-icons/bi';
 import Layout from '../Layout';
@@ -7,10 +6,12 @@ import { Button } from '../components/Form';
 import { UsersTable } from '../components/Tables';
 import AddUserModal from '../components/Modals/AddUserModal';
 import ViewUserModal from '../components/Modals/ViewUserModal';
-import { getUsers } from '../api/UsersAPI';
+import ConfirmationModal from '../components/Modals/ConfirmationModal';
+import { deleteUser, getUsers } from '../api/UsersAPI';
 
 function Users() {
   const [isViewOpen, setIsViewOpen] = React.useState(false);
+  const [isConfirmationOpen, setIsConfirmationOpen] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
   const [isAdd, setIsAdd] = React.useState(false);
   const [status, setStatus] = React.useState(true);
@@ -27,12 +28,29 @@ function Users() {
     fetch()
   }, [status])
 
+  const handleDelete = async () => {
+    const response = await deleteUser(user)
+    if (response) {
+      toast.success('Usuário deletado com sucesso')
+      setStatus(true)
+      setIsConfirmationOpen(false)
+    } else {
+      toast.error('Não foi possível deletar o usuário')
+    }
+
+
+  }
+
   const onCloseModal = () => {
     setIsOpen(false);
     setIsViewOpen(false);
-    setIsAdd(false)
-    console.log("Close modal")
-    //setData({});
+    setIsAdd(false);
+    setIsConfirmationOpen(false);
+  };
+
+  const removeUser = (user) => {
+    setUser(user)
+    setIsConfirmationOpen(true)
   };
 
   const preview = (data) => {
@@ -51,8 +69,21 @@ function Users() {
     setIsAdd(false)
   }
 
+
+
   return (
     <Layout>
+      {
+        //confirmation modal
+        isConfirmationOpen && (
+          <ConfirmationModal
+            title={'Deletar Usuário'}
+            closeModal={onCloseModal}
+            isOpen={isConfirmationOpen}
+            onDelete={handleDelete}
+          />
+        )
+      }
       {
         //view user modal
         isViewOpen && (
@@ -113,6 +144,7 @@ function Users() {
             data={data}
             functions={{
               preview: preview,
+              deleteUser: removeUser,
             }}
           />
         </div>

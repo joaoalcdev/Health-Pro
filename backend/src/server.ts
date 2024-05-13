@@ -2,7 +2,7 @@
 import fastify from "fastify";
 import cors from "@fastify/cors"
 
-import { supabase } from "./supabaseConnection";
+import { supabase, supabaseAdmin } from "./supabaseConnection";
 import { FastifyRequest } from "fastify";
 
 const app = fastify()
@@ -69,7 +69,6 @@ app.get("/users", async () => {
 
 })
 
-
 app.post("/users", async (req, res) => {
   try {
     const {
@@ -112,7 +111,6 @@ app.post("/users", async (req, res) => {
         throw error
       }
       else return res.status(200).send(createdUser ? createdUser[0] : null)
-      //return res.status(200).send(createdUser ? createdUser[0] : null)
     }
   } catch (error) {
     return res.status(400).send(error)
@@ -150,6 +148,30 @@ app.put("/users", async (req, res) => {
       throw error
     }
     else return res.status(200).send(User ? User : null)
+  } catch (error) {
+    return res.status(400).send(error)
+  }
+})
+
+app.delete("/user/:id", async (req, res) => {
+  try {
+    const userId = (req.params as RequestParams).id;
+
+    const { data, error } = await supabaseAdmin.auth.admin.deleteUser(userId)
+
+    console.log(data)
+    if (error) {
+      throw error
+    }else{
+      const { error } = await supabase.from('users').delete().eq('id', userId)
+
+    }
+
+
+    if (error) {
+      throw error
+    }
+    else return res.status(200).send("User deleted successfully")
   } catch (error) {
     return res.status(400).send(error)
   }

@@ -26,11 +26,24 @@ export const createUser = async (newUser) => {
   }
 }
 
-export const updateUser = async (User) => {
-  console.log(User)
+export const updateUser = async (user) => {
   try {
-    const data = await axios.put(apiBaseUrl('users'), User)
+    const data = await axios.put(apiBaseUrl('users'), user)
     return data
+  } catch (error) {
+    return error
+  }
+}
+
+export const deleteUser = async (user) => {
+
+  try {
+    const data = await axios.delete(apiBaseUrl(`user/${user.id}`), user)
+    if (data) {
+      return data
+    } else {
+      return null
+    }
   } catch (error) {
     return error
   }

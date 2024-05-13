@@ -65,7 +65,9 @@ app.post("/users", async (req, res) => {
       state
     } = req.body as Users
 
-    const { data: userAuth, error } = await supabase.auth.signUp({
+    const createdAt = new Date()
+
+    const { data:userAuth, error } = await supabase.auth.signUp({
       email,
       password,
     })
@@ -73,16 +75,17 @@ app.post("/users", async (req, res) => {
     if (userAuth) {
       const { data: createdUser, error } = await supabase.from("users").insert([{
         id: userAuth.user?.id,
-        firstName,
-        lastName,
-        phoneNumber,
-        email,
-        password,
-        roleId,
-        address,
-        city,
-        region,
-        state
+        firstName, 
+        lastName, 
+        phoneNumber, 
+        email, 
+        password, 
+        roleId, 
+        address, 
+        city, 
+        region, 
+        state,
+        createdAt
       }]).select()
 
       if (error) {

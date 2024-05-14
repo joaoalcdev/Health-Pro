@@ -4,9 +4,9 @@ import MainNavigation from './MainNavigation';
 function RootLayout({ children }: {children: ReactNode}) {
   return (
     <>
-      <MainNavigation />
+      {/* <MainNavigation /> */}
       <main>{children}</main>
-      </>
+    </>
   );
 }
 

@@ -3,7 +3,6 @@ import fastify from "fastify";
 import cors from "@fastify/cors"
 
 import { supabase, supabaseAdmin } from "./supabaseConnection";
-import { FastifyRequest } from "fastify";
 
 const app = fastify()
 
@@ -29,18 +28,30 @@ app.post("/login", async (req, res) => {
       email,
       password
     })
+
     if (error) {
       throw error
     }else{
-
       return res.status(200).send(data ? data : null)
     }
-
   } catch (error) {
     return res.status(400).send(error)
   }
 })
 
+app.post("/logout", async (req, res) =>{
+  try {
+    const { error } = await supabase.auth.signOut()
+    if(error){
+      throw error
+    }else{
+      return res.status(200).send("Sessão encerrada")
+    }
+    
+  } catch (error) {
+    return res.status(400).send("Não foi possível encerrar a sessão!")
+  }
+})
 
 app.get("/user/:id", async (req, res) => {
 
@@ -176,6 +187,20 @@ app.delete("/user/:id", async (req, res) => {
     return res.status(400).send(error)
   }
 })
+
+// app.get("/session", async (req, res) => {
+//   const { data, error } = await supabase.auth.getSession()
+//   if (error) {
+//     throw error
+//   }
+//   else return res.status(200).send(data ? data : null)
+// })
+
+// app.get("/auth", async (req, res) => {
+  
+// })
+
+
 
 app.listen({
   host: "0.0.0.0",

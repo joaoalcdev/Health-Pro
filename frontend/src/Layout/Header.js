@@ -7,9 +7,17 @@ import NotificationComp from '../components/NotificationComp';
 import { useNavigate } from 'react-router-dom';
 import { BiMenu } from 'react-icons/bi';
 import MenuDrawer from '../components/Drawer/MenuDrawer';
+import { useAuth } from "../hooks/Auth"
 
 function Header() {
   const [isOpen, setIsOpen] = React.useState(false);
+
+  const { user } = useAuth();
+  const { signOut } = useAuth();
+
+  const handleLogout = () => {
+    signOut();
+  };
 
   // toggle drawer
   const toggleDrawer = () => {
@@ -28,9 +36,7 @@ function Header() {
     {
       title: 'Logout',
       icon: AiOutlinePoweroff,
-      onClick: () => {
-        navigate('/login');
-      },
+      onClick: () => { handleLogout() },
     },
   ];
 
@@ -73,7 +79,7 @@ function Header() {
                     alt="user"
                     className="w-12 border border-border object-cover h-12 rounded-full"
                   />
-                  <p className="text-sm text-textGray font-medium">Dr. Daudi</p>
+                  <p className="text-sm text-textGray font-medium">{user.firstName} {user.lastName}</p>
                 </div>
               </MenuSelect>
             </div>

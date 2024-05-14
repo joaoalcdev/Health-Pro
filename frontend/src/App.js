@@ -40,7 +40,7 @@ import Users from './screens/Users';
 
 // AuthProvider
 // import Login from './screens/Login';
-import Login from './screens/Login.tsx';
+import Login from './screens/Login.js';
 import { AuthProvider } from './hooks/Auth';
 import ProtectedRoute from "./components/ProtectedRoute";
 import RootLayout from './components/RootLayout';

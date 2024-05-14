@@ -17,24 +17,28 @@ function Login() {
   useEffect(() => {
     supabaseClient.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      console.log("Get Session - UE1", session);
     });
 
     supabaseClient.auth.onAuthStateChange((_event, session) => {
       // write here
       setSession(session);
+      console.log("Get Session - UE2", session);
+
     });
   }, []);
 
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const { error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password,
-      });
+      // const { error } = await supabaseClient.auth.signInWithPassword({
+      //   email,
+      //   password,
+      // });
       const userAuth = await userSignIn({ email, password });
       if (userAuth) {
         console.log(userAuth);
+        localStorage.setItem("session", JSON.stringify(userAuth));
         navigate("/home");
       } else {
         console.log("Login failed");

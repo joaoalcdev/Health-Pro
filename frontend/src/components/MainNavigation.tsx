@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { IconButton, Nav, Navbar, Tag } from "rsuite";
-import { useAuth } from "../hooks/Auth";
+import {useAuth} from "../hooks/Auth"
 import OffRoundIcon from "@rsuite/icons/OffRound";
 
 function MainNavigation() {

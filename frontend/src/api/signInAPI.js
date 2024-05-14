@@ -7,9 +7,8 @@ export const userSignIn = async (user) => {
 
   try {
     const data = await axios.post(apiBaseUrl(routeAPI), user)
-    if (data.status !== 200) {
-      throw new Error(data.status)
-    } else {
+    if (data) {
+
       const userData = await axios.get(apiBaseUrl(`user/${data.data.user.id}`), {
         headers: {
           Authorization: `Bearer ${data.data.token}`
@@ -23,11 +22,10 @@ export const userSignIn = async (user) => {
         session: data.data,
         user: userData.data
       }
-
       return authUser
     }
   } catch (error) {
-    console.log(error)
     return error
   }
 }
+

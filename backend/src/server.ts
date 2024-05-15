@@ -31,7 +31,7 @@ app.post("/login", async (req, res) => {
 
     if (error) {
       throw error
-    }else{
+    } else {
       return res.status(200).send(data ? data : null)
     }
   } catch (error) {
@@ -39,15 +39,15 @@ app.post("/login", async (req, res) => {
   }
 })
 
-app.post("/logout", async (req, res) =>{
+app.post("/logout", async (req, res) => {
   try {
     const { error } = await supabase.auth.signOut()
-    if(error){
+    if (error) {
       throw error
-    }else{
+    } else {
       return res.status(200).send("Sessão encerrada")
     }
-    
+
   } catch (error) {
     return res.status(400).send("Não foi possível encerrar a sessão!")
   }
@@ -60,7 +60,7 @@ app.get("/user/:id", async (req, res) => {
 
     const { data } = await supabase.from("users").select("*").eq("id", userId).single()
 
-    return res.status(200).send(data ? data : null) 
+    return res.status(200).send(data ? data : null)
   } catch (error) {
     console.error(error)
     throw error
@@ -97,7 +97,7 @@ app.post("/users", async (req, res) => {
 
     const createdAt = new Date()
 
-    const { data:userAuth, error } = await supabase.auth.signUp({
+    const { data: userAuth, error } = await supabase.auth.signUp({
       email,
       password,
     })
@@ -105,15 +105,15 @@ app.post("/users", async (req, res) => {
     if (userAuth) {
       const { data: createdUser, error } = await supabase.from("users").insert([{
         id: userAuth.user?.id,
-        firstName, 
-        lastName, 
-        phoneNumber, 
-        email, 
-        password, 
-        roleId, 
-        address, 
-        city, 
-        region, 
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        password,
+        roleId,
+        address,
+        city,
+        region,
         state,
         createdAt
       }]).select()
@@ -173,7 +173,7 @@ app.delete("/user/:id", async (req, res) => {
     console.log(data)
     if (error) {
       throw error
-    }else{
+    } else {
       const { error } = await supabase.from('users').delete().eq('id', userId)
 
     }
@@ -197,8 +197,46 @@ app.delete("/user/:id", async (req, res) => {
 // })
 
 // app.get("/auth", async (req, res) => {
-  
+
 // })
+
+
+// get all Patients
+app.get("/patients", async (req, res) => {
+  try {
+    const { data } = await supabase.from("patients").select("*").order("fullName", { ascending: true })
+
+    return data ? data : null
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+})
+
+// create a new patient
+app.post("/patients", async (req, res) => {
+  try {
+    const {
+      fullName,
+    } = req.body as Patients
+
+    const { data: patient, error } = await supabase.from("patients").insert([{
+      fullName
+    }]).select()
+
+    if (error) {
+      throw error
+    }
+    else return res.status(200).send(patient ? patient[0] : null)
+  } catch (error) {
+    return
+  }
+}
+)
+
+
+
+
 
 
 

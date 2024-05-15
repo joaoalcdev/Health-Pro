@@ -11,3 +11,7 @@ type Users = {
   region: string,
   state: string,
 }
+
+type Patients = {
+  fullName: string,
+}

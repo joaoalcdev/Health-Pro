@@ -69,7 +69,7 @@ function Patients() {
       >
         <BiPlus className="text-2xl" />
       </Link>
-      <h1 className="text-xl font-semibold">Patients</h1>
+      <h1 className="text-xl font-semibold">Pacientes</h1>
       {/* boxes */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
         {boxes.map((box) => (
@@ -85,8 +85,8 @@ function Patients() {
                 {box.title === 'Today Patients'
                   ? 'today'
                   : box.title === 'Monthly Patients'
-                  ? 'this month'
-                  : 'this year'}
+                    ? 'this month'
+                    : 'this year'}
               </p>
             </div>
             <div

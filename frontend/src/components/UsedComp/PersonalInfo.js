@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Uploder from '../Uploader';
 import { sortsDatas } from '../Datas';
 import { Button, DatePickerComp, Input, Select } from '../Form';
@@ -7,17 +7,47 @@ import { toast } from 'react-hot-toast';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 
+
+import { createPatient } from '../../api/PatientsAPI';
+
+
+
+
 function PersonalInfo({ titles }) {
-  const [title, setTitle] = React.useState(sortsDatas.title[0]);
-  const [date, setDate] = React.useState(new Date());
-  const [gender, setGender] = React.useState(sortsDatas.genderFilter[0]);
+  const [title, setTitle] = useState(sortsDatas.title[0]);
+  const [date, setDate] = useState(new Date());
+  const [gender, setGender] = useState(sortsDatas.genderFilter[0]);
+
+  const [fullName, setFullName] = useState('');
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await createPatient({
+      fullName,
+
+    });
+    if (createPatient) {
+      toast.success('Patient created successfully');
+      // reset input fields
+      setFullName('');
+
+      // redirect to patients page
+      window.location.href = '/patients';
+    } else {
+      toast.error('Failed to create patient');
+    }
+  };
+
+
+
   return (
     <div className="flex-colo gap-4">
       {/* uploader */}
-      <div className="flex gap-3 flex-col w-full col-span-6">
+      {/* <div className="flex gap-3 flex-col w-full col-span-6">
         <p className="text-sm">Profile Image</p>
         <Uploder />
-      </div>
+      </div> */}
       {/* select  */}
       {titles && (
         <div className="flex w-full flex-col gap-3">
@@ -35,15 +65,21 @@ function PersonalInfo({ titles }) {
       )}
 
       {/* fullName */}
-      <Input label="Full Name" color={true} type="text" />
+      <Input
+        label="Nome Completo"
+        color={true}
+        required={true}
+        value={fullName}
+        onChange={(e) => setFullName(e.target.value)}
+      />
       {/* phone */}
-      <Input label="Phone Number" color={true} type="number" />
+      {/* <Input label="Phone Number" color={true} type="number" /> */}
       {/* email */}
-      <Input label="Email" color={true} type="email" />
-      {!titles && (
-        <>
-          {/* gender */}
-          <div className="flex w-full flex-col gap-3">
+      {/* <Input label="Email" color={true} type="email" /> */}
+      {/* {!titles && ( */}
+      {/* // <> */}
+      {/* gender */}
+      {/* <div className="flex w-full flex-col gap-3">
             <p className="text-black text-sm">Gender</p>
             <Select
               selectedPerson={gender}
@@ -54,19 +90,19 @@ function PersonalInfo({ titles }) {
                 {gender?.name} <BiChevronDown className="text-xl" />
               </div>
             </Select>
-          </div>
-          {/* emergancy contact */}
-          <Input label="Emergency Cotact" color={true} type="number" />
-          {/* date */}
-          <DatePickerComp
+          </div> */}
+      {/* emergancy contact */}
+      {/* <Input label="Emergency Cotact" color={true} type="number" /> */}
+      {/* date */}
+      {/* <DatePickerComp
             label="Date of Birth"
             startDate={date}
             onChange={(date) => setDate(date)}
-          />
-          {/* address */}
-          <Input label="Address" color={true} type="text" />
-        </>
-      )}
+          /> */}
+      {/* address */}
+      {/* <Input label="Address" color={true} type="text" /> */}
+      {/* </> */}
+      {/* // )} */}
       {/* submit */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
         <Button
@@ -77,11 +113,9 @@ function PersonalInfo({ titles }) {
           }}
         />
         <Button
-          label={'Save Changes'}
+          label={'Cadastrar'}
           Icon={HiOutlineCheckCircle}
-          onClick={() => {
-            toast.error('This feature is not available yet');
-          }}
+          onClick={handleSubmit}
         />
       </div>
     </div>

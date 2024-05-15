@@ -324,14 +324,14 @@ export function PatientTable({ data, functions, used }) {
   const DropDown1 = !used
     ? [
       {
-        title: 'View',
+        title: 'Ver',
         icon: FiEye,
         onClick: (data) => {
           functions.preview(data.id);
         },
       },
       {
-        title: 'Delete',
+        title: 'Deletar',
         icon: RiDeleteBin6Line,
         onClick: () => {
           toast.error('This feature is not available yet');
@@ -354,17 +354,17 @@ export function PatientTable({ data, functions, used }) {
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
           <th className={thclasse}>#</th>
-          <th className={thclasse}>Patient</th>
+          <th className={thclasse}>Paciente</th>
           <th className={thclasse}>Created At</th>
-          <th className={thclasse}>Gender</th>
+          <th className={thclasse}>Gênero</th>
           {!used && (
             <>
-              <th className={thclasse}>Blood Group</th>
-              <th className={thclasse}>Age</th>
+              <th className={thclasse}>Tipo Sanguíneo</th>
+              <th className={thclasse}>Idade</th>
             </>
           )}
 
-          <th className={thclasse}>Actions</th>
+          <th className={thclasse}>Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -376,7 +376,7 @@ export function PatientTable({ data, functions, used }) {
             <td className={tdclasse}>{index + 1}</td>
             <td className={tdclasse}>
               <div className="flex gap-4 items-center">
-                {!used && (
+                {/* {!used && (
                   <span className="w-12">
                     <img
                       src={item.image}
@@ -384,10 +384,12 @@ export function PatientTable({ data, functions, used }) {
                       className="w-full h-12 rounded-full object-cover border border-border"
                     />
                   </span>
-                )}
+                )} */}
 
                 <div>
-                  <h4 className="text-sm font-medium">{item.title}</h4>
+                  <h4 className="text-sm font-medium">
+                    {item.title}
+                  </h4>
                   <p className="text-xs mt-1 text-textGray">{item.phone}</p>
                 </div>
               </div>

@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children, roleId }) => {
         return <Navigate to="/login" />;
     }
 
-    if (roleId === 3 | roleId === user.roleId) {
+    if (roleId === 3 | roleId >= user.roleId) {
         return <>{children}</>
     } else {
         return <Navigate to="*" />;

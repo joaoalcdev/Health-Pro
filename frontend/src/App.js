@@ -73,7 +73,7 @@ function App() {
               <Route path="/payments/preview/:id" element={<ProtectedRoute roleId={1}><PreviewPayment /></ProtectedRoute>} />
               {/* patient */}
               <Route path="/patients" element={<ProtectedRoute roleId={2}><Patients /></ProtectedRoute>} />
-              <Route path="/patients/preview/:id" element={<ProtectedRoute roleId={2}><PatientProfile /></ProtectedRoute>} />
+              <Route path="/patients/preview/:id" element={<ProtectedRoute roleId={3}><PatientProfile /></ProtectedRoute>} />
               <Route path="/patients/create" element={<ProtectedRoute roleId={2}><CreatePatient /></ProtectedRoute>} />
               <Route path="/patients/visiting/:id" element={<ProtectedRoute roleId={2}><NewMedicalRecode /></ProtectedRoute>} />
               {/* doctors */}

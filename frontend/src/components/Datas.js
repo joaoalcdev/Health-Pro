@@ -43,12 +43,6 @@ export const MenuDatas = [
     roleAllowed: 1
   },
   {
-    title: 'Prestadores',
-    path: '/providers',
-    icon: RiUserHeartLine,
-    roleAllowed: 1
-  },
-  {
     title: 'Patients',
     path: '/patients',
     icon: TbUsers,

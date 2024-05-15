@@ -27,7 +27,7 @@ function Sidebar() {
       </Link>
       <div className="flex-colo gap-2 mt-12">
         {MenuDatas.map((item, index) => {
-          if (item.roleAllowed === 3 | item.roleAllowed === user.roleId) {
+          if (item.roleAllowed === 3 | item.roleAllowed >= user.roleId) {
             return (<Link
               to={item.path}
               key={index}

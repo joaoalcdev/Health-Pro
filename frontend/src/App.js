@@ -58,35 +58,35 @@ function App() {
           <RootLayout>
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/home" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/" element={<ProtectedRoute roleId={3}><Dashboard /></ProtectedRoute>} />
+              <Route path="/home" element={<ProtectedRoute roleId={3}><Dashboard /></ProtectedRoute>} />
               {/* users */}
-              <Route path="/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
+              <Route path="/users" element={<ProtectedRoute roleId={1} ><Users /></ProtectedRoute>} />
               {/* invoce */}
-              <Route path="/invoices" element={<ProtectedRoute><Invoices /></ProtectedRoute>} />
-              <Route path="/invoices/create" element={<ProtectedRoute><CreateInvoice /></ProtectedRoute>} />
-              <Route path="/invoices/edit/:id" element={<ProtectedRoute><EditInvoice /></ProtectedRoute>} />
-              <Route path="/invoices/preview/:id" element={<ProtectedRoute><PreviewInvoice /></ProtectedRoute>} />
+              <Route path="/invoices" element={<ProtectedRoute roleId={1}><Invoices /></ProtectedRoute>} />
+              <Route path="/invoices/create" element={<ProtectedRoute roleId={1}><CreateInvoice /></ProtectedRoute>} />
+              <Route path="/invoices/edit/:id" element={<ProtectedRoute roleId={1}><EditInvoice /></ProtectedRoute>} />
+              <Route path="/invoices/preview/:id" element={<ProtectedRoute roleId={1}><PreviewInvoice /></ProtectedRoute>} />
               {/* payments */}
-              <Route path="/payments" element={<ProtectedRoute><Payments /></ProtectedRoute>} />
-              <Route path="/payments/edit/:id" element={<ProtectedRoute><EditPayment /></ProtectedRoute>} />
-              <Route path="/payments/preview/:id" element={<ProtectedRoute><PreviewPayment /></ProtectedRoute>} />
+              <Route path="/payments" element={<ProtectedRoute roleId={1}><Payments /></ProtectedRoute>} />
+              <Route path="/payments/edit/:id" element={<ProtectedRoute roleId={1}><EditPayment /></ProtectedRoute>} />
+              <Route path="/payments/preview/:id" element={<ProtectedRoute roleId={1}><PreviewPayment /></ProtectedRoute>} />
               {/* patient */}
-              <Route path="/patients" element={<ProtectedRoute><Patients /></ProtectedRoute>} />
-              <Route path="/patients/preview/:id" element={<ProtectedRoute><PatientProfile /></ProtectedRoute>} />
-              <Route path="/patients/create" element={<ProtectedRoute><CreatePatient /></ProtectedRoute>} />
-              <Route path="/patients/visiting/:id" element={<ProtectedRoute><NewMedicalRecode /></ProtectedRoute>} />
+              <Route path="/patients" element={<ProtectedRoute roleId={2}><Patients /></ProtectedRoute>} />
+              <Route path="/patients/preview/:id" element={<ProtectedRoute roleId={2}><PatientProfile /></ProtectedRoute>} />
+              <Route path="/patients/create" element={<ProtectedRoute roleId={2}><CreatePatient /></ProtectedRoute>} />
+              <Route path="/patients/visiting/:id" element={<ProtectedRoute roleId={2}><NewMedicalRecode /></ProtectedRoute>} />
               {/* doctors */}
-              <Route path="/doctors" element={<ProtectedRoute><Doctors /></ProtectedRoute>} />
-              <Route path="/doctors/preview/:id" element={<ProtectedRoute><DoctorProfile /></ProtectedRoute>} />
+              <Route path="/doctors" element={<ProtectedRoute roleId={1}><Doctors /></ProtectedRoute>} />
+              <Route path="/doctors/preview/:id" element={<ProtectedRoute roleId={1}><DoctorProfile /></ProtectedRoute>} />
               {/* reception */}
-              <Route path="/receptions" element={<ProtectedRoute><Receptions /></ProtectedRoute>} />
+              <Route path="/receptions" element={<ProtectedRoute roleId={1}><Receptions /></ProtectedRoute>} />
               {/* others */}
-              <Route path="/appointments" element={<ProtectedRoute><Appointments /></ProtectedRoute>} />
-              <Route path="/campaigns" element={<ProtectedRoute><Campaings /></ProtectedRoute>} />
-              <Route path="/medicine" element={<ProtectedRoute><Medicine /></ProtectedRoute>} />
-              <Route path="/services" element={<ProtectedRoute><Services /></ProtectedRoute>} />
-              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              <Route path="/appointments" element={<ProtectedRoute roleId={3}><Appointments /></ProtectedRoute>} />
+              <Route path="/campaigns" element={<ProtectedRoute roleId={1}><Campaings /></ProtectedRoute>} />
+              <Route path="/medicine" element={<ProtectedRoute roleId={1}><Medicine /></ProtectedRoute>} />
+              <Route path="/services" element={<ProtectedRoute roleId={1}><Services /></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute roleId={3}><Settings /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </RootLayout>

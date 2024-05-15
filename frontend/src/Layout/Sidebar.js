@@ -1,8 +1,11 @@
 import React from 'react';
 import { MenuDatas } from '../components/Datas';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../hooks/Auth';
 
 function Sidebar() {
+
+  const { user } = useAuth()
   // active link
   const currentPath = (path) => {
     const currentPath =
@@ -23,29 +26,34 @@ function Sidebar() {
         />
       </Link>
       <div className="flex-colo gap-2 mt-12">
-        {MenuDatas.map((item, index) => (
-          <Link
-            to={item.path}
-            key={index}
-            className={`
+        {MenuDatas.map((item, index) => {
+          if (item.roleAllowed === 3 | item.roleAllowed === user.roleId) {
+            return (<Link
+              to={item.path}
+              key={index}
+              className={`
             ${currentPath(item.path) === item.path ? 'bg-text' : ''}
             flex gap-4 transitions group items-center w-full p-4 rounded-lg hover:bg-text`}
-          >
-            <item.icon
-              className={`text-xl text-subMain
+            >
+              <item.icon
+                className={`text-xl text-subMain
             `}
-            />
-            <p
-              className={`text-sm font-medium group-hover:text-subMain ${
-                currentPath(item.path) === item.path
+              />
+              <p
+                className={`text-sm font-medium group-hover:text-subMain ${currentPath(item.path) === item.path
                   ? 'text-subMain'
                   : 'text-gray-500'
-              }`}
-            >
-              {item.title}
-            </p>
-          </Link>
-        ))}
+                  }`}
+              >
+                {item.title}
+              </p>
+            </Link>
+            )
+          }
+          else {
+            return ""
+          }
+        })}
       </div>
     </div>
   );

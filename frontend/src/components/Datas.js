@@ -34,63 +34,73 @@ export const MenuDatas = [
     title: 'Dashboard',
     path: '/home',
     icon: HiOutlineHome,
+    roleAllowed: 3
   },
   {
     title: 'Usuários',
     path: '/users',
     icon: HiOutlineUsers,
+    roleAllowed: 1
   },
   {
     title: 'Prestadores',
     path: '/providers',
     icon: RiUserHeartLine,
+    roleAllowed: 1
   },
   {
     title: 'Patients',
     path: '/patients',
     icon: TbUsers,
+    roleAllowed: 2
   },
   {
     title: 'Receptions',
     path: '/receptions',
     icon: HiOutlineUsers,
+    roleAllowed: 2
   },
   {
     title: 'Doctors',
     path: '/doctors',
     icon: RiUserHeartLine,
+    roleAllowed: 1
   },
-
   {
     title: 'Appointments',
     path: '/appointments',
     icon: FaRegCalendarAlt,
+    roleAllowed: 3
   },
   {
     title: 'Payments',
     path: '/payments',
     icon: MdListAlt,
+    roleAllowed: 1
   },
   {
     title: 'Invoices',
     path: '/invoices',
     icon: TbFileInvoice,
+    roleAllowed: 1
   },
   {
     title: 'Services',
     path: '/services',
     icon: MdOutlineInventory2,
+    roleAllowed: 1
   },
-
   {
     title: 'Campaigns',
     path: '/campaigns',
     icon: MdOutlineCampaign,
+    roleAllowed: 1
   },
   {
     title: 'Settings',
     path: '/settings',
     icon: AiOutlineSetting,
+    roleAllowed: 3
   },
 ];
 

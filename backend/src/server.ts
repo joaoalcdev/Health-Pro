@@ -218,10 +218,30 @@ app.post("/patients", async (req, res) => {
   try {
     const {
       fullName,
+      cpf,
+      age,
+      bloodType,
+      gender,
+      address,
+      region,
+      city,
+      state,
+      phoneNumber,
+      emergencyContact
     } = req.body as Patients
 
     const { data: patient, error } = await supabase.from("patients").insert([{
-      fullName
+      fullName,
+      cpf,
+      age,
+      bloodType,
+      gender,
+      address,
+      region,
+      city,
+      state,
+      phoneNumber,
+      emergencyContact
     }]).select()
 
     if (error) {

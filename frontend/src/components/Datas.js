@@ -429,21 +429,25 @@ export const sortsDatas = {
   genderFilter: [
     {
       id: 1,
-      name: 'Gender...',
+      name: 'Gênero...',
     },
     {
       id: 2,
-      name: 'Female',
+      name: 'Feminino',
     },
     {
       id: 3,
-      name: 'Male',
+      name: 'Masculino',
+    },
+    {
+      id: 4,
+      name: 'Prefiro não dizer',
     },
   ],
   bloodTypeFilter: [
     {
       id: 1,
-      name: 'Blood Type...',
+      name: 'Tipo sangúineo...',
     },
     {
       id: 2,

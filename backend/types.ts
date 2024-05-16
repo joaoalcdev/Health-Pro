@@ -11,3 +11,17 @@ type Users = {
   region: string,
   state: string,
 }
+
+type Patients = {
+  fullName: string,
+  cpf: string,
+  age: number,
+  bloodType: string,
+  gender: string,
+  address: string,
+  region: string,
+  city: string,
+  state: string,
+  phoneNumber: string,
+  emergencyContact: string,
+}

@@ -14,7 +14,7 @@ function CreatePatient() {
         >
           <IoArrowBackOutline />
         </Link>
-        <h1 className="text-xl font-semibold">Create Patient</h1>
+        <h1 className="text-xl font-semibold">Cadastrar Paciente</h1>
       </div>
       <div
         data-aos="fade-up"

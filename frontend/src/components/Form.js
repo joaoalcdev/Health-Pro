@@ -122,7 +122,9 @@ export function Select({ children, selectedPerson, setSelectedPerson, datas }) {
                 value={person}
                 disabled={person.unavailable}
               >
-                {person.name ? `${person.name} (${person.UF})` : `${person.name}`}
+                {/* {person.name ? `${person.name} (${person.UF})` : `${person.name}`} */}
+                {/* identify type person, if state, person.name+person.UF */}
+                {person.name} {person.UF && `(${person.UF})`} {person.type && `(${person.type})`}
               </Listbox.Option>
             ))}
           </Listbox.Options>

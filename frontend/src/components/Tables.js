@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MenuSelect } from './Form';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { FiEdit, FiEye } from 'react-icons/fi';
@@ -7,6 +7,8 @@ import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { formatPhoneNumber } from '../utils/formatPhoneNumber';
 import { formatDate } from '../utils/formatDate';
+
+import { getPatients } from '../api/PatientsAPI';
 
 const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
 const tdclass = 'text-start text-sm py-4 px-2 whitespace-nowrap';
@@ -321,20 +323,35 @@ export function ServiceTable({ data, onEdit }) {
 
 // patient table
 export function PatientTable({ data, functions, used }) {
+
+  const [status, setStatus] = React.useState(true);
+  const [dataPatient, setDataPatient] = useState([]);
+
+  const fetch = async () => {
+    const response = await getPatients()
+    setDataPatient(response)
+    setStatus(false)
+  }
+
+  useEffect(() => {
+    fetch()
+  }, [status])
+
   const DropDown1 = !used
     ? [
       {
         title: 'Ver',
         icon: FiEye,
+        // preview patient
         onClick: (data) => {
           functions.preview(data.id);
-        },
+        }
       },
       {
         title: 'Deletar',
         icon: RiDeleteBin6Line,
         onClick: () => {
-          toast.error('This feature is not available yet');
+          toast.error('Função não disponível!');
         },
       },
     ]
@@ -355,8 +372,8 @@ export function PatientTable({ data, functions, used }) {
         <tr>
           <th className={thclasse}>#</th>
           <th className={thclasse}>Paciente</th>
-          <th className={thclasse}>Created At</th>
           <th className={thclasse}>Gênero</th>
+
           {!used && (
             <>
               <th className={thclasse}>Tipo Sanguíneo</th>
@@ -364,54 +381,51 @@ export function PatientTable({ data, functions, used }) {
             </>
           )}
 
+          <th className={thclasse}>Nascimento</th>
+          <th className={thclasse}>Endereço | Cidade | Estado</th>
           <th className={thclasse}>Ações</th>
         </tr>
       </thead>
       <tbody>
-        {data.map((item, index) => (
+        {dataPatient.map((item, index, patient) => (
           <tr
-            key={item.id}
+            key={patient.id}
             className="border-b border-border hover:bg-greyed transitions"
           >
             <td className={tdclasse}>{index + 1}</td>
             <td className={tdclasse}>
               <div className="flex gap-4 items-center">
-                {/* {!used && (
-                  <span className="w-12">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-12 rounded-full object-cover border border-border"
-                    />
-                  </span>
-                )} */}
-
                 <div>
                   <h4 className="text-sm font-medium">
-                    {item.title}
+                    {/* map return patient */}
+                    {item.fullName}
                   </h4>
-                  <p className="text-xs mt-1 text-textGray">{item.phone}</p>
+                  <p className="text-xs mt-1 text-textGray">
+                    {
+                      { phoneNumber: item.phoneNumber, emergencyContact: item.emergencyContact }.phoneNumber === '' ? formatPhoneNumber(item.emergencyContact) : { phoneNumber: item.phoneNumber, emergencyContact: item.emergencyContact }.emergencyContact === '' ? ' Contato: ' + formatPhoneNumber(item.phoneNumber) : formatPhoneNumber(item.phoneNumber) === formatPhoneNumber(item.emergencyContact) ? ' Contato: ' + formatPhoneNumber(item.phoneNumber) : ' Contato: ' + formatPhoneNumber(item.phoneNumber) + ' | Emergência: ' + formatPhoneNumber(item.emergencyContact)
+                    }
+                  </p>
                 </div>
               </div>
             </td>
-            <td className={tdclasse}>{item.date}</td>
-
             <td className={tdclasse}>
               <span
-                className={`py-1 px-4 ${item.gender === 'Male'
-                  ? 'bg-subMain text-subMain'
-                  : 'bg-orange-500 text-orange-500'
-                  } bg-opacity-10 text-xs rounded-xl`}
+                className={
+                  `py-1 px-4 ${item.gender === 'Masculino' ? 'bg-subMain text-subMain' : 'bg-orange-500 text-orange-500'} bg-opacity-10 text-xs rounded-xl`}
               >
                 {item.gender}
               </span>
             </td>
             {!used && (
               <>
-                <td className={tdclasse}>{item.blood}</td>
+                <td className={tdclasse}>{item.bloodType}</td>
                 <td className={tdclasse}>{item.age}</td>
               </>
             )}
+            <td className={tdclasse}>{item.date}</td>
+            <th className={thclasse}>
+              <p className="text-xs">End: {item.address} <br /> Cidade: {item.city} ({item.state})</p>
+            </th>
 
             <td className={tdclasse}>
               <MenuSelect datas={DropDown1} item={item}>

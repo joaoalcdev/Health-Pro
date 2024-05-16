@@ -30,12 +30,14 @@ function Patients() {
       datas: sortsDatas.genderFilter,
     },
   ];
+
   // boxes
   const boxes = [
     {
       id: 1,
       title: 'Today Patients',
-      value: '10',
+      // value from api
+      value: '20',
       color: ['bg-subMain', 'text-subMain'],
       icon: BiTime,
     },

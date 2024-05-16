@@ -40,6 +40,15 @@ function PersonalInfo({ titles }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!fullName || !cpf || !age || !bloodType || !gender || !address || !region || !city || !state) {
+      return toast.error('Favor, preencha todas as informações obrigatórias');
+    }
+    if (!phoneNumber && !emergencyContact) {
+      return toast.error('Favor, preencha ao menos um contato');
+    }
+
+
     await createPatient({
       fullName,
       cpf,
@@ -56,8 +65,6 @@ function PersonalInfo({ titles }) {
     });
     if (createPatient) {
       toast.success('Patient created successfully');
-      // reset input fields
-      setFullName('');
 
       // redirect to patients page
       window.location.href = '/patients';
@@ -65,8 +72,6 @@ function PersonalInfo({ titles }) {
       toast.error('Failed to create patient');
     }
   };
-
-
 
   return (
     <form>
@@ -169,7 +174,7 @@ function PersonalInfo({ titles }) {
             mask="(99) 9 9999-9999"
             placeholder={'(__) _ ____-____'}
             unmask={true}
-            required={true}
+            required={false}
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
             className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
@@ -180,7 +185,7 @@ function PersonalInfo({ titles }) {
             mask="(99) 9 9999-9999"
             placeholder={'(__) _ ____-____'}
             unmask={true}
-            required={true}
+            required={false}
             value={emergencyContact}
             onChange={(e) => setEmergencyContact(e.target.value)}
             className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
@@ -227,9 +232,6 @@ function PersonalInfo({ titles }) {
           </div>
 
         </div>
-
-
-
         {/* submit */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
           <Button
@@ -242,6 +244,7 @@ function PersonalInfo({ titles }) {
           <Button
             label={'Cadastrar'}
             Icon={HiOutlineCheckCircle}
+            // onClick handleSubmit with toast
             onClick={handleSubmit}
           />
         </div>

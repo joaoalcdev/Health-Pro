@@ -7,7 +7,7 @@ import { Button } from '../../components/Form';
 import { DoctorsTable } from '../../components/Tables';
 import { doctorsData } from '../../components/Datas';
 import { useNavigate } from 'react-router-dom';
-import AddDoctorModal from '../../components/Modals/AddDoctorModal';
+import AddProfessionalModal from '../../components/Modals/AddProfessionalModal';
 
 function Professionals() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -26,7 +26,7 @@ function Professionals() {
       {
         // add doctor modal
         isOpen && (
-          <AddDoctorModal
+          <AddProfessionalModal
             closeModal={onCloseModal}
             isOpen={isOpen}
             doctor={true}

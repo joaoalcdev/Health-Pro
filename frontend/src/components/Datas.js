@@ -55,8 +55,8 @@ export const MenuDatas = [
     roleAllowed: 2
   },
   {
-    title: 'Doctors',
-    path: '/doctors',
+    title: 'Profissionais',
+    path: '/professionals',
     icon: RiUserHeartLine,
     roleAllowed: 1
   },
@@ -113,7 +113,7 @@ export const roleOptions = {
     },
     {
       id: 3,
-      name: 'Prestador',
+      name: 'Profissional',
       description: 'Dashboard'
     }
 

@@ -29,6 +29,10 @@ function Professionals() {
     setIsOpen(false);
   };
 
+  const onStatus = () => {
+    setStatus(true)
+  }
+
   const preview = (data) => {
     navigate(`/professionals/preview/${data.id}`);
   };
@@ -41,7 +45,8 @@ function Professionals() {
           <AddProfessionalModal
             closeModal={onCloseModal}
             isOpen={isOpen}
-            doctor={true}
+            professional={true}
+            status={onStatus}
             datas={null}
           />
         )

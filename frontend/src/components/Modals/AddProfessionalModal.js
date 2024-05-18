@@ -5,14 +5,15 @@ import { BiChevronDown } from 'react-icons/bi';
 import { sortsDatas } from '../Datas';
 import { HiOutlineCheckCircle, HiArrowRight } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
-import { brStateDatas, roleOptions, specialties, councilDatas } from '../Datas';
+import { brStateDatas, roleOptions, specialties, councilDatas, genderDatas } from '../Datas';
 import { InputMaskComp } from '../Form';
 import { set } from 'rsuite/esm/utils/dateUtils';
+import { createProfessional } from '../../api/ProfessionalsAPI';
 
 function AddProfessionalModal({ closeModal, isOpen, doctor, datas }) {
   const [instraction, setInstraction] = useState(sortsDatas.title[0]);
 
-  const [fullName, setFullName] = useState("")
+
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
@@ -22,18 +23,53 @@ function AddProfessionalModal({ closeModal, isOpen, doctor, datas }) {
   const [city, setCity] = useState("")
   const [state, setState] = useState(brStateDatas.states[5]);
   const [password, setPassword] = useState("")
-  const [roleId, setRoleId] = useState(roleOptions.roles[1]);
 
+  const [fullName, setFullName] = useState("")
+  const [rg, setRg] = useState("")
+  const [rgInssuance, setRgInssuance] = useState("")
+  const [cpf, setCpf] = useState("")
+  const [gender, setGender] = useState(genderDatas.gender[2])
   const [specialty, setSpecialty] = useState(specialties.specialty[0]);
   const [council, setCouncil] = useState(councilDatas.council[0]);
+  const [councilNumber, setCouncilNumber] = useState("")
+  const [councilInssuance, setCouncilInssuance] = useState(brStateDatas.states[5])
 
   const [step1, setStep1] = useState(true);
   const [step2, setStep2] = useState(false);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await createProfessional(
+      {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        password,
+        address,
+        region,
+        city,
+        state: state.UF,
+        fullName,
+        rg,
+        rgInssuance,
+        cpf,
+        gender,
+        specialty,
+        council,
+        councilNumber,
+        councilInssuance: councilInssuance.UF
+      }
+    )
 
-  const onSubmit = () => {
-    toast.error('This feature is not available yet');
-  };
+    closeModal(true)
+
+    toast.success("Usuário criado com sucesso!", {
+      position: "top-center",
+    })
+  }
+
+
 
   const handleChangeStep = () => {
     if (step2) {
@@ -52,17 +88,31 @@ function AddProfessionalModal({ closeModal, isOpen, doctor, datas }) {
       title={'Adicionar Profissional'}
       width={'max-w-3xl'}
     >{step1 ? <>
-      <h1 className='text-md font-light mb-4'>Passo 1: Informações do Usuário</h1>
+      <h1 className='text-md font-light mb-4'>Passo 1: Informações para criação de Usuário/Acesso</h1>
       <div className="flex-colo gap-6">
-        <Input label="Nome Completo" color={true} />
-
         <div className="grid sm:grid-cols-2 gap-4 w-full">
-          <Input label="Primeiro Name" color={true} placeholder="John" />
-          <Input label="Sobrenome" color={true} placeholder="Doe" />
+          <Input
+            label="Primeiro Name"
+            color={true}
+            placeholder="John"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <Input
+            label="Sobrenome"
+            color={true}
+            placeholder="Doe"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
         </div>
-
         <div className="grid sm:grid-cols-2 gap-4 w-full">
-          <Input label="Email" color={true} />
+          <Input
+            label="Email"
+            color={true}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <InputMaskComp
             label="Telefone"
             color={true}
@@ -77,12 +127,27 @@ function AddProfessionalModal({ closeModal, isOpen, doctor, datas }) {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4 w-full">
-          <Input label="Endereço" color={true} />
-          <Input label="Bairro" color={true} />
+          <Input
+            label="Endereço"
+            color={true}
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+          <Input
+            label="Bairro"
+            color={true}
+            value={region}
+            onChange={(e) => setRegion(e.target.value)}
+          />
         </div>
         <div className="grid sm:grid-cols-2 gap-4 w-full">
           <div className="grid sm:grid-cols-2 gap-4 w-full">
-            <Input label="Cidade" color={true} />
+            <Input
+              label="Cidade"
+              color={true}
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
             <div className="flex w-full flex-col gap-3">
               <p className="text-black text-sm">Estado</p>
               <Select
@@ -97,7 +162,12 @@ function AddProfessionalModal({ closeModal, isOpen, doctor, datas }) {
             </div>
           </div>
           {/* password */}
-          <Input label="Password" color={true} />
+          <Input
+            label="Password"
+            color={true}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
         {/* buttones */}
         <div className="grid sm:grid-cols-2 gap-4 w-full">
@@ -113,8 +183,54 @@ function AddProfessionalModal({ closeModal, isOpen, doctor, datas }) {
     </>
       : <>
         <h1 className='text-md font-light mb-4'>Passo 2: Informações Profissionais</h1>
-
+        {/* Full name */}
         <div className="flex-colo gap-6">
+          <Input
+            label="Nome Completo"
+            color={true}
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+          />
+          {/* RG CPF Gender */}
+          <div className="grid sm:grid-cols-2 gap-4 w-full">
+            <div className="grid sm:grid-cols-2 gap-4 w-full">
+              <Input
+                label="RG"
+                color={true}
+                value={rg}
+                onChange={(e) => setRg(e.target.value)}
+              />
+              <Input
+                label="Expedição"
+                color={true}
+                value={rgInssuance}
+                onChange={(e) => setRgInssuance(e.target.value)}
+              />
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-4 w-full">
+              <Input
+                label="CPF"
+                color={true}
+                value={cpf}
+                onChange={(e) => setCpf(e.target.value)}
+              />
+              <div className="flex w-full flex-col gap-3">
+                <p className="text-black text-sm">Gênero</p>
+                <Select
+                  selectedPerson={gender}
+                  setSelectedPerson={setGender}
+                  datas={genderDatas.gender}
+                >
+                  <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
+                    {gender.name}<BiChevronDown className="text-xl" />
+                  </div>
+                </Select>
+              </div>
+            </div>
+
+          </div>
+
           {/* specialty and  council*/}
           <div className="grid sm:grid-cols-2 gap-4 w-full">
             <div className="flex w-full flex-col gap-3">
@@ -144,16 +260,21 @@ function AddProfessionalModal({ closeModal, isOpen, doctor, datas }) {
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4 w-full">
-            <Input label="Numero do Conselho" color={true} />
+            <Input
+              label="Numero do Conselho"
+              color={true}
+              value={councilNumber}
+              onChange={(e) => setCouncilNumber(e.target.value)}
+            />
             <div className="flex w-full flex-col gap-3">
-              <p className="text-black text-sm">Conselho (UF)</p>
+              <p className="text-black text-sm">Conselho(UF)</p>
               <Select
-                selectedPerson={state}
-                setSelectedPerson={setState}
+                selectedPerson={councilInssuance}
+                setSelectedPerson={setCouncilInssuance}
                 datas={brStateDatas.states}
               >
                 <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                  {state.name} ({state.UF}) <BiChevronDown className="text-xl" />
+                  {councilInssuance.name} ({councilInssuance.UF}) <BiChevronDown className="text-xl" />
                 </div>
               </Select>
             </div>
@@ -168,7 +289,7 @@ function AddProfessionalModal({ closeModal, isOpen, doctor, datas }) {
             >
               Voltar
             </button>
-            <Button label="Save" Icon={HiOutlineCheckCircle} onClick={onSubmit} />
+            <Button label="Save" Icon={HiOutlineCheckCircle} onClick={handleSubmit} />
           </div>
         </div>
 

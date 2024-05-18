@@ -119,6 +119,24 @@ export const roleOptions = {
 
   ]
 };
+
+export const genderDatas = {
+  gender: [
+    {
+      id: 1,
+      name: 'Masculino',
+    },
+    {
+      id: 2,
+      name: 'Feminino',
+    },
+    {
+      id: 3,
+      name: 'Não informado',
+    }
+  ]
+};
+
 export const councilDatas = {
 
   council: [
@@ -179,6 +197,7 @@ export const councilDatas = {
     }
   ]
 }
+
 
 export const specialties = {
   specialty: [

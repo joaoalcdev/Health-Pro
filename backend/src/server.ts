@@ -241,7 +241,22 @@ app.post("/patients", async (req, res) => {
 }
 )
 
+//Get all professionals
+app.get("/professionals", async () => {
 
+  try {
+    let { data, error } = await supabase
+      .from('view_professionals')
+      .select('*')
+
+    return data ? data : null
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+})
+
+//Create a new professional
 app.post("/professionals", async (req, res) => {
   const defaultRole = 3;
 

@@ -1,17 +1,29 @@
-import React from 'react';
-import { MdOutlineCloudDownload } from 'react-icons/md';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { BiPlus } from 'react-icons/bi';
 import Layout from '../../Layout';
-import { Button } from '../../components/Form';
-import { DoctorsTable } from '../../components/Tables';
+import { ProfessionalsTable } from '../../components/Tables';
 import { doctorsData } from '../../components/Datas';
 import { useNavigate } from 'react-router-dom';
 import AddProfessionalModal from '../../components/Modals/AddProfessionalModal';
+import { getProfessionals } from '../../api/ProfessionalsAPI';
 
 function Professionals() {
-  const [isOpen, setIsOpen] = React.useState(false);
   const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState([]);
+  const [status, setStatus] = useState(true);
+
+  const fetch = async () => {
+    const response = await getProfessionals()
+    setData(response)
+    setStatus(false)
+  }
+
+  useEffect(() => {
+    fetch()
+  }, [status])
 
   const onCloseModal = () => {
     setIsOpen(false);
@@ -56,15 +68,15 @@ function Professionals() {
           <div className="md:col-span-5 grid lg:grid-cols-4 items-center gap-6">
             <input
               type="text"
-              placeholder='Search "daudi mburuge"'
+              placeholder='Pesquise por nome...'
               className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
             />
           </div>
         </div>
         <div className="mt-8 w-full overflow-x-scroll">
-          <DoctorsTable
+          <ProfessionalsTable
             doctor={true}
-            data={doctorsData}
+            data={data}
             functions={{
               preview: preview,
             }}

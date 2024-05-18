@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
-export default function Modal({ closeModal, isOpen, width, children, title }) {
+export default function Modal({ closeModal, isOpen, width, height, children, title }) {
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -32,9 +32,9 @@ export default function Modal({ closeModal, isOpen, width, children, title }) {
               >
                 <Dialog.Panel
                   className={` w-full ${width ? width : 'max-w-4xl'
-                    } transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
+                    } h-full max-h-3/4 transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
                 >
-                  <div className="w-full flex-btn gap-2 mb-8">
+                  <div className="w-full flex-btn gap-2 mb-4">
                     <h1 className="text-md font-semibold">{title}</h1>
                     <button
                       onClick={closeModal}

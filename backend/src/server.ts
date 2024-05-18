@@ -188,19 +188,6 @@ app.delete("/user/:id", async (req, res) => {
   }
 })
 
-// app.get("/session", async (req, res) => {
-//   const { data, error } = await supabase.auth.getSession()
-//   if (error) {
-//     throw error
-//   }
-//   else return res.status(200).send(data ? data : null)
-// })
-
-// app.get("/auth", async (req, res) => {
-
-// })
-
-
 // get all Patients
 app.get("/patients", async (req, res) => {
   try {
@@ -254,10 +241,92 @@ app.post("/patients", async (req, res) => {
 }
 )
 
+//Get all professionals
+app.get("/professionals", async () => {
 
+  try {
+    let { data, error } = await supabase
+      .from('view_professionals')
+      .select('*')
 
+    return data ? data : null
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+})
 
+//Create a new professional
+app.post("/professionals", async (req, res) => {
+  const defaultRole = 3;
 
+  try {
+    const {
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      password,
+      address,
+      city,
+      region,
+      state
+    } = req.body as Users
+
+    const {
+      fullName,
+      rg,
+      rgInssuance,
+      cpf,
+      gender,
+      specialty,
+      council,
+      councilNumber,
+      councilInssuance
+    } = req.body as Professionals
+
+    const { data: userAuth, error } = await supabase.auth.signUp({
+      email,
+      password,
+    })
+
+    if (userAuth) {
+      const { data: createdUser, error } = await supabase.from("users").insert([{
+        id: userAuth.user?.id,
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        password,
+        roleId: defaultRole,
+        address,
+        city,
+        region,
+        state,
+      }]).select()
+
+      const { data: createdProfessional, error: pError  } = await supabase.from("professionals").insert([{
+        id: userAuth.user?.id,
+        fullName,
+        rg,
+        rgInssuance,
+        cpf,
+        gender,
+        specialty,
+        council,
+        councilNumber,
+        councilInssuance,
+      }]).select()
+
+      if (error) {
+        throw error
+      }
+      else return res.status(200).send(createdUser ? createdUser[0] : null)
+    }
+  } catch (error) {
+    return res.status(400).send(error)
+  }
+})
 
 
 app.listen({

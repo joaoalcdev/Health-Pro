@@ -55,8 +55,8 @@ export const MenuDatas = [
     roleAllowed: 2
   },
   {
-    title: 'Doctors',
-    path: '/doctors',
+    title: 'Profissionais',
+    path: '/professionals',
     icon: RiUserHeartLine,
     roleAllowed: 1
   },
@@ -113,42 +113,135 @@ export const roleOptions = {
     },
     {
       id: 3,
-      name: 'Prestador',
+      name: 'Profissional',
       description: 'Dashboard'
     }
 
   ]
 };
 
+export const genderDatas = {
+  gender: [
+    {
+      id: 1,
+      name: 'Masculino',
+    },
+    {
+      id: 2,
+      name: 'Feminino',
+    },
+    {
+      id: 3,
+      name: 'Não informado',
+    }
+  ]
+};
+
+export const councilDatas = {
+
+  council: [
+    {
+      id: 1,
+      name: "COREN",
+      description: "Conselho Regional de Enfermagem (COREn)"
+    },
+    {
+      id: 2,
+      name: "CRM",
+      description: "Conselho Regional de Medicina (CRM)"
+    },
+    {
+      id: 3,
+      name: "CRO",
+      description: "Conselho Regional de Odontologia (CRO)"
+    },
+    {
+      id: 4,
+      name: "CRESS",
+      description: "Conselho Regional de Serviço Social (CRESS)"
+    },
+    {
+      id: 5,
+      name: "CRF",
+      description: "Conselho Regional de Farmácia (CRF)"
+    },
+    {
+      id: 6,
+      name: "CREFITO",
+      description: "Conselho Regional de Fisioterapia e Terapia Ocupacional (CREFITO)"
+    },
+    {
+      id: 7,
+      name: "CRN",
+      description: "Conselho Regional de Nutrição (CRN)"
+    },
+    {
+      id: 8,
+      name: "CRP",
+      description: "Conselho Regional de Psicologia (CRP)"
+    },
+    {
+      id: 9,
+      name: "CRFA",
+      description: "Conselho Regional de Fonoaudiologia (CRFa/CREFONO)"
+    },
+    {
+      id: 10,
+      name: "CRTR",
+      description: "Conselho Regional de Técnicos em Radiologia (CRTR)"
+    },
+    {
+      id: 11,
+      name: "other",
+      description: "Outro órgão não listado"
+    }
+  ]
+}
+
+
+export const specialties = {
+  specialty: [
+    { id: 1, name: 'Fonoaudiologia' },
+    { id: 2, name: 'Assistente Social' },
+    { id: 3, name: 'Endocrinologia' },
+    { id: 4, name: 'Gastroenterologia' },
+    { id: 5, name: 'Geriatria' },
+    { id: 6, name: 'Ginecologia' },
+    { id: 7, name: 'Hematologia' },
+    { id: 8, name: 'Infectologia' },
+    { id: 9, name: 'Cardiologia' },
+  ],
+}
+
 export const brStateDatas = {
   states: [
-    { id: 1, "name": "Acre", "UF": "AC" },
-    { id: 2, "name": "Alagoas", "UF": "AL" },
-    { id: 3, "name": "Amapá", "UF": "AP" },
-    { id: 4, "name": "Amazonas", "UF": "AM" },
-    { id: 5, "name": "Bahia", "UF": "BA" },
-    { id: 6, "name": "Ceará", "UF": "CE" },
-    { id: 7, "name": "Distrito Federal", "UF": "DF" },
-    { id: 8, "name": "Espírito Santo", "UF": "ES" },
-    { id: 9, "name": "Goiás", "UF": "GO" },
-    { id: 10, "name": "Maranhão", "UF": "MA" },
-    { id: 11, "name": "Mato Grosso", "UF": "MT" },
-    { id: 12, "name": "Mato Grosso do Sul", "UF": "MS" },
-    { id: 13, "name": "Minas Gerais", "UF": "MG" },
-    { id: 14, "name": "Pará", "UF": "PA" },
-    { id: 15, "name": "Paraíba", "UF": "PB" },
-    { id: 16, "name": "Paraná", "UF": "PR" },
-    { id: 17, "name": "Pernambuco", "UF": "PE" },
-    { id: 18, "name": "Piauí", "UF": "PI" },
-    { id: 19, "name": "Rio de Janeiro", "UF": "RJ" },
-    { id: 20, "name": "Rio Grande do Norte", "UF": "RN" },
-    { id: 21, "name": "Rio Grande do Sul", "UF": "RS" },
-    { id: 22, "name": "Rondônia", "UF": "RO" },
-    { id: 23, "name": "Roraima", "UF": "RR" },
-    { id: 24, "name": "Santa Catarina", "UF": "SC" },
-    { id: 25, "name": "São Paulo", "UF": "SP" },
-    { id: 26, "name": "Sergipe", "UF": "SE" },
-    { id: 27, "name": "Tocantins", "UF": "TO" }
+    { id: 1, name: "Acre", "UF": "AC" },
+    { id: 2, name: "Alagoas", "UF": "AL" },
+    { id: 3, name: "Amapá", "UF": "AP" },
+    { id: 4, name: "Amazonas", "UF": "AM" },
+    { id: 5, name: "Bahia", "UF": "BA" },
+    { id: 6, name: "Ceará", "UF": "CE" },
+    { id: 7, name: "Distrito Federal", "UF": "DF" },
+    { id: 8, name: "Espírito Santo", "UF": "ES" },
+    { id: 9, name: "Goiás", "UF": "GO" },
+    { id: 10, name: "Maranhão", "UF": "MA" },
+    { id: 11, name: "Mato Grosso", "UF": "MT" },
+    { id: 12, name: "Mato Grosso do Sul", "UF": "MS" },
+    { id: 13, name: "Minas Gerais", "UF": "MG" },
+    { id: 14, name: "Pará", "UF": "PA" },
+    { id: 15, name: "Paraíba", "UF": "PB" },
+    { id: 16, name: "Paraná", "UF": "PR" },
+    { id: 17, name: "Pernambuco", "UF": "PE" },
+    { id: 18, name: "Piauí", "UF": "PI" },
+    { id: 19, name: "Rio de Janeiro", "UF": "RJ" },
+    { id: 20, name: "Rio Grande do Norte", "UF": "RN" },
+    { id: 21, name: "Rio Grande do Sul", "UF": "RS" },
+    { id: 22, name: "Rondônia", "UF": "RO" },
+    { id: 23, name: "Roraima", "UF": "RR" },
+    { id: 24, name: "Santa Catarina", "UF": "SC" },
+    { id: 25, name: "São Paulo", "UF": "SP" },
+    { id: 26, name: "Sergipe", "UF": "SE" },
+    { id: 27, name: "Tocantins", "UF": "TO" }
   ]
 }
 
@@ -1091,7 +1184,7 @@ export const medicineData = [
   },
   {
     id: 7,
-    name: 'Codeine',
+    name: 'nameine',
     measure: 'ml',
     stock: 1,
     price: 30000,
@@ -1333,7 +1426,7 @@ export const medicalRecodData = [
       {
         id: 4,
         title: 'Prescription',
-        value: 'Tramadol, Codeine, Morphine, Oxycodone',
+        value: 'Tramadol, nameine, Morphine, Oxycodone',
       },
     ],
     attachments: [

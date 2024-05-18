@@ -19,7 +19,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
   const [address, setAddress] = useState("")
   const [region, setRegion] = useState("")
   const [city, setCity] = useState("")
-  const [state, setState] = useState(brStateDatas.states[7]);
+  const [state, setState] = useState(brStateDatas.states[5]);
   const [password, setPassword] = useState("")
   const [roleId, setRoleId] = useState(roleOptions.roles[1]);
 
@@ -139,6 +139,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
             />
           </div>
 
+          {/* Address*/}
           <div className="grid sm:grid-cols-2 gap-4 w-full">
             <Input
               label="Endereço"

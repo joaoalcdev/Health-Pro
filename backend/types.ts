@@ -25,3 +25,16 @@ type Patients = {
   phoneNumber: string,
   emergencyContact: string,
 }
+
+type Professionals = {
+  id?: string,
+  fullName: string,
+  rg: string,
+  rgInssuance: string,
+  cpf: string,
+  gender: string,
+  specialty: string,
+  council: string,  
+  councilInssuance: string,
+  councilNumber: string,
+}

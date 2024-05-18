@@ -505,6 +505,69 @@ export function UsersTable({ data, functions, user }) {
   );
 }
 
+// Professionals table
+export function ProfessionalsTable({ data, functions, professional }) {
+  const DropDown1 = [
+    {
+      title: 'Ver',
+      icon: FiEye,
+      onClick: (data) => {
+        functions.preview(data);
+      },
+    },
+    {
+      title: 'Desativar',
+      icon: RiDeleteBin6Line,
+      onClick: () => {
+        toast.error('This feature is not available yet');
+      },
+    },
+  ];
+  return (
+    <table className="table-auto w-full">
+      <thead className="bg-dry rounded-md overflow-hidden">
+        <tr>
+          <th className={thclass}>#</th>
+          <th className={thclass}>Nome</th>
+          <th className={thclass}>Especialidade</th>
+          <th className={thclass}>Telefone</th>
+          <th className={thclass}>Email</th>
+          <th className={thclass}>Conselho</th>
+          <th className={thclass}>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((item, index) => (
+          <tr
+            key={item.id}
+            className="border-b border-border hover:bg-greyed transitions"
+          >
+            <td className={tdclass}>{index + 1}</td>
+            <td className={tdclass}>
+              <div className="flex gap-4 items-center">
+                <h4 className="text-sm font-medium">{item.first_name} {item.last_name}</h4>
+              </div>
+            </td>
+            <td className={tdclass}>{item.specialty}</td>
+            <td className={tdclass}>
+              <p className="text-textGray">{formatPhoneNumber(item.phone_number)}</p>
+            </td>
+            <td className={tdclass}>{item.email}</td>
+            <td className={tdclass}>{item.council} - {item.council_number}</td>
+
+            <td className={tdclass}>
+              <MenuSelect datas={DropDown1} item={item}>
+                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
+                  <BiDotsHorizontalRounded />
+                </div>
+              </MenuSelect>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
 
 // doctor table
 export function DoctorsTable({ data, functions, doctor }) {

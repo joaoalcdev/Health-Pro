@@ -321,6 +321,153 @@ export function ServiceTable({ data, onEdit }) {
   );
 }
 
+
+// patient table
+export function PatientsTable({ data, functions, used }) {
+
+  const [status, setStatus] = React.useState(true);
+  const [patientData, setPatientData] = useState([]);
+
+  const fetch = async () => {
+    const response = await getPatients()
+    setPatientData(response)
+    setStatus(false)
+  }
+
+  useEffect(() => {
+    fetch()
+  }, [status])
+
+  const DropDown1 = !used
+    ? [
+      {
+        title: 'Ver',
+        icon: FiEye,
+        // preview patient
+        onClick: (data) => {
+          functions.preview(data.id);
+        }
+      },
+      {
+        title: 'Deletar',
+        icon: RiDeleteBin6Line,
+        onClick: () => {
+          toast.error('Função não disponível!');
+        },
+      },
+    ]
+    : [
+      {
+        title: 'View',
+        icon: FiEye,
+        onClick: (data) => {
+          functions.preview(data.id);
+        },
+      },
+    ];
+  const thclasse = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
+  const tdclasse = 'text-start text-xs py-4 px-2 whitespace-nowrap';
+  return (
+    <table className="table-auto w-full">
+      <thead className="bg-dry rounded-md overflow-hidden">
+        <tr>
+          <th className={thclasse}>#</th>
+          <th className={thclasse}>Paciente</th>
+          <th className={thclasse}>Gênero</th>
+
+          {!used && (
+            <>
+              <th className={thclasse}>Tipo Sanguíneo</th>
+              <th className={thclasse}>Idade</th>
+            </>
+          )}
+
+          <th className={thclasse}>Nascimento</th>
+          <th className={thclasse}>Endereço | Cidade | Estado</th>
+          <th className={thclasse}>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((item, index) => (
+          <tr
+            key={item.id}
+            className="border-b border-border hover:bg-greyed transitions"
+          >
+            <td className={tdclass}>{index + 1}</td>
+            <td className={tdclass}>
+              <div className="flex gap-4 items-center">
+                <h4 className="text-sm font-medium">{item.first_name} {item.last_name}</h4>
+              </div>
+            </td>
+            <td className={tdclass}>{item.specialty}</td>
+            <td className={tdclass}>
+              <p className="text-textGray">{formatPhoneNumber(item.phone_number)}</p>
+            </td>
+            <td className={tdclass}>{item.email}</td>
+            <td className={tdclass}>{item.council} - {item.council_number}</td>
+
+            <td className={tdclass}>
+              <MenuSelect datas={DropDown1} item={item}>
+                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
+                  <BiDotsHorizontalRounded />
+                </div>
+              </MenuSelect>
+            </td>
+          </tr>
+        ))}
+        {patientData.map((item, index) => (
+          <tr
+            key={item.id}
+            className="border-b border-border hover:bg-greyed transitions"
+          >
+            <td className={tdclasse}>{index + 1}</td>
+            <td className={tdclasse}>
+              <div className="flex gap-4 items-center">
+                <div>
+                  <h4 className="text-sm font-medium">
+                    {/* map return patient */}
+                    {item.fullName}
+                  </h4>
+                  <p className="text-xs mt-1 text-textGray">
+                    {
+                      { phoneNumber: item.phoneNumber, emergencyContact: item.emergencyContact }.phoneNumber === '' ? formatPhoneNumber(item.emergencyContact) : { phoneNumber: item.phoneNumber, emergencyContact: item.emergencyContact }.emergencyContact === '' ? ' Contato: ' + formatPhoneNumber(item.phoneNumber) : formatPhoneNumber(item.phoneNumber) === formatPhoneNumber(item.emergencyContact) ? ' Contato: ' + formatPhoneNumber(item.phoneNumber) : ' Contato: ' + formatPhoneNumber(item.phoneNumber) + ' | Emergência: ' + formatPhoneNumber(item.emergencyContact)
+                    }
+                  </p>
+                </div>
+              </div>
+            </td>
+            <td className={tdclasse}>
+              <span
+                className={
+                  `py-1 px-4 ${item.gender === 'Masculino' ? 'bg-subMain text-subMain' : 'bg-orange-500 text-orange-500'} bg-opacity-10 text-xs rounded-xl`}
+              >
+                {item.gender}
+              </span>
+            </td>
+            {!used && (
+              <>
+                <td className={tdclasse}>{item.bloodType}</td>
+                <td className={tdclasse}>{item.age}</td>
+              </>
+            )}
+            <td className={tdclasse}>{item.date}</td>
+            <th className={thclasse}>
+              <p className="text-xs">End: {item.address} <br /> Cidade: {item.city} ({item.state})</p>
+            </th>
+
+            <td className={tdclasse}>
+              <MenuSelect datas={DropDown1} item={item}>
+                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
+                  <BiDotsHorizontalRounded />
+                </div>
+              </MenuSelect>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
 // patient table
 export function PatientTable({ data, functions, used }) {
 
@@ -387,9 +534,9 @@ export function PatientTable({ data, functions, used }) {
         </tr>
       </thead>
       <tbody>
-        {dataPatient.map((item, index, patient) => (
+        {dataPatient.map((item, index) => (
           <tr
-            key={patient.id}
+            key={item.id}
             className="border-b border-border hover:bg-greyed transitions"
           >
             <td className={tdclasse}>{index + 1}</td>

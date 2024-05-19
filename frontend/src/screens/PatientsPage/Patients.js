@@ -10,9 +10,16 @@ import { Button, FromToDate, Select } from '../../components/Form';
 import { PatientTable } from '../../components/Tables';
 
 
-import AddPatientModal from '../../components/Modals/AddPatientModal';
+
+
+
 import { PatientsTable } from '../../components/Tables';
+import AddPatientModal from '../../components/Modals/AddPatientModal';
 import { getPatients } from '../../api/PatientsAPI';
+
+
+
+
 
 
 
@@ -65,11 +72,11 @@ function Patients() {
   ];
 
   // preview
-  const preview = (id) => {
+  const previewPayment = (id) => {
     navigate(`/patients/preview/${id}`);
   };
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [data, setData] = useState([]);
   const [memberData, setMemberData] = useState([]);
   // const [status, setStatus] = useState(true);
@@ -103,22 +110,17 @@ function Patients() {
             patient={true}
             status={onStatus}
             datas={null}
+            show={true}
           />
         )
       }
       {/* add button */}
-      {/* <Link
+      <Link
         to="/patients/create"
         className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
       >
         <BiPlus className="text-2xl" />
-      </Link> */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
-      >
-        <BiPlus className="text-2xl" />
-      </button>
+      </Link>
       <h1 className="text-xl font-semibold">Pacientes</h1>
       {/* boxes */}
       {<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
@@ -195,7 +197,7 @@ function Patients() {
           <PatientsTable
             data={memberData}
             functions={{
-              preview: preview,
+              preview: previewPayment,
             }}
             used={false}
           />

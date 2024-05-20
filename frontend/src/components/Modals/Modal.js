@@ -1,19 +1,11 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
-export default function Modal({ width, height, children, title }) {
-  // function to close the modal
-  const [isOpen, setIsOpen] = useState();
-  function closeModal() {
-    isOpen && setIsOpen(true);
-  }
-
-
-
+export default function Modal({ closeModal, isOpen, width, height, children, title }) {
   return (
     <>
-      <Transition appear show={true} as={Fragment}>
+      <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
@@ -26,7 +18,6 @@ export default function Modal({ width, height, children, title }) {
           >
             <div className="fixed inset-0 bg-black bg-opacity-30" />
           </Transition.Child>
-
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child

@@ -6,7 +6,7 @@ import { FaCheck } from 'react-icons/fa';
 import { roleOptions } from './Datas';
 import { InputMask } from 'primereact/inputmask';
 
-export function InputMaskComp({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, mask, unmask }) {
+export function InputMaskComp({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, mask, unmask, autoClear }) {
   return (
     <div className="text-sm w-full">
       <label
@@ -21,6 +21,7 @@ export function InputMaskComp({ label, name, type, color, placeholder, register,
         maxLength={maxLength}
         onChange={onChange}
         unmask={unmask}
+        autoClear={autoClear}
         {...register}
         type={type}
         value={value}
@@ -173,14 +174,28 @@ export function Textarea({ label, name, register, placeholder, rows }) {
 
 // date picker
 
-export function DatePickerComp({ label, startDate, onChange }) {
+export function DatePickerComp({ label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll }) {
   return (
-    <div className="text-sm w-full">
-      <label className={'text-black text-sm'}>{label}</label>
+    <div className="flex flex-col text-sm w-full">
+      <label
+        className={`${color ? 'text-black text-sm' : 'text-white font-semibold'
+          } `}
+      >
+        {label}
+      </label>
       <DatePicker
         selected={startDate}
         onChange={onChange}
-        className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+        color={color}
+        closeOnScroll={closeOnScroll}
+        dateFormat={dateFormat}
+        placeholderText={placeholderText}
+        showYearDropdown={showYearDropdown}
+        scrollableYearDropdown={scrollableYearDropdown}
+        yearDropdownItemNumber={yearDropdownItemNumber}
+        locale={locale}
+        className={`w-full bg-white text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
+          } rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
       />
     </div>
   );

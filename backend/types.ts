@@ -17,6 +17,7 @@ type Patients = {
   cpf: string,
   age: number,
   bloodType: string,
+  marital: string,
   gender: string,
   address: string,
   region: string,

@@ -349,6 +349,13 @@ export function PatientsTable({ data, functions, used }) {
         }
       },
       {
+        title: 'Editar',
+        icon: RiDeleteBin6Line,
+        onClick: (data) => {
+          functions.edit(data.id);
+        },
+      },
+      {
         title: 'Deletar',
         icon: RiDeleteBin6Line,
         onClick: () => {

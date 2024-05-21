@@ -25,6 +25,8 @@ module.exports = {
         textGray: '#A0A0A0',
         dry: '#F8F9FA',
         greyed: '#F3F5F7',
+        required: '#FF0000',
+        warn: '#FFD700',
       },
     },
   },

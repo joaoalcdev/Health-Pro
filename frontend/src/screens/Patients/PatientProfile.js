@@ -74,11 +74,10 @@ function PatientProfile() {
                 onClick={() => setActiveTab(tab.id)}
                 key={index}
                 className={`
-                ${
-                  activeTab === tab.id
+                ${activeTab === tab.id
                     ? 'bg-text text-subMain'
                     : 'bg-dry text-main hover:bg-text hover:text-subMain'
-                }
+                  }
                 text-xs gap-4 flex items-center w-full p-4 rounded`}
               >
                 <tab.icon className="text-lg" /> {tab.title}

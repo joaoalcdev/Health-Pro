@@ -68,6 +68,10 @@ function Patients() {
   const preview = (id) => {
     navigate(`/patients/preview/${id}`);
   };
+  // edit 
+  const edit = (id) => {
+    navigate(`/patients/edit/${id}`);
+  };
 
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState([]);
@@ -196,6 +200,7 @@ function Patients() {
             data={memberData}
             functions={{
               preview: preview,
+              edit: edit,
             }}
             used={false}
           />

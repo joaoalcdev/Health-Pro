@@ -31,6 +31,7 @@ import PreviewPayment from './screens/Payments/PreviewPayment';
 import Medicine from './screens/Medicine';
 import PatientProfile from './screens/Patients/PatientProfile';
 import CreatePatient from './screens/Patients/CreatePatient';
+import EditPatient from './screens/Patients/EditPatient';
 import Professionals from './screens/Professionals/Professionals';
 import ProfessionalProfile from './screens/Professionals/ProfessionalProfile';
 import Doctors from './screens/Doctors/Doctors';
@@ -76,6 +77,7 @@ function App() {
               {/* patient */}
               <Route path="/patients" element={<ProtectedRoute roleId={2}><Patients /></ProtectedRoute>} />
               <Route path="/patients/preview/:id" element={<ProtectedRoute roleId={3}><PatientProfile /></ProtectedRoute>} />
+              <Route path="/patients/edit/:id" element={<ProtectedRoute roleId={3}><EditPatient /></ProtectedRoute>} />
               <Route path="/patients/create" element={<ProtectedRoute roleId={2}><CreatePatient /></ProtectedRoute>} />
               <Route path="/patients/visiting/:id" element={<ProtectedRoute roleId={2}><NewMedicalRecode /></ProtectedRoute>} />
               {/* professionals */}

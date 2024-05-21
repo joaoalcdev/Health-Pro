@@ -137,6 +137,23 @@ export const genderDatas = {
   ]
 };
 
+export const maritalDatas = {
+  marital: [
+    {
+      id: 1,
+      name: 'Solteiro(a)',
+    },
+    {
+      id: 2,
+      name: 'Casado(a)',
+    },
+    {
+      id: 3,
+      name: 'Não informado...',
+    },
+  ]
+}
+
 export const councilDatas = {
 
   council: [
@@ -540,7 +557,7 @@ export const sortsDatas = {
   bloodTypeFilter: [
     {
       id: 1,
-      name: 'Tipo sangúineo...',
+      name: 'Não informado...',
     },
     {
       id: 2,

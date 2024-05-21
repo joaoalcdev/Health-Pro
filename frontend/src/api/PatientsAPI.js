@@ -23,3 +23,12 @@ export const createPatient = async (newPatient) => {
     return error
   }
 }
+
+export const updatePatient = async (patient) => {
+  try {
+    const data = await axios.put(apiBaseUrl('patients'), patient)
+    return data
+  } catch (error) {
+    return error
+  }
+}

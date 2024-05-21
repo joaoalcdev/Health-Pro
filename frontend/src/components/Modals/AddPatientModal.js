@@ -21,17 +21,17 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
   const [loading, setLoading] = useState(false);
 
 
-  const [fullName, setFullName] = useState()
-  const [cpf, setCpf] = useState()
-  const [age, setAge] = useState()
+  const [fullName, setFullName] = useState('')
+  const [cpf, setCpf] = useState('')
+  const [age, setAge] = useState('')
   const [bloodType, setBloodType] = useState(sortsDatas.bloodTypeFilter[0]);
   const [marital, setMarital] = useState(maritalDatas.marital[2])
   const [gender, setGender] = useState(genderDatas.gender[2])
-  const [phoneNumber, setPhoneNumber] = useState()
-  const [emergencyContact, setEmergencyContact] = useState()
-  const [address, setAddress] = useState()
-  const [region, setRegion] = useState()
-  const [city, setCity] = useState()
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [emergencyContact, setEmergencyContact] = useState('')
+  const [address, setAddress] = useState('')
+  const [region, setRegion] = useState('')
+  const [city, setCity] = useState('')
   const [state, setState] = useState(brStateDatas.states[5]);
 
   const [step1, setStep1] = useState(true);

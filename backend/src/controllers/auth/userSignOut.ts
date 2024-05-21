@@ -1,4 +1,4 @@
-import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { supabase } from "../../supabaseConnection";
 
 export const UserSignOut = async (app: FastifyInstance) => {
@@ -14,5 +14,5 @@ export const UserSignOut = async (app: FastifyInstance) => {
       return res.status(400).send("Couldn't sign out user!")
     }
   })
-  
+
 }

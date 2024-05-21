@@ -1,0 +1,14 @@
+import {app} from '../../server';
+import { ListUsers } from './listUsers';
+import { AddUser } from './addUser';
+import { UpdateUser } from './updateUser';
+import { DeleteUser } from './deleteUser';
+import { ViewUser } from './viewUser';
+
+export const UsersRoutes =  async () => {
+  app.register(ListUsers)
+  app.register(AddUser)
+  app.register(UpdateUser)
+  app.register(DeleteUser)
+  app.register(ViewUser)
+}; 

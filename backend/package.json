@@ -6,9 +6,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "tsx watch api/server.ts",
     "build": "tsup src --format cjs --out-dir dist",
-    "start": "tsx src/server.ts"
+    "start": "tsx api/server.ts"
   },
   "keywords": [],
   "author": "",

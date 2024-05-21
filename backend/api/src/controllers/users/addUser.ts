@@ -1,8 +1,8 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
-import { supabase } from "../../supabaseConnection";
+import { supabase } from "../../../supabaseConnection";
 
-export const AddProfessional = async (app: FastifyInstance) => {
-  app.post("/professionals", async (req: FastifyRequest, res: FastifyReply) => {
+export const AddUser = async (app: FastifyInstance) => {
+  app.post("/users", async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const {
         firstName,
@@ -16,18 +16,6 @@ export const AddProfessional = async (app: FastifyInstance) => {
         region,
         state
       } = req.body as Users
-
-      const {
-        fullName,
-        rg,
-        rgInssuance,
-        cpf,
-        gender,
-        specialty,
-        council,
-        councilNumber,
-        councilInssuance
-      } = req.body as Professionals
 
       const { data, error } = await supabase
       .auth
@@ -56,25 +44,7 @@ export const AddProfessional = async (app: FastifyInstance) => {
         if (error) {
           throw error
         } else {
-            const { data: createdProfessional, error: pError  } = await supabase.from("professionals").insert([{
-              id: data.user?.id,
-              fullName,
-              rg,
-              rgInssuance,
-              cpf,
-              gender,
-              specialty,
-              council,
-              councilNumber,
-              councilInssuance,
-            }]).select()
-        
-          if (pError) {
-            throw pError
-          }
-          else {
-            return res.status(200).send(createdUser ? createdUser[0] : null)
-          }
+          return res.status(200).send(createdUser ? createdUser : null)
         }
       }
 
@@ -87,6 +57,5 @@ export const AddProfessional = async (app: FastifyInstance) => {
       return res.status(400).send(error)
     }
   })
-  
 
 }

@@ -3,7 +3,7 @@
   "name": "healthpro-server",
   "builds": [
     {
-      "src": "src/server.ts",
+      "src": "api/server.ts",
       "use": "@vercel/node"
     },
     {
@@ -26,7 +26,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/server.ts"
+      "dest": "api/server.ts"
     }
   ],
   "env": {

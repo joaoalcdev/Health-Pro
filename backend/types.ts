@@ -15,10 +15,11 @@ type Users = {
 type Patients = {
   fullName: string,
   cpf: string,
-  age: number,
+  // age: number,
   bloodType: string,
   marital: string,
   gender: string,
+  dateBirth: string,
   address: string,
   region: string,
   city: string,
@@ -35,7 +36,7 @@ type Professionals = {
   cpf: string,
   gender: string,
   specialty: string,
-  council: string,  
+  council: string,
   councilInssuance: string,
   councilNumber: string,
 }

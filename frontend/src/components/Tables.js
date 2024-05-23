@@ -468,7 +468,7 @@ export function PatientsTable({ data, functions, used }) {
               <>
                 <td className={tdclass}>{item.bloodType}</td>
                 <td className={tdclass}>{calculateAge(item.dateBirth)}</td>
-                <td className={tdclass}>{item.dateBirth}</td>
+                <td className={tdclass}>{formatDate(new Date(item.dateBirth))}</td>
               </>
             )}
             <th className={thclass}>

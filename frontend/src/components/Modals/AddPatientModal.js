@@ -40,7 +40,35 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (
+      !fullName
+    ) {
+      return toast.error('Favor, informe o nome do paciente!',
+        {
+          position: "top-center",
+        }
+      );
+    }
+    if (
+      !cpf || cpf.length < 11
+    ) {
+      return toast.error('Favor, informe o CPF do paciente!',
+        {
+          position: "top-center",
+        }
+      );
+    }
+    // informe ao menos um telefone
+    if ((!phoneNumber && !emergencyContact) || (phoneNumber.length < 11 && emergencyContact.length < 11)) {
+      return toast.error('Informe ao menos um telefone de contato!',
+        {
+          position: "top-center",
+        }
+      );
+    }
     setLoading(true);
+
+
     const response = await createPatient(
       {
         fullName,
@@ -59,13 +87,6 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
       }
     )
 
-    // Conditions
-    if (
-      !fullName || !cpf || !bloodType || !marital || !gender || !emergencyContact || !address || !region || !city || !state
-    ) {
-      return toast.error('Favor, preencha todas as informações obrigatórias');
-    }
-
     if (response) {
       toast.success("Paciente criado com sucesso!", {
         position: "top-center",
@@ -81,16 +102,6 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
     }
   }
 
-  // const handleChangeStep = (e) => {
-  //   e.preventDefault();
-  //   if (step2) {
-  //     setStep2(false);
-  //     setStep1(true);
-  //   } else {
-  //     setStep1(false);
-  //     setStep2(true);
-  //   }
-  // }
 
   return (
     <Modal
@@ -98,7 +109,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
       isOpen={isOpen}
       title={'Adicionar Paciente'}
       width={'max-w-5xl'}
-      height={'sm:h-[65vh]'}
+      height={'sm:h-[6%vh]'}
     > <>
         <form onSubmit={handleSubmit} className=''>
           <h1 className='text-md font-light mb-4'>Passo 1: Informações pessoais do Paciente</h1>
@@ -148,22 +159,6 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                   onChange={(dateBirth) => setDateBirth(dateBirth)}
                 />
               </div>
-              {/* Age */}
-              {/* <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Idade<span className='text-required'>*</span></p>
-              <InputMaskComp
-                color={true}
-                mask={'999'}
-                autoClear={false}
-                // maxLength={3}
-                placeholder={'Idade'}
-                unmask={true}
-                required={true}
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
-              />
-            </div> */}
             </div>
             <div className="grid sm:grid-cols-3 gap-4 w-full">
               <div className="flex w-full flex-col gap-1">
@@ -213,7 +208,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                   placeholder={'(__) _ ____-____'}
                   unmask={true}
                   autoClear={true}
-                  // required={true}
+                  required={false}
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
@@ -221,13 +216,13 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
               </div>
               {/* Emergncy Contact */}
               <div className=''>
-                <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de emergência<span className='text-required'>*</span></p>
+                <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de emergência<span className='text-warn'>*</span></p>
                 <InputMaskComp
                   color={true}
                   mask="(99) 9 9999-9999"
                   placeholder={'(__) _ ____-____'}
                   unmask={true}
-                  required={true}
+                  required={false}
                   autoClear={true}
                   value={emergencyContact}
                   onChange={(e) => setEmergencyContact(e.target.value)}

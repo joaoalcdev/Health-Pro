@@ -133,6 +133,10 @@ export const genderDatas = {
     {
       id: 3,
       name: 'Não informado',
+    },
+    {
+      id: 4,
+      name: 'Prefiro não dizer',
     }
   ]
 };

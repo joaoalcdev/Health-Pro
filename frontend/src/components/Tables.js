@@ -338,6 +338,19 @@ export function PatientsTable({ data, functions, used }) {
     fetch()
   }, [status])
 
+  // Age = birthdate - current date
+  const calculateAge = (date) => {
+    const today = new Date();
+    const birthDate = new Date(date);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+
   const DropDown1 = !used
     ? [
       {
@@ -372,26 +385,26 @@ export function PatientsTable({ data, functions, used }) {
         },
       },
     ];
-  const thclasse = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
-  const tdclasse = 'text-start text-xs py-4 px-2 whitespace-nowrap';
+  const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
+  const tdclass = 'text-start text-xs py-4 px-2 whitespace-nowrap';
   return (
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
-          <th className={thclasse}>#</th>
-          <th className={thclasse}>Paciente</th>
-          <th className={thclasse}>Gênero</th>
+          <th className={thclass}>#</th>
+          <th className={thclass}>Paciente</th>
+          <th className={thclass}>Gênero</th>
 
           {!used && (
             <>
-              <th className={thclasse}>Tipo Sanguíneo</th>
-              <th className={thclasse}>Idade</th>
+              <th className={thclass}>Tipo Sanguíneo</th>
+              <th className={thclass}>Idade</th>
+              <th className={thclass}>Nascimento</th>
             </>
           )}
 
-          <th className={thclasse}>Nascimento</th>
-          <th className={thclasse}>Endereço | Cidade | Estado</th>
-          <th className={thclasse}>Ações</th>
+          <th className={thclass}>Endereço, Cidade (UF)</th>
+          <th className={thclass}>Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -427,8 +440,8 @@ export function PatientsTable({ data, functions, used }) {
             key={item.id}
             className="border-b border-border hover:bg-greyed transitions"
           >
-            <td className={tdclasse}>{index + 1}</td>
-            <td className={tdclasse}>
+            <td className={tdclass}>{index + 1}</td>
+            <td className={tdclass}>
               <div className="flex gap-4 items-center">
                 <div>
                   <h4 className="text-sm font-medium">
@@ -443,7 +456,7 @@ export function PatientsTable({ data, functions, used }) {
                 </div>
               </div>
             </td>
-            <td className={tdclasse}>
+            <td className={tdclass}>
               <span
                 className={
                   `py-1 px-4 ${item.gender === 'Masculino' ? 'bg-subMain text-subMain' : 'bg-orange-500 text-orange-500'} bg-opacity-10 text-xs rounded-xl`}
@@ -453,16 +466,16 @@ export function PatientsTable({ data, functions, used }) {
             </td>
             {!used && (
               <>
-                <td className={tdclasse}>{item.bloodType}</td>
-                <td className={tdclasse}>{item.age}</td>
+                <td className={tdclass}>{item.bloodType}</td>
+                <td className={tdclass}>{calculateAge(item.dateBirth)}</td>
+                <td className={tdclass}>{item.dateBirth}</td>
               </>
             )}
-            <td className={tdclasse}>{item.date}</td>
-            <th className={thclasse}>
-              <p className="text-xs">End: {item.address} <br /> Cidade: {item.city} ({item.state})</p>
+            <th className={thclass}>
+              <p className="text-xs">{item.address} <br />{item.city} ({item.state})</p>
             </th>
 
-            <td className={tdclasse}>
+            <td className={tdclass}>
               <MenuSelect datas={DropDown1} item={item}>
                 <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
                   <BiDotsHorizontalRounded />
@@ -518,26 +531,26 @@ export function PatientTable({ data, functions, used }) {
         },
       },
     ];
-  const thclasse = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
-  const tdclasse = 'text-start text-xs py-4 px-2 whitespace-nowrap';
+  const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
+  const tdclass = 'text-start text-xs py-4 px-2 whitespace-nowrap';
   return (
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
-          <th className={thclasse}>#</th>
-          <th className={thclasse}>Paciente</th>
-          <th className={thclasse}>Gênero</th>
+          <th className={thclass}>#</th>
+          <th className={thclass}>Paciente</th>
+          <th className={thclass}>Gênero</th>
 
           {!used && (
             <>
-              <th className={thclasse}>Tipo Sanguíneo</th>
-              <th className={thclasse}>Idade</th>
+              <th className={thclass}>Tipo Sanguíneo</th>
+              <th className={thclass}>Idade</th>
             </>
           )}
 
-          <th className={thclasse}>Nascimento</th>
-          <th className={thclasse}>Endereço | Cidade | Estado</th>
-          <th className={thclasse}>Ações</th>
+          <th className={thclass}>Nascimento</th>
+          <th className={thclass}>Endereço | Cidade | Estado</th>
+          <th className={thclass}>Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -546,8 +559,8 @@ export function PatientTable({ data, functions, used }) {
             key={item.id}
             className="border-b border-border hover:bg-greyed transitions"
           >
-            <td className={tdclasse}>{index + 1}</td>
-            <td className={tdclasse}>
+            <td className={tdclass}>{index + 1}</td>
+            <td className={tdclass}>
               <div className="flex gap-4 items-center">
                 <div>
                   <h4 className="text-sm font-medium">
@@ -562,7 +575,7 @@ export function PatientTable({ data, functions, used }) {
                 </div>
               </div>
             </td>
-            <td className={tdclasse}>
+            <td className={tdclass}>
               <span
                 className={
                   `py-1 px-4 ${item.gender === 'Masculino' ? 'bg-subMain text-subMain' : 'bg-orange-500 text-orange-500'} bg-opacity-10 text-xs rounded-xl`}
@@ -572,16 +585,16 @@ export function PatientTable({ data, functions, used }) {
             </td>
             {!used && (
               <>
-                <td className={tdclasse}>{item.bloodType}</td>
-                <td className={tdclasse}>{item.age}</td>
+                <td className={tdclass}>{item.bloodType}</td>
+                <td className={tdclass}>{item.age}</td>
               </>
             )}
-            <td className={tdclasse}>{item.date}</td>
-            <th className={thclasse}>
+            <td className={tdclass}>{item.date}</td>
+            <th className={thclass}>
               <p className="text-xs">End: {item.address} <br /> Cidade: {item.city} ({item.state})</p>
             </th>
 
-            <td className={tdclasse}>
+            <td className={tdclass}>
               <MenuSelect datas={DropDown1} item={item}>
                 <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
                   <BiDotsHorizontalRounded />
@@ -1017,25 +1030,25 @@ export function InvoiceProductsTable({ data, functions, button }) {
 // medicine Dosage table
 
 export function MedicineDosageTable({ data, functions, button }) {
-  const thclasse = 'text-start text-xs font-medium py-3 px-2 whitespace-nowrap';
-  const tdclasse = 'text-start text-xs py-4 px-2 whitespace-nowrap';
+  const thclass = 'text-start text-xs font-medium py-3 px-2 whitespace-nowrap';
+  const tdclass = 'text-start text-xs py-4 px-2 whitespace-nowrap';
   return (
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
-          <th className={thclasse}>Item</th>
-          <th className={thclasse}>
+          <th className={thclass}>Item</th>
+          <th className={thclass}>
             Item Price
             <span className="text-xs font-light ml-1">(Tsh)</span>
           </th>
-          <th className={thclasse}>Dosage</th>
-          <th className={thclasse}>Instraction</th>
-          <th className={thclasse}>Quantity</th>
-          <th className={thclasse}>
+          <th className={thclass}>Dosage</th>
+          <th className={thclass}>Instraction</th>
+          <th className={thclass}>Quantity</th>
+          <th className={thclass}>
             Amout
             <span className="text-xs font-light ml-1">(Tsh)</span>
           </th>
-          {button && <th className={thclasse}>Actions</th>}
+          {button && <th className={thclass}>Actions</th>}
         </tr>
       </thead>
       <tbody>
@@ -1044,14 +1057,14 @@ export function MedicineDosageTable({ data, functions, button }) {
             key={item.id}
             className="border-b border-border hover:bg-greyed transitions"
           >
-            <td className={tdclasse}>{item.name}</td>
-            <td className={tdclasse}>{item.price}</td>
-            <td className={tdclasse}>{item.id} - M/A/E</td>
-            <td className={tdclasse}>{item.instraction}</td>
-            <td className={tdclasse}>{item.id}</td>
-            <td className={tdclasse}>{item.price * item.id}</td>
+            <td className={tdclass}>{item.name}</td>
+            <td className={tdclass}>{item.price}</td>
+            <td className={tdclass}>{item.id} - M/A/E</td>
+            <td className={tdclass}>{item.instraction}</td>
+            <td className={tdclass}>{item.id}</td>
+            <td className={tdclass}>{item.price * item.id}</td>
             {button && (
-              <td className={tdclasse}>
+              <td className={tdclass}>
                 <button
                   onClick={() => functions.delete(item.id)}
                   className="bg-red-600 bg-opacity-5 text-red-600 rounded-lg border border-red-100 py-3 px-4 text-sm"

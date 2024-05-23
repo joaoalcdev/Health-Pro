@@ -12,6 +12,11 @@
       "config": { "maxDuration": 120, "distDir": "dist" }
     }
   ],
+  "rewrites": [
+    { 
+      "source": "/(.*)", "destination": "/api" 
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

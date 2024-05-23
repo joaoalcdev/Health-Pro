@@ -1,9 +1,8 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
-import { UsersRoutes } from './controllers//users/@usersRoutes';
-import { AuthRoutes } from './controllers/auth/@authRoutes';
-import { PatientsRoutes } from './controllers/patients/@patientsRoutes';
-import { ProfessionalsRoutes } from './controllers/professionals/@professionalsRoutes';
-import app from './server';
+import { UsersRoutes } from './api/controllers/users/@usersRoutes';
+import { AuthRoutes } from './api/controllers/auth/@authRoutes';
+import { PatientsRoutes } from './api/controllers/patients/@patientsRoutes';
+import { ProfessionalsRoutes } from './api/controllers/professionals/@professionalsRoutes';
 
 export const routes = async (app: FastifyInstance) => {
   app.register(AuthRoutes)

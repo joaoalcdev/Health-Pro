@@ -21,12 +21,12 @@ import { routes } from "./routes"
 export default function createServer() {
   const app = fastify()
   app.register(routes)
-  process.env.APP_ENV_DEV ? app.register(cors, {
+  app.register(cors, {
     origin: '*',
     methods: '*',
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
-  }) : null
+  })
   return app
 }
 

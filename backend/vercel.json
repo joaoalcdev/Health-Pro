@@ -3,7 +3,7 @@
   "name": "healthpro-server",
   "builds": [
     {
-      "src": "api/server.ts",
+      "src": "src/server.ts",
       "use": "@vercel/node"
     },
     {

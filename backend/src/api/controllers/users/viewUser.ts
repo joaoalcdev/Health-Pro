@@ -1,5 +1,5 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
-import { supabase } from "../../supabaseConnection";
+import { supabase } from "../../../supabaseConnection";
 
 interface RequestParams {
   id: string;

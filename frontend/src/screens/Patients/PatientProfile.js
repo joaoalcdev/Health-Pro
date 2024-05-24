@@ -1,19 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../../Layout';
 import { patientTab } from '../../components/Datas';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { IoArrowBackOutline } from 'react-icons/io5';
 import MedicalRecord from './MedicalRecord';
 import AppointmentsUsed from '../../components/UsedComp/AppointmentsUsed';
 import InvoiceUsed from '../../components/UsedComp/InvoiceUsed';
 import PaymentsUsed from '../../components/UsedComp/PaymentUsed';
 import PersonalInfo from '../../components/UsedComp/PersonalInfo';
-import PatientImages from './PatientImages';
-import HealthInfomation from './HealthInfomation';
-import DentalChart from './DentalChart';
+import { getPatient } from '../../api/PatientsAPI';
+// import PatientImages from './PatientImages';
+// import HealthInfomation from './HealthInfomation';
+// import DentalChart from './DentalChart';
+// import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
 
 function PatientProfile() {
-  const [activeTab, setActiveTab] = React.useState(1);
+  const [activeTab, setActiveTab] = useState(1);
+  const [status, setStatus] = useState(true)
+
+  const { id } = useParams();
+
+  const [patientData, setPatientData] = useState([]);
+
+  const fetch = async () => {
+    const response = await getPatient(id)
+    setPatientData(response.data[0])
+    setStatus(false)
+  }
+
+  useEffect(() => {
+    fetch()
+  }, [])
+
 
   const tabPanel = () => {
     switch (activeTab) {
@@ -26,13 +44,13 @@ function PatientProfile() {
       case 4:
         return <PaymentsUsed doctor={false} />;
       case 5:
-        return <PatientImages />;
-      case 6:
-        return <DentalChart />;
-      case 7:
-        return <PersonalInfo titles={false} />;
-      case 8:
-        return <HealthInfomation />;
+        return <PersonalInfo titles={false} data={patientData} />;
+      // case 6:
+      // return <PatientImages />;
+      // case 7:
+      // return <DentalChart />;
+      // case 8:
+      // return <HealthInfomation />;
       default:
         return;
     }
@@ -47,7 +65,7 @@ function PatientProfile() {
         >
           <IoArrowBackOutline />
         </Link>
-        <h1 className="text-xl font-semibold">Amani Mmassy</h1>
+        <h1 className="text-xl font-semibold">{patientData.fullName}</h1>
       </div>
       <div className=" grid grid-cols-12 gap-6 my-8 items-start">
         <div
@@ -63,9 +81,12 @@ function PatientProfile() {
             className="w-40 h-40 rounded-full object-cover border border-dashed border-subMain"
           />
           <div className="gap-2 flex-colo">
-            <h2 className="text-sm font-semibold">Amani Mmassy</h2>
-            <p className="text-xs text-textGray">amanimmassy@gmail.com</p>
-            <p className="text-xs">+254 712 345 678</p>
+            <h2 className="text-sm font-semibold">{patientData.fullName}</h2>
+            <p className="text-xs">
+              {patientData.phoneNumber} <br />
+              {patientData.emergencyContact}
+              {/* {formatPhoneNumber(patientData.phoneNumber)} */}
+            </p>
           </div>
           {/* tabs */}
           <div className="flex-colo gap-3 px-2 xl:px-12 w-full">

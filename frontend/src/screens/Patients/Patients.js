@@ -17,7 +17,8 @@ import { getPatients } from '../../api/PatientsAPI';
 
 
 function Patients() {
-  const [status, setStatus] = useState(sortsDatas.filterPatient[0]);
+  const [status, setStatus] = useState(false);
+  // const [status, setStatus] = useState(sortsDatas.filterPatient[0]);
   const [gender, setGender] = useState(sortsDatas.genderFilter[0]);
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);
   const [startDate, endDate] = dateRange;
@@ -81,7 +82,7 @@ function Patients() {
   const fetch = async () => {
     const response = await getPatients()
     setData(response)
-    setStatus(false)
+    setStatus(true)
   }
 
   useEffect(() => {

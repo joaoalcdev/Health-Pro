@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { formatPhoneNumber } from '../utils/formatPhoneNumber';
 import { formatDate } from '../utils/formatDate';
+import { calculateDate } from '../utils/calculateDate';
 
 import { getPatients } from '../api/PatientsAPI';
 
@@ -338,18 +339,7 @@ export function PatientsTable({ data, functions, used }) {
     fetch()
   }, [status])
 
-  // Age = birthdate - current date
-  const calculateAge = (date) => {
-    const today = new Date();
-    const birthDate = new Date(date);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
-  };
-
+ 
 
   const DropDown1 = !used
     ? [
@@ -365,7 +355,7 @@ export function PatientsTable({ data, functions, used }) {
         title: 'Editar',
         icon: RiDeleteBin6Line,
         onClick: (data) => {
-          functions.edit(data.id);
+          functions.preview(data.id);
         },
       },
       {
@@ -467,7 +457,7 @@ export function PatientsTable({ data, functions, used }) {
             {!used && (
               <>
                 <td className={tdclass}>{item.bloodType}</td>
-                <td className={tdclass}>{calculateAge(item.dateBirth)}</td>
+                <td className={tdclass}>{calculateDate(item.dateBirth)}</td>
                 <td className={tdclass}>{formatDate(new Date(item.dateBirth))}</td>
               </>
             )}

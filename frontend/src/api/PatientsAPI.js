@@ -15,7 +15,6 @@ export const getPatients = async () => {
 }
 
 export const createPatient = async (newPatient) => {
-  console.log(newPatient)
   try {
     const data = await axios.post(apiBaseUrl('patients'), newPatient)
     return data
@@ -24,9 +23,18 @@ export const createPatient = async (newPatient) => {
   }
 }
 
-export const updatePatient = async (patient) => {
+export const updatePatient = async (patientId, patient) => {
   try {
-    const data = await axios.put(apiBaseUrl('patients'), patient)
+    const data = await axios.put(apiBaseUrl(`patients/${patientId}`), patient)
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+export const getPatient = async (patientId) => {
+  try {
+    const data = await axios.get(apiBaseUrl(`patients/${patientId}`))
     return data
   } catch (error) {
     return error

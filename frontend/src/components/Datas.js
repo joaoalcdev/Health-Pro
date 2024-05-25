@@ -133,6 +133,10 @@ export const genderDatas = {
     {
       id: 3,
       name: 'Não informado',
+    },
+    {
+      id: 4,
+      name: 'Prefiro não dizer',
     }
   ]
 };
@@ -1222,12 +1226,12 @@ export const medicineData = [
 export const patientTab = [
   {
     id: 1,
-    title: 'Medical Records',
+    title: 'Histórico',
     icon: TbChartHistogram,
   },
   {
     id: 2,
-    title: 'Appointments',
+    title: 'Consultas',
     icon: BiCalendar,
   },
   {
@@ -1237,29 +1241,29 @@ export const patientTab = [
   },
   {
     id: 4,
-    title: 'Payments',
+    title: 'Pagamentos',
     icon: RiMoneyDollarCircleLine,
   },
   {
     id: 5,
-    title: 'Images',
-    icon: RiImageLine,
-  },
-  {
-    id: 6,
-    title: 'Dental Chart',
-    icon: RiStethoscopeLine,
-  },
-  {
-    id: 7,
-    title: 'Patient Information',
+    title: 'Informações do Paciente',
     icon: RiUserLine,
   },
-  {
-    id: 8,
-    title: 'Health Information',
-    icon: RiHeartLine,
-  },
+  // {
+  //   id: 5,
+  //   title: 'Images',
+  //   icon: RiImageLine,
+  // },
+  // {
+  //   id: 6,
+  //   title: 'Dental Chart',
+  //   icon: RiStethoscopeLine,
+  // },
+  // {
+  //   id: 8,
+  //   title: 'Health Information',
+  //   icon: RiHeartLine,
+  // },
 ];
 
 export const doctorTab = [
@@ -1270,7 +1274,7 @@ export const doctorTab = [
   },
   {
     id: 2,
-    title: 'Patients',
+    title: 'Pacientes',
     icon: BiUserPlus,
   },
   {

@@ -50,16 +50,16 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
         address,
         region,
         city,
-        state: state.UF,
+        state: state.id,
         fullName,
         rg,
         rgInssuance,
         cpf,
-        gender: gender.name,
-        specialty: specialty.name,
-        council: council.name,
+        gender: gender.id,
+        specialty: specialty.id,
+        council: council.id,
         councilNumber,
-        councilInssuance: councilInssuance.UF
+        councilInssuance: councilInssuance.id
       }
     )
 

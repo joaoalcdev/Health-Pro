@@ -12,11 +12,20 @@ export const getProfessionals = async () => {
   } catch (error) {
     return error
   }
-
 }
 
+export const getProfessionalById = async (professional) => {
+  try {
+    const res = await axios.get(apiBaseUrl(`professional/${professional}`))
+    const data = res.data
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+
 export const createProfessional = async (newProfessional) => {
-  console.log(newProfessional)
   try {
     const data = await axios.post(apiBaseUrl('professionals'), newProfessional)
     return data

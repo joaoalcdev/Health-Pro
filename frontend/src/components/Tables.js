@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { formatPhoneNumber } from '../utils/formatPhoneNumber';
 import { formatDate } from '../utils/formatDate';
 import { calculateDate } from '../utils/calculateDate';
+import { brStateDatas, specialties, councilDatas } from './Datas';
 
 import { getPatients } from '../api/PatientsAPI';
 
@@ -339,7 +340,7 @@ export function PatientsTable({ data, functions, used }) {
     fetch()
   }, [status])
 
- 
+
 
   const DropDown1 = !used
     ? [
@@ -663,7 +664,7 @@ export function UsersTable({ data, functions, user }) {
 }
 
 // Professionals table
-export function ProfessionalsTable({ data, functions, professional }) {
+export function ProfessionalsTable({ data, functions, professional, noData }) {
   const DropDown1 = [
     {
       title: 'Ver',
@@ -680,7 +681,7 @@ export function ProfessionalsTable({ data, functions, professional }) {
       },
     },
   ];
-  return (
+  return (noData ? <div className="text-center pb-10 text-lg text-main">Nenhum dado encontrado</div> :
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
@@ -705,12 +706,12 @@ export function ProfessionalsTable({ data, functions, professional }) {
                 <h4 className="text-sm font-medium">{item.first_name} {item.last_name}</h4>
               </div>
             </td>
-            <td className={tdclass}>{item.specialty}</td>
+            <td className={tdclass}>{specialties.specialty[item.specialty].name}</td>
             <td className={tdclass}>
               <p className="text-textGray">{formatPhoneNumber(item.phone_number)}</p>
             </td>
             <td className={tdclass}>{item.email}</td>
-            <td className={tdclass}>{item.council} - {item.council_number}</td>
+            <td className={tdclass}>{councilDatas.council[item.council].name} - {item.council_number}</td>
 
             <td className={tdclass}>
               <MenuSelect datas={DropDown1} item={item}>

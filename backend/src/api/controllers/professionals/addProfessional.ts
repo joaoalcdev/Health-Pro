@@ -10,13 +10,14 @@ export const AddProfessional = async (app: FastifyInstance) => {
         phoneNumber,
         email,
         password,
-        roleId,
         address,
         city,
         region,
         state
       } = req.body as Users
 
+      const roleId = 3;
+       
       const {
         fullName,
         rg,

@@ -37,6 +37,25 @@ function ProfessionalInfo({ data }) {
     setIsEdit(!isEdit)
   }
 
+  useEffect(() => {
+    setFullName(data.full_name)
+    setFirstName(data.first_name)
+    setLastName(data.last_name)
+    setPhoneNumber(data.phone_number)
+    setEmail(data.email)
+    setAddress(data.address)
+    setRegion(data.region)
+    setCity(data.city)
+    setState(brStateDatas.states[data.state - 1])
+    setRg(data.rg)
+    setRgInssuance(data.rg_inssuance)
+    setCpf(data.cpf)
+    setGender(data.id)
+    setSpecialty(specialties.specialty[data.specialty - 1])
+    setCouncil(councilDatas.council[data.council - 1])
+    setCouncilNumber(data.council_number)
+    setCouncilInssuance(brStateDatas.states[data.council_inssuance - 1])
+  }, [data])
 
   return (!isEdit ?
     //view mode

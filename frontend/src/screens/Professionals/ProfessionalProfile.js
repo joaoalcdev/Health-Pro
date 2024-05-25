@@ -1,6 +1,6 @@
-import React from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Layout from '../../Layout';
-import PersonalInfo from '../../components/UsedComp/PersonalInfo';
+import ProfessionalInfo from '../../components/UsedComp/ProfessionalInfo';
 import ChangePassword from '../../components/UsedComp/ChangePassword';
 import { Link } from 'react-router-dom';
 import { IoArrowBackOutline } from 'react-icons/io5';
@@ -10,15 +10,36 @@ import { doctorTab } from '../../components/Datas';
 import PaymentsUsed from '../../components/UsedComp/PaymentUsed';
 import InvoiceUsed from '../../components/UsedComp/InvoiceUsed';
 import Access from '../../components/Access';
+import { useParams } from 'react-router-dom';
+import { getProfessionalById } from '../../api/ProfessionalsAPI';
+import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
+
 
 function ProfessionalProfile() {
-  const [activeTab, setActiveTab] = React.useState(1);
-  const [access, setAccess] = React.useState({});
+  const [activeTab, setActiveTab] = useState(1);
+  const [access, setAccess] = useState({});
+  const [professional, setProfessional] = useState({});
+
+  const { id } = useParams()
+  console.log(id)
+  console.log(professional)
+
+  const fetch = async () => {
+    await getProfessionalById(id).then(response => {
+      setProfessional(response[0])
+    }
+    )
+  }
+  useEffect(() => {
+    fetch()
+  }, [id])
+
+
 
   const tabPanel = () => {
     switch (activeTab) {
       case 1:
-        return <PersonalInfo titles={true} />;
+        return <ProfessionalInfo data={professional} />;
       case 2:
         return <PatientsUsed />;
       case 3:
@@ -40,12 +61,12 @@ function ProfessionalProfile() {
     <Layout>
       <div className="flex items-center gap-4">
         <Link
-          to="/doctors"
+          to="/professionals"
           className="bg-white border border-subMain border-dashed rounded-lg py-3 px-4 text-md"
         >
           <IoArrowBackOutline />
         </Link>
-        <h1 className="text-xl font-semibold">Dr. Daudi Mburuge</h1>
+        <h1 className="text-xl font-semibold">{professional.full_name}</h1>
       </div>
       <div className=" grid grid-cols-12 gap-6 my-8 items-start">
         <div
@@ -61,9 +82,9 @@ function ProfessionalProfile() {
             className="w-40 h-40 rounded-full object-cover border border-dashed border-subMain"
           />
           <div className="gap-2 flex-colo">
-            <h2 className="text-sm font-semibold">Dr. Daudi Mburuge</h2>
-            <p className="text-xs text-textGray">daudimburuge@gmail.com</p>
-            <p className="text-xs">+254 712 345 678</p>
+            <h2 className="text-sm font-semibold">{professional.first_name} {professional.last_name}</h2>
+            <p className="text-xs text-textGray">{professional.email}</p>
+            <p className="text-xs">{professional.phone_number}</p>
           </div>
           {/* tabs */}
           <div className="flex-colo gap-3 px-2 2xl:px-12 w-full">

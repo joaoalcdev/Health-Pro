@@ -3,7 +3,6 @@ import { toast } from 'react-hot-toast';
 import { BiPlus } from 'react-icons/bi';
 import Layout from '../../Layout';
 import { ProfessionalsTable } from '../../components/Tables';
-import { doctorsData } from '../../components/Datas';
 import { useNavigate } from 'react-router-dom';
 import AddProfessionalModal from '../../components/Modals/AddProfessionalModal';
 import { getProfessionals } from '../../api/ProfessionalsAPI';
@@ -13,10 +12,15 @@ function Professionals() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState([]);
-  const [status, setStatus] = useState(true);
+  const [status, setStatus] = useState(false);
+  const [noData, setNoData] = useState(false);
 
   const fetch = async () => {
     const response = await getProfessionals()
+    console.log(response)
+    if (response.length === 0) {
+      setNoData(true)
+    }
     setData(response)
     setStatus(false)
   }
@@ -79,8 +83,9 @@ function Professionals() {
           </div>
         </div>
         <div className="mt-8 w-full overflow-x-scroll">
-          <ProfessionalsTable
+          < ProfessionalsTable
             doctor={true}
+            noData={noData}
             data={data}
             functions={{
               preview: preview,

@@ -1,8 +1,8 @@
 
-export function formatPhoneNumber(phoneNumber) {
+export function formatPhoneNumber(number) {
   // Removendo caracteres não numéricos
 
-  phoneNumber = phoneNumber.replace(/\D/g);
+  let phoneNumber = number.replace(/\D/g);
 
   // Verificando se o número tem 11 dígitos
   if (phoneNumber.length === 11) {

@@ -412,7 +412,7 @@ export function PatientsTable({ data, functions, used }) {
             </td>
             <td className={tdclass}>{item.specialty}</td>
             <td className={tdclass}>
-              <p className="text-textGray">{formatPhoneNumber(item.phone_number)}</p>
+              <p className="text-textGray">{item.phone_number}</p>
             </td>
             <td className={tdclass}>{item.email}</td>
             <td className={tdclass}>{item.council} - {item.council_number}</td>
@@ -714,11 +714,13 @@ export function ProfessionalsTable({ data, functions, professional, noData }) {
             <td className={tdclass}>{councilDatas.council[item.council].name} - {item.council_number}</td>
 
             <td className={tdclass}>
-              <MenuSelect datas={DropDown1} item={item}>
-                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
-                  <BiDotsHorizontalRounded />
-                </div>
-              </MenuSelect>
+              <button
+                onClick={() => functions.preview(item)}
+                key={index}
+                className={`flex gap-4 items-center hover:text-subMain`}
+              >
+                <FiEye className="text-md text-subMain" />
+              </button>
             </td>
           </tr>
         ))}

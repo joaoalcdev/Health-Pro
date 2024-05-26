@@ -10,7 +10,7 @@ function PatientsUsed() {
     navigate(`/patients/preview/${id}`);
   };
   const edit = (id) => {
-    navigate(`/patients/edit/${id}`);
+    //navigate(`/patients/edit/${id}`);
   };
   return (
     <div className="w-full">

@@ -24,10 +24,18 @@ export const getProfessionalById = async (professional) => {
   }
 }
 
-
 export const createProfessional = async (newProfessional) => {
   try {
     const data = await axios.post(apiBaseUrl('professionals'), newProfessional)
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+export const updateProfessional = async (professional, updatedProfessional) => {
+  try {
+    const data = await axios.put(apiBaseUrl(`professional/${professional}`), updatedProfessional)
     return data
   } catch (error) {
     return error

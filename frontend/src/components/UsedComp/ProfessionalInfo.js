@@ -8,10 +8,13 @@ import { HiOutlineCheckCircle, HiOutlinePencilAlt } from 'react-icons/hi';
 import { RiDeleteBin5Line } from 'react-icons/ri';
 import { InputMaskComp } from '../Form';
 import { set } from 'rsuite/esm/utils/dateUtils';
+import { updateProfessional } from '../../api/ProfessionalsAPI';
 
 
-function ProfessionalInfo({ data }) {
+function ProfessionalInfo({ data, onStatus }) {
   const [isEdit, setIsEdit] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const [firstName, setFirstName] = useState(data.first_name)
   const [lastName, setLastName] = useState(data.last_name)
@@ -27,8 +30,7 @@ function ProfessionalInfo({ data }) {
   const [rgInssuance, setRgInssuance] = useState(data.rg_inssuance)
   const [cpf, setCpf] = useState(data.cpf)
   const [gender, setGender] = useState(data.gender)
-  const [specialty, setSpecialty] = useState(specialties.specialty[data.specialty - 1]
-  );
+  const [specialty, setSpecialty] = useState(specialties.specialty[data.specialty - 1]);
   const [council, setCouncil] = useState(councilDatas.council[data.council - 1]);
   const [councilNumber, setCouncilNumber] = useState(data.council_number)
   const [councilInssuance, setCouncilInssuance] = useState(brStateDatas.states[data.council_inssuance - 1])
@@ -56,6 +58,47 @@ function ProfessionalInfo({ data }) {
     setCouncilNumber(data.council_number)
     setCouncilInssuance(brStateDatas.states[data.council_inssuance - 1])
   }, [data])
+
+  const handleEditProfessional = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const response = await updateProfessional(data.id,
+      {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        address,
+        region,
+        city,
+        state: state.id,
+        fullName,
+        rg,
+        rgInssuance,
+        cpf,
+        gender: gender.id,
+        specialty: specialty.id,
+        council: council.id,
+        councilNumber,
+        councilInssuance: councilInssuance.id
+      }
+    )
+
+    if (response) {
+      toast.success("Profissional atualizado com sucesso!", {
+        position: "top-center",
+      })
+      setLoading(false);
+      setIsEdit(false);
+      onStatus(true);
+    } else {
+      toast.error("Erro ao atualizar o profissional, tente novamente!", {
+        position: "top-center",
+      })
+      setLoading(false);
+    }
+  }
+
 
   return (!isEdit ?
     //view mode
@@ -125,12 +168,11 @@ function ProfessionalInfo({ data }) {
         Icon={HiOutlinePencilAlt}
         onClick={handleChange2Edit}
       />
-    </div > :
+    </div >
 
+    :
 
-
-
-    <div className="grid sm:grid-cols-2 gap-4 w-full">
+    <form className="grid sm:grid-cols-2 gap-4 w-full" onSubmit={handleEditProfessional}>
 
       {/* <div className="flex gap-3 flex-col w-full col-span-6">
         <p className="text-sm">Imagem de Perfil</p>
@@ -138,9 +180,13 @@ function ProfessionalInfo({ data }) {
       </div> */}
       {/* select  */}
 
-
       {/* fullName */}
-      <Input label="Nome completo" value={fullName} color={true} type="text" />
+      <Input label="Nome completo" value={fullName} color={true} type="text" onChange={
+        (e) => {
+          setFullName(e.target.value)
+          setIsDisabled(false)
+        }} />
+
       <InputMaskComp
         label="Telefone"
         color={true}
@@ -152,21 +198,98 @@ function ProfessionalInfo({ data }) {
         onChange={(e) => setPhoneNumber(e.target.value)}
         className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
       />
-      <Input label="Primeiro Nome" value={firstName} color={true} type="text" />
-      <Input label="Sobrenome" value={lastName} color={true} type="text" />
+      <Input
+        label="Primeiro Nome"
+        value={firstName}
+        color={true}
+        onChange={(e) => {
+          setFirstName(e.target.value)
+          setIsDisabled(false)
+        }}
+        type="text"
+      />
+
+      <Input
+        label="Sobrenome"
+        value={lastName}
+        color={true}
+        onChange={(e) => {
+          setLastName(e.target.value)
+          setIsDisabled(false)
+        }}
+        type="text"
+      />
 
       {/* RG and CPF */}
       <div className="grid sm:grid-cols-2 gap-4 w-full">
-        <Input label="RG" value={rg} color={true} type="text" />
-        <Input label="Emissor" value={rgInssuance} color={true} type="text" />
-      </div>
-      <Input label="CPF" value={cpf} color={true} type="text" />
+        <Input
+          label="RG"
+          value={rg}
+          color={true}
+          onChange={(e) => {
+            setRg(e.target.value)
+            setIsDisabled(false)
+          }}
+          type="text"
+        />
 
+        <Input
+          label="Emissor"
+          value={rgInssuance}
+          color={true}
+          onChange={(e) => {
+            setRgInssuance(e.target.value)
+            setIsDisabled(false)
+          }}
+          type="text"
+        />
+      </div>
+
+      <Input
+        label="CPF"
+        value={cpf}
+        color={true}
+        onChange={(e) => {
+          setCpf(e.target.value)
+          setIsDisabled(false)
+        }}
+        type="text"
+      />
       {/* address */}
-      <Input label="Endereço" value={address} color={true} type="text" />
+      <Input
+        label="Endereço"
+        value={address}
+        color={true}
+        onChange={(e) => {
+          setAddress(e.target.value)
+          setIsDisabled(false)
+        }}
+        type="text"
+      />
       <div className="grid sm:grid-cols-2 gap-4 w-full">
-        <Input label="Bairro" value={region} color={true} type="text" />
-        <Input label="Cidade" value={city} color={true} type="text" />
+        <Input
+          label="Bairro"
+          value={region}
+          color={true}
+          onChange={
+            (e) => {
+              setRegion(e.target.value)
+              setIsDisabled(false)
+            }}
+          type="text"
+        />
+        <Input
+          label="Cidade"
+          value={city}
+          color={true}
+          onChange={
+            (e) => {
+              setCity(e.target.value)
+              setIsDisabled(false)
+            }
+          }
+          type="text"
+        />
       </div>
 
       {/* specialty and council data*/}
@@ -197,7 +320,16 @@ function ProfessionalInfo({ data }) {
         </div>
       </div>
       <div className="grid sm:grid-cols-2 gap-4 w-full">
-        <Input label="Nº Conselho" value={councilNumber} color={true} type="text" />
+        <Input
+          label="Nº Conselho"
+          value={councilNumber}
+          color={true}
+          onChange={(e) => {
+            setCouncilNumber(e.target.value)
+            setIsDisabled(false)
+          }}
+          type="text"
+        />
         <div className="flex w-full flex-col gap-3">
           <p className="text-black text-sm">Estado de Emissão</p>
           <Select
@@ -222,11 +354,10 @@ function ProfessionalInfo({ data }) {
       <Button
         label={'Salvar'}
         Icon={HiOutlineCheckCircle}
-        onClick={() => {
-          toast.error('This feature is not available yet');
-        }}
+        disabled={isDisabled}
+        loading={loading}
       />
-    </div>
+    </form>
   );
 }
 

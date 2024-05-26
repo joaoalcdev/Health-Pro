@@ -5,10 +5,9 @@ import { Button, DatePickerComp, Input, Select } from '../Form';
 import { BiChevronDown } from 'react-icons/bi';
 import { toast } from 'react-hot-toast';
 import { HiOutlineCheckCircle, HiOutlinePencilAlt } from 'react-icons/hi';
-import { RiDeleteBin5Line } from 'react-icons/ri';
 import { InputMaskComp } from '../Form';
-import { set } from 'rsuite/esm/utils/dateUtils';
 import { updateProfessional } from '../../api/ProfessionalsAPI';
+import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
 
 
 function ProfessionalInfo({ data, onStatus }) {
@@ -114,7 +113,7 @@ function ProfessionalInfo({ data, onStatus }) {
         </div>
         <div className="flex w-full flex-col gap-3">
           <h1 className="text-black text-sm">Telefone de Contato</h1>
-          <p className="text-black text-md font-semibold">{data.phone_number}</p>
+          <p className="text-black text-md font-semibold">{formatPhoneNumber(data.phone_number)}</p>
         </div>
       </div>
       <div className="grid sm:grid-cols-2 gap-4 w-full">

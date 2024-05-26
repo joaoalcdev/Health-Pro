@@ -87,7 +87,7 @@ function ProfessionalProfile() {
           <div className="gap-2 flex-colo">
             <h2 className="text-sm font-semibold">{professional.first_name} {professional.last_name}</h2>
             <p className="text-xs text-textGray">{professional.email}</p>
-            <p className="text-xs">{professional.phone_number}</p>
+            <p className="text-xs">{formatPhoneNumber(professional.phone_number)}</p>
           </div>
           {/* tabs */}
           <div className="flex-colo gap-3 px-2 2xl:px-12 w-full">

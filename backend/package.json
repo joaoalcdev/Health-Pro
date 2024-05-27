@@ -7,7 +7,7 @@
   "main": "src/server.ts",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsup src --format cjs --out-dir dist && node dist/server.js",
+    "build": "tsup src --format cjs --out-dir dist",
     "start": "node dist/server.js"
   },
   "keywords": [],

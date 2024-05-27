@@ -1,5 +1,5 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
-import { supabase } from "../../../supabaseConnection";
+import { supabase } from "../../supabaseConnection";
 
 export const UpdateProfessional = async (app: FastifyInstance) => {
   app.put("/professional/:id", async (req: FastifyRequest, res: FastifyReply) => {

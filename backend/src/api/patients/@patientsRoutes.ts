@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import app from '../../../server';
+import app from '../../server';
 import { ListPatients } from './listPatients';
 import { AddPatient } from './addPatient';
 import { UpdatePatient } from './updatePatient';

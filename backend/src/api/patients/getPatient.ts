@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import { supabase } from "../../../supabaseConnection";
+import { supabase } from "../../supabaseConnection";
 
 export const getPatient = async (app: FastifyInstance) => {
   app.get("/patients/:id", async (req: FastifyRequest, res: FastifyReply) => {

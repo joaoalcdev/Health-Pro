@@ -25,6 +25,12 @@
       }
     }
   ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "src/server.js"
+    }
+  ],
   "env": {
     "NODE_ENV": "production"
   }

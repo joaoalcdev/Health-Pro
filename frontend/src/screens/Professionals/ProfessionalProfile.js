@@ -19,27 +19,30 @@ function ProfessionalProfile() {
   const [activeTab, setActiveTab] = useState(1);
   const [access, setAccess] = useState({});
   const [professional, setProfessional] = useState({});
+  const [status, setStatus] = useState(false);
 
   const { id } = useParams()
-  console.log(id)
-  console.log(professional)
 
   const fetch = async () => {
     await getProfessionalById(id).then(response => {
       setProfessional(response[0])
-    }
-    )
+    })
   }
+
   useEffect(() => {
     fetch()
-  }, [id])
+    setStatus(false)
+    console.log("Effect")
+  }, [id, status])
 
-
+  const onStatus = (newStatus) => {
+    setStatus(newStatus)
+  }
 
   const tabPanel = () => {
     switch (activeTab) {
       case 1:
-        return <ProfessionalInfo data={professional} />;
+        return <ProfessionalInfo data={professional} onStatus={onStatus} />;
       case 2:
         return <PatientsUsed />;
       case 3:

@@ -23,7 +23,7 @@ export default function createServer() {
   app.register(cors, {
     origin: '*',
     methods: '*',
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'XMLHttpRequest', 'X-CSRF-Token', 'X-Requested-With', 'Accept', 'Accept-Version', 'Content-Length', 'Content-MD5', 'Content-Type', 'Date', 'X-Api-Version', 'document'],
     // credentials: false,
   })
   app.register(routes)

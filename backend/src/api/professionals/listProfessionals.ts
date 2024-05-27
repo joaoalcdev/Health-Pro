@@ -1,15 +1,13 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
-import { supabase } from "../../../supabaseConnection";
+import { supabase } from "../../supabaseConnection";
 
-export const getProfessional = async (app: FastifyInstance) => {
-  app.get("/professional/:id", async (req: FastifyRequest, res: FastifyReply) => {
+export const ListProfessionals = async (app: FastifyInstance) => {
+  app.get("/professionals", async (req: FastifyRequest, res: FastifyReply) => {
     try {
-
-      const { id } = req.params as { id: string }
-
       let { data, error } = await supabase
         .from("view_professionals")
-        .select("*").eq("id", id)
+        .select("*")
+        .order("first_name", { ascending: true })
       
       if (error) {
         throw error

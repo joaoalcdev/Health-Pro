@@ -1,5 +1,5 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
-import { supabase } from "../../../supabaseConnection";
+import { supabase } from "../../supabaseConnection";
 
 export const AddUser = async (app: FastifyInstance) => {
   app.post("/users", async (req: FastifyRequest, res: FastifyReply) => {

@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import { supabase } from "../../../supabaseConnection";
+import { supabase } from "../../supabaseConnection";
 
 export const UserSignOut = async (app: FastifyInstance) => {
   app.post("/logout", async (req: FastifyRequest, res: FastifyReply) => {

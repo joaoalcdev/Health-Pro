@@ -1,5 +1,5 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
-import { supabase } from "../../../supabaseConnection";
+import { supabase } from "../../supabaseConnection";
 
 export const UpdateUser = async (app: FastifyInstance) => {
   app.put("/users/:id", async (req: FastifyRequest, res: FastifyReply) => {

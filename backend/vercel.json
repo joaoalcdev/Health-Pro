@@ -12,10 +12,9 @@
       "config": { "maxDuration": 120, "distDir": "dist" }
     }
   ],
-  "start": "node dist/server.js",
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "src/api/(.*)",
       "dest": "dist/server.js",
       "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
       "headers": {

@@ -32,8 +32,8 @@ export default function createServer() {
 
 const app = createServer();
 app.listen({
-  host: "0.0.0.0",
-  port: process.env.PORT ? Number(process.env.PORT) : 3333
+  host: "localhost",
+  port: process.env.PORT ? Number(process.env.PORT) : 3000
 }).then(() => {
   console.log("Server is running")
 })

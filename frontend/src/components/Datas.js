@@ -43,7 +43,7 @@ export const MenuDatas = [
     roleAllowed: 1
   },
   {
-    title: 'Patients',
+    title: 'Patientes',
     path: '/patients',
     icon: TbUsers,
     roleAllowed: 2

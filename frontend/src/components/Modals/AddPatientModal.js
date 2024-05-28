@@ -40,33 +40,33 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      !fullName
-    ) {
-      return toast.error('Favor, informe o nome do paciente!',
-        {
-          position: "top-center",
-        }
-      );
-    }
-    if (
-      !cpf || cpf.length < 11
-    ) {
-      return toast.error('Favor, informe o CPF do paciente!',
-        {
-          position: "top-center",
-        }
-      );
-    }
+    // if (
+    //   !fullName
+    // ) {
+    //   return toast.error('Favor, informe o nome do paciente!',
+    //     {
+    //       position: "top-center",
+    //     }
+    //   );
+    // }
+    // if (
+    //   !cpf || cpf.length < 11
+    // ) {
+    //   return toast.error('Favor, informe o CPF do paciente!',
+    //     {
+    //       position: "top-center",
+    //     }
+    //   );
+    // }
     // informe ao menos um telefone
-    if ((!phoneNumber && !emergencyContact) || (phoneNumber.length < 11 && emergencyContact.length < 11)) {
-      return toast.error('Informe ao menos um telefone de contato!',
-        {
-          position: "top-center",
-        }
-      );
-    }
-    setLoading(true);
+    // if ((!phoneNumber && !emergencyContact) || (phoneNumber.length < 11 && emergencyContact.length < 11)) {
+    //   return toast.error('Informe ao menos um telefone de contato!',
+    //     {
+    //       position: "top-center",
+    //     }
+    //   );
+    // }
+    // setLoading(true);
 
 
     const response = await createPatient(
@@ -102,14 +102,13 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
     }
   }
 
-
   return (
     <Modal
       closeModal={closeModal}
       isOpen={isOpen}
       title={'Adicionar Paciente'}
-      width={'max-w-5xl'}
-      height={'sm:h-[6%vh]'}
+      width={'max-w-6xl'}
+      height={'sm:min-h-[73svh]'}
     > <>
         <form onSubmit={handleSubmit} className=''>
           <h1 className='text-md font-light mb-4'>Passo 1: Informações pessoais do Paciente</h1>
@@ -117,7 +116,10 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
             <div className="grid sm:grid-cols-3 gap-4 w-full">
               {/* Full Name */}
               <div className=''>
-                <p className='pl-1 mb-[-7px] text-sm text-black'>Nome Completo<span className='text-required'>*</span></p>
+                <p className='pl-1 mb-[-7px] text-sm text-black'>
+                  Nome Completo
+                  <span className='text-required'>*</span>
+                </p>
                 <Input
                   color={true}
                   required={true}
@@ -129,21 +131,27 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
               </div>
               {/* CPF */}
               <div className=''>
-                <p className='pl-1 mb-[-7px] text-sm text-black'>CPF<span className='text-required'>*</span></p>
+                <p className='pl-1 mb-[-7px] text-sm text-black'>
+                  CPF
+                  {/* <span className='text-required'>*</span> */}
+                </p>
                 <InputMaskComp
                   color={true}
                   mask="999.999.999-99"
                   autoClear={true}
                   placeholder={'___.___.___-__'}
                   unmask={true}
-                  required={true}
+                  required={false}
                   value={cpf}
                   onChange={(e) => setCpf(e.target.value)}
                   className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
                 />
               </div>
               <div className=''>
-                <p className='pl-1 mb-[-7px] text-sm text-black'>Data de Nascimento<span className='text-required'>*</span></p>
+                <p className='pl-1 mb-[-7px] text-sm text-black'>
+                  Data de Nascimento
+                  {/* <span className='text-required'>*</span> */}
+                </p>
                 {/* DatePicker */}
                 <DatePickerComp
                   color={true}
@@ -162,7 +170,10 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
             </div>
             <div className="grid sm:grid-cols-3 gap-4 w-full">
               <div className="flex w-full flex-col gap-1">
-                <p className="text-black text-sm">Tipo Sanguíneo<span className='text-required'>*</span></p>
+                <p className="text-black text-sm">
+                  Tipo Sanguíneo
+                  {/* <span className='text-required'>*</span> */}
+                </p>
                 <Select
                   selectedPerson={bloodType}
                   setSelectedPerson={setBloodType}
@@ -174,7 +185,10 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                 </Select>
               </div>
               <div className="flex w-full flex-col gap-1">
-                <p className="text-black text-sm">Estado Civil<span className='text-required'>*</span></p>
+                <p className="text-black text-sm">
+                  Estado Civil
+                  {/* <span className='text-required'>*</span> */}
+                </p>
                 <Select
                   selectedPerson={marital}
                   setSelectedPerson={setMarital}
@@ -186,7 +200,10 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                 </Select>
               </div>
               <div className="flex w-full flex-col gap-1">
-                <p className='pl-1 text-sm text-black'>Gênero<span className='text-required'>*</span></p>
+                <p className='pl-1 text-sm text-black'>
+                  Gênero
+                  {/* <span className='text-required'>*</span> */}
+                </p>
                 <Select
                   selectedPerson={gender}
                   setSelectedPerson={setGender}
@@ -201,7 +218,10 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
             <div className="grid sm:grid-cols-2 gap-4 w-full">
               {/* Tel */}
               <div className=''>
-                <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de Contato<span className='text-warn'>*</span></p>
+                <p className='pl-1 mb-[-7px] text-sm text-black'>
+                  Telefone de Contato
+                  {/* <span className='text-warn'>*</span> */}
+                </p>
                 <InputMaskComp
                   color={true}
                   mask="(99) 9 9999-9999"
@@ -216,7 +236,10 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
               </div>
               {/* Emergncy Contact */}
               <div className=''>
-                <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de emergência<span className='text-warn'>*</span></p>
+                <p className='pl-1 mb-[-7px] text-sm text-black'>
+                  Telefone de emergência
+                  {/* <span className='text-warn'>*</span> */}
+                </p>
                 <InputMaskComp
                   color={true}
                   mask="(99) 9 9999-9999"
@@ -237,40 +260,52 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
             <div className="grid sm:grid-cols-2 gap-4 w-full">
               {/* Address */}
               <div className=''>
-                <p className='pl-1 mb-[-7px] text-sm text-black'>Endereço<span className='text-required'>*</span></p>
+                <p className='pl-1 mb-[-7px] text-sm text-black'>
+                  Endereço
+                  {/* <span className='text-required'>*</span> */}
+                </p>
                 <Input
                   color={true}
-                  required={true}
+                  required={false}
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder={'Rua, Número'}
                 />
               </div>
-              {/* City */}
-              <div className=''>
-                <p className='pl-1 mb-[-7px] text-sm text-black'>Cidade<span className='text-required'>*</span></p>
-                <Input
-                  color={true}
-                  required={true}
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  placeholder={'Russas'}
-                />
-              </div>
               {/* Region */}
               <div className=''>
-                <p className='pl-1 mb-[-7px] text-sm text-black'>Bairro<span className='text-required'>*</span></p>
+                <p className='pl-1 mb-[-7px] text-sm text-black'>
+                  Bairro
+                  {/* <span className='text-required'>*</span> */}
+                </p>
                 <Input
                   color={true}
-                  required={true}
+                  required={false}
                   value={region}
                   onChange={(e) => setRegion(e.target.value)}
                   placeholder={'Centro'}
                 />
               </div>
+              {/* City */}
+              <div className=''>
+                <p className='pl-1 mb-[-7px] text-sm text-black'>
+                  Cidade
+                  {/* <span className='text-required'>*</span> */}
+                </p>
+                <Input
+                  color={true}
+                  required={false}
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  placeholder={'Russas'}
+                />
+              </div>
               {/* State */}
               <div className="flex w-full flex-col gap-1">
-                <p className='pl-1 text-sm text-black'>Estado<span className='text-required'>*</span></p>
+                <p className='pl-1 text-sm text-black'>
+                  Estado
+                  {/* <span className='text-required'>*</span> */}
+                </p>
                 <Select
                   selectedPerson={state}
                   setSelectedPerson={setState}

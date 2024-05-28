@@ -82,14 +82,13 @@ const CustomToolbar = (toolbar) => {
                 item.view === 'month'
                   ? goToMonth
                   : item.view === 'week'
-                  ? goToWeek
-                  : goToDay
+                    ? goToWeek
+                    : goToDay
               }
-              className={`border-l text-xl py-2 flex-colo border-subMain ${
-                toolbar.view === item.view
-                  ? 'bg-subMain text-white'
-                  : 'text-subMain'
-              }`}
+              className={`border-l text-xl py-2 flex-colo border-subMain ${toolbar.view === item.view
+                ? 'bg-subMain text-white'
+                : 'text-subMain'
+                }`}
             >
               {item.view === 'month' ? (
                 <HiOutlineViewGrid />
@@ -111,6 +110,7 @@ function Appointments() {
   const [open, setOpen] = React.useState(false);
   const [data, setData] = React.useState({});
 
+
   // handle modal close
   const handleClose = () => {
     setOpen(!open);
@@ -120,10 +120,10 @@ function Appointments() {
   const events = [
     {
       id: 0,
-      start: moment({ hours: 7 }).toDate(),
-      end: moment({ hours: 9 }).toDate(),
+      start: moment({ day: 28, hours: 7, minutes: 30 }).toDate(),
+      end: moment({ day: 28, hours: 9 }).toDate(),
       color: '#FB923C',
-      title: 'John Doe',
+      title: `Taynara Gondim | Fonoaudiologia | Mateus`,
       message: 'He is not sure about the time',
       service: servicesData[1],
       shareData: {
@@ -137,7 +137,7 @@ function Appointments() {
       start: moment({ hours: 12 }).toDate(),
       end: moment({ hours: 13 }).toDate(),
       color: '#FC8181',
-      title: 'Minah Mmassy',
+      title: `Taynara Gondim | Fonoaudiologia | Mateus`,
       message: 'She is coming for checkup',
       service: servicesData[2],
       shareData: {
@@ -161,7 +161,23 @@ function Appointments() {
         whatsapp: true,
       },
     },
+    {
+      id: 3,
+      start: moment({ day: 28, hours: 7, minutes: 30 }).toDate(),
+      end: moment({ day: 28, hours: 9 }).toDate(),
+      color: '#FFC107',
+      title: 'Junior Gondim',
+      message: 'He is not sure about the time',
+      service: servicesData[1],
+      shareData: {
+        email: true,
+        sms: true,
+        whatsapp: false,
+      },
+    },
   ];
+
+  console.log(events);
 
   // onClick event handler
   const handleEventClick = (event) => {
@@ -202,7 +218,7 @@ function Appointments() {
         defaultDate={new Date()}
         timeslots={1}
         resizable
-        step={60}
+        step={30}
         selectable={true}
         // custom event style
         eventPropGetter={(event) => {
@@ -211,8 +227,9 @@ function Appointments() {
 
             borderRadius: '10px',
             color: 'white',
-            border: '1px',
-            borderColor: '#F2FAF8',
+            border: '1px solid',
+            //borderColor: '#000000',
+            //shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
             fontSize: '12px',
             padding: '5px 5px',
           };

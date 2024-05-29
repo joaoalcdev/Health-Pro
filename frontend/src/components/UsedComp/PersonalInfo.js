@@ -11,10 +11,8 @@ import { brStateDatas, genderDatas, maritalDatas } from '../Datas';
 import { InputMaskComp } from '../Form';
 import { updatePatient, getPatient } from '../../api/PatientsAPI';
 
-function PersonalInfo({ titles, data }) {
+function PersonalInfo({ titles, data, status }) {
   const [title, setTitle] = useState(sortsDatas.title[0]);
-  const [status, setStatus] = useState(true);
-  const { id } = useParams();
 
   const [fullName, setFullName] = useState(data.fullName);
   const [cpf, setCpf] = useState(data.cpf);
@@ -29,6 +27,10 @@ function PersonalInfo({ titles, data }) {
   const [city, setCity] = useState(data.city);
   const [state, setState] = useState(data.state); // select broken
 
+
+  const { id } = useParams();
+
+  
   const handleUpdate = async () => {
     await updatePatient(id, {
       fullName,
@@ -48,8 +50,9 @@ function PersonalInfo({ titles, data }) {
     toast.success("Paciente atualizado com sucesso!", {
       position: "top-center",
     })
-    setStatus(true)
+    status(true)
   }
+
 
   return (
     <div className="flex-colo gap-4" id='editPatient'>
@@ -90,7 +93,7 @@ function PersonalInfo({ titles, data }) {
             </div>
             {/* CPF */}
             <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>CPF<span className='text-required'>*</span></p>
+              <p className='pl-1 mb-[-7px] text-sm text-black'>CPF<span className='text-required'></span></p>
               <InputMaskComp
                 color={true}
                 mask="999.999.999-99"
@@ -104,7 +107,7 @@ function PersonalInfo({ titles, data }) {
               />
             </div>
             <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Data de Nascimento<span className='text-required'>*</span></p>
+              <p className='pl-1 mb-[-7px] text-sm text-black'>Data de Nascimento<span className='text-required'></span></p>
               {/* DatePicker */}
               <DatePickerComp
                 color={true}
@@ -123,7 +126,7 @@ function PersonalInfo({ titles, data }) {
           </div>
           <div className="grid sm:grid-cols-3 gap-4 w-full">
             <div className="flex w-full flex-col gap-1">
-              <p className="text-black text-sm">Tipo Sanguíneo<span className='text-required'>*</span></p>
+              <p className="text-black text-sm">Tipo Sanguíneo<span className='text-required'></span></p>
               <Select
                 selectedPerson={bloodType}
                 setSelectedPerson={setBloodType}
@@ -135,7 +138,7 @@ function PersonalInfo({ titles, data }) {
               </Select>
             </div>
             <div className="flex w-full flex-col gap-1">
-              <p className="text-black text-sm">Estado Civil<span className='text-required'>*</span></p>
+              <p className="text-black text-sm">Estado Civil<span className='text-required'></span></p>
               <Select
                 selectedPerson={marital}
                 setSelectedPerson={setMarital}
@@ -147,7 +150,7 @@ function PersonalInfo({ titles, data }) {
               </Select>
             </div>
             <div className="flex w-full flex-col gap-1">
-              <p className='pl-1 text-sm text-black'>Gênero<span className='text-required'>*</span></p>
+              <p className='pl-1 text-sm text-black'>Gênero<span className='text-required'></span></p>
               <Select
                 selectedPerson={gender}
                 setSelectedPerson={setGender}
@@ -162,7 +165,7 @@ function PersonalInfo({ titles, data }) {
           <div className="grid sm:grid-cols-2 gap-4 w-full">
             {/* Tel */}
             <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de Contato<span className='text-warn'>*</span></p>
+              <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de Contato<span className='text-warn'></span></p>
               <InputMaskComp
                 color={true}
                 mask="(99) 9 9999-9999"
@@ -177,7 +180,7 @@ function PersonalInfo({ titles, data }) {
             </div>
             {/* Emergncy Contact */}
             <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de emergência<span className='text-warn'>*</span></p>
+              <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de emergência<span className='text-warn'></span></p>
               <InputMaskComp
                 color={true}
                 mask="(99) 9 9999-9999"

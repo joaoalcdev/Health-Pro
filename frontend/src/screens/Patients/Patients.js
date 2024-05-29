@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../../Layout';
-import { memberData, sortsDatas } from '../../components/Datas';
+import { sortsDatas } from '../../components/Datas';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiChevronDown, BiPlus, BiTime } from 'react-icons/bi';
 import { BsCalendarMonth } from 'react-icons/bs';
@@ -13,16 +13,18 @@ import { PatientTable } from '../../components/Tables';
 import AddPatientModal from '../../components/Modals/AddPatientModal';
 import { PatientsTable } from '../../components/Tables';
 import { getPatients } from '../../api/PatientsAPI';
+import { set } from 'rsuite/esm/utils/dateUtils';
 
 
 
 function Patients() {
+  const navigate = useNavigate();
   const [status, setStatus] = useState(false);
   // const [status, setStatus] = useState(sortsDatas.filterPatient[0]);
   const [gender, setGender] = useState(sortsDatas.genderFilter[0]);
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);
   const [startDate, endDate] = dateRange;
-  const navigate = useNavigate();
+  const [noData, setNoData] = useState(false);
 
   const sorts = [
     {
@@ -69,20 +71,21 @@ function Patients() {
   const preview = (id) => {
     navigate(`/patients/preview/${id}`);
   };
-  // edit 
-  const edit = (id) => {
-    navigate(`/patients/edit/${id}`);
-  };
 
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState([]);
-  const [memberData, setMemberData] = useState([]);
+  // const [memberData, setMemberData] = useState([]);
   // const [status, setStatus] = useState(true);
 
   const fetch = async () => {
     const response = await getPatients()
+    console.log(response)
+    if (response.length === 0) {
+      setNoData(true)
+      return
+    }
     setData(response)
-    setStatus(true)
+    setStatus(false)
   }
 
   useEffect(() => {
@@ -93,9 +96,21 @@ function Patients() {
     setIsOpen(false);
   };
 
-  const onStatus = () => {
-    setStatus(true)
-  }
+  // dynamic used patients
+  const [dynamicUsed, setDynamicUsed] = useState(true);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setDynamicUsed(true);
+      } else {
+        setDynamicUsed(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
 
   return (
     <Layout>
@@ -106,7 +121,7 @@ function Patients() {
             closeModal={onCloseModal}
             isOpen={isOpen}
             patient={true}
-            status={onStatus}
+            status={setStatus}
             datas={null}
           />
         )
@@ -198,12 +213,12 @@ function Patients() {
         </div>
         <div className="mt-8 w-full overflow-x-scroll">
           <PatientsTable
-            data={memberData}
+            patientData={data}
+            noData={noData}
             functions={{
               preview: preview,
-              edit: edit,
             }}
-            used={false}
+            used={dynamicUsed}
           />
         </div>
       </div>

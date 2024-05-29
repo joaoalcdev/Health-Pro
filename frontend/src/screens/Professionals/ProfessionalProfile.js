@@ -32,7 +32,6 @@ function ProfessionalProfile() {
   useEffect(() => {
     fetch()
     setStatus(false)
-    console.log("Effect")
   }, [id, status])
 
   const onStatus = (newStatus) => {
@@ -69,7 +68,7 @@ function ProfessionalProfile() {
         >
           <IoArrowBackOutline />
         </Link>
-        <h1 className="text-xl font-semibold">{professional.full_name}</h1>
+        <h1 className="text-xl font-semibold">{professional.fullName}</h1>
       </div>
       <div className=" grid grid-cols-12 gap-6 my-8 items-start">
         <div
@@ -85,9 +84,9 @@ function ProfessionalProfile() {
             className="w-40 h-40 rounded-full object-cover border border-dashed border-subMain"
           />
           <div className="gap-2 flex-colo">
-            <h2 className="text-sm font-semibold">{professional.first_name} {professional.last_name}</h2>
+            <h2 className="text-sm font-semibold">{professional.firstName} {professional.lastName}</h2>
             <p className="text-xs text-textGray">{professional.email}</p>
-            <p className="text-xs">{formatPhoneNumber(professional.phone_number)}</p>
+            <p className="text-xs">{formatPhoneNumber(professional.phoneNumber)}</p>
           </div>
           {/* tabs */}
           <div className="flex-colo gap-3 px-2 2xl:px-12 w-full">

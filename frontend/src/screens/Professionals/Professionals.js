@@ -13,15 +13,16 @@ function Professionals() {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState([]);
   const [status, setStatus] = useState(false);
-  const [noData, setNoData] = useState(false);
+  const [noData, setNoData] = useState(true);
 
   const fetch = async () => {
     const response = await getProfessionals()
-    console.log(response)
     if (response.length === 0) {
       setNoData(true)
+      return
     }
     setData(response)
+    setNoData(false)
     setStatus(false)
   }
 
@@ -73,7 +74,7 @@ function Professionals() {
       >
         {/* datas */}
 
-        <div className="grid md:grid-cols-6 sm:grid-cols-2 grid-cols-1 gap-2">
+        {noData ? "" : <div className="grid md:grid-cols-6 sm:grid-cols-2 grid-cols-1 gap-2">
           <div className="md:col-span-5 grid lg:grid-cols-4 items-center gap-6">
             <input
               type="text"
@@ -81,7 +82,7 @@ function Professionals() {
               className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
             />
           </div>
-        </div>
+        </div>}
         <div className="mt-8 w-full overflow-x-scroll">
           < ProfessionalsTable
             doctor={true}

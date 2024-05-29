@@ -15,6 +15,7 @@ export const UpdateProfessional = async (app: FastifyInstance) => {
       } = req.body as Users
        
       const {
+        userId,
         fullName,
         rg,
         rgInssuance,
@@ -39,7 +40,7 @@ export const UpdateProfessional = async (app: FastifyInstance) => {
         city,
         region,
         state
-      }).eq("id", id).select()
+      }).eq("id", userId).select()
 
         if (error) {
           throw error
@@ -56,7 +57,7 @@ export const UpdateProfessional = async (app: FastifyInstance) => {
             council,
             councilNumber,
             councilInssuance,
-          }).eq("id", id).select()
+          }).eq("userId", userId).select()
         
           if (pError) {
             throw pError

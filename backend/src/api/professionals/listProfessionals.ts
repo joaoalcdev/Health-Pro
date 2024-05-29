@@ -7,11 +7,13 @@ export const ListProfessionals = async (app: FastifyInstance) => {
       let { data, error } = await supabase
         .from("view_professionals")
         .select("*")
-        .order("first_name", { ascending: true })
+        .order("firstName", { ascending: true })
       
       if (error) {
         throw error
       } else {
+        //test NoData
+        //return res.status(200).send([])
         return res.status(200).send(data ? data : null)
       }
     } catch (error) {

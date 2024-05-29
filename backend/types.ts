@@ -29,6 +29,7 @@ type Patients = {
 }
 
 type Professionals = {
+  userId?: string,
   id?: string,
   fullName: string,
   rg: string,

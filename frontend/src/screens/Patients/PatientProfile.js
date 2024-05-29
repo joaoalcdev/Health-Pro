@@ -9,10 +9,7 @@ import InvoiceUsed from '../../components/UsedComp/InvoiceUsed';
 import PaymentsUsed from '../../components/UsedComp/PaymentUsed';
 import PersonalInfo from '../../components/UsedComp/PersonalInfo';
 import { getPatient } from '../../api/PatientsAPI';
-// import PatientImages from './PatientImages';
-// import HealthInfomation from './HealthInfomation';
-// import DentalChart from './DentalChart';
-// import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
+import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
 
 function PatientProfile() {
   const [activeTab, setActiveTab] = useState(1);
@@ -83,9 +80,8 @@ function PatientProfile() {
           <div className="gap-2 flex-colo">
             <h2 className="text-sm font-semibold">{patientData.fullName}</h2>
             <p className="text-xs">
-              {patientData.phoneNumber} <br />
-              {patientData.emergencyContact}
-              {/* {formatPhoneNumber(patientData.phoneNumber)} */}
+              {formatPhoneNumber(patientData.phoneNumber)} <br />
+              {formatPhoneNumber(patientData.emergencyContact)}
             </p>
           </div>
           {/* tabs */}

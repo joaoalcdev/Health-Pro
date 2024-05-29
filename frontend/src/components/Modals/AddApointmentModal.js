@@ -120,7 +120,7 @@ function AddAppointmentModal({ closeModal, isOpen, datas }) {
               datas={specialties.specialty}
             >
               <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
-                {services.name} <BiChevronDown className="text-xl" />
+                {services ? services.name : ""} <BiChevronDown className="text-xl" />
               </div>
             </Select>
           </div>
@@ -131,6 +131,7 @@ function AddAppointmentModal({ closeModal, isOpen, datas }) {
               startDate={startDate}
               color={'subMain'}
               dateFormat={'dd/MM/yyyy'}
+              placeholderText={"Selecionar data"}
               onChange={(date) => {
                 setStartDate(date)
                 console.log(date)
@@ -139,6 +140,7 @@ function AddAppointmentModal({ closeModal, isOpen, datas }) {
             <TimePickerComp
               label="Horário"
               startDate={startTime}
+              placeholderText={"Selecionar horário"}
               onChange={(date) => setStartTime(date)}
             />
 
@@ -178,7 +180,7 @@ function AddAppointmentModal({ closeModal, isOpen, datas }) {
                 datas={professionalsData}
               >
                 <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
-                  {professional.first_name} {professional.last_name ? professional.last_name : ""} {professional.specialty ? `(${specialties.specialty[professional.specialty].name})` : ""}
+                  {professional.first_name} {professional.last_name ? professional.last_name : ""} {professional.specialty ? `(${specialties.specialty[professional.specialty - 1].name})` : ""}
                   <BiChevronDown className="text-xl" />
                 </div>
               </SelectProfessional>

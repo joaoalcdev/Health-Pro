@@ -97,6 +97,23 @@ function Patients() {
     setStatus(true)
   }
 
+
+  // dynamic used patients
+  const [dynamicUsed, setDynamicUsed] = useState(true);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setDynamicUsed(true);
+      } else {
+        setDynamicUsed(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
   return (
     <Layout>
       {
@@ -201,9 +218,8 @@ function Patients() {
             data={memberData}
             functions={{
               preview: preview,
-              edit: edit,
             }}
-            used={false}
+            used={dynamicUsed}
           />
         </div>
       </div>

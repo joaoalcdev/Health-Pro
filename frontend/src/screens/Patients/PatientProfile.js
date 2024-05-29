@@ -66,7 +66,7 @@ function PatientProfile() {
     if (patientData.gender === 'Masculino') {
       return genderImageMale;
     }
-    if (patientData.gender === 'Femenino') {
+    if (patientData.gender === 'Feminino') {
       return genderImageFemale;
     }
     else {

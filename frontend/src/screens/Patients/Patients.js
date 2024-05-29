@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../../Layout';
-import { memberData, sortsDatas } from '../../components/Datas';
+import { sortsDatas } from '../../components/Datas';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiChevronDown, BiPlus, BiTime } from 'react-icons/bi';
 import { BsCalendarMonth } from 'react-icons/bs';
@@ -17,12 +17,13 @@ import { getPatients } from '../../api/PatientsAPI';
 
 
 function Patients() {
+  const navigate = useNavigate();
   const [status, setStatus] = useState(false);
   // const [status, setStatus] = useState(sortsDatas.filterPatient[0]);
   const [gender, setGender] = useState(sortsDatas.genderFilter[0]);
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);
   const [startDate, endDate] = dateRange;
-  const navigate = useNavigate();
+  const [noData, setNoData] = useState(false);
 
   const sorts = [
     {
@@ -69,18 +70,18 @@ function Patients() {
   const preview = (id) => {
     navigate(`/patients/preview/${id}`);
   };
-  // edit 
-  const edit = (id) => {
-    navigate(`/patients/edit/${id}`);
-  };
 
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState([]);
-  const [memberData, setMemberData] = useState([]);
+  // const [memberData, setMemberData] = useState([]);
   // const [status, setStatus] = useState(true);
 
   const fetch = async () => {
     const response = await getPatients()
+    console.log(response)
+    if (response.length === 0) {
+      setNoData(true)
+    }
     setData(response)
     setStatus(true)
   }
@@ -121,6 +122,7 @@ function Patients() {
         isOpen && (
           <AddPatientModal
             closeModal={onCloseModal}
+
             isOpen={isOpen}
             patient={true}
             status={onStatus}
@@ -215,7 +217,8 @@ function Patients() {
         </div>
         <div className="mt-8 w-full overflow-x-scroll">
           <PatientsTable
-            data={memberData}
+            data={data}
+            noData={noData}
             functions={{
               preview: preview,
             }}

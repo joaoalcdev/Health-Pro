@@ -325,21 +325,21 @@ export function ServiceTable({ data, onEdit }) {
 
 
 // patient table
-export function PatientsTable({ functions, used, noData }) {
+export function PatientsTable({ functions, used, noData, patientData }) {
 
   const [status, setStatus] = useState(true);
-  const [patientData, setPatientData] = useState([]);
+  // const [patientData, setPatientData] = useState([]);
 
-  const fetch = async () => {
-    const response = await getPatients()
-    setPatientData(response)
-    setStatus(false)
-  }
+  // const fetch = async () => {
+  //   const response = await getPatients()
+  //   setPatientData(response)
+  //   setStatus(false)
+  // }
 
-  useEffect(() => {
-    fetch()
-  }, [status])
-
+  // useEffect(() => {
+  //   fetch()
+  //   console.log("Effect")
+  // }, [status])
 
 
   const DropDown1 = !used
@@ -376,8 +376,6 @@ export function PatientsTable({ functions, used, noData }) {
     setStatus(true)
   }
 
-
-
   return (noData ?
     <>
       {
@@ -385,7 +383,6 @@ export function PatientsTable({ functions, used, noData }) {
         isOpen && (
           <AddPatientModal
             closeModal={onCloseModal}
-
             isOpen={isOpen}
             patient={true}
             status={onStatus}
@@ -394,19 +391,19 @@ export function PatientsTable({ functions, used, noData }) {
         )
       }
       <div className='flex w-full py-8 justify-center items-center'>
-        <div class="relative flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
-          <div class="p-6">
-            <h5 class="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
+        <div className="relative flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+          <div className="p-6">
+            <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
               Nenhum dado foi encontrado!
             </h5>
-            <p class="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
+            <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
               Talvez você não tenha pacientes cadastrados.
               Adicione seu primeiro paciente no botão abaixo.
             </p>
           </div>
-          <div class="p-6 pt-0">
+          <div className="p-6 pt-0">
             <button
-              class="w-full select-none rounded-lg bg-subMain py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              className="w-full select-none rounded-lg bg-subMain py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               type="button"
               data-ripple-light="true"
               onClick={() => setIsOpen(true)}
@@ -475,7 +472,8 @@ export function PatientsTable({ functions, used, noData }) {
               </>
             )}
             <th className={thclass}>
-              <p className="text-xs">{item.address} <br />{item.city} ({item.state})</p>
+              {/* if dont have address, dont show */}
+              <p className="text-xs">{item.address === '' ? '-' : item.address} <br /> {item.city === '' ? '-' : item.city} ({item.state})</p>
             </th>
 
             {/* <td className={tdclass}>

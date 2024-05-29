@@ -8,12 +8,12 @@ import AppointmentsUsed from '../../components/UsedComp/AppointmentsUsed';
 import InvoiceUsed from '../../components/UsedComp/InvoiceUsed';
 import PaymentsUsed from '../../components/UsedComp/PaymentUsed';
 import PersonalInfo from '../../components/UsedComp/PersonalInfo';
-import { getPatient } from '../../api/PatientsAPI';
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
+import { getPatient } from '../../api/PatientsAPI';
 
 function PatientProfile() {
   const [activeTab, setActiveTab] = useState(1);
-  const [status, setStatus] = useState(true)
+  const [status, setStatus] = useState(false)
 
   const { id } = useParams();
 
@@ -27,7 +27,9 @@ function PatientProfile() {
 
   useEffect(() => {
     fetch()
-  }, [])
+    console.log("Effect")
+  }, [status])
+
 
 
   const tabPanel = () => {
@@ -41,7 +43,7 @@ function PatientProfile() {
       case 4:
         return <PaymentsUsed doctor={false} />;
       case 5:
-        return <PersonalInfo titles={false} data={patientData} />;
+        return <PersonalInfo titles={false} data={patientData} status={setStatus} />;
       // case 6:
       // return <PatientImages />;
       // case 7:
@@ -52,6 +54,25 @@ function PatientProfile() {
         return;
     }
   };
+
+  // if patientData.gender === masculino return img 
+  // else return img
+
+  const genderImageMale = '/images/male.jpg';
+  const genderImageFemale = '/images/female.jpg';
+  const genderImageOther = '/images/other.jpg';
+
+  function dynamicImageGender() {
+    if (patientData.gender === 'Masculino') {
+      return genderImageMale;
+    }
+    if (patientData.gender === 'Femenino') {
+      return genderImageFemale;
+    }
+    else {
+      return genderImageOther;
+    }
+  }
 
   return (
     <Layout>
@@ -73,7 +94,7 @@ function PatientProfile() {
           className="col-span-12 flex-colo gap-6 lg:col-span-4 bg-white rounded-xl border-[1px] border-border p-6 lg:sticky top-28"
         >
           <img
-            src="/images/user7.png"
+            src={dynamicImageGender()}
             alt="setting"
             className="w-40 h-40 rounded-full object-cover border border-dashed border-subMain"
           />

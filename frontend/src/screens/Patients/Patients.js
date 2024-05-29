@@ -13,6 +13,7 @@ import { PatientTable } from '../../components/Tables';
 import AddPatientModal from '../../components/Modals/AddPatientModal';
 import { PatientsTable } from '../../components/Tables';
 import { getPatients } from '../../api/PatientsAPI';
+import { set } from 'rsuite/esm/utils/dateUtils';
 
 
 
@@ -81,9 +82,10 @@ function Patients() {
     console.log(response)
     if (response.length === 0) {
       setNoData(true)
+      return
     }
     setData(response)
-    setStatus(true)
+    setStatus(false)
   }
 
   useEffect(() => {
@@ -93,11 +95,6 @@ function Patients() {
   const onCloseModal = () => {
     setIsOpen(false);
   };
-
-  const onStatus = () => {
-    setStatus(true)
-  }
-
 
   // dynamic used patients
   const [dynamicUsed, setDynamicUsed] = useState(true);
@@ -122,10 +119,9 @@ function Patients() {
         isOpen && (
           <AddPatientModal
             closeModal={onCloseModal}
-
             isOpen={isOpen}
             patient={true}
-            status={onStatus}
+            status={setStatus}
             datas={null}
           />
         )
@@ -217,7 +213,7 @@ function Patients() {
         </div>
         <div className="mt-8 w-full overflow-x-scroll">
           <PatientsTable
-            data={data}
+            patientData={data}
             noData={noData}
             functions={{
               preview: preview,

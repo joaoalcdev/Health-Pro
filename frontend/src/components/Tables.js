@@ -703,15 +703,15 @@ export function ProfessionalsTable({ data, functions, professional, noData }) {
             <td className={tdclass}>{index + 1}</td>
             <td className={tdclass}>
               <div className="flex gap-4 items-center">
-                <h4 className="text-sm font-medium">{item.first_name} {item.last_name}</h4>
+                <h4 className="text-sm font-medium">{item.firstName} {item.lastName}</h4>
               </div>
             </td>
-            <td className={tdclass}>{specialties.specialty[item.specialty].name}</td>
+            <td className={tdclass}>{item.specialty ? specialties.specialty[item.specialty - 1].name : "-"}</td>
             <td className={tdclass}>
-              <p className="text-textGray">{formatPhoneNumber(item.phone_number)}</p>
+              <p className="text-textGray">{formatPhoneNumber(item.phoneNumber)}</p>
             </td>
             <td className={tdclass}>{item.email}</td>
-            <td className={tdclass}>{councilDatas.council[item.council].name} - {item.council_number}</td>
+            <td className={tdclass}>{item.council ? councilDatas.council[item.council - 1].name : "-"} - {item.councilNumber}</td>
 
             <td className={tdclass}>
               <button

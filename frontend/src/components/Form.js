@@ -147,7 +147,7 @@ export function SelectProfessional({ children, selectedPerson, setSelectedPerson
                 value={person}
                 disabled={person.unavailable}
               >
-                {person.first_name} {person.last_name} ({specialties.specialty[person.specialty - 1].name})
+                {person.firstName} {person.lastName} ({specialties.specialty[person.specialty - 1].name})
               </Listbox.Option>
             ))}
           </Listbox.Options>

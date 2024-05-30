@@ -11,24 +11,26 @@ import {
   TimePickerComp,
 } from '../Form';
 import { BiChevronDown, BiPlus } from 'react-icons/bi';
-import { memberData, specialties } from '../Datas';
+import { memberData, specialties, agreements } from '../Datas';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import PatientMedicineServiceModal from './PatientMedicineServiceModal';
 import { getPatients } from '../../api/PatientsAPI';
 import { getProfessionals } from '../../api/ProfessionalsAPI';
+import { createAppointment } from '../../api/AppointmentsAPI';
 
 
 function AddAppointmentModal({ closeModal, isOpen, datas }) {
   const [services, setServices] = useState(specialties.specialty[0]);
   const [startDate, setStartDate] = useState();
   const [startTime, setStartTime] = useState();
-  const [endTime, setEndTime] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [patientsData, setPatientsData] = useState([]);
   const [professionalsData, setProfessionalsData] = useState([]);
   const [patient, setPatient] = useState({});
-  const [professional, setProfessional] = useState({ first_name: 'Selecione um Profissional' });
+  const [professional, setProfessional] = useState({ firstName: 'Selecione um Profissional' });
+  const [agreement, setAgreement] = useState(agreements.agreement[0]);
+
 
   const fetch = async () => {
     const patientsResponse = await getPatients()
@@ -63,22 +65,22 @@ function AddAppointmentModal({ closeModal, isOpen, datas }) {
       toast.error('Selecione um serviço');
       return;
     }
-    if (professional.first_name === 'Selecione um Profissional') {
+    if (professional.firstName === 'Selecione um Profissional') {
       toast.error('Selecione um profissional');
       return;
     }
 
     const data = {
-      patient: patient.id,
-      professional: professional.id,
-      start: new Date(
+      patientId: patient.id,
+      professionalId: professional.id,
+      startTime: new Date(
         startDate.getFullYear(),
         startDate.getMonth(),
         startDate.getDate(),
         startTime.getHours(),
         startTime.getMinutes(),
-        "00", "00", "00"),
-      end: new Date(
+      ),
+      endTime: new Date(
         startDate.getFullYear(),
         startDate.getMonth(),
         startDate.getDate(),
@@ -86,10 +88,17 @@ function AddAppointmentModal({ closeModal, isOpen, datas }) {
         startTime.getMinutes() + 30,
       ),
       service: services.id,
+      agreement: agreement.id
     };
 
     console.log(data);
-    toast.success('Consulta salva com sucesso');
+
+    const response = createAppointment(data);
+    if (response) {
+      toast.success('Consulta salva com sucesso');
+      closeModal();
+    }
+
 
   }
 
@@ -165,10 +174,6 @@ function AddAppointmentModal({ closeModal, isOpen, datas }) {
           </button>
         </div>
 
-
-
-
-
         {/* status && doctor */}
         <div className="grid sm:grid-cols-2 gap-4 w-full">
           <div className="flex w-full flex-col gap-3">
@@ -180,12 +185,28 @@ function AddAppointmentModal({ closeModal, isOpen, datas }) {
                 datas={professionalsData}
               >
                 <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
-                  {professional.first_name} {professional.last_name ? professional.last_name : ""} {professional.specialty ? `(${specialties.specialty[professional.specialty - 1].name})` : ""}
+                  {professional.firstName} {professional.lastName ? professional.lastName : ""} {professional.specialty ? `(${specialties.specialty[professional.specialty - 1].name})` : ""}
                   <BiChevronDown className="text-xl" />
                 </div>
               </SelectProfessional>
               : <p>Loading...</p>}
           </div>
+          <div className="flex w-full flex-col gap-3">
+            <p className="text-black text-sm">Convênio</p>
+            {professionalsData ?
+              <Select
+                selectedPerson={agreement}
+                setSelectedPerson={setAgreement}
+                datas={agreements.agreement}
+              >
+                <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
+                  {agreement.name}
+                  <BiChevronDown className="text-xl" />
+                </div>
+              </Select>
+              : <p>Loading...</p>}
+          </div>
+
 
         </div>
 

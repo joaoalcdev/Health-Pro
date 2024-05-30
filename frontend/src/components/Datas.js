@@ -234,6 +234,14 @@ export const specialties = {
   ],
 }
 
+export const agreements = {
+  agreement: [
+    { id: 1, name: 'Particular' },
+    { id: 2, name: 'Unimed' },
+    { id: 3, name: 'Outro' },
+  ],
+}
+
 export const brStateDatas = {
   states: [
     { id: 1, name: "Acre", UF: "AC" },

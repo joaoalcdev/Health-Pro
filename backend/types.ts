@@ -41,3 +41,14 @@ type Professionals = {
   councilInssuance: string,
   councilNumber: string,
 }
+
+type Appointment = {
+  id?: number,
+  patientId: number,
+  professionalId: number,
+  startTime: string,
+  endTime: string,
+  status: number,
+  service: number,
+  agreement: number,
+}

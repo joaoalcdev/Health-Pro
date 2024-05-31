@@ -376,6 +376,23 @@ export function PatientsTable({ functions, used, noData, patientData }) {
     setStatus(true)
   }
 
+  const genderImageMale = '/images/male.jpg';
+  const genderImageFemale = '/images/female.jpg';
+  const genderImageOther = '/images/other.jpg';
+
+  function dynamicImageGender() {
+    if (patientData.gender === 'Masculino') {
+      return genderImageMale;
+    }
+    if (patientData.gender === 'Femenino') {
+      return genderImageFemale;
+    }
+    else {
+      return genderImageOther;
+    }
+  }
+  const dynamicImage = dynamicImageGender();
+
   return (noData ?
     <>
       {
@@ -441,9 +458,19 @@ export function PatientsTable({ functions, used, noData, patientData }) {
             className="border-b border-border hover:bg-greyed transitions"
           >
             <td className={tdclass}>{index + 1}</td>
+            {/* <td className={tdclass}>
+              <div className="flex gap-4 items-center">
+                <div className=''>
+                  <img src={item.image} alt={item.fullName} className="w-12 h-12 rounded-full object-cover border border-border" />
+                </div>
+              </div>
+            </td> */}
             <td className={tdclass}>
               <div className="flex gap-4 items-center">
                 <div>
+                  <img src={dynamicImage} alt={item.fullName} className="w-12 h-12 rounded-full object-cover border border-border" />
+                </div>
+                <div className=''>
                   <h4 className="text-sm font-medium">
                     {/* map return patient */}
                     {item.fullName}

@@ -61,7 +61,7 @@ export const MenuDatas = [
     roleAllowed: 1
   },
   {
-    title: 'Appointments',
+    title: 'Atendimentos',
     path: '/appointments',
     icon: FaRegCalendarAlt,
     roleAllowed: 3

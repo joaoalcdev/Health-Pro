@@ -4,10 +4,11 @@
   "type": "commonjs",
   "module": "commonjs",
   "description": "",
-  "main": "dist/server.js",
+  "main": "server.ts",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsup src --format cjs --out-dir dist",
+    "build": "tsx src/server.ts",
+    "buildcjs": "tsup src --format cjs --out-dir dist",
     "start": "node dist/server.js"
   },
   "keywords": [],
@@ -21,7 +22,6 @@
     "fastify": "^4.26.2",
     "tsup": "^8.0.2",
     "tsx": "^4.9.0",
-    "typescript": "^5.4.5",
-    "vercel": "^34.2.3"
+    "typescript": "^5.4.5"
   }
 }

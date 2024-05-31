@@ -63,10 +63,10 @@ function PatientProfile() {
   const genderImageOther = '/images/other.jpg';
 
   function dynamicImageGender() {
-    if (patientData.gender === 'Masculino') {
+    if (patientData.gender === 1) {
       return genderImageMale;
     }
-    if (patientData.gender === 'Feminino') {
+    if (patientData.gender === 2) {
       return genderImageFemale;
     }
     else {

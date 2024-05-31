@@ -11,6 +11,7 @@ import { calculateDate } from '../utils/calculateDate';
 import { brStateDatas, specialties, councilDatas } from './Datas';
 import AddPatientModal from './Modals/AddPatientModal';
 import { getPatients } from '../api/PatientsAPI';
+import getAvatar from '../utils/getAvatar';
 
 const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
 const tdclass = 'text-start text-sm py-4 px-2 whitespace-nowrap';
@@ -380,18 +381,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
   const genderImageFemale = '/images/female.jpg';
   const genderImageOther = '/images/other.jpg';
 
-  function dynamicImageGender() {
-    if (patientData.gender === 'Masculino') {
-      return genderImageMale;
-    }
-    if (patientData.gender === 'Femenino') {
-      return genderImageFemale;
-    }
-    else {
-      return genderImageOther;
-    }
-  }
-  const dynamicImage = dynamicImageGender();
+
 
   return (noData ?
     <>
@@ -468,7 +458,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
             <td className={tdclass}>
               <div className="flex gap-4 items-center">
                 <div>
-                  <img src={dynamicImage} alt={item.fullName} className="w-12 h-12 rounded-full object-cover border border-border" />
+                  <img src={getAvatar(item.gender)} alt={item.fullName} className="w-12 h-12 rounded-full object-cover border border-border" />
                 </div>
                 <div className=''>
                   <h4 className="text-sm font-medium">
@@ -614,7 +604,7 @@ export function ProfessionalsTable({ data, functions, professional, noData }) {
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
           <th className={thclass}>#</th>
-          <th className={thclass}>Nome</th>
+          <th className={thclass}>Profissional</th>
           <th className={thclass}>Especialidade</th>
           <th className={thclass}>Telefone</th>
           <th className={thclass}>Email</th>
@@ -631,6 +621,9 @@ export function ProfessionalsTable({ data, functions, professional, noData }) {
             <td className={tdclass}>{index + 1}</td>
             <td className={tdclass}>
               <div className="flex gap-4 items-center">
+                <span className="w-12">
+                  <img src={getAvatar(item.gender)} alt='avatar_image' className="w-12 h-12 rounded-full object-cover border border-border" />
+                </span>
                 <h4 className="text-sm font-medium">{item.firstName} {item.lastName}</h4>
               </div>
             </td>

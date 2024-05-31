@@ -40,6 +40,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     // if (
     //   !fullName
     // ) {
@@ -74,16 +75,16 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
         fullName,
         cpf,
         // age,
-        bloodType: bloodType.name,
-        marital: marital.name,
-        gender: gender.name,
+        bloodType: bloodType.id,
+        marital: marital.id,
+        gender: gender.id,
         dateBirth,
         phoneNumber,
         emergencyContact,
         address,
         region,
         city,
-        state: state.UF,
+        state: state.id,
       }
     )
 
@@ -326,7 +327,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
             >
               Cancelar
             </button>
-            <Button label="Cadastrar" Icon={HiArrowRight} />
+            <Button label="Cadastrar" Icon={HiArrowRight} loading={loading} disable={loading} />
           </div>
           {/* </div> */}
         </form>

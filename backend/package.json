@@ -4,11 +4,10 @@
   "type": "commonjs",
   "module": "commonjs",
   "description": "",
-  "main": "server.ts",
+  "main": "server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsx src/server.ts",
-    "buildcjs": "tsup src --format cjs --out-dir dist",
+    "build": "tsup src --format cjs --out-dir dist",
     "start": "node dist/server.js"
   },
   "keywords": [],

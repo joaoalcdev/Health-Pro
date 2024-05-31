@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../Layout';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
@@ -7,6 +7,7 @@ import { HiOutlineViewGrid } from 'react-icons/hi';
 import { HiOutlineCalendarDays } from 'react-icons/hi2';
 import AddAppointmentModal from '../components/Modals/AddApointmentModal';
 import { servicesData } from '../components/Datas';
+import { listAppointments } from '../api/AppointmentsAPI';
 
 // custom toolbar
 const CustomToolbar = (toolbar) => {
@@ -44,14 +45,14 @@ const CustomToolbar = (toolbar) => {
 
   // view button group
   const viewNamesGroup = [
-    { view: 'month', label: 'Month' },
-    { view: 'week', label: 'Week' },
-    { view: 'day', label: 'Day' },
+    { view: 'month', label: 'Mês' },
+    { view: 'week', label: 'Semana' },
+    { view: 'day', label: 'Dia' },
   ];
 
   return (
     <div className="flex flex-col gap-8 mb-8">
-      <h1 className="text-xl font-semibold">Appointments</h1>
+      <h1 className="text-xl font-semibold">Atendimentos</h1>
       <div className="grid sm:grid-cols-2 md:grid-cols-12 gap-4">
         <div className="md:col-span-1 flex sm:justify-start justify-center items-center">
           <button
@@ -107,8 +108,34 @@ const CustomToolbar = (toolbar) => {
 
 function Appointments() {
   const localizer = momentLocalizer(moment);
-  const [open, setOpen] = React.useState(false);
-  const [data, setData] = React.useState({});
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState({});
+  const [status, setStatus] = useState(true);
+  const [eventsData, setEventsData] = useState([])
+
+  const fetch = async () => {
+    const response = await listAppointments()
+    if (response.length === 0) {
+      return
+    }
+    var rebaseData = response.data.map((item) => {
+      return {
+        id: item.id,
+        start: moment(item.startTime).toDate(),
+        end: moment(item.endTime).toDate(),
+        title: item.title,
+        color: '#66B5A3',
+        // ...item
+      }
+    })
+    setEventsData(rebaseData)
+    console.log("eventsData", eventsData)
+    setStatus(false)
+  }
+
+  useEffect(() => {
+    fetch()
+  }, [status])
 
 
   // handle modal close
@@ -120,22 +147,22 @@ function Appointments() {
   const events = [
     {
       id: 0,
-      start: moment({ day: 28, hours: 7, minutes: 30 }).toDate(),
-      end: moment({ day: 28, hours: 9 }).toDate(),
-      color: '#FB923C',
-      title: `Taynara Gondim | Fonoaudiologia | Mateus`,
-      message: 'He is not sure about the time',
-      service: servicesData[1],
-      shareData: {
-        email: true,
-        sms: true,
-        whatsapp: false,
-      },
+      start: moment({ day: 28, hours: 9 }).toDate(),
+      end: moment({ day: 28, hours: 10 }).toDate(),
+      //color: '#FB923C',
+      title: `Mateus Gondim | Fonoaudiologia | Mateus`,
+      //message: 'He is not sure about the time',
+      // service: servicesData[1],
+      // shareData: {
+      //   email: true,
+      //   sms: true,
+      //   whatsapp: false,
+      // },
     },
     {
       id: 1,
-      start: moment({ hours: 12 }).toDate(),
-      end: moment({ hours: 13 }).toDate(),
+      start: moment({ day: 31, hours: 13 }).toDate(),
+      end: moment({ day: 31, hours: 14 }).toDate(),
       color: '#FC8181',
       title: `Taynara Gondim | Fonoaudiologia | Mateus`,
       message: 'She is coming for checkup',
@@ -177,8 +204,7 @@ function Appointments() {
     },
   ];
 
-  console.log(events);
-
+  console.log("events", events)
   // onClick event handler
   const handleEventClick = (event) => {
     setData(event);
@@ -191,6 +217,7 @@ function Appointments() {
         <AddAppointmentModal
           datas={data}
           isOpen={open}
+          status={setStatus}
           closeModal={() => {
             handleClose();
           }}
@@ -206,7 +233,7 @@ function Appointments() {
 
       <Calendar
         localizer={localizer}
-        events={events}
+        events={eventsData ? eventsData : events}
         startAccessor="start"
         endAccessor="end"
         style={{
@@ -224,7 +251,6 @@ function Appointments() {
         eventPropGetter={(event) => {
           const style = {
             backgroundColor: '#66B5A3',
-
             borderRadius: '10px',
             color: 'white',
             border: '1px solid',

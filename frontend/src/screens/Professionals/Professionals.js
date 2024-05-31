@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { BiPlus } from 'react-icons/bi';
+import { BiPlus, BiChevronDown } from 'react-icons/bi';
 import Layout from '../../Layout';
+import { Select } from '../../components/Form';
 import { ProfessionalsTable } from '../../components/Tables';
 import { useNavigate } from 'react-router-dom';
 import AddProfessionalModal from '../../components/Modals/AddProfessionalModal';
 import { getProfessionals } from '../../api/ProfessionalsAPI';
+import { specialties } from '../../components/Datas';
 
 function Professionals() {
   const navigate = useNavigate();
@@ -14,6 +16,8 @@ function Professionals() {
   const [data, setData] = useState([]);
   const [status, setStatus] = useState(false);
   const [noData, setNoData] = useState(true);
+
+  const [filterProfessionals, setFilterProfessionals] = useState({ name: "Todos" })
 
   const fetch = async () => {
     const response = await getProfessionals()
@@ -74,15 +78,28 @@ function Professionals() {
       >
         {/* datas */}
 
-        {noData ? "" : <div className="grid md:grid-cols-6 sm:grid-cols-2 grid-cols-1 gap-2">
-          <div className="md:col-span-5 grid lg:grid-cols-4 items-center gap-6">
-            <input
-              type="text"
-              placeholder='Pesquise por nome...'
-              className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
-            />
+        {noData ? ""
+          :
+          <div className="grid md:grid-cols-6 sm:grid-cols-2 grid-cols-1 gap-2">
+            <div className="md:col-span-5 grid lg:grid-cols-4 items-center gap-6">
+              <input
+                type="text"
+                placeholder='Pesquise por nome...'
+                className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
+              />
+            </div>
+            <Select
+              selectedPerson={filterProfessionals}
+              setSelectedPerson={setFilterProfessionals}
+              datas={specialties.specialty}
+            >
+              <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
+                <p>{filterProfessionals.name}</p>
+                <BiChevronDown className="text-xl" />
+              </div>
+            </Select>
           </div>
-        </div>}
+        }
         <div className="mt-8 w-full overflow-x-scroll">
           < ProfessionalsTable
             doctor={true}

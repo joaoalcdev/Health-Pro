@@ -20,7 +20,7 @@ import { getProfessionals } from '../../api/ProfessionalsAPI';
 import { createAppointment } from '../../api/AppointmentsAPI';
 
 
-function AddAppointmentModal({ closeModal, isOpen, datas }) {
+function AddAppointmentModal({ closeModal, isOpen, datas, status }) {
   const [services, setServices] = useState(specialties.specialty[0]);
   const [startDate, setStartDate] = useState();
   const [startTime, setStartTime] = useState();
@@ -96,6 +96,7 @@ function AddAppointmentModal({ closeModal, isOpen, datas }) {
     const response = createAppointment(data);
     if (response) {
       toast.success('Consulta salva com sucesso');
+      status(true);
       closeModal();
     }
 

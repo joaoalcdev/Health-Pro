@@ -6,6 +6,7 @@ import { FaCheck } from 'react-icons/fa';
 import { roleOptions, specialties } from './Datas';
 import { InputMask } from 'primereact/inputmask';
 
+
 export function InputMaskComp({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, mask, unmask, autoClear }) {
   return (
     <div className="text-sm w-full">
@@ -69,7 +70,7 @@ export function Button({ label, onClick, loading, Icon, type, disabled }) {
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className={`w-full flex-rows gap-4  transitions ${disabled ? 'opacity-30' : 'hover:opacity-80'} bg-subMain text-white text-sm font-medium px-2 py-4 rounded`}
+      className={`w-full flex-rows gap-4 transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} bg-subMain text-white text-sm font-medium px-2 py-4 rounded`}
     >
       {loading ? (
         <BiLoaderCircle className="animate-spin text-white text-2xl" />

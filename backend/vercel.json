@@ -3,7 +3,7 @@
   "name": "healthpro-server",
   "builds": [
     {
-      "src": "src/server.ts",
+      "src": "dist/server.js",
       "use": "@vercel/node"
     },
     {
@@ -15,7 +15,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/server.ts",
+      "dest": "dist/server.js",
       "methods": ["GET", "POST", "PUT", "DELETE", "PATCH","OPTIONS"],
       "headers": {
         "Access-Control-Allow-Origin": "*",
@@ -27,5 +27,6 @@
   ],
   "env": {
     "NODE_ENV": "production"
-  }
+  },
+  "devCommand": "node dist/server.js"
 }

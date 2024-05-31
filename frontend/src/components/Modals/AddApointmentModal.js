@@ -6,185 +6,211 @@ import {
   DatePickerComp,
   Input,
   Select,
+  SelectProfessional,
   Textarea,
   TimePickerComp,
 } from '../Form';
 import { BiChevronDown, BiPlus } from 'react-icons/bi';
-import { memberData, servicesData, sortsDatas } from '../Datas';
+import { memberData, specialties, agreements } from '../Datas';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import PatientMedicineServiceModal from './PatientMedicineServiceModal';
+import { getPatients } from '../../api/PatientsAPI';
+import { getProfessionals } from '../../api/ProfessionalsAPI';
+import { createAppointment } from '../../api/AppointmentsAPI';
 
-// edit member data
-const doctorsData = memberData.map((item) => {
-  return {
-    id: item.id,
-    name: item.title,
-  };
-});
 
 function AddAppointmentModal({ closeModal, isOpen, datas }) {
-  const [services, setServices] = useState(servicesData[0]);
-  const [startDate, setStartDate] = useState(new Date());
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
-  const [status, setStatus] = useState(sortsDatas.status[0]);
-  const [doctors, setDoctors] = useState(doctorsData[0]);
-  const [shares, setShares] = useState({
-    email: false,
-    sms: false,
-    whatsapp: false,
-  });
+  const [services, setServices] = useState(specialties.specialty[0]);
+  const [startDate, setStartDate] = useState();
+  const [startTime, setStartTime] = useState();
   const [open, setOpen] = useState(false);
+  const [patientsData, setPatientsData] = useState([]);
+  const [professionalsData, setProfessionalsData] = useState([]);
+  const [patient, setPatient] = useState({});
+  const [professional, setProfessional] = useState({ firstName: 'Selecione um Profissional' });
+  const [agreement, setAgreement] = useState(agreements.agreement[0]);
 
-  // on change share
-  const onChangeShare = (e) => {
-    setShares({ ...shares, [e.target.name]: e.target.checked });
-  };
+
+  const fetch = async () => {
+    const patientsResponse = await getPatients()
+    const professionalsResponse = await getProfessionals()
+
+    setPatientsData(patientsResponse)
+    setProfessionalsData(professionalsResponse)
+
+    console.log(professional)
+  }
+
+  useEffect(() => {
+    fetch()
+  }, [])
+
 
   // set data
-  useEffect(() => {
-    if (datas?.title) {
-      setServices(datas?.service);
-      setStartTime(datas?.start);
-      setEndTime(datas?.end);
-      setShares(datas?.shareData);
+  // useEffect(() => {
+  //   if (datas?.title) {
+  //     setServices(datas?.service);
+  //     setStartTime(datas?.start);
+  //     setEndTime(datas?.end);
+  //   }
+  // }, [datas]);
+
+  const handleSave = () => {
+    if (!patient.fullName) {
+      toast.error('Selecione um paciente');
+      return;
     }
-  }, [datas]);
+    if (!services) {
+      toast.error('Selecione um serviço');
+      return;
+    }
+    if (professional.firstName === 'Selecione um Profissional') {
+      toast.error('Selecione um profissional');
+      return;
+    }
+
+    const data = {
+      patientId: patient.id,
+      professionalId: professional.id,
+      startTime: new Date(
+        startDate.getFullYear(),
+        startDate.getMonth(),
+        startDate.getDate(),
+        startTime.getHours(),
+        startTime.getMinutes(),
+      ),
+      endTime: new Date(
+        startDate.getFullYear(),
+        startDate.getMonth(),
+        startDate.getDate(),
+        startTime.getHours(),
+        startTime.getMinutes() + 30,
+      ),
+      service: services.id,
+      agreement: agreement.id
+    };
+
+    console.log(data);
+
+    const response = createAppointment(data);
+    if (response) {
+      toast.success('Consulta salva com sucesso');
+      closeModal();
+    }
+
+
+  }
 
   return (
     <Modal
       closeModal={closeModal}
       isOpen={isOpen}
-      title={datas?.title ? 'Edit Appointment' : 'New Appointment'}
+      title={datas?.title ? 'Atualizar Consulta' : 'Nova Consulta'}
       width={'max-w-3xl'}
+      height={'sm:h-[65%vh]'}
     >
       {open && (
         <PatientMedicineServiceModal
           closeModal={() => setOpen(!isOpen)}
           isOpen={open}
+          data={patientsData}
+          setPatient={setPatient}
           patient={true}
         />
       )}
       <div className="flex-colo gap-6">
-        <div className="grid sm:grid-cols-12 gap-4 w-full items-center">
-          <div className="sm:col-span-10">
-            <Input
-              label="Patient Name"
-              color={true}
-              placeholder={
-                datas?.title
-                  ? datas.title
-                  : 'Select Patient and patient name will appear here'
-              }
-            />
-          </div>
-          <button
-            onClick={() => setOpen(!open)}
-            className="text-subMain flex-rows border border-dashed border-subMain text-sm py-3.5 sm:mt-6 sm:col-span-2 rounded"
-          >
-            <BiPlus /> Add
-          </button>
-        </div>
-
         <div className="grid sm:grid-cols-2 gap-4 w-full">
           <div className="flex w-full flex-col gap-3">
-            <p className="text-black text-sm">Purpose of visit</p>
+            <p className="text-black text-sm">Especialidade</p>
             <Select
               selectedPerson={services}
               setSelectedPerson={setServices}
-              datas={servicesData}
+              datas={specialties.specialty}
             >
-              <div className="w-full flex-btn text-textGray text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
-                {services.name} <BiChevronDown className="text-xl" />
+              <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
+                {services ? services.name : ""} <BiChevronDown className="text-xl" />
               </div>
             </Select>
           </div>
           {/* date */}
-          <DatePickerComp
-            label="Date of visit"
-            startDate={startDate}
-            onChange={(date) => setStartDate(date)}
-          />
-        </div>
+          <div className="grid sm:grid-cols-2 z-[100] gap-4 w-full">
+            <DatePickerComp
+              label="Data da consulta"
+              startDate={startDate}
+              color={'subMain'}
+              dateFormat={'dd/MM/yyyy'}
+              placeholderText={"Selecionar data"}
+              onChange={(date) => {
+                setStartDate(date)
+                console.log(date)
+              }}
+            />
+            <TimePickerComp
+              label="Horário"
+              startDate={startTime}
+              placeholderText={"Selecionar horário"}
+              onChange={(date) => setStartTime(date)}
+            />
 
-        <div className="grid sm:grid-cols-2 gap-4 w-full">
-          <TimePickerComp
-            label="Start time"
-            startDate={startTime}
-            onChange={(date) => setStartTime(date)}
-          />
-          <TimePickerComp
-            label="End time"
-            startDate={endTime}
-            onChange={(date) => setEndTime(date)}
-          />
+          </div>
+
+        </div>
+        <div className="grid sm:grid-cols-12 gap-4 w-full items-center">
+          <div className="sm:col-span-10">
+            <Input
+              label="Paciente"
+              color={true}
+              value={patient ? patient.fullName : ''}
+              placeholder={
+                patient ? patient.fullName : 'Selecione o paciente clicando no botão incluir...'}
+            />
+          </div>
+          <button
+            onClick={() => setOpen(!open)}
+            className="text-subMain flex-rows border border-dashed border-subMain text-sm py-3.5 sm:mt-8 sm:col-span-2 rounded"
+          >
+            <BiPlus /> Incluir
+          </button>
         </div>
 
         {/* status && doctor */}
         <div className="grid sm:grid-cols-2 gap-4 w-full">
           <div className="flex w-full flex-col gap-3">
-            <p className="text-black text-sm">Doctor</p>
-            <Select
-              selectedPerson={doctors}
-              setSelectedPerson={setDoctors}
-              datas={doctorsData}
-            >
-              <div className="w-full flex-btn text-textGray text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
-                {doctors.name} <BiChevronDown className="text-xl" />
-              </div>
-            </Select>
+            <p className="text-black text-sm">Profissional</p>
+            {professionalsData ?
+              <SelectProfessional
+                selectedPerson={professional}
+                setSelectedPerson={setProfessional}
+                datas={professionalsData}
+              >
+                <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
+                  {professional.firstName} {professional.lastName ? professional.lastName : ""} {professional.specialty ? `(${specialties.specialty[professional.specialty - 1].name})` : ""}
+                  <BiChevronDown className="text-xl" />
+                </div>
+              </SelectProfessional>
+              : <p>Loading...</p>}
           </div>
           <div className="flex w-full flex-col gap-3">
-            <p className="text-black text-sm">Status</p>
-            <Select
-              selectedPerson={status}
-              setSelectedPerson={setStatus}
-              datas={sortsDatas.status}
-            >
-              <div className="w-full flex-btn text-textGray text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
-                {status.name} <BiChevronDown className="text-xl" />
-              </div>
-            </Select>
+            <p className="text-black text-sm">Convênio</p>
+            {professionalsData ?
+              <Select
+                selectedPerson={agreement}
+                setSelectedPerson={setAgreement}
+                datas={agreements.agreement}
+              >
+                <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
+                  {agreement.name}
+                  <BiChevronDown className="text-xl" />
+                </div>
+              </Select>
+              : <p>Loading...</p>}
           </div>
+
+
         </div>
 
-        {/* des */}
-        <Textarea
-          label="Description"
-          placeholder={
-            datas?.message
-              ? datas.message
-              : 'She will be coming for a checkup.....'
-          }
-          color={true}
-          rows={5}
-        />
 
-        {/* share */}
-        <div className="flex-col flex gap-8 w-full">
-          <p className="text-black text-sm">Share with patient via</p>
-          <div className="flex flex-wrap sm:flex-nowrap gap-4">
-            <Checkbox
-              name="email"
-              checked={shares.email}
-              onChange={onChangeShare}
-              label="Email"
-            />
-            <Checkbox
-              name="sms"
-              checked={shares.sms}
-              onChange={onChangeShare}
-              label="SMS"
-            />
-            <Checkbox
-              checked={shares.whatsapp}
-              name="whatsapp"
-              onChange={onChangeShare}
-              label="WhatsApp"
-            />
-          </div>
-        </div>
         {/* buttones */}
         <div className="grid sm:grid-cols-2 gap-4 w-full">
           <button
@@ -194,15 +220,13 @@ function AddAppointmentModal({ closeModal, isOpen, datas }) {
             {datas?.title ? 'Discard' : 'Cancel'}
           </button>
           <Button
-            label="Save"
+            label="Salvar"
             Icon={HiOutlineCheckCircle}
-            onClick={() => {
-              toast.error('This feature is not available yet');
-            }}
+            onClick={() => { handleSave() }}
           />
         </div>
       </div>
-    </Modal>
+    </Modal >
   );
 }
 

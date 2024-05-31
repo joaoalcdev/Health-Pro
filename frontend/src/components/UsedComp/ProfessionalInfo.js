@@ -15,24 +15,24 @@ function ProfessionalInfo({ data, onStatus }) {
   const [isDisabled, setIsDisabled] = useState(true)
   const [loading, setLoading] = useState(false)
 
-  const [firstName, setFirstName] = useState(data.first_name)
-  const [lastName, setLastName] = useState(data.last_name)
-  const [phoneNumber, setPhoneNumber] = useState(data.phone_number)
+  const [firstName, setFirstName] = useState(data.firstName)
+  const [lastName, setLastName] = useState(data.lastName)
+  const [phoneNumber, setPhoneNumber] = useState(data.phoneNumber)
   const [email, setEmail] = useState(data.email)
   const [address, setAddress] = useState(data.address)
   const [region, setRegion] = useState(data.region)
   const [city, setCity] = useState(data.city)
   const [state, setState] = useState(brStateDatas.states[data.state - 1]);
 
-  const [fullName, setFullName] = useState(data.full_name)
+  const [fullName, setFullName] = useState(data.fullName)
   const [rg, setRg] = useState(data.rg)
-  const [rgInssuance, setRgInssuance] = useState(data.rg_inssuance)
+  const [rgInssuance, setRgInssuance] = useState(data.rgInssuance)
   const [cpf, setCpf] = useState(data.cpf)
   const [gender, setGender] = useState(data.gender)
   const [specialty, setSpecialty] = useState(specialties.specialty[data.specialty - 1]);
   const [council, setCouncil] = useState(councilDatas.council[data.council - 1]);
-  const [councilNumber, setCouncilNumber] = useState(data.council_number)
-  const [councilInssuance, setCouncilInssuance] = useState(brStateDatas.states[data.council_inssuance - 1])
+  const [councilNumber, setCouncilNumber] = useState(data.councilNumber)
+  const [councilInssuance, setCouncilInssuance] = useState(brStateDatas.states[data.councilInssuance - 1])
 
   const handleChange2Edit = () => {
     setIsEdit(!isEdit)
@@ -63,6 +63,7 @@ function ProfessionalInfo({ data, onStatus }) {
     setLoading(true);
     const response = await updateProfessional(data.id,
       {
+        userId: data.user_id,
         firstName,
         lastName,
         email,
@@ -104,7 +105,7 @@ function ProfessionalInfo({ data, onStatus }) {
     <div className="grid sm:grid-cols-2 gap-4 w-full">
       <div className="flex w-full flex-col gap-3">
         <h1 className="text-black text-sm">Nome</h1>
-        <p className="text-black text-md font-semibold">{data.full_name}</p>
+        <p className="text-black text-md font-semibold">{data.fullName}</p>
       </div>
       <div className="grid sm:grid-cols-2 gap-4 w-full">
         <div className="flex w-full flex-col gap-3">
@@ -113,7 +114,7 @@ function ProfessionalInfo({ data, onStatus }) {
         </div>
         <div className="flex w-full flex-col gap-3">
           <h1 className="text-black text-sm">Telefone de Contato</h1>
-          <p className="text-black text-md font-semibold">{formatPhoneNumber(data.phone_number)}</p>
+          <p className="text-black text-md font-semibold">{formatPhoneNumber(data.phoneNumber)}</p>
         </div>
       </div>
       <div className="grid sm:grid-cols-2 gap-4 w-full">
@@ -123,7 +124,7 @@ function ProfessionalInfo({ data, onStatus }) {
         </div>
         <div className="flex w-full flex-col gap-3">
           <h1 className="text-black text-sm">RG - Emissor</h1>
-          <p className="text-black text-md font-semibold">{data.rg_inssuance}</p>
+          <p className="text-black text-md font-semibold">{data.rgInssuance}</p>
         </div>
       </div>
 
@@ -148,16 +149,16 @@ function ProfessionalInfo({ data, onStatus }) {
       </div>
       <div className="flex w-full flex-col gap-3">
         <h1 className="text-black text-sm">Especialidade</h1>
-        <p className="text-black text-md font-semibold">{data.specialty ? specialties.specialty[data.specialty].name : ""}</p>
+        <p className="text-black text-md font-semibold">{data.specialty ? specialties.specialty[data.specialty - 1].name : ""}</p>
       </div>
       <div className="grid sm:grid-cols-2 gap-4 w-full">
         <div className="flex w-full flex-col gap-3">
           <h1 className="text-black text-sm">Conselho</h1>
-          <p className="text-black text-md font-semibold">{data.council ? councilDatas.council[data.council].name : ""} - {data.council_number}</p>
+          <p className="text-black text-md font-semibold">{data.council ? councilDatas.council[data.council - 1].name : ""} - {data.councilNumber}</p>
         </div>
         <div className="flex w-full flex-col gap-3">
           <h1 className="text-black text-sm">Estado de Emissão</h1>
-          <p className="text-black text-md font-semibold">{data.council_inssuance ? brStateDatas.states[data.council_inssuance - 1].name : ""}</p>
+          <p className="text-black text-md font-semibold">{data.councilInssuance ? brStateDatas.states[data.councilInssuance - 1].name : ""}</p>
         </div>
       </div>
       {/* submit */}

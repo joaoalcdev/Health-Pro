@@ -9,7 +9,7 @@ type Users = {
   address: string,
   city: string,
   region: string,
-  state: string,
+  state: number,
 }
 
 type Patients = {
@@ -35,10 +35,10 @@ type Professionals = {
   rg: string,
   rgInssuance: string,
   cpf: string,
-  gender: string,
-  specialty: string,
-  council: string,
-  councilInssuance: string,
+  gender: number,
+  specialty: number,
+  council: number,
+  councilInssuance: number,
   councilNumber: string,
 }
 

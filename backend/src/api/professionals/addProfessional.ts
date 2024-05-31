@@ -58,7 +58,7 @@ export const AddProfessional = async (app: FastifyInstance) => {
           throw error
         } else {
             const { data: createdProfessional, error: pError  } = await supabase.from("professionals").insert([{
-              id: data.user?.id,
+              userId: data.user?.id,
               fullName,
               rg,
               rgInssuance,

@@ -3,6 +3,6 @@ export function apiBaseUrl(routeAPI) {
     return (`http://localhost:3333/${routeAPI}`)
     // return 'http://localhost:3333/users'
   } else {
-    return (`https://healthpro-backend.vercel.app/${routeAPI}`)
+    return (`https://health-pro.onrender.com/${routeAPI}`)
   }
 }

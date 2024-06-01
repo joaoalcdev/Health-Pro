@@ -377,11 +377,6 @@ export function PatientsTable({ functions, used, noData, patientData }) {
     setStatus(true)
   }
 
-  const genderImageMale = '/images/male.jpg';
-  const genderImageFemale = '/images/female.jpg';
-  const genderImageOther = '/images/other.jpg';
-
-
 
   return (noData ?
     <>
@@ -466,9 +461,9 @@ export function PatientsTable({ functions, used, noData, patientData }) {
                     {item.fullName}
                   </h4>
                   <p className="text-xs mt-1 text-textGray">
-                    {
-                      { phoneNumber: item.phoneNumber, emergencyContact: item.emergencyContact }.phoneNumber === '' ? formatPhoneNumber(item.emergencyContact) : { phoneNumber: item.phoneNumber, emergencyContact: item.emergencyContact }.emergencyContact === '' ? ' Contato: ' + formatPhoneNumber(item.phoneNumber) : formatPhoneNumber(item.phoneNumber) === formatPhoneNumber(item.emergencyContact) ? ' Contato: ' + formatPhoneNumber(item.phoneNumber) : ' Contato: ' + formatPhoneNumber(item.phoneNumber) + ' | Emergência: ' + formatPhoneNumber(item.emergencyContact)
-                    }
+                    {formatPhoneNumber(item.phoneNumber)}
+                    <br />
+                    {formatPhoneNumber(item.emergencyContact)}
                   </p>
                 </div>
               </div>
@@ -478,19 +473,35 @@ export function PatientsTable({ functions, used, noData, patientData }) {
                 className={
                   `py-1 px-4 ${item.gender === 'Masculino' ? 'bg-subMain text-subMain' : 'bg-orange-500 text-orange-500'} bg-opacity-10 text-xs rounded-xl`}
               >
-                {item.gender}
+                {item.gender === 1 ? 'M' : item.gender === 2 ? 'F' : 'O'}
               </span>
             </td>
             {!used && (
               <>
-                <td className={tdclass}>{item.bloodType}</td>
+                <td className={tdclass}>
+                  {/* {item.bloodType} */}
+                  {item.bloodType === 1 ? 'Não informado...' : item.bloodType === 2 ? 'A+' : item.bloodType === 3 ? 'A-' : item.bloodType === 4 ? 'B+' : item.bloodType === 5 ? 'B-' : item.bloodType === 6 ? 'AB+' : item.bloodType === 7 ? 'AB-' : item.bloodType === 8 ? 'O+' : item.bloodType === 9 ? 'O-' : 'Não informado...'}
+                </td>
                 <td className={tdclass}>{calculateDate(item.dateBirth)}</td>
                 <td className={tdclass}>{formatDate(new Date(item.dateBirth))}</td>
               </>
             )}
             <th className={thclass}>
               {/* if dont have address, dont show */}
-              <p className="text-xs">{item.address === '' ? '-' : item.address} <br /> {item.city === '' ? '-' : item.city} ({item.state})</p>
+              <div className="text-xs text-black">
+                <p>
+                  {item.address === '' ? '-' : item.address}
+                </p>
+                <div className='flex'>
+                  <p className='pr-1'>
+                    {item.city === '' ? '-' : item.city}
+                  </p>
+                  <p className=''>
+                    ({item.state ? brStateDatas.states[item.state - 1].UF : "-"})
+                  </p>
+                </div>
+                {/* {item.council ? councilDatas.council[item.council - 1].name : "-"} */}
+              </div>
             </th>
 
             {/* <td className={tdclass}>

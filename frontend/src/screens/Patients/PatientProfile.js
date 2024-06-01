@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import Layout from '../../Layout';
 import { patientTab } from '../../components/Datas';
@@ -37,13 +38,13 @@ function PatientProfile() {
       case 1:
         return <MedicalRecord />;
       case 2:
-        return <AppointmentsUsed doctor={false} />;
-      case 3:
-        return <InvoiceUsed />;
-      case 4:
-        return <PaymentsUsed doctor={false} />;
-      case 5:
         return <PersonalInfo titles={false} data={patientData} status={setStatus} />;
+      case 3:
+        return <AppointmentsUsed doctor={false} />;
+      case 4:
+        return <InvoiceUsed />;
+      case 5:
+        return <PaymentsUsed doctor={false} />;
       // case 6:
       // return <PatientImages />;
       // case 7:

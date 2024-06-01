@@ -1239,23 +1239,23 @@ export const patientTab = [
   },
   {
     id: 2,
+    title: 'Informações do Paciente',
+    icon: RiUserLine,
+  },
+  {
+    id: 3,
     title: 'Consultas',
     icon: BiCalendar,
   },
   {
-    id: 3,
+    id: 4,
     title: 'Invoices',
     icon: RiFileList3Line,
   },
   {
-    id: 4,
+    id: 5,
     title: 'Pagamentos',
     icon: RiMoneyDollarCircleLine,
-  },
-  {
-    id: 5,
-    title: 'Informações do Paciente',
-    icon: RiUserLine,
   },
   // {
   //   id: 5,

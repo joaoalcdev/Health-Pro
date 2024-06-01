@@ -255,9 +255,6 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
               </div>
             </div>
 
-            {/* <div className="grid sm:grid-cols-4 gap-4 mb-8 w-full">
-
-          </div> */}
             <div className="grid sm:grid-cols-2 gap-4 w-full">
               {/* Address */}
               <div className=''>

@@ -14,6 +14,11 @@ const avatar = [
     name: 'Other',
     image: '/images/other.jpg',
   },
+  {
+    id: 4,
+    name: 'Prefiro não dizer',
+    image: '/images/other.jpg',
+  },
 ];
 
 export default function getAvatar(id) {

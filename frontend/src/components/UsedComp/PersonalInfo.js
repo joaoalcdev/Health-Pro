@@ -220,21 +220,21 @@ function PersonalInfo({ titles, data, status }) {
                   </p>
                 </div>
               </div>
-              {/* City */}
-              <div className=''>
-                <h3 className='pl-1 mb-[-7px] text-sm text-black'>Cidade<span className='text-required'></span></h3>
-                <div className='w-full border p-4 mt-3 rounded-lg'>
-                  <p className='text-sm font-light'>
-                    {data.city ? data.city : "Não informado..."}
-                  </p>
-                </div>
-              </div>
               {/* Region */}
               <div className=''>
                 <h3 className='pl-1 mb-[-7px] text-sm text-black'>Bairro<span className='text-required'></span></h3>
                 <div className='w-full border p-4 mt-3 rounded-lg'>
                   <p className='text-sm font-light'>
                     {data.region ? data.region : "Não informado..."}
+                  </p>
+                </div>
+              </div>
+              {/* City */}
+              <div className=''>
+                <h3 className='pl-1 mb-[-7px] text-sm text-black'>Cidade<span className='text-required'></span></h3>
+                <div className='w-full border p-4 mt-3 rounded-lg'>
+                  <p className='text-sm font-light'>
+                    {data.city ? data.city : "Não informado..."}
                   </p>
                 </div>
               </div>
@@ -281,7 +281,10 @@ function PersonalInfo({ titles, data, status }) {
                 color={true}
                 required={true}
                 value={fullName}
-                onChange={(e) => { setFullName(e.target.value) }}
+                onChange={(e) => {
+                  setFullName(e.target.value)
+                  // setIsDisabled(false)
+                }}
                 placeholder={'João da Silva'}
               />
             </div>
@@ -296,7 +299,10 @@ function PersonalInfo({ titles, data, status }) {
                 unmask={true}
                 required={false}
                 value={cpf}
-                onChange={(e) => { setCpf(e.target.value) }}
+                onChange={(e) => {
+                  setCpf(e.target.value);
+                  // setIsDisabled(false) 
+                }}
                 className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
               />
             </div>
@@ -371,7 +377,10 @@ function PersonalInfo({ titles, data, status }) {
                 autoClear={true}
                 required={false}
                 value={phoneNumber}
-                onChange={(e) => { setPhoneNumber(e.target.value) }}
+                onChange={(e) => {
+                  setPhoneNumber(e.target.value)
+                  // setIsDisabled(false)
+                }}
                 className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
               />
             </div>
@@ -388,7 +397,7 @@ function PersonalInfo({ titles, data, status }) {
                 value={emergencyContact}
                 onChange={(e) => {
                   setEmergencyContact(e.target.value)
-
+                  // setIsDisabled(false)
                 }}
                 className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
               />
@@ -405,21 +414,9 @@ function PersonalInfo({ titles, data, status }) {
                 value={address}
                 onChange={(e) => {
                   setAddress(e.target.value)
+                  // setIsDisabled(false)
                 }}
                 placeholder={'Rua, Número'}
-              />
-            </div>
-            {/* City */}
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Cidade<span className='text-required'></span></p>
-              <Input
-                color={true}
-                required={false}
-                value={city}
-                onChange={(e) => {
-                  setCity(e.target.value)
-                }}
-                placeholder={'Russas'}
               />
             </div>
             {/* Region */}
@@ -431,8 +428,23 @@ function PersonalInfo({ titles, data, status }) {
                 value={region}
                 onChange={(e) => {
                   setRegion(e.target.value)
+                  // setIsDisabled(false)
                 }}
                 placeholder={'Centro'}
+              />
+            </div>
+            {/* City */}
+            <div className=''>
+              <p className='pl-1 mb-[-7px] text-sm text-black'>Cidade<span className='text-required'></span></p>
+              <Input
+                color={true}
+                required={false}
+                value={city}
+                onChange={(e) => {
+                  setCity(e.target.value)
+                  // setIsDisabled(false)
+                }}
+                placeholder={'Russas'}
               />
             </div>
             {/* State */}

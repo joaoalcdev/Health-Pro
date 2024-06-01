@@ -27,7 +27,6 @@ export const AddProfessional = async (app: FastifyInstance) => {
         specialty,
         council,
         councilNumber,
-        councilInssuance
       } = req.body as Professionals
 
       const { data, error } = await supabase
@@ -58,7 +57,7 @@ export const AddProfessional = async (app: FastifyInstance) => {
           throw error
         } else {
             const { data: createdProfessional, error: pError  } = await supabase.from("professionals").insert([{
-              id: data.user?.id,
+              userId: data.user?.id,
               fullName,
               rg,
               rgInssuance,
@@ -67,7 +66,6 @@ export const AddProfessional = async (app: FastifyInstance) => {
               specialty,
               council,
               councilNumber,
-              councilInssuance,
             }]).select()
         
           if (pError) {

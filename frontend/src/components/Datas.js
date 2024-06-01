@@ -1277,7 +1277,7 @@ export const patientTab = [
 export const doctorTab = [
   {
     id: 1,
-    title: 'Personal Information',
+    title: 'Informações do Profissional',
     icon: RiUserLine,
   },
   {
@@ -1287,29 +1287,29 @@ export const doctorTab = [
   },
   {
     id: 3,
-    title: 'Appointments',
+    title: 'Agenda',
     icon: BiCalendar,
   },
   {
     id: 4,
-    title: 'Payments',
+    title: 'Pagamerntos',
     icon: RiMoneyDollarCircleLine,
   },
-  {
-    id: 5,
-    title: 'Invoices',
-    icon: RiFileList3Line,
-  },
-  {
-    id: 6,
-    title: 'Access Control',
-    icon: TbLockAccess,
-  },
-  {
-    id: 7,
-    title: 'Change Password',
-    icon: RiLockPasswordLine,
-  },
+  // {
+  //   id: 5,
+  //   title: 'Invoices',
+  //   icon: RiFileList3Line,
+  // },
+  // {
+  //   id: 6,
+  //   title: 'Access Control',
+  //   icon: TbLockAccess,
+  // },
+  // {
+  //   id: 7,
+  //   title: 'Change Password',
+  //   icon: RiLockPasswordLine,
+  // },
 ];
 
 export const medicalRecodData = [

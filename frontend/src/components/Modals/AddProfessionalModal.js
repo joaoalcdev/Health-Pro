@@ -32,7 +32,6 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
   const [specialty, setSpecialty] = useState(specialties.specialty[0]);
   const [council, setCouncil] = useState(councilDatas.council[0]);
   const [councilNumber, setCouncilNumber] = useState("")
-  const [councilInssuance, setCouncilInssuance] = useState(brStateDatas.states[5])
 
   const [step1, setStep1] = useState(true);
   const [step2, setStep2] = useState(false);
@@ -59,7 +58,6 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
         specialty: specialty.id,
         council: council.id,
         councilNumber,
-        councilInssuance: councilInssuance.id
       }
     )
 
@@ -230,13 +228,19 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4 w-full">
-                <Input
-                  label="CPF"
+                <InputMaskComp
+                  label={'CPF'}
                   color={true}
-                  required={true}
+                  mask="999.999.999-99"
+                  autoClear={true}
+                  placeholder={'___.___.___-__'}
+                  unmask={true}
+                  required={false}
                   value={cpf}
-                  maxLength={11}
-                  onChange={(e) => setCpf(e.target.value)}
+                  onChange={(e) =>
+                    setCpf(e.target.value)
+                  }
+                  className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
                 />
                 <div className="flex w-full flex-col gap-3">
                   <p className="text-black text-sm">Gênero</p>
@@ -290,18 +294,7 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
                 maxLength={10}
                 onChange={(e) => setCouncilNumber(e.target.value)}
               />
-              <div className="flex w-full flex-col gap-3">
-                <p className="text-black text-sm">Conselho(UF)</p>
-                <Select
-                  selectedPerson={councilInssuance}
-                  setSelectedPerson={setCouncilInssuance}
-                  datas={brStateDatas.states}
-                >
-                  <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                    {councilInssuance.name} ({councilInssuance.UF}) <BiChevronDown className="text-xl" />
-                  </div>
-                </Select>
-              </div>
+
             </div>
 
 

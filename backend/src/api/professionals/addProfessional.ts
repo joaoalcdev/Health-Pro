@@ -27,7 +27,6 @@ export const AddProfessional = async (app: FastifyInstance) => {
         specialty,
         council,
         councilNumber,
-        councilInssuance
       } = req.body as Professionals
 
       const { data, error } = await supabase
@@ -67,7 +66,6 @@ export const AddProfessional = async (app: FastifyInstance) => {
               specialty,
               council,
               councilNumber,
-              councilInssuance,
             }]).select()
         
           if (pError) {

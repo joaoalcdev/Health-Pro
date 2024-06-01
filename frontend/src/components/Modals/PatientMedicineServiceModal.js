@@ -13,9 +13,7 @@ function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPat
     [...servicesData.slice(1, 100), ...medicineData].sort((a, b) =>
       a.name > b.name ? 1 : -1
     );
-
   const [searchTerm, setSearchTerm] = useState("");
-
 
   const handleInclude = () => {
     closeModal()

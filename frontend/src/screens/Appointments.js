@@ -129,7 +129,6 @@ function Appointments() {
       }
     })
     setEventsData(rebaseData)
-    console.log("eventsData", eventsData)
     setStatus(false)
   }
 
@@ -204,7 +203,6 @@ function Appointments() {
     },
   ];
 
-  console.log("events", events)
   // onClick event handler
   const handleEventClick = (event) => {
     setData(event);

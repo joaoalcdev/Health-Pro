@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-hot-toast';
+import { useEffect, useState } from 'react';
 import { BiPlus, BiChevronDown } from 'react-icons/bi';
 import Layout from '../../Layout';
 import { Select } from '../../components/Form';
@@ -9,18 +8,20 @@ import AddProfessionalModal from '../../components/Modals/AddProfessionalModal';
 import { getProfessionals } from '../../api/ProfessionalsAPI';
 import { specialties } from '../../components/Datas';
 import { BiLoaderCircle } from 'react-icons/bi';
-import { set } from 'rsuite/esm/utils/dateUtils';
 
 function Professionals() {
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [allData, setAllData] = useState([])
   const [data, setData] = useState([]);
   const [status, setStatus] = useState(false);
   const [noData, setNoData] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [filterProfessionals, setFilterProfessionals] = useState({ name: "Todos" })
+  const [filterProfessionals, setFilterProfessionals] = useState({ name: "Todos" });
+
+  const [searchTerm, setSearchTerm] = useState(null);
 
   const fetch = async () => {
     setLoading(true)
@@ -31,6 +32,7 @@ function Professionals() {
       return
     }
     setData(response)
+    setAllData(response)
     setLoading(false)
     setStatus(false)
   }
@@ -50,6 +52,21 @@ function Professionals() {
   const preview = (data) => {
     navigate(`/professionals/preview/${data.id}`);
   };
+
+
+  useEffect(() => {
+    setData(allData.filter((item) => {
+      if (searchTerm === "" || searchTerm === null) {
+        return item
+      } else if (item.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
+        return item
+      }
+    })
+    )
+  }, [searchTerm])
+
+
+
 
   return (
     <Layout>
@@ -98,6 +115,9 @@ function Professionals() {
                   <input
                     type="text"
                     placeholder='Pesquise por nome...'
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value)
+                    }}
                     className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
                   />
                 </div>

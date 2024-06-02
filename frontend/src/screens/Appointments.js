@@ -107,11 +107,11 @@ const CustomToolbar = (toolbar) => {
           </button>
           <span className="text-xl font-semibold">
             {/* {moment(toolbar.date).format('DD MMMM YYYY')}  */}
-            {toolbar.view === 'day' && moment(toolbar.date).format('DD MMMM, YYYY')}
-            {toolbar.view === 'month' && ` ${moment(toolbar.date).startOf('month').format('DD MMMM, YYYY')} - ${moment(toolbar.date).endOf('month').format('DD MMMM, YYYY')}`}
-            {toolbar.view === 'week' && ` ${moment(toolbar.date).startOf('week').format('DD MMMM, YYYY')} - ${moment(toolbar.date).endOf('week').format('DD MMMM, YYYY')}`}
-            {toolbar.view === 'agenda' && ` ${moment(toolbar.date).startOf('week').format('DD MMMM, YYYY')} - ${moment(toolbar.date).endOf('month').format('DD MMMM, YYYY')}`}
-            {/* {toolbar.view === 'agenda' && ` <-> ${moment(toolbar.date).format('DD MMMM, YYYY')}`} */}
+            {toolbar.view === 'day' && moment(toolbar.date).format(`DD [de] MMMM, YYYY`)}
+            {toolbar.view === 'month' && ` ${moment(toolbar.date).startOf('month').format(`DD [de] MMMM, YYYY`)} - ${moment(toolbar.date).endOf('month').format(`DD [de] MMMM, YYYY`)}`}
+            {toolbar.view === 'week' && ` ${moment(toolbar.date).startOf('week').format(`DD [de] MMMM, YYYY`)} - ${moment(toolbar.date).endOf('week').format(`DD [de] MMMM, YYYY`)}`}
+            {toolbar.view === 'agenda' && ` ${moment(toolbar.date).startOf('week').format(`DD [de] MMMM, YYYY`)} - ${moment(toolbar.date).endOf('month').format(`DD [de] MMMM, YYYY`)}`}
+            {/* {toolbar.view === 'agenda' && ` <-> ${moment(toolbar.date).format(`DD [de] MMMM, YYYY`)}`} */}
           </span>
           <button onClick={goToNext} className="text-2xl text-subMain">
             <BiChevronRight />
@@ -289,12 +289,12 @@ function Appointments() {
           agenda: 'Agenda',
           date: 'Data',
           time: 'Hora',
-          // noEventsInRange: 'Não há atendimentos nesta faixa. {date}',
-          noEventsInRange: `${eventsData.length === 0 ? 'Não há atendimentos nesta faixa.' : `Só existem atendimentos cadastrados na seguinte faixa: ${moment(eventsData[0].start).format('DD MMMM, YYYY')} - ${moment(eventsData[eventsData.length - 1].end).format('DD MMMM, YYYY')}`}`,
+          noEventsInRange: `${eventsData.length === 0 ? 'Não há atendimentos nesta faixa.' : `Só existem atendimentos cadastrados na seguinte faixa: ${moment(eventsData[0].start).format(`DD [de] MMMM, YYYY`)} - ${moment(eventsData[eventsData.length - 1].end).format(`DD [de] MMMM, YYYY`)}`}`,
           event: 'Paciente | Serviço | Profissional',
           allDay: 'Dia todo',
           showMore: (total) => `+ ${total} mais`,
         }}
+
         style={{
           // height fix screen
           height: 900,
@@ -307,10 +307,11 @@ function Appointments() {
         step={30}
         selectable={false}
         // custom event style
+        eventLayout="overlap"
         eventPropGetter={(event) => {
           const style = {
             backgroundColor: '#66B5A3', // color of event
-            borderRadius: '8px',
+            borderRadius: '4px',
             color: 'white',
             border: '1px solid',
             borderColor: '#66B5A3',
@@ -323,19 +324,22 @@ function Appointments() {
           };
         }}
         // custom date style
+        dayLayout="overlap"
         dayPropGetter={(date) => {
-          const backgroundColor = 'white';
           const style = {
-            backgroundColor,
+            backgroundColor: 'white',
           };
           return {
             style,
           };
         }}
-
-        views={['month', 'day', 'week', 'agenda']}
-        // toolbar={false}
+        // custom toolbar
+        toolbar={true}
         components={{ toolbar: CustomToolbar }}
+        // custom view
+        views={['month', 'day', 'week', 'agenda']}
+        // default view
+        defaultView="month"
       />
     </Layout>
   );

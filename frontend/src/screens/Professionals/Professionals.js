@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BiPlus, BiChevronDown } from 'react-icons/bi';
 import Layout from '../../Layout';
-import { Select } from '../../components/Form';
+import { FilterSelect } from '../../components/Form';
 import { ProfessionalsTable } from '../../components/Tables';
 import { useNavigate } from 'react-router-dom';
 import AddProfessionalModal from '../../components/Modals/AddProfessionalModal';
@@ -17,9 +17,10 @@ function Professionals() {
   const [data, setData] = useState([]);
   const [status, setStatus] = useState(false);
   const [noData, setNoData] = useState(false);
+  const [noResult, setNoResult] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [filterProfessionals, setFilterProfessionals] = useState({ name: "Todos" });
+  const [filterProfessionals, setFilterProfessionals] = useState({ id: 0, name: "Todos" });
 
   const [searchTerm, setSearchTerm] = useState(null);
 
@@ -41,6 +42,30 @@ function Professionals() {
     fetch()
   }, [status])
 
+  const fetchFilter = async () => {
+    setLoading(true)
+    if (filterProfessionals.id === 0) {
+      fetch()
+      setLoading(false)
+      return
+    }
+    const response = await getProfessionals()
+    const filtered = response.filter((item) => {
+      if (item.specialty === filterProfessionals.id) {
+        return item
+      }
+    })
+    if (filtered.length === 0) {
+      setNoResult(true)
+      setLoading(false)
+      return
+    }
+    setData(filtered)
+    setNoResult(false)
+    setLoading(false)
+    setStatus(false)
+  }
+
   const onCloseModal = () => {
     setIsOpen(false);
   };
@@ -53,6 +78,10 @@ function Professionals() {
     navigate(`/professionals/preview/${data.id}`);
   };
 
+  useEffect(() => {
+    fetchFilter()
+  }, [filterProfessionals])
+
 
   useEffect(() => {
     setData(allData.filter((item) => {
@@ -63,6 +92,7 @@ function Professionals() {
       }
     })
     )
+    //setFilterProfessionals({ id: 0, name: "Todos" })
   }, [searchTerm])
 
 
@@ -120,8 +150,9 @@ function Professionals() {
                     }}
                     className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
                   />
+
                 </div>
-                <Select
+                <FilterSelect
                   selectedPerson={filterProfessionals}
                   setSelectedPerson={setFilterProfessionals}
                   datas={specialties.specialty}
@@ -130,12 +161,12 @@ function Professionals() {
                     <p>{filterProfessionals.name}</p>
                     <BiChevronDown className="text-xl" />
                   </div>
-                </Select>
+                </FilterSelect>
               </div>
               <div className="mt-8 w-full overflow-x-scroll">
                 < ProfessionalsTable
                   doctor={true}
-                  noData={noData}
+                  noData={noResult}
                   data={data}
                   functions={{
                     preview: preview,

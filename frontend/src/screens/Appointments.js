@@ -4,24 +4,57 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import { BiChevronLeft, BiChevronRight, BiPlus, BiTime } from 'react-icons/bi';
 import { HiOutlineViewGrid } from 'react-icons/hi';
-import { HiOutlineCalendarDays } from 'react-icons/hi2';
+import { HiOutlineCalendarDays, HiOutlineBookOpen } from 'react-icons/hi2';
 import AddAppointmentModal from '../components/Modals/AddApointmentModal';
 import { servicesData } from '../components/Datas';
 import { listAppointments } from '../api/AppointmentsAPI';
+import 'moment/locale/pt-br';
+
 
 // custom toolbar
 const CustomToolbar = (toolbar) => {
-  // today button handler
+
+
+  // go to back handler
   const goToBack = () => {
-    toolbar.date.setMonth(toolbar.date.getMonth() - 1);
-    toolbar.onNavigate('prev');
+    if (toolbar.view === 'month') {
+      toolbar.date.setMonth(toolbar.date.getMonth() - 1);
+      toolbar.onNavigate('prev');
+    } else if (toolbar.view === 'week') {
+      toolbar.date.setDate(toolbar.date.getDate() - 7);
+      toolbar.onNavigate('prev');
+    } else if (toolbar.view === 'day') {
+      toolbar.date.setDate(toolbar.date.getDate() - 1);
+      toolbar.onNavigate('prev');
+    } else if (toolbar.view === 'agenda') {
+      toolbar.date.setDate(toolbar.date.getDate() - 7);
+      toolbar.onNavigate('next');
+    } else {
+      toolbar.date.setDate(toolbar.date.getDate() - 1);
+      toolbar.onNavigate('prev');
+    }
   };
 
-  // next button handler
+  // go to next handler
   const goToNext = () => {
-    toolbar.date.setMonth(toolbar.date.getMonth() + 1);
-    toolbar.onNavigate('next');
+    if (toolbar.view === 'month') {
+      toolbar.date.setMonth(toolbar.date.getMonth() + 1);
+      toolbar.onNavigate('next');
+    } else if (toolbar.view === 'week') {
+      toolbar.date.setDate(toolbar.date.getDate() + 7);
+      toolbar.onNavigate('next');
+    } else if (toolbar.view === 'day') {
+      toolbar.date.setDate(toolbar.date.getDate() + 1);
+      toolbar.onNavigate('next');
+    } else if (toolbar.view === 'agenda') {
+      toolbar.date.setDate(toolbar.date.getDate() + 7);
+      toolbar.onNavigate('next');
+    } else {
+      toolbar.date.setDate(toolbar.date.getDate() + 1);
+      toolbar.onNavigate('next');
+    }
   };
+
 
   // today button handler
   const goToCurrent = () => {
@@ -43,11 +76,16 @@ const CustomToolbar = (toolbar) => {
     toolbar.onView('day');
   };
 
+  const goToSchedule = () => {
+    toolbar.onView('agenda');
+  };
+
   // view button group
   const viewNamesGroup = [
     { view: 'month', label: 'Mês' },
     { view: 'week', label: 'Semana' },
     { view: 'day', label: 'Dia' },
+    { view: 'agenda', label: 'Agenda' }
   ];
 
   return (
@@ -59,7 +97,7 @@ const CustomToolbar = (toolbar) => {
             onClick={goToCurrent}
             className="px-6 py-2 border border-subMain rounded-md text-subMain"
           >
-            Today
+            Hoje
           </button>
         </div>
         {/* label */}
@@ -68,36 +106,39 @@ const CustomToolbar = (toolbar) => {
             <BiChevronLeft />
           </button>
           <span className="text-xl font-semibold">
-            {moment(toolbar.date).format('MMMM YYYY')}
+            {/* {moment(toolbar.date).format('DD MMMM YYYY')}  */}
+            {toolbar.view === 'day' && moment(toolbar.date).format(`DD [de] MMMM, YYYY`)}
+            {toolbar.view === 'month' && ` ${moment(toolbar.date).startOf('month').format(`DD [de] MMMM, YYYY`)} - ${moment(toolbar.date).endOf('month').format(`DD [de] MMMM, YYYY`)}`}
+            {toolbar.view === 'week' && ` ${moment(toolbar.date).startOf('week').format(`DD [de] MMMM, YYYY`)} - ${moment(toolbar.date).endOf('week').format(`DD [de] MMMM, YYYY`)}`}
+            {toolbar.view === 'agenda' && ` ${moment(toolbar.date).startOf('week').format(`DD [de] MMMM, YYYY`)} - ${moment(toolbar.date).endOf('month').format(`DD [de] MMMM, YYYY`)}`}
+            {/* {toolbar.view === 'agenda' && ` <-> ${moment(toolbar.date).format(`DD [de] MMMM, YYYY`)}`} */}
           </span>
           <button onClick={goToNext} className="text-2xl text-subMain">
             <BiChevronRight />
           </button>
         </div>
         {/* filter */}
-        <div className="md:col-span-2 grid grid-cols-3 rounded-md  border border-subMain">
+        <div className="md:col-span-2 grid grid-cols-4 rounded-md  border border-subMain">
           {viewNamesGroup.map((item, index) => (
             <button
               key={index}
               onClick={
-                item.view === 'month'
-                  ? goToMonth
-                  : item.view === 'week'
-                    ? goToWeek
-                    : goToDay
+                item.view === 'month' ? goToMonth :
+                  item.view === 'week' ? goToWeek :
+                    item.view === 'day' ? goToDay :
+                      goToSchedule === 'schedule' ? goToSchedule : goToSchedule
               }
               className={`border-l text-xl py-2 flex-colo border-subMain ${toolbar.view === item.view
                 ? 'bg-subMain text-white'
                 : 'text-subMain'
                 }`}
             >
-              {item.view === 'month' ? (
-                <HiOutlineViewGrid />
-              ) : item.view === 'week' ? (
-                <HiOutlineCalendarDays />
-              ) : (
-                <BiTime />
-              )}
+              {
+                item.view === 'month' ? <HiOutlineCalendarDays /> :
+                  item.view === 'week' ? <HiOutlineViewGrid /> :
+                    item.view === 'day' ? <BiTime /> :
+                      item.view === 'schedule' ? <HiOutlineBookOpen /> : <HiOutlineBookOpen />
+              }
             </button>
           ))}
         </div>
@@ -107,6 +148,10 @@ const CustomToolbar = (toolbar) => {
 };
 
 function Appointments() {
+
+  // config timezone
+  moment.locale('pt-br');
+
   const localizer = momentLocalizer(moment);
   const [open, setOpen] = useState(false);
   const [data, setData] = useState({});
@@ -234,6 +279,22 @@ function Appointments() {
         events={eventsData ? eventsData : events}
         startAccessor="start"
         endAccessor="end"
+        messages={{
+          next: 'Próximo',
+          previous: 'Anterior',
+          today: 'Hoje',
+          month: 'Mês',
+          week: 'Semana',
+          day: 'Dia',
+          agenda: 'Agenda',
+          date: 'Data',
+          time: 'Hora',
+          noEventsInRange: `${eventsData.length === 0 ? 'Não há atendimentos nesta faixa.' : `Só existem atendimentos cadastrados na seguinte faixa: ${moment(eventsData[0].start).format(`DD [de] MMMM, YYYY`)} - ${moment(eventsData[eventsData.length - 1].end).format(`DD [de] MMMM, YYYY`)}`}`,
+          event: 'Paciente | Serviço | Profissional',
+          allDay: 'Dia todo',
+          showMore: (total) => `+ ${total} mais`,
+        }}
+
         style={{
           // height fix screen
           height: 900,
@@ -244,37 +305,41 @@ function Appointments() {
         timeslots={1}
         resizable
         step={30}
-        selectable={true}
+        selectable={false}
         // custom event style
+        eventLayout="overlap"
         eventPropGetter={(event) => {
           const style = {
-            backgroundColor: '#66B5A3',
-            borderRadius: '10px',
+            backgroundColor: '#66B5A3', // color of event
+            borderRadius: '4px',
             color: 'white',
             border: '1px solid',
-            //borderColor: '#000000',
+            borderColor: '#66B5A3',
             //shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
             fontSize: '12px',
-            padding: '5px 5px',
+            // padding: '5px 5px',
           };
           return {
             style,
           };
         }}
         // custom date style
+        dayLayout="overlap"
         dayPropGetter={(date) => {
-          const backgroundColor = 'white';
           const style = {
-            backgroundColor,
+            backgroundColor: 'white',
           };
           return {
             style,
           };
         }}
-        // remove agenda view
-        views={['month', 'day', 'week']}
-        // toolbar={false}
+        // custom toolbar
+        toolbar={true}
         components={{ toolbar: CustomToolbar }}
+        // custom view
+        views={['month', 'day', 'week', 'agenda']}
+        // default view
+        defaultView="month"
       />
     </Layout>
   );

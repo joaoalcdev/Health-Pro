@@ -17,10 +17,10 @@ function Professionals() {
   const [data, setData] = useState([]);
   const [status, setStatus] = useState(false);
   const [noData, setNoData] = useState(false);
-  const [noResult, setNoResult] = useState(false);
+  const [noResult, setNoResult] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const [filterProfessionals, setFilterProfessionals] = useState({ id: 0, name: "Todos" });
+  const [filterTerm, setFilterProfessionals] = useState({ id: 0, name: "Todos" });
 
   const [searchTerm, setSearchTerm] = useState(null);
 
@@ -34,6 +34,7 @@ function Professionals() {
     }
     setData(response)
     setAllData(response)
+    setNoResult(false)
     setLoading(false)
     setStatus(false)
   }
@@ -42,29 +43,7 @@ function Professionals() {
     fetch()
   }, [status])
 
-  const fetchFilter = async () => {
-    setLoading(true)
-    if (filterProfessionals.id === 0) {
-      fetch()
-      setLoading(false)
-      return
-    }
-    const response = await getProfessionals()
-    const filtered = response.filter((item) => {
-      if (item.specialty === filterProfessionals.id) {
-        return item
-      }
-    })
-    if (filtered.length === 0) {
-      setNoResult(true)
-      setLoading(false)
-      return
-    }
-    setData(filtered)
-    setNoResult(false)
-    setLoading(false)
-    setStatus(false)
-  }
+
 
   const onCloseModal = () => {
     setIsOpen(false);
@@ -79,23 +58,36 @@ function Professionals() {
   };
 
   useEffect(() => {
-    fetchFilter()
-  }, [filterProfessionals])
-
-
-  useEffect(() => {
     setData(allData.filter((item) => {
-      if (searchTerm === "" || searchTerm === null) {
+      //case 1 - no filter and no search
+      if (searchTerm === "" && filterTerm.id === 0) {
+        setNoResult(false)
         return item
-      } else if (item.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
+      }
+      //case 2 - no filter but has search
+      if (filterTerm.id === 0 && item.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
+        setNoResult(false)
+        return item
+      }
+      //case 3 - no search but has filter
+      if (searchTerm === "" && filterTerm.id === item.specialty) {
+        setNoResult(false)
+        return item
+      }
+      //case 4 - has filter and search
+      if (item.fullName.toLowerCase().includes(searchTerm.toLowerCase()) && filterTerm.id === item.specialty) {
+        setNoResult(false)
         return item
       }
     })
     )
-    //setFilterProfessionals({ id: 0, name: "Todos" })
-  }, [searchTerm])
+  }, [searchTerm, filterTerm])
 
-
+  useEffect(() => {
+    if (data.length === 0) {
+      setNoResult(true)
+    }
+  }, [data])
 
 
   return (
@@ -153,12 +145,12 @@ function Professionals() {
 
                 </div>
                 <FilterSelect
-                  selectedPerson={filterProfessionals}
+                  selectedPerson={filterTerm}
                   setSelectedPerson={setFilterProfessionals}
                   datas={specialties.specialty}
                 >
                   <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
-                    <p>{filterProfessionals.name}</p>
+                    <p>{filterTerm.name}</p>
                     <BiChevronDown className="text-xl" />
                   </div>
                 </FilterSelect>

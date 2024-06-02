@@ -443,23 +443,13 @@ export function PatientsTable({ functions, used, noData, patientData }) {
             className="border-b border-border hover:bg-greyed transitions"
           >
             <td className={tdclass}>{index + 1}</td>
-            {/* <td className={tdclass}>
-              <div className="flex gap-4 items-center">
-                <div className=''>
-                  <img src={item.image} alt={item.fullName} className="w-12 h-12 rounded-full object-cover border border-border" />
-                </div>
-              </div>
-            </td> */}
             <td className={tdclass}>
               <div className="flex gap-4 items-center">
-                <div>
-                  <img src={getAvatar(item.gender)} alt={item.fullName} className="w-12 h-12 rounded-full object-cover border border-border" />
-                </div>
+                <span className="w-12">
+                  <img src={getAvatar(item.gender)} alt='avatar_image' className="w-12 h-12 rounded-full object-cover border border-border" />
+                </span>
                 <div className=''>
-                  <h4 className="text-sm font-medium">
-                    {/* map return patient */}
-                    {item.fullName}
-                  </h4>
+                  <h4 className="text-sm font-medium">{item.fullName}</h4>
                   <p className="text-xs mt-1 text-textGray">
                     {formatPhoneNumber(item.phoneNumber)}
                     <br />

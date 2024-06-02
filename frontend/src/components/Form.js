@@ -134,6 +134,37 @@ export function Select({ children, selectedPerson, setSelectedPerson, datas }) {
   );
 }
 
+export function FilterSelect({ children, selectedPerson, setSelectedPerson, datas }) {
+  return (
+    <div className="text-sm relative w-full ">
+      <div className="w-full">
+        <Listbox value={selectedPerson} onChange={setSelectedPerson}>
+          <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
+          <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded-md shadow-lg py-2 px-6 ring-1 ring-border focus:outline-none">
+            <Listbox.Option
+              className={`cursor-pointer text-xs hover:text-subMain hover:bg-black hover:bg-opacity-5 py-2 px-1`}
+              key={0}
+              value={{ id: 0, name: "Todos" }}
+            >
+              Todos
+            </Listbox.Option>
+            {datas.map((person) => (
+              <Listbox.Option
+                className={`cursor-pointer text-xs hover:text-subMain hover:bg-black hover:bg-opacity-5 py-2 px-1`}
+                key={person.id}
+                value={person}
+                disabled={person.unavailable}
+              >
+                {person.name} {person.UF && `(${person.UF})`} {person.type && `(${person.type})`}
+              </Listbox.Option>
+            ))}
+          </Listbox.Options>
+        </Listbox>
+      </div>
+    </div>
+  );
+}
+
 export function SelectProfessional({ children, selectedPerson, setSelectedPerson, datas }) {
   return (
     <div className="text-sm relative w-full ">

@@ -131,7 +131,8 @@ function Users() {
             title={'Deletar Usuário'}
             closeModal={onCloseModal}
             isOpen={isConfirmationOpen}
-            onDelete={handleDelete}
+            question={"Você tem certeza que deseja desativar esse usuário?"}
+            onConfirm={handleDelete}
           />
         )
       }

@@ -558,6 +558,9 @@ export function UsersTable({ data, functions, user }) {
             <td className={tdclass}>{index + 1}</td>
             <td className={tdclass}>
               <div className="flex gap-4 items-center">
+                <span className="w-12">
+                  <img src={getAvatar(item.gender)} alt='avatar_image' className="w-12 h-12 rounded-full object-cover border border-border" />
+                </span>
                 <h4 className="text-sm font-medium">{item.firstName} {item.lastName}</h4>
               </div>
             </td>

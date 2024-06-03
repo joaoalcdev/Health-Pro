@@ -12,17 +12,20 @@ import { BiLoaderCircle } from 'react-icons/bi';
 function Professionals() {
   const navigate = useNavigate();
 
-  const [isOpen, setIsOpen] = useState(false);
+  //data
   const [allData, setAllData] = useState([])
   const [data, setData] = useState([]);
+
+  //controllers
+  const [isOpen, setIsOpen] = useState(false);
   const [status, setStatus] = useState(false);
   const [noData, setNoData] = useState(false);
   const [noResult, setNoResult] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  //filter and search controllers
   const [filterTerm, setFilterProfessionals] = useState({ id: 0, name: "Todos" });
-
-  const [searchTerm, setSearchTerm] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetch = async () => {
     setLoading(true)
@@ -42,8 +45,6 @@ function Professionals() {
   useEffect(() => {
     fetch()
   }, [status])
-
-
 
   const onCloseModal = () => {
     setIsOpen(false);
@@ -88,7 +89,6 @@ function Professionals() {
       setNoResult(true)
     }
   }, [data])
-
 
   return (
     <Layout>

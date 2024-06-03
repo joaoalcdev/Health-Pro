@@ -20,11 +20,9 @@ import { set } from 'rsuite/esm/utils/dateUtils';
 function Patients() {
   const navigate = useNavigate();
   const [status, setStatus] = useState(false);
-  // const [status, setStatus] = useState(sortsDatas.filterPatient[0]);
   const [gender, setGender] = useState(sortsDatas.genderFilter[0]);
   const [dateRange, setDateRange] = useState([new Date(), new Date()]);
   const [startDate, endDate] = dateRange;
-  const [noData, setNoData] = useState(false);
 
   const sorts = [
     {
@@ -72,19 +70,33 @@ function Patients() {
     navigate(`/patients/preview/${id}`);
   };
 
-  const [isOpen, setIsOpen] = useState(false);
+  //data
+  const [allData, setAllData] = useState([])
   const [data, setData] = useState([]);
-  // const [memberData, setMemberData] = useState([]);
-  // const [status, setStatus] = useState(true);
+
+  //controllers
+  const [isOpen, setIsOpen] = useState(false);
+  // const [status, setStatus] = useState(false);
+  const [noData, setNoData] = useState(false);
+  const [noResult, setNoResult] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+
+  // 
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetch = async () => {
+    setLoading(true)
     const response = await getPatients()
-    console.log(response)
     if (response.length === 0) {
       setNoData(true)
+      setLoading(false)
       return
     }
     setData(response)
+    setAllData(response)
+    setNoResult(false)
+    setLoading(false)
     setStatus(false)
   }
 
@@ -112,6 +124,38 @@ function Patients() {
   }, []);
 
 
+  useEffect(() => {
+    setData(allData.filter((item) => {
+      //case 1 - no filter and no search
+      if (searchTerm === "") {
+        setNoResult(false)
+        return item
+      }
+      //case 2 - no filter but has search
+      if (item.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
+        setNoResult(false)
+        return item
+      }
+      //case 3 - no search but has filter
+      if (searchTerm === "") {
+        setNoResult(false)
+        return item
+      }
+      //case 4 - has filter and search
+      if (item.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
+        setNoResult(false)
+        return item
+      }
+    })
+    )
+  }, [searchTerm])
+
+  useEffect(() => {
+    if (data.length === 0) {
+      setNoResult(true)
+    }
+  }, [data])
+
   return (
     <Layout>
       {
@@ -127,12 +171,6 @@ function Patients() {
         )
       }
       {/* add button */}
-      {/* <Link
-        to="/patients/create"
-        className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
-      >
-        <BiPlus className="text-2xl" />
-      </Link> */}
       <button
         onClick={() => setIsOpen(true)}
         className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
@@ -178,8 +216,11 @@ function Patients() {
         <div className="grid lg:grid-cols-5 grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2">
           <input
             type="text"
-            placeholder='Search "Patients"'
-            className="h-14 text-sm text-main rounded-md bg-dry border border-border px-4"
+            placeholder='Pesquise por nome...'
+            onChange={(e) => {
+              setSearchTerm(e.target.value)
+            }}
+            className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
           />
           {/* sort  */}
           {sorts.map((item) => (

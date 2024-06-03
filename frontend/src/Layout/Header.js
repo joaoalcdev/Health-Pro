@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { BiMenu } from 'react-icons/bi';
 import MenuDrawer from '../components/Drawer/MenuDrawer';
 import { useAuth } from "../hooks/Auth"
+import getAvatar from '../utils/getAvatar';
 
 function Header() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -75,7 +76,7 @@ function Header() {
               <MenuSelect datas={DropDown1}>
                 <div className="flex gap-4 items-center p-4 rounded-lg">
                   <img
-                    src="/images/user1.png"
+                    src={user.gernder ? getAvatar(user.gender) : getAvatar(3)}
                     alt="user"
                     className="w-12 border border-border object-cover h-12 rounded-full"
                   />

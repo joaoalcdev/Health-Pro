@@ -76,7 +76,7 @@ function Header() {
               <MenuSelect datas={DropDown1}>
                 <div className="flex gap-4 items-center p-4 rounded-lg">
                   <img
-                    src={user.gernder ? getAvatar(user.gender) : getAvatar(3)}
+                    src={user.gender ? getAvatar(user.gender) : getAvatar(3)}
                     alt="user"
                     className="w-12 border border-border object-cover h-12 rounded-full"
                   />

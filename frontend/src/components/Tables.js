@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { formatPhoneNumber } from '../utils/formatPhoneNumber';
 import { formatDate } from '../utils/formatDate';
 import { calculateDate } from '../utils/calculateDate';
-import { brStateDatas, specialties, councilDatas } from './Datas';
+import { brStateDatas, specialties, councilDatas, roleOptions } from './Datas';
 import AddPatientModal from './Modals/AddPatientModal';
 import { getPatients } from '../api/PatientsAPI';
 import getAvatar from '../utils/getAvatar';
@@ -519,7 +519,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
 
 
 // users table
-export function UsersTable({ data, functions, user }) {
+export function UsersTable({ data, functions, user, noData }) {
   const DropDown1 = [
     {
       title: 'Ver',
@@ -536,7 +536,7 @@ export function UsersTable({ data, functions, user }) {
       },
     },
   ];
-  return (
+  return (noData ? <div className="text-center pb-10 text-lg text-main">Nenhum dado encontrado</div> :
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
@@ -568,7 +568,7 @@ export function UsersTable({ data, functions, user }) {
             <td className={tdclass}>
               <p className="text-textGray">{formatPhoneNumber(item.phoneNumber)}</p>
             </td>
-            <td className={tdclass}>{item.roleId === 1 ? "Administrador" : item.roleId === 2 ? "Recepcionista" : "Prestador"}</td>
+            <td className={tdclass}>{item.roleId ? roleOptions.roles[item.roleId - 1].name : "-"}</td>
             <td className={tdclass}>{item.createdAt ? formatDate(new Date(item.createdAt)) : "-"}</td>
 
             <td className={tdclass}>

@@ -14,24 +14,24 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
   const [loading, setLoading] = useState(false);
 
 
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [email, setEmail] = useState("")
-  const [phoneNumber, setPhoneNumber] = useState("")
-  const [address, setAddress] = useState("")
-  const [region, setRegion] = useState("")
-  const [city, setCity] = useState("")
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [region, setRegion] = useState("");
+  const [city, setCity] = useState("");
   const [state, setState] = useState(brStateDatas.states[5]);
-  const [password, setPassword] = useState("")
+  const [password, setPassword] = useState("");
+  const [gender, setGender] = useState(genderDatas.gender[2]);
 
-  const [fullName, setFullName] = useState("")
-  const [rg, setRg] = useState("")
-  const [rgInssuance, setRgInssuance] = useState("")
-  const [cpf, setCpf] = useState("")
-  const [gender, setGender] = useState(genderDatas.gender[2])
+  const [fullName, setFullName] = useState("");
+  const [rg, setRg] = useState("");
+  const [rgInssuance, setRgInssuance] = useState("");
+  const [cpf, setCpf] = useState("");
   const [specialty, setSpecialty] = useState(specialties.specialty[0]);
   const [council, setCouncil] = useState(councilDatas.council[0]);
-  const [councilNumber, setCouncilNumber] = useState("")
+  const [councilNumber, setCouncilNumber] = useState("");
 
   const [step1, setStep1] = useState(true);
   const [step2, setStep2] = useState(false);
@@ -50,11 +50,11 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
         region,
         city,
         state: state.id,
+        gender: gender.id,
         fullName,
         rg,
         rgInssuance,
         cpf,
-        gender: gender.id,
         specialty: specialty.id,
         council: council.id,
         councilNumber,
@@ -226,8 +226,8 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
                   onChange={(e) => setRgInssuance(e.target.value)}
                 />
               </div>
-
               <div className="grid sm:grid-cols-2 gap-4 w-full">
+
                 <InputMaskComp
                   label={'CPF'}
                   color={true}
@@ -258,6 +258,7 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
 
             </div>
 
+
             {/* specialty and  council*/}
             <div className="grid sm:grid-cols-2 gap-4 w-full">
               <div className="flex w-full flex-col gap-3">
@@ -272,30 +273,30 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
                   </div>
                 </Select>
               </div>
-              <div className="flex w-full flex-col gap-3">
-                <p className="text-black text-sm">Conselho</p>
-                <Select
-                  selectedPerson={council}
-                  setSelectedPerson={setCouncil}
-                  datas={councilDatas.council}
-                >
-                  <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                    {council.name} <BiChevronDown className="text-xl" />
-                  </div>
-                </Select>
+              <div className="grid sm:grid-cols-2 gap-4 w-full">
+                <div className="flex w-full flex-col gap-3">
+                  <p className="text-black text-sm">Conselho</p>
+                  <Select
+                    selectedPerson={council}
+                    setSelectedPerson={setCouncil}
+                    datas={councilDatas.council}
+                  >
+                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
+                      {council.name} <BiChevronDown className="text-xl" />
+                    </div>
+                  </Select>
+                </div>
+                <Input
+                  label="Numero do Conselho"
+                  color={true}
+                  value={councilNumber}
+                  maxLength={10}
+                  onChange={(e) => setCouncilNumber(e.target.value)}
+                />
+
               </div>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-4 w-full">
-              <Input
-                label="Numero do Conselho"
-                color={true}
-                value={councilNumber}
-                maxLength={10}
-                onChange={(e) => setCouncilNumber(e.target.value)}
-              />
-
-            </div>
 
 
             {/* buttones */}
@@ -309,9 +310,10 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
               <Button label="Save" disable={loading} loading={loading} Icon={HiOutlineCheckCircle} />
             </div>
           </div>
+
         </form>
       </>}
-    </Modal>
+    </Modal >
   );
 }
 

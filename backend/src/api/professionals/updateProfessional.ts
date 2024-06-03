@@ -11,7 +11,8 @@ export const UpdateProfessional = async (app: FastifyInstance) => {
         address,
         city,
         region,
-        state
+        state,
+        gender,
       } = req.body as Users
        
       const {
@@ -20,7 +21,6 @@ export const UpdateProfessional = async (app: FastifyInstance) => {
         rg,
         rgInssuance,
         cpf,
-        gender,
         specialty,
         council,
         councilNumber,
@@ -39,7 +39,8 @@ export const UpdateProfessional = async (app: FastifyInstance) => {
         address,
         city,
         region,
-        state
+        state,
+        gender,
       }).eq("id", userId).select()
 
         if (error) {
@@ -52,7 +53,6 @@ export const UpdateProfessional = async (app: FastifyInstance) => {
             rg,
             rgInssuance,
             cpf,
-            gender,
             specialty,
             council,
             councilNumber,

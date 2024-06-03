@@ -3,7 +3,7 @@ import { createUser, updateUser } from '../../api/UsersAPI';
 import Modal from './Modal';
 import { Button, Input, Select } from '../Form';
 import { BiChevronDown } from 'react-icons/bi';
-import { roleOptions, brStateDatas } from '../Datas';
+import { roleOptions, brStateDatas, genderDatas } from '../Datas';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { PiPassword } from "react-icons/pi";
 import { toast } from 'react-hot-toast';
@@ -20,6 +20,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
   const [region, setRegion] = useState("")
   const [city, setCity] = useState("")
   const [state, setState] = useState(brStateDatas.states[5]);
+  const [gender, setGender] = useState(genderDatas.gender[2])
   const [password, setPassword] = useState("")
   const [roleId, setRoleId] = useState(roleOptions.roles[1]);
 
@@ -52,7 +53,8 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
           address,
           region,
           city,
-          state: state.UF,
+          state: state.id,
+          gender: gender.id,
         }
       )
 
@@ -73,7 +75,8 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
           address,
           region,
           city,
-          state: state.UF,
+          state: state.id,
+          gender: gender.id,
         }
       )
 
@@ -126,17 +129,33 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <InputMaskComp
-              label="Telefone"
-              color={true}
-              mask="(99) 9 9999-9999"
-              placeholder={'(__) _ ____-____'}
-              unmask={true}
-              required={true}
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
-            />
+            <div className="grid sm:grid-cols-2 gap-4 w-full">
+
+              <InputMaskComp
+                label="Telefone"
+                color={true}
+                mask="(99) 9 9999-9999"
+                placeholder={'(__) _ ____-____'}
+                unmask={true}
+                required={true}
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+              />
+              <div className="flex w-full flex-col gap-3">
+                <p className="text-black text-sm">Gênero</p>
+                <Select
+                  selectedPerson={gender}
+                  setSelectedPerson={setGender}
+                  datas={genderDatas.gender}
+                >
+                  <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
+                    {gender.name}<BiChevronDown className="text-xl" />
+                  </div>
+                </Select>
+              </div>
+            </div>
+
           </div>
 
           {/* Address*/}

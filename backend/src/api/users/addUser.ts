@@ -14,7 +14,8 @@ export const AddUser = async (app: FastifyInstance) => {
         address,
         city,
         region,
-        state
+        state,
+        gender,
       } = req.body as Users
 
       const { data, error } = await supabase
@@ -38,7 +39,8 @@ export const AddUser = async (app: FastifyInstance) => {
           address,
           city,
           region,
-          state
+          state,
+          gender,
         }]).select()
 
         if (error) {

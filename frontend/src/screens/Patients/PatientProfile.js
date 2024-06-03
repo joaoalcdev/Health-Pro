@@ -8,7 +8,7 @@ import MedicalRecord from './MedicalRecord';
 import AppointmentsUsed from '../../components/UsedComp/AppointmentsUsed';
 import InvoiceUsed from '../../components/UsedComp/InvoiceUsed';
 import PaymentsUsed from '../../components/UsedComp/PaymentUsed';
-import PersonalInfo from '../../components/UsedComp/PersonalInfo';
+import PatientInfo from '../../components/UsedComp/PatientInfo';
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
 import { getPatient } from '../../api/PatientsAPI';
 
@@ -38,7 +38,7 @@ function PatientProfile() {
       case 1:
         return <MedicalRecord />;
       case 2:
-        return <PersonalInfo titles={false} data={patientData} status={setStatus} />;
+        return <PatientInfo titles={false} data={patientData} status={setStatus} />;
       case 3:
         return <AppointmentsUsed doctor={false} />;
       case 4:

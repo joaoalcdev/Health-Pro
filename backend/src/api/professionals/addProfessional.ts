@@ -13,7 +13,8 @@ export const AddProfessional = async (app: FastifyInstance) => {
         address,
         city,
         region,
-        state
+        state,
+        gender,
       } = req.body as Users
 
       const roleId = 3;
@@ -23,7 +24,6 @@ export const AddProfessional = async (app: FastifyInstance) => {
         rg,
         rgInssuance,
         cpf,
-        gender,
         specialty,
         council,
         councilNumber,
@@ -50,7 +50,8 @@ export const AddProfessional = async (app: FastifyInstance) => {
           address,
           city,
           region,
-          state
+          state,
+          gender,
         }]).select()
 
         if (error) {
@@ -62,7 +63,6 @@ export const AddProfessional = async (app: FastifyInstance) => {
               rg,
               rgInssuance,
               cpf,
-              gender,
               specialty,
               council,
               councilNumber,

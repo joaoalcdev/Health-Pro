@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react';
 import Uploder from '../Uploader';
 import { genderDatas, specialties, councilDatas, brStateDatas } from '../Datas';
-import { Button, DatePickerComp, Input, Select } from '../Form';
+import { Button, ButtonNegative, DatePickerComp, Input, Select } from '../Form';
 import { BiChevronDown } from 'react-icons/bi';
 import { toast } from 'react-hot-toast';
 import { HiOutlineCheckCircle, HiOutlinePencilAlt } from 'react-icons/hi';
+import { BiArchiveIn } from "react-icons/bi";
 import { InputMaskComp } from '../Form';
-import { updateProfessional } from '../../api/ProfessionalsAPI';
+import { updateProfessional, deleteProfessional } from '../../api/ProfessionalsAPI';
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
+import ConfirmationModal from '../Modals/ConfirmationModal';
+import { set } from 'rsuite/esm/utils/dateUtils';
 
 function ProfessionalInfo({ data, onStatus }) {
   const [isEdit, setIsEdit] = useState(false)
   const [isDisabled, setIsDisabled] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false)
 
   const [firstName, setFirstName] = useState(data.firstName)
   const [lastName, setLastName] = useState(data.lastName)
@@ -107,9 +111,41 @@ function ProfessionalInfo({ data, onStatus }) {
     }
   }
 
+  const handleDeleteProfessional = async () => {
+    const response = await deleteProfessional(data.userId)
+    if (response) {
+      toast.success('Profissional deletado com sucesso');
+      onStatus(true);
+      setIsConfirmationOpen(false);
+      setLoading(false);
+    } else {
+      toast.error('Não foi possível deletar o profissional');
+    }
+  }
+
+  const onCloseModal = () => {
+    setIsConfirmationOpen(false);
+    setLoading(false);
+  };
+
+  const handleClickDeactivateProfessional = () => {
+    setIsConfirmationOpen(true);
+    setLoading(true);
+  }
+
   return (!isEdit ?
     //view mode
     <>
+      { //confirmation modal
+        isConfirmationOpen && (
+          <ConfirmationModal
+            title={'Deletar Profissional'}
+            closeModal={onCloseModal}
+            isOpen={isConfirmationOpen}
+            onConfirm={handleDeleteProfessional}
+            question={"Você tem certeza que deseja deletar esse profissional?"}
+          />
+        )}
       <h1 className='text-md mb-4 font-medium'>Informações do Profissional</h1>
       <div className="grid sm:grid-cols-2 gap-4 w-full">
         <div className="flex w-full flex-col gap-3">
@@ -171,9 +207,23 @@ function ProfessionalInfo({ data, onStatus }) {
           <p className="text-black text-md font-semibold">{data.council ? councilDatas.council[data.council - 1].name : ""} - {data.councilNumber}</p>
         </div>
         {/* buttons */}
-        <div></div>
+        {data.deletedAt ?
+          <Button
+            label={'Restaurar Profissional'}
+            Icon={HiOutlinePencilAlt}
+            onClick={handleChange2Edit}
+          />
+          :
+          <ButtonNegative
+            label={'Deletar Profissional'}
+            Icon={BiArchiveIn}
+            loading={loading}
+            onClick={handleClickDeactivateProfessional}
+          />
+        }
         <Button
           label={'Editar Professional'}
+          disabled={data.deletedAt ? true : false}
           Icon={HiOutlinePencilAlt}
           onClick={handleChange2Edit}
         />

@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from './Modal';
 
-function ConfirmationModal({ title, closeModal, isOpen, onDelete, user }) {
+function ConfirmationModal({ title, closeModal, isOpen, onConfirm, question, user }) {
 
   return (
     <Modal
@@ -12,7 +12,7 @@ function ConfirmationModal({ title, closeModal, isOpen, onDelete, user }) {
     >
       <div className="flex gap-6 pb-8">
         <div className="w-full">
-          Você tem certeza que deseja deletar o usuário?
+          {question}
         </div>
 
       </div>
@@ -24,7 +24,7 @@ function ConfirmationModal({ title, closeModal, isOpen, onDelete, user }) {
           Cancelar
         </button>
         <button
-          onClick={onDelete}
+          onClick={onConfirm}
           className="bg-red-600  text-white text-sm p-4 rounded-lg font-light"
         >
           Deletar

@@ -42,3 +42,12 @@ export const updateProfessional = async (professional, updatedProfessional) => {
   }
 }
 
+export const deleteProfessional = async (professional) => {
+  try {
+    const data = await axios.delete(apiBaseUrl(`professional/${professional}`))
+    return data
+  } catch (error) {
+    return error
+  }
+}
+

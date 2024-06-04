@@ -84,6 +84,26 @@ export function Button({ label, onClick, loading, Icon, type, disabled }) {
   );
 }
 
+export function ButtonNegative({ label, onClick, loading, Icon, type, disabled }) {
+  return (
+    <button
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+      className={`w-full flex-rows gap-4 transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} bg-red-500 bg-opacity-5 text-red-500 border border-red-300 text-sm font-medium px-2 py-4 rounded`}
+    >
+      {loading ? (
+        <BiLoaderCircle className="animate-spin text-red-500 text-2xl" />
+      ) : (
+        <>
+          {label}
+          {Icon && <Icon className="text-red-500 text-xl" />}
+        </>
+      )}
+    </button>
+  );
+}
+
 // select
 
 export function MenuSelect({ children, datas, item: data }) {

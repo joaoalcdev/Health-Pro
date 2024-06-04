@@ -205,7 +205,7 @@ function ProfessionalInfo({ data, onStatus }) {
         </div>
         {/* buttons */}
         <ButtonNegative
-          label={'Desativar Profissional'}
+          label={'Deletar Profissional'}
           Icon={BiArchiveIn}
           onClick={handleClickDeactivateProfessional}
         />

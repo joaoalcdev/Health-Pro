@@ -13,11 +13,21 @@ export const UserSignIn = async (app: FastifyInstance) => {
         email,
         password
       })
-
+      
       if (error) {
         throw error
       } else {
-        return res.status(200).send(data ? data : null)
+        const { data: User, error } = await supabase.from("users")
+        .select("*")
+        .eq("id", data.user?.id)
+        .single()
+
+        if(User.deletedAt) {
+          await supabase.auth.signOut()
+          return res.status(401).send({ message: "Usuário Deletado!" })
+        }
+        
+       return res.status(200).send(data ? {session: data, userData: User} : null)
       }
     } catch (error) {
       return res.status(400).send(error)

@@ -5,7 +5,7 @@ import { BiChevronDown } from 'react-icons/bi';
 import { toast } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 // import { HiOutlineCheckCircle, HiPencilAlt, HiArrowSmLeft } from 'react-icons/hi';
-import { HiOutlinePhone, HiOutlineCalendarDays, HiOutlineIdentification, HiOutlineMapPin, HiOutlineCheckCircle, HiMiniPencilSquare, HiArrowRight, HiMap, HiCake, HiOutlineHome, HiMiniFingerPrint } from 'react-icons/hi2';
+import { HiOutlinePhone, HiOutlineCalendarDays, HiOutlineIdentification, HiOutlineMapPin, HiOutlineCheckCircle, HiMiniPencilSquare, HiArrowLeft, HiMap, HiCake, HiOutlineHome, HiMiniFingerPrint } from 'react-icons/hi2';
 import { RiDropFill, RiDropLine, RiGenderlessLine, RiGenderlessFill} from "react-icons/ri";
 import { TbUserHeart } from "react-icons/tb";
 import { LiaGenderlessSolid } from "react-icons/lia";
@@ -514,7 +514,7 @@ function PersonalInfo({ titles, data, status }) {
             >
               <p className='flex flex-row w-full justify-center items-center text-center text-sm font-medium'>
                 Voltar
-                <HiArrowRight className='text-xl mx-2' />
+                <HiArrowLeft className='text-xl mx-2' />
               </p>
             </button>
           </div>

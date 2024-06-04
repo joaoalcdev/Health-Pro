@@ -114,20 +114,23 @@ function ProfessionalInfo({ data, onStatus }) {
   const handleDeleteProfessional = async () => {
     const response = await deleteProfessional(data.userId)
     if (response) {
-      toast.success('Profissional deletado com sucesso')
-      onStatus(true)
-      setIsConfirmationOpen(false)
+      toast.success('Profissional deletado com sucesso');
+      onStatus(true);
+      setIsConfirmationOpen(false);
+      setLoading(false);
     } else {
-      toast.error('Não foi possível deletar o profissional')
+      toast.error('Não foi possível deletar o profissional');
     }
   }
 
   const onCloseModal = () => {
     setIsConfirmationOpen(false);
+    setLoading(false);
   };
 
   const handleClickDeactivateProfessional = () => {
-    setIsConfirmationOpen(true)
+    setIsConfirmationOpen(true);
+    setLoading(true);
   }
 
   return (!isEdit ?
@@ -204,13 +207,23 @@ function ProfessionalInfo({ data, onStatus }) {
           <p className="text-black text-md font-semibold">{data.council ? councilDatas.council[data.council - 1].name : ""} - {data.councilNumber}</p>
         </div>
         {/* buttons */}
-        <ButtonNegative
-          label={'Deletar Profissional'}
-          Icon={BiArchiveIn}
-          onClick={handleClickDeactivateProfessional}
-        />
+        {data.deletedAt ?
+          <Button
+            label={'Restaurar Profissional'}
+            Icon={HiOutlinePencilAlt}
+            onClick={handleChange2Edit}
+          />
+          :
+          <ButtonNegative
+            label={'Deletar Profissional'}
+            Icon={BiArchiveIn}
+            loading={loading}
+            onClick={handleClickDeactivateProfessional}
+          />
+        }
         <Button
           label={'Editar Professional'}
+          disabled={data.deletedAt ? true : false}
           Icon={HiOutlinePencilAlt}
           onClick={handleChange2Edit}
         />

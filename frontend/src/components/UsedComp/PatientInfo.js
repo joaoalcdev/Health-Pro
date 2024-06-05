@@ -4,7 +4,12 @@ import { Button, DatePickerComp, Input, Select } from '../Form';
 import { BiChevronDown } from 'react-icons/bi';
 import { toast } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
-import { HiOutlineCheckCircle, HiPencilAlt, HiArrowSmLeft } from 'react-icons/hi';
+// import { HiOutlineCheckCircle, HiPencilAlt, HiArrowSmLeft } from 'react-icons/hi';
+import { HiOutlinePhone, HiOutlineCalendarDays, HiOutlineIdentification, HiOutlineMapPin, HiOutlineCheckCircle, HiMiniPencilSquare, HiArrowLeft, HiMap, HiCake, HiOutlineHome, HiMiniFingerPrint } from 'react-icons/hi2';
+import { RiDropFill, RiDropLine, RiGenderlessLine, RiGenderlessFill} from "react-icons/ri";
+import { TbUserHeart } from "react-icons/tb";
+import { LiaGenderlessSolid } from "react-icons/lia";
+import { LiaTintSolid } from "react-icons/lia";
 import { brStateDatas, genderDatas, maritalDatas } from '../Datas';
 import { InputMaskComp } from '../Form';
 import { updatePatient, getPatient } from '../../api/PatientsAPI';
@@ -133,27 +138,37 @@ function PersonalInfo({ titles, data, status }) {
             <div className="grid sm:grid-cols-3 gap-4 w-full">
               {/* Full Name */}
               <div className=''>
-                <h3 className='pl-1 mb-[-7px] text-sm text-black'>Nome Completo<span className='text-required'>*</span></h3>
-                <div className='w-full border p-4 mt-3 rounded-lg'>
-                  <p className='text-sm font-light'>
+                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Nome Completo<span className='text-required'></span></p>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <HiOutlineIdentification />
+                  </p>
+                  <p className='flex text-sm font-medium'>
                     {data.fullName}
                   </p>
                 </div>
               </div>
               {/* CPF */}
               <div className=''>
-                <h3 className='pl-1 mb-[-7px] text-sm text-black'>CPF<span className='text-required'></span></h3>
-                <div className='w-full border p-4 mt-3 rounded-lg'>
-                  <p className='text-sm font-light'>
+                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>CPF<span className='text-required'></span></p>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <HiMiniFingerPrint />
+                  </p>
+                  <p className='flex text-sm font-medium'>
                     {formatCPF(data.cpf) ? formatCPF(data.cpf) : "Não informado..."}
                   </p>
                 </div>
               </div>
               {/* DatePicker */}
               <div className=''>
-                <p className='pl-1 mb-[-7px] text-sm text-black'>Data de Nascimento<span className='text-required'></span></p>
-                <div className='w-full border p-4 mt-3 rounded-lg'>
-                  <p className='text-sm font-light'>
+                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Data de Nascimento<span className='text-required'></span></p>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <HiOutlineCalendarDays />
+                    {/* <HiCake /> */}
+                  </p>
+                  <p className='flex text-sm font-medium'>
                     {formatDate(new Date(data.dateBirth))}
                   </p>
                 </div>
@@ -162,27 +177,36 @@ function PersonalInfo({ titles, data, status }) {
             <div className="grid sm:grid-cols-3 gap-4 w-full">
               {/* Blood Type */}
               <div className=''>
-                <h3 className='pl-1 mb-[-7px] text-sm text-black'>Tipo Sanguíneo<span className='text-required'></span></h3>
-                <div className='w-full border p-4 mt-3 rounded-lg'>
-                  <p className='text-sm font-light'>
+                <h3 className='pl-0 mb-[-7px] text-sm font-bold text-black'>Tipo Sanguíneo<span className='text-required'></span></h3>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <LiaTintSolid />
+                  </p>
+                  <p className='flex text-sm font-medium'>
                     {data.bloodType ? sortsDatas.bloodTypeFilter[data.bloodType - 1].name : "-"}
                   </p>
                 </div>
               </div>
               {/* Marital State */}
               <div className=''>
-                <h3 className='pl-1 mb-[-7px] text-sm text-black'>Estado Civil<span className='text-required'></span></h3>
-                <div className='w-full border p-4 mt-3 rounded-lg'>
-                  <p className='text-sm font-light'>
+                <h3 className='pl-0 mb-[-7px] text-sm font-bold text-black'>Estado Civil<span className='text-required'></span></h3>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-xl font-light pr-1'>
+                    <TbUserHeart />
+                  </p>
+                  <p className='flex text-sm font-medium'>
                     {data.marital ? maritalDatas.marital[data.marital - 1].name : "-"}
                   </p>
                 </div>
               </div>
               {/* Gender */}
               <div className=''>
-                <h3 className='pl-1 mb-[-7px] text-sm text-black'>Gênero<span className='text-required'></span></h3>
-                <div className='w-full border p-4 mt-3 rounded-lg'>
-                  <p className='text-sm font-light'>
+                <h3 className='pl-0 mb-[-7px] text-sm font-bold text-black'>Gênero<span className='text-required'></span></h3>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <LiaGenderlessSolid />
+                  </p>
+                  <p className='flex text-sm font-medium'>
                     {data.gender ? genderDatas.gender[data.gender - 1].name : "-"}
                   </p>
                 </div>
@@ -191,18 +215,24 @@ function PersonalInfo({ titles, data, status }) {
             <div className="grid sm:grid-cols-2 gap-4 w-full">
               {/* Tel */}
               <div className=''>
-                <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de Contato<span className='text-required'></span></p>
-                <div className='w-full border p-4 mt-3 rounded-lg'>
-                  <p className='text-sm font-light'>
+                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Telefone de Contato<span className='text-required'></span></p>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <HiOutlinePhone />
+                  </p>
+                  <p className='flex text-sm font-medium'>
                     {formatPhoneNumber(data.phoneNumber)}
                   </p>
                 </div>
               </div>
               {/* Emergncy Contact */}
               <div className=''>
-                <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de Emergência<span className='text-required'></span></p>
-                <div className='w-full border p-4 mt-3 rounded-lg'>
-                  <p className='text-sm font-light'>
+                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Telefone de Emergência<span className='text-required'></span></p>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <HiOutlinePhone />
+                  </p>
+                  <p className='flex text-sm font-medium'>
                     {formatPhoneNumber(data.emergencyContact)}
                   </p>
                 </div>
@@ -213,40 +243,52 @@ function PersonalInfo({ titles, data, status }) {
             <div className="grid sm:grid-cols-2 gap-4 w-full">
               {/* Address */}
               <div className=''>
-                <h3 className='pl-1 mb-[-7px] text-sm text-black'>Endereço<span className='text-required'></span></h3>
-                <div className='w-full border p-4 mt-3 rounded-lg'>
-                  <p className='text-sm font-light'>
-                    {data.address ? data.address : "Não informado..."}
+                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Endereço<span className='text-required'></span></p>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <HiOutlineHome />
+                  </p>
+                  <p className='flex text-sm font-medium'>
+                    {data.address ? data.address : "Não informado..."}, {data.region ? data.region : "Não informado..."}
                   </p>
                 </div>
               </div>
               {/* Region */}
-              <div className=''>
-                <h3 className='pl-1 mb-[-7px] text-sm text-black'>Bairro<span className='text-required'></span></h3>
-                <div className='w-full border p-4 mt-3 rounded-lg'>
-                  <p className='text-sm font-light'>
+              {/* <div className=''>
+                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Bairro<span className='text-required'></span></p>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <HiOutlineMapPin />
+                  </p>
+                  <p className='flex text-sm font-medium'>
                     {data.region ? data.region : "Não informado..."}
                   </p>
                 </div>
-              </div>
+              </div> */}
               {/* City */}
               <div className=''>
-                <h3 className='pl-1 mb-[-7px] text-sm text-black'>Cidade<span className='text-required'></span></h3>
-                <div className='w-full border p-4 mt-3 rounded-lg'>
-                  <p className='text-sm font-light'>
-                    {data.city ? data.city : "Não informado..."}
+                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Cidade<span className='text-required'></span></p>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <HiOutlineMapPin />
+                  </p>
+                  <p className='flex text-sm font-medium'>
+                    {data.city ? data.city : "Não informado..."}, ({data.state ? brStateDatas.states[data.state - 1].UF : "-"})
                   </p>
                 </div>
               </div>
               {/* State */}
-              <div className=''>
-                <h3 className='pl-1 mb-[-7px] text-sm text-black'>Estado<span className='text-required'></span></h3>
-                <div className='w-full border p-4 mt-3 rounded-lg'>
-                  <p className='text-sm font-light'>
+              {/* <div className=''>
+                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Estado<span className='text-required'></span></p>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <HiOutlineMapPin />
+                  </p>
+                  <p className='flex text-sm font-medium'>
                     {data.state ? brStateDatas.states[data.state - 1].UF : "-"}
                   </p>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </form>
@@ -261,7 +303,7 @@ function PersonalInfo({ titles, data, status }) {
           /> */}
           <Button
             label={'Editar Informações'}
-            Icon={HiPencilAlt}
+            Icon={HiMiniPencilSquare}
             onClick={handleChange2Edit}
           />
         </div>
@@ -368,7 +410,7 @@ function PersonalInfo({ titles, data, status }) {
           <div className="grid sm:grid-cols-2 gap-4 w-full">
             {/* Tel */}
             <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de Contato<span className='text-warn'></span></p>
+            <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de Contato<span className='text-warn'></span></p>
               <InputMaskComp
                 color={true}
                 mask="(99) 9 9999-9999"
@@ -472,7 +514,7 @@ function PersonalInfo({ titles, data, status }) {
             >
               <p className='flex flex-row w-full justify-center items-center text-center text-sm font-medium'>
                 Voltar
-                <HiArrowSmLeft className='text-xl mx-2' />
+                <HiArrowLeft className='text-xl mx-2' />
               </p>
             </button>
           </div>

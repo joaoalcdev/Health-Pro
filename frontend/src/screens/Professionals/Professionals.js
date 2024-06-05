@@ -28,11 +28,11 @@ function Professionals() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const fetch = async () => {
-    setLoading(true)
+    setLoading(true);
     const response = await getProfessionals()
     if (response.length === 0) {
-      setNoData(true)
-      setLoading(false)
+      setNoData(true);
+      setLoading(false);
       return
     }
     setData(response)

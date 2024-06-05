@@ -4,9 +4,9 @@ import { apiBaseUrl } from "./apiConfig"
 
 //Professionals
 
-export const getProfessionals = async () => {
+export const getProfessionals = async (showDeleted) => {
   try {
-    const res = await axios.get(apiBaseUrl('professionals'))
+    const res = await axios.get(apiBaseUrl(`professionals/${showDeleted ? showDeleted : false}`))
     const data = res.data
     return data
   } catch (error) {

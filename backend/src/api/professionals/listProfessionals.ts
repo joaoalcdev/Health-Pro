@@ -6,8 +6,6 @@ export const ListProfessionals = async (app: FastifyInstance) => {
   async (req: FastifyRequest, res: FastifyReply) => {
    
     let { deleted } = req.params as { deleted: string }
-
-    console.log(deleted)
     try {
       if (deleted==="true") {
         let { data, error } = await supabase
@@ -23,7 +21,6 @@ export const ListProfessionals = async (app: FastifyInstance) => {
           return res.status(200).send(data ? data : null)
         }
       }else{
-      console.log("aquiiiiiiiiii")
         let { data, error } = await supabase
         .from("view_professionals")
         .select("*")

@@ -7,7 +7,6 @@ export const UpdatePatient = async (app: FastifyInstance) => {
       const {
         fullName,
         cpf,
-        // age,
         bloodType,
         marital,
         gender,
@@ -17,7 +16,11 @@ export const UpdatePatient = async (app: FastifyInstance) => {
         city,
         state,
         phoneNumber,
-        emergencyContact
+        emergencyContact,
+        paternalFiliation,
+        maternalFiliation,
+        paternalFiliationContact,
+        maternalFiliationContact
       } = req.body as Patients
 
       const { id } = req.params as { id: string }
@@ -27,7 +30,6 @@ export const UpdatePatient = async (app: FastifyInstance) => {
         .update({
           fullName,
           cpf,
-          // age,
           bloodType,
           marital,
           gender,
@@ -37,7 +39,11 @@ export const UpdatePatient = async (app: FastifyInstance) => {
           city,
           state,
           phoneNumber,
-          emergencyContact
+          emergencyContact,
+          paternalFiliation,
+          maternalFiliation,
+          paternalFiliationContact,
+          maternalFiliationContact
         }).eq("id", id).select()
 
       if (error) {

@@ -1,5 +1,5 @@
-import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
-import { supabase} from "../../supabaseConnection";
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import { supabase } from "../../supabaseConnection";
 
 export const AddPatient = async (app: FastifyInstance) => {
   app.post("/patients", async (req: FastifyRequest, res: FastifyReply) => {
@@ -7,7 +7,6 @@ export const AddPatient = async (app: FastifyInstance) => {
       const {
         fullName,
         cpf,
-        // age,
         bloodType,
         marital,
         gender,
@@ -17,27 +16,34 @@ export const AddPatient = async (app: FastifyInstance) => {
         city,
         state,
         phoneNumber,
-        emergencyContact
+        emergencyContact,
+        paternalFiliation,
+        maternalFiliation,
+        paternalFiliationContact,
+        maternalFiliationContact
       } = req.body as Patients
 
-      const { data , error } = await supabase
-      .from("patients")
-      .insert([{
-        fullName,
-        cpf,
-        // age,
-        bloodType,
-        marital,
-        gender,
-        dateBirth,
-        address,
-        region,
-        city,
-        state,
-        phoneNumber,
-        emergencyContact
-      }]).select()
-      
+      const { data, error } = await supabase
+        .from("patients")
+        .insert([{
+          fullName,
+          cpf,
+          bloodType,
+          marital,
+          gender,
+          dateBirth,
+          address,
+          region,
+          city,
+          state,
+          phoneNumber,
+          emergencyContact,
+          paternalFiliation,
+          maternalFiliation,
+          paternalFiliationContact,
+          maternalFiliationContact
+        }]).select()
+
       if (error) {
         throw error
       } else {

@@ -8,9 +8,12 @@ import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { PiPassword } from "react-icons/pi";
 import { toast } from 'react-hot-toast';
 import { InputMaskComp } from '../Form';
+import { set } from 'rsuite/esm/utils/dateUtils';
 
 
 function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
+
+  const [loading, setLoading] = useState(false)
 
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -40,6 +43,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     if (!isAdd) {
       await updateUser(
         {
@@ -60,6 +64,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
 
       closeModal(true)
       status(true)
+      setLoading(false)
       toast.success("Usuário atualizado com sucesso!", {
         position: "top-center",
       })
@@ -82,6 +87,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
 
       closeModal(true)
       status(true)
+      setLoading(false)
       toast.success("Usuário criado com sucesso!", {
         position: "top-center",
       })
@@ -241,6 +247,8 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
             <Button
               onClick={handleSubmit}
               label="Salvar"
+              disabled={loading}
+              loading={loading}
               Icon={HiOutlineCheckCircle}
             />
           </div>

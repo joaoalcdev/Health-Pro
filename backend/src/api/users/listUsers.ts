@@ -2,9 +2,26 @@ import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
 
 export const ListUsers = async (app: FastifyInstance) => {
-  app.get("/users", async (req: FastifyRequest, res: FastifyReply) => {
+  app.get("/users/:deleted", async (req: FastifyRequest, res: FastifyReply) => {
+    
+    let { deleted } = req.params as { deleted: string }
+    
     try {
-      const { data, error } = await supabase
+      if(deleted==="true") {
+        let { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .not("deletedAt","is", null)
+        .filter("roleId","in", "(1,2)")
+        .order("firstName", { ascending: true })
+        if (error) {
+          throw error
+        } else {
+          return res.status(200).send(data ? data : null)
+        }
+      } else {
+
+      let { data, error } = await supabase
         .from("users")
         .select("*")
         .filter("deletedAt","is", null)
@@ -16,6 +33,7 @@ export const ListUsers = async (app: FastifyInstance) => {
       } else {
         return res.status(200).send(data ? data : null)
       }
+    }
     } catch (error) {
       return res.status(400).send(error)
     }

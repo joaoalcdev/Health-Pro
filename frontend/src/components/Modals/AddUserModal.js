@@ -27,6 +27,12 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
   const [password, setPassword] = useState("")
   const [roleId, setRoleId] = useState(roleOptions.roles[1]);
 
+  const roles = roleOptions.roles.filter((role) => {
+    if (role.id !== 3) {
+      return role
+    }
+  })
+
   useEffect(() => {
     if (datas) {
       setFirstName(datas.firstName || "");
@@ -226,7 +232,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
               <Select
                 selectedPerson={roleId}
                 setSelectedPerson={setRoleId}
-                datas={roleOptions.roles}
+                datas={roles}
               >
                 <div className="w-full flex-btn text-black text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
                   {roleId.name} <BiChevronDown className="text-xl" />

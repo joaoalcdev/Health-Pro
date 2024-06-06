@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MenuSelect } from './Form';
+import { MenuSelect, Button } from './Form';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { FiEdit, FiEye } from 'react-icons/fi';
 import { RiDeleteBin6Line, RiDeleteBinLine } from 'react-icons/ri';
@@ -10,7 +10,6 @@ import { formatDate } from '../utils/formatDate';
 import { calculateDate } from '../utils/calculateDate';
 import { brStateDatas, specialties, councilDatas, roleOptions } from './Datas';
 import AddPatientModal from './Modals/AddPatientModal';
-import { getPatients } from '../api/PatientsAPI';
 import getAvatar from '../utils/getAvatar';
 
 const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';

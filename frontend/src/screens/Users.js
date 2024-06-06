@@ -10,6 +10,7 @@ import { deleteUser, getUsers } from '../api/UsersAPI';
 import { FilterSelect } from '../components/Form';
 import { roleOptions } from '../components/Datas';
 import { BiChevronDown, BiLoaderCircle } from 'react-icons/bi';
+import { set } from 'rsuite/esm/utils/dateUtils';
 
 function Users() {
   //data
@@ -51,11 +52,13 @@ function Users() {
   }, [status])
 
   const handleDelete = async () => {
+    setLoading(true)
     const response = await deleteUser(user)
     if (response) {
       toast.success('Usuário deletado com sucesso')
       setStatus(true)
       setIsConfirmationOpen(false)
+      setLoading(false)
     } else {
       toast.error('Não foi possível deletar o usuário')
     }
@@ -128,9 +131,10 @@ function Users() {
         //confirmation modal
         isConfirmationOpen && (
           <ConfirmationModal
-            title={'Deletar Usuário'}
+            title={'Desativar Usuário'}
             closeModal={onCloseModal}
             isOpen={isConfirmationOpen}
+            loading={loading}
             question={"Você tem certeza que deseja desativar esse usuário?"}
             onConfirm={handleDelete}
           />

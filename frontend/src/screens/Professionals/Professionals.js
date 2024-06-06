@@ -8,9 +8,11 @@ import AddProfessionalModal from '../../components/Modals/AddProfessionalModal';
 import { getProfessionals } from '../../api/ProfessionalsAPI';
 import { specialties } from '../../components/Datas';
 import { BiLoaderCircle } from 'react-icons/bi';
+import Tab from '../../components/Tab';
 
 function Professionals() {
   const navigate = useNavigate();
+  const [tab, setTab] = useState(1);
 
   //data
   const [allData, setAllData] = useState([])
@@ -29,7 +31,7 @@ function Professionals() {
 
   const fetch = async () => {
     setLoading(true);
-    const response = await getProfessionals()
+    const response = await getProfessionals(tab === 1 ? '' : 'true')
     if (response.length === 0) {
       setNoData(true);
       setLoading(false);
@@ -44,7 +46,7 @@ function Professionals() {
 
   useEffect(() => {
     fetch()
-  }, [status])
+  }, [status, tab])
 
   const onCloseModal = () => {
     setIsOpen(false);
@@ -90,6 +92,10 @@ function Professionals() {
     }
   }, [data])
 
+  const onChangeTab = (index) => {
+    index === 1 ? setTab(1) : setTab(2)
+  }
+
   return (
     <Layout>
       {
@@ -112,7 +118,13 @@ function Professionals() {
         <BiPlus className="text-2xl" />
       </button>
       {/*  */}
-      <h1 className="text-xl font-semibold">Profissionais</h1>
+      <div className="sm:flex grid grid-cols-1 gap-4 items-center justify-between">
+        <h1 className="text-xl font-semibold">Profissionais</h1>
+        <Tab selectedTab={tab} functions={{
+          onChangeTab: onChangeTab
+        }}
+        />
+      </div>
       <div
         data-aos="fade-up"
         data-aos-duration="1000"

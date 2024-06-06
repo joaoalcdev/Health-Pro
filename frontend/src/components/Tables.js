@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MenuSelect } from './Form';
-import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { MenuSelect, Button } from './Form';
+import { BiDotsHorizontalRounded, BiUndo } from 'react-icons/bi';
 import { FiEdit, FiEye } from 'react-icons/fi';
 import { RiDeleteBin6Line, RiDeleteBinLine } from 'react-icons/ri';
 import { toast } from 'react-hot-toast';
@@ -10,7 +10,6 @@ import { formatDate } from '../utils/formatDate';
 import { calculateDate } from '../utils/calculateDate';
 import { brStateDatas, specialties, councilDatas, roleOptions } from './Datas';
 import AddPatientModal from './Modals/AddPatientModal';
-import { getPatients } from '../api/PatientsAPI';
 import getAvatar from '../utils/getAvatar';
 
 const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
@@ -520,22 +519,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
 
 // users table
 export function UsersTable({ data, functions, user, noData }) {
-  const DropDown1 = [
-    {
-      title: 'Ver',
-      icon: FiEye,
-      onClick: (data) => {
-        functions.preview(data);
-      },
-    },
-    {
-      title: 'Deletar',
-      icon: RiDeleteBin6Line,
-      onClick: (data) => {
-        functions.deleteUser(data);
-      },
-    },
-  ];
+
   return (noData ? <div className="text-center pb-10 text-lg text-main">Nenhum dado encontrado</div> :
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
@@ -572,16 +556,35 @@ export function UsersTable({ data, functions, user, noData }) {
             <td className={tdclass}>{item.createdAt ? formatDate(new Date(item.createdAt)) : "-"}</td>
 
             <td className={tdclass}>
-              <MenuSelect datas={DropDown1} item={item}>
-                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
-                  <BiDotsHorizontalRounded />
-                </div>
-              </MenuSelect>
+              <div className="flex gap-4 items-center">
+                <button
+                  onClick={() => functions.preview(item)}
+                  className={`flex gap-4 items-center hover:text-subMain`}
+                >
+                  <FiEye className="text-md text-subMain" />
+                </button>
+
+                {item.deletedAt === null ?
+                  <button
+                    onClick={() => functions.deleteUser(item)}
+                    className={`flex gap-4 items-center hover:text-subMain`}
+                  >
+                    <RiDeleteBin6Line className="text-xl text-red-600" />
+                  </button>
+                  :
+                  <button
+                    onClick={() => functions.restoreUser(item)}
+                    className={`flex gap-4 items-center hover:text-subMain`}
+                  >
+                    <BiUndo className="text-xl text-subMain" />
+                  </button>
+                }
+              </div>
             </td>
           </tr>
         ))}
       </tbody>
-    </table>
+    </table >
   );
 }
 

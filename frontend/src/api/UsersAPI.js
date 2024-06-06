@@ -4,10 +4,10 @@ import { apiBaseUrl } from "./apiConfig"
 
 //Users
 
-export const getUsers = async () => {
+export const getUsers = async (showDeleted) => {
   try {
     // const res = await axios.get(`${apiBaseUrl}`)
-    const res = await axios.get(apiBaseUrl('users'))
+    const res = await axios.get(apiBaseUrl(`users/${showDeleted ? showDeleted : false}`))
     const data = res.data
     return data
   } catch (error) {
@@ -17,7 +17,6 @@ export const getUsers = async () => {
 }
 
 export const createUser = async (newUser) => {
-  console.log(newUser)
   try {
     const data = await axios.post(apiBaseUrl('users'), newUser)
     return data

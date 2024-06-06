@@ -8,22 +8,15 @@ interface RequestParams {
 export const DeleteUser = async (app: FastifyInstance) => {
   app.delete("/user/:id", async (req: FastifyRequest, res: FastifyReply) => {
     try {
-      const userId = (req.params as RequestParams).id;
+      const { id } = req.params as { id: string }
 
-      const { data, error } = await supabaseAdmin
-        .auth
-        .admin
-        .deleteUser(userId)
+      const { data, error } = await supabase
+        .from("users")
+        .update({
+          deletedAt: new Date()
+        }).eq("id", id).select()
 
       if (error) {
-        throw error
-      }
-
-      const { error: deleteUserError } = await supabase.from('users')
-      .delete()
-      .eq('id', userId)
-      
-      if (deleteUserError) {
         throw error
       } else {
         return res.status(200).send(data ? data : null)

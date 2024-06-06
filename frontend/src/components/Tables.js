@@ -520,22 +520,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
 
 // users table
 export function UsersTable({ data, functions, user, noData }) {
-  const DropDown1 = [
-    {
-      title: 'Ver',
-      icon: FiEye,
-      onClick: (data) => {
-        functions.preview(data);
-      },
-    },
-    {
-      title: 'Deletar',
-      icon: RiDeleteBin6Line,
-      onClick: (data) => {
-        functions.deleteUser(data);
-      },
-    },
-  ];
+
   return (noData ? <div className="text-center pb-10 text-lg text-main">Nenhum dado encontrado</div> :
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
@@ -572,11 +557,23 @@ export function UsersTable({ data, functions, user, noData }) {
             <td className={tdclass}>{item.createdAt ? formatDate(new Date(item.createdAt)) : "-"}</td>
 
             <td className={tdclass}>
-              <MenuSelect datas={DropDown1} item={item}>
-                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
-                  <BiDotsHorizontalRounded />
-                </div>
-              </MenuSelect>
+              <div className="flex gap-4 items-center">
+                <button
+                  onClick={() => functions.preview(item)}
+                  key={index}
+                  className={`flex gap-4 items-center hover:text-subMain`}
+                >
+                  <FiEye className="text-md text-subMain" />
+                </button>
+                <button
+                  onClick={() => functions.deleteUser(item)}
+                  key={index}
+                  className={`flex gap-4 items-center hover:text-subMain`}
+                >
+                  <RiDeleteBin6Line className="text-md text-red-600" />
+                </button>
+
+              </div>
             </td>
           </tr>
         ))}

@@ -327,6 +327,8 @@ export function ServiceTable({ data, onEdit }) {
 // patient table
 export function PatientsTable({ functions, used, noData, patientData }) {
 
+
+
   const [status, setStatus] = useState(true);
   // const [patientData, setPatientData] = useState([]);
 
@@ -375,7 +377,6 @@ export function PatientsTable({ functions, used, noData, patientData }) {
   const onStatus = () => {
     setStatus(true)
   }
-
 
   return (noData ?
     <>
@@ -460,7 +461,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
             <td className={tdclass}>
               <span
                 className={
-                  `py-1 px-4 ${item.gender === 'Masculino' ? 'bg-subMain text-subMain' : 'bg-orange-500 text-orange-500'} bg-opacity-10 text-xs rounded-xl`}
+                  `select-none py-1 px-4 ${item.gender === 1 ? 'bg-subMain text-subMain hover:bg-subMain hover:text-white' : 'bg-orange-500 text-orange-500 hover:bg-orange-400 hover:text-white'} bg-opacity-10 text-xs rounded-xl duration-300`}
               >
                 {item.gender === 1 ? 'M' : item.gender === 2 ? 'F' : 'O'}
               </span>

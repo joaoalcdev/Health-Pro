@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 // import { HiOutlineCheckCircle, HiPencilAlt, HiArrowSmLeft } from 'react-icons/hi';
 import { HiOutlinePhone, HiOutlineCalendarDays, HiOutlineIdentification, HiOutlineMapPin, HiOutlineCheckCircle, HiMiniPencilSquare, HiArrowLeft, HiMap, HiCake, HiOutlineHome, HiMiniFingerPrint } from 'react-icons/hi2';
-import { RiDropFill, RiDropLine, RiGenderlessLine, RiGenderlessFill} from "react-icons/ri";
+import { RiDropFill, RiDropLine, RiGenderlessLine, RiGenderlessFill } from "react-icons/ri";
 import { TbUserHeart } from "react-icons/tb";
 import { LiaGenderlessSolid } from "react-icons/lia";
 import { LiaTintSolid } from "react-icons/lia";
@@ -37,6 +37,10 @@ function PersonalInfo({ titles, data, status }) {
   const [region, setRegion] = useState(data.region);
   const [city, setCity] = useState(data.city);
   const [state, setState] = useState(brStateDatas.states[data.state - 1]);
+  const [paternalFiliation, setPaternalFiliation] = useState(data.paternalFiliation);
+  const [maternalFiliation, setMaternalFiliation] = useState(data.maternalFiliation);
+  const [paternalFiliationContact, setPaternalFiliationContact] = useState(data.paternalFiliationContact);
+  const [maternalFiliationContact, setMaternalFiliationContact] = useState(data.maternalFiliationContact);
 
 
   const { id } = useParams();
@@ -56,6 +60,10 @@ function PersonalInfo({ titles, data, status }) {
     setAddress(data.address);
     setRegion(data.region);
     setCity(data.city);
+    setPaternalFiliation(data.paternalFiliation);
+    setMaternalFiliation(data.maternalFiliation);
+    setPaternalFiliationContact(data.paternalFiliationContact);
+    setMaternalFiliationContact(data.maternalFiliationContact);
     // setState(data.state);
   }
 
@@ -76,6 +84,10 @@ function PersonalInfo({ titles, data, status }) {
         region,
         city,
         state: state.id,
+        paternalFiliation,
+        maternalFiliation,
+        paternalFiliationContact,
+        maternalFiliationContact
       }
     )
 
@@ -106,7 +118,11 @@ function PersonalInfo({ titles, data, status }) {
       address !== data.address ||
       region !== data.region ||
       city !== data.city ||
-      state.id !== data.state
+      state.id !== data.state ||
+      paternalFiliation !== data.paternalFiliation ||
+      maternalFiliation !== data.maternalFiliation ||
+      paternalFiliationContact !== data.paternalFiliationContact ||
+      maternalFiliationContact !== data.maternalFiliationContact
     ) {
       setIsDisabled(false)
       console.log('habilitado (changed)')
@@ -125,7 +141,11 @@ function PersonalInfo({ titles, data, status }) {
     address, data.address,
     region, data.region,
     city, data.city,
-    state.id, data.state
+    state.id, data.state,
+    paternalFiliation, data.paternalFiliation,
+    maternalFiliation, data.maternalFiliation,
+    paternalFiliationContact, data.paternalFiliationContact,
+    maternalFiliationContact, data.maternalFiliationContact
   ])
 
 
@@ -290,6 +310,58 @@ function PersonalInfo({ titles, data, status }) {
                 </div>
               </div> */}
             </div>
+            <div className="grid sm:grid-cols-2 gap-4 w-full">
+              {/* paternalFiliation */}
+              <div className=''>
+                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Filiação Paterna<span className='text-required'></span></p>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <HiOutlineIdentification />
+                  </p>
+                  <p className='flex text-sm font-medium'>
+                    {data.paternalFiliation ? data.paternalFiliation : "Não informado..."}
+                  </p>
+                </div>
+
+              </div>
+              {/* maternalFiliation */}
+              <div className=''>
+                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Filiação Materna<span className='text-required'></span></p>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <HiOutlineIdentification />
+                  </p>
+                  <p className='flex text-sm font-medium'>
+                    {data.maternalFiliation ? data.maternalFiliation : "Não informado..."}
+                  </p>
+                </div>
+              </div>
+              {/* paternalFiliationContact */}
+              <div className=''>
+                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Contato do responsável 1<span className='text-required'></span></p>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <HiOutlinePhone />
+                  </p>
+                  <p className='flex text-sm font-medium'>
+                    {formatPhoneNumber(data.paternalFiliationContact)}
+                  </p>
+                </div>
+              </div>
+              {/* maternalFiliationContact */}
+              <div className=''>
+                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Contato do responsável 2<span className='text-required'></span></p>
+                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
+                  <p className='flex text-2xl font-light pr-1'>
+                    <HiOutlinePhone />
+                  </p>
+                  <p className='flex text-sm font-medium'>
+                    {formatPhoneNumber(data.maternalFiliationContact)}
+                  </p>
+                </div>
+              </div>
+
+            </div>
           </div>
         </form>
         {/* submit */}
@@ -410,7 +482,7 @@ function PersonalInfo({ titles, data, status }) {
           <div className="grid sm:grid-cols-2 gap-4 w-full">
             {/* Tel */}
             <div className=''>
-            <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de Contato<span className='text-warn'></span></p>
+              <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de Contato<span className='text-warn'></span></p>
               <InputMaskComp
                 color={true}
                 mask="(99) 9 9999-9999"
@@ -502,6 +574,64 @@ function PersonalInfo({ titles, data, status }) {
                   {state.UF} <BiChevronDown className="text-xl" />
                 </div>
               </Select>
+            </div>
+            {/* paternalFiliation */}
+            <div className=''>
+              <p className='pl-1 mb-[-7px] text-sm text-black'>Filiação Paterna<span className='text-required'></span></p>
+              <Input
+                color={true}
+                required={false}
+                value={paternalFiliation}
+                onChange={(e) => {
+                  setPaternalFiliation(e.target.value)
+                  // setIsDisabled(false)
+                }}
+                placeholder={'Joaquim Bezerra'}
+              />
+            </div>
+            {/* maternalFiliation */}
+            <div className=''>
+              <p className='pl-1 mb-[-7px] text-sm text-black'>Filiação Materna<span className='text-required'></span></p>
+              <Input
+                color={true}
+                required={false}
+                value={maternalFiliation}
+                onChange={(e) => {
+                  setMaternalFiliation(e.target.value)
+                  // setIsDisabled(false)
+                }}
+                placeholder={'Lúcia Agostinho'}
+              />
+            </div>
+            {/* paternalFiliationContact */}
+            <div className=''>
+              <p className='pl-1 mb-[-7px] text-sm text-black'>Contato do responsável 1<span className='text-required'></span></p>
+              <InputMaskComp
+                color={true}
+                mask="(99) 9 9999-9999"
+                placeholder={'(__) _ ____-____'}
+                unmask={true}
+                autoClear={true}
+                required={false}
+                value={paternalFiliationContact}
+                onChange={(e) => setPaternalFiliationContact(e.target.value)}
+                className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+              />
+            </div>
+            {/* maternalFiliationContact */}
+            <div className=''>
+              <p className='pl-1 mb-[-7px] text-sm text-black'>Contato do responsável 2<span className='text-required'></span></p>
+              <InputMaskComp
+                color={true}
+                mask="(99) 9 9999-9999"
+                placeholder={'(__) _ ____-____'}
+                unmask={true}
+                autoClear={true}
+                required={false}
+                value={maternalFiliationContact}
+                onChange={(e) => setMaternalFiliationContact(e.target.value)}
+                className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+              />
             </div>
           </div>
         </div>

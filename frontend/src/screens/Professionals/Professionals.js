@@ -26,7 +26,7 @@ function Professionals() {
   const [loading, setLoading] = useState(false);
 
   //filter and search controllers
-  const [filterTerm, setFilterProfessionals] = useState({ id: 0, name: "Todos" });
+  const [filterTerm, setFilterTerm] = useState({ id: 0, name: "Todos" });
   const [searchTerm, setSearchTerm] = useState("");
 
   const fetch = async () => {
@@ -35,11 +35,9 @@ function Professionals() {
     if (response.length === 0) {
       setNoData(true);
       setLoading(false);
-      return
     }
     setData(response)
     setAllData(response)
-    setNoResult(false)
     setLoading(false)
     setStatus(false)
   }
@@ -89,11 +87,15 @@ function Professionals() {
   useEffect(() => {
     if (data.length === 0) {
       setNoResult(true)
+      return
     }
+    setNoResult(false)
   }, [data])
 
   const onChangeTab = (index) => {
-    index === 1 ? setTab(1) : setTab(2)
+    index === 1 ? setTab(1) : setTab(2);
+    setFilterTerm({ id: 0, name: "Todos" });
+    setSearchTerm("");
   }
 
   return (
@@ -158,7 +160,7 @@ function Professionals() {
                 </div>
                 <FilterSelect
                   selectedPerson={filterTerm}
-                  setSelectedPerson={setFilterProfessionals}
+                  setSelectedPerson={setFilterTerm}
                   datas={specialties.specialty}
                 >
                   <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
@@ -170,8 +172,8 @@ function Professionals() {
               <div className="mt-8 w-full overflow-x-scroll">
                 < ProfessionalsTable
                   doctor={true}
-                  noData={noResult}
                   data={data}
+                  noData={noResult}
                   functions={{
                     preview: preview,
                   }}

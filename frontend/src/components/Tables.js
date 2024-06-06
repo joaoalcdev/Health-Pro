@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MenuSelect, Button } from './Form';
-import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { BiDotsHorizontalRounded, BiUndo } from 'react-icons/bi';
 import { FiEdit, FiEye } from 'react-icons/fi';
 import { RiDeleteBin6Line, RiDeleteBinLine } from 'react-icons/ri';
 import { toast } from 'react-hot-toast';
@@ -559,25 +559,32 @@ export function UsersTable({ data, functions, user, noData }) {
               <div className="flex gap-4 items-center">
                 <button
                   onClick={() => functions.preview(item)}
-                  key={index}
                   className={`flex gap-4 items-center hover:text-subMain`}
                 >
                   <FiEye className="text-md text-subMain" />
                 </button>
-                <button
-                  onClick={() => functions.deleteUser(item)}
-                  key={index}
-                  className={`flex gap-4 items-center hover:text-subMain`}
-                >
-                  <RiDeleteBin6Line className="text-md text-red-600" />
-                </button>
 
+                {item.deletedAt === null ?
+                  <button
+                    onClick={() => functions.deleteUser(item)}
+                    className={`flex gap-4 items-center hover:text-subMain`}
+                  >
+                    <RiDeleteBin6Line className="text-xl text-red-600" />
+                  </button>
+                  :
+                  <button
+                    onClick={() => functions.restoreUser(item)}
+                    className={`flex gap-4 items-center hover:text-subMain`}
+                  >
+                    <BiUndo className="text-xl text-subMain" />
+                  </button>
+                }
               </div>
             </td>
           </tr>
         ))}
       </tbody>
-    </table>
+    </table >
   );
 }
 

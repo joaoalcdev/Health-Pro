@@ -16,7 +16,6 @@ type Users = {
 type Patients = {
   fullName: string,
   cpf: string,
-  // age: number,
   bloodType: string,
   marital: string,
   gender: string,
@@ -27,6 +26,10 @@ type Patients = {
   state: string,
   phoneNumber: string,
   emergencyContact: string,
+  paternalFiliation: string,
+  maternalFiliation: string,
+  paternalFiliationContact: string,
+  maternalFiliationContact: string,
 }
 
 type Professionals = {

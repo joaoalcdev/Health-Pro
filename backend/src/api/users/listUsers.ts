@@ -7,6 +7,8 @@ export const ListUsers = async (app: FastifyInstance) => {
       const { data, error } = await supabase
         .from("users")
         .select("*")
+        .filter("deletedAt","is", null)
+        .filter("roleId","in", "(1,2)")
         .order("firstName", { ascending: true })
       
       if (error) {

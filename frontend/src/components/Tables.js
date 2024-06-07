@@ -557,7 +557,7 @@ export function UsersTable({ data, functions, user, noData }) {
           <th className={thclass}>Telefone</th>
           <th className={thclass}>Permissão</th>
           <th className={thclass}>Data de Criação</th>
-          <th className={thclass}>Actions</th>
+          <th className={`text-center text-sm font-medium py-3 px-2 whitespace-nowrap`} >Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -583,7 +583,7 @@ export function UsersTable({ data, functions, user, noData }) {
             <td className={tdclass}>{item.createdAt ? formatDate(new Date(item.createdAt)) : "-"}</td>
 
             <td className={tdclass}>
-              <div className="flex gap-4 items-center">
+              <div className="flex gap-4 items-center justify-center">
                 <button
                   onClick={() => functions.preview(item)}
                   className={`flex gap-4 items-center hover:text-subMain`}
@@ -633,7 +633,8 @@ export function ProfessionalsTable({ data, functions, professional, noData }) {
       },
     },
   ];
-  return (noData ? <div className="text-center pb-10 text-lg text-main">Nenhum dado encontrado</div> :
+  return (noData ?
+    <div className="text-center pb-10 text-lg text-main">Nenhum profissional encontrado</div> :
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
@@ -643,7 +644,7 @@ export function ProfessionalsTable({ data, functions, professional, noData }) {
           <th className={thclass}>Telefone</th>
           <th className={thclass}>Email</th>
           <th className={thclass}>Conselho</th>
-          <th className={thclass}>Actions</th>
+          <th className={`text-center text-sm font-medium py-3 px-2 whitespace-nowrap`} >Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -669,13 +670,15 @@ export function ProfessionalsTable({ data, functions, professional, noData }) {
             <td className={tdclass}>{item.council ? councilDatas.council[item.council - 1].name : "-"} - {item.councilNumber}</td>
 
             <td className={tdclass}>
-              <button
-                onClick={() => functions.preview(item)}
-                key={index}
-                className={`flex gap-4 items-center hover:text-subMain`}
-              >
-                <FiEye className="text-md text-subMain" />
-              </button>
+              <div className="flex gap-4 items-center justify-center">
+                <button
+                  onClick={() => functions.preview(item)}
+                  key={index}
+                  className={`flex gap-4 items-center hover:text-subMain`}
+                >
+                  <FiEye className="text-md text-subMain" />
+                </button>
+              </div>
             </td>
           </tr>
         ))}

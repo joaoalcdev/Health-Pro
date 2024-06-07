@@ -35,6 +35,9 @@ export const AddProfessional = async (app: FastifyInstance) => {
         email,
         password
       })
+      if (error) {
+        throw error
+      }
 
       if(data) {
         const { data: createdUser, error } = await supabase

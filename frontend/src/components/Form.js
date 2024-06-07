@@ -73,7 +73,7 @@ export function Button({ label, onClick, loading, Icon, type, disabled }) {
       className={`w-full flex-rows gap-4 transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} bg-subMain text-white text-sm font-medium px-2 py-4 rounded`}
     >
       {loading ? (
-        <BiLoaderCircle className="animate-spin text-white text-2xl" />
+        <BiLoaderCircle className="animate-spin text-white text-xl" />
       ) : (
         <>
           {label}

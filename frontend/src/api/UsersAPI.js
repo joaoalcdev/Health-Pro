@@ -18,10 +18,13 @@ export const getUsers = async (showDeleted) => {
 
 export const createUser = async (newUser) => {
   try {
-    const data = await axios.post(apiBaseUrl('users'), newUser)
+    const { data, error } = await axios.post(apiBaseUrl('users'), newUser)
+    if (error) {
+      throw error
+    }
     return data
   } catch (error) {
-    return error
+    return { error }
   }
 }
 

@@ -75,7 +75,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
         position: "top-center",
       })
     } else {
-      await createUser(
+      const { data, error } = await createUser(
         {
           firstName,
           lastName,
@@ -90,6 +90,16 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
           gender: gender.id,
         }
       )
+
+      if (error) {
+        if (error.response.status === 422) {
+          toast.error("Email já cadastrado!")
+        } else {
+          toast.error("Erro ao criar usuário!")
+        }
+        setLoading(false)
+        return
+      }
 
       closeModal(true)
       status(true)

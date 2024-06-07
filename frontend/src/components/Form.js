@@ -136,7 +136,7 @@ export function Select({ children, selectedPerson, setSelectedPerson, datas }) {
       <div className="w-full">
         <Listbox value={selectedPerson} onChange={setSelectedPerson}>
           <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
-          <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded-md shadow-lg py-2 px-6 ring-1 ring-border focus:outline-none">
+          <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[6rem] overflow-y-scroll bg-white rounded-md shadow-lg py-2 px-6 ring-1 ring-border focus:outline-none">
             {datas.map((person) => (
               <Listbox.Option
                 className={`cursor-pointer text-xs hover:text-subMain hover:bg-black hover:bg-opacity-5 py-2 px-1`}

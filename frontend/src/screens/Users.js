@@ -242,7 +242,7 @@ function Users() {
             <div className="mt-8 w-full overflow-x-scroll">
               {noResult ?
                 <div className="bg-greyed pt-8 pb-8 flex items-center justify-center h-auto">
-                  <p className="text-sm text-main">Nenhum paciente encontrado</p>
+                  <p className="text-sm text-main">Nenhum usuário encontrado</p>
                 </div>
                 :
                 <UsersTable

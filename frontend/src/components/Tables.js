@@ -547,7 +547,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
 // users table
 export function UsersTable({ data, functions, user, noData }) {
 
-  return (noData ? <div className="text-center pb-10 text-lg text-main">Nenhum dado encontrado</div> :
+  return (noData ? <div className="text-center pb-10 text-lg text-main">Nenhum usuário encontrado</div> :
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>

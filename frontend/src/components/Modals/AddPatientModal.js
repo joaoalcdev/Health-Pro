@@ -6,9 +6,8 @@ import { sortsDatas } from '../Datas';
 import { HiOutlineCheckCircle, HiArrowRight } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { brStateDatas, genderDatas, maritalDatas } from '../Datas';
-import { InputMaskComp } from '../Form';
+import { InputMaskComp, ButtonNegative, DatePickerComp } from '../Form';
 import { createPatient } from '../../api/PatientsAPI';
-import { DatePickerComp } from '../Form';
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import { HiArrowLeft, HiMiniXMark } from 'react-icons/hi2';
 
@@ -93,6 +92,10 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
         region,
         city,
         state: state.id,
+        paternalFiliation,
+        maternalFiliation,
+        paternalFiliationContact,
+        maternalFiliationContact
       }
     )
 
@@ -165,7 +168,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     required={false}
                     value={cpf}
                     onChange={(e) => setCpf(e.target.value)}
-                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
                   />
                 </div>
                 <div className=''>
@@ -200,7 +203,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     setSelectedPerson={setBloodType}
                     datas={sortsDatas.bloodTypeFilter}
                   >
-                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
+                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded focus:border focus:border-subMain overflow-auto">
                       {bloodType.name} <BiChevronDown className="text-xl" />
                     </div>
                   </Select>
@@ -215,7 +218,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     setSelectedPerson={setMarital}
                     datas={maritalDatas.marital}
                   >
-                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
+                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded focus:border focus:border-subMain overflow-auto">
                       {marital.name} <BiChevronDown className="text-xl" />
                     </div>
                   </Select>
@@ -230,7 +233,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     setSelectedPerson={setGender}
                     datas={genderDatas.gender}
                   >
-                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
+                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded focus:border focus:border-subMain overflow-auto">
                       {gender.name}<BiChevronDown className="text-xl" />
                     </div>
                   </Select>
@@ -252,7 +255,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     required={false}
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
                   />
                 </div>
                 {/* Emergncy Contact */}
@@ -270,7 +273,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     autoClear={true}
                     value={emergencyContact}
                     onChange={(e) => setEmergencyContact(e.target.value)}
-                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
                   />
                 </div>
               </div>
@@ -329,7 +332,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     setSelectedPerson={setState}
                     datas={brStateDatas.states}
                   >
-                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
+                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded focus:border focus:border-subMain overflow-auto">
                       {state.name} ({state.UF}) <BiChevronDown className="text-xl" />
                     </div>
                   </Select>
@@ -338,15 +341,16 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
             </div>
             {/* buttones */}
             <div className="pt-8 grid sm:grid-cols-2 gap-4 w-full">
-              <button
-                className='gap-4 w-full bg-red-400 bg-opacity-5 text-red-400 border border-red-400 text-sm p-3 rounded-lg font-light hover:bg-opacity-25 hover:text-red-700 transition-color duration-300'
+              {/* <button
+                className='gap-4 w-full bg-red-400 bg-opacity-5 text-red-400 border border-red-400 text-sm p-3 rounded font-light hover:bg-opacity-25 hover:text-red-700 transition-color duration-300'
                 onClick={closeModal}
               >
                 <p className='flex flex-row w-full justify-center items-center text-center text-sm font-medium'>
                   Cancelar
                   <HiMiniXMark className='text-xl mx-2' />
                 </p>
-              </button>
+              </button> */}
+              <ButtonNegative label="Cancelar" onClick={closeModal} />
               <Button label="Próximo" Icon={HiArrowRight} loading={loading} disable={loading} />
             </div>
             {/* </div> */}
@@ -399,7 +403,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     required={false}
                     value={paternalFiliationContact}
                     onChange={(e) => setPaternalFiliationContact(e.target.value)}
-                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
                   />
                 </div>
                 {/* maternalFiliationContact */}
@@ -417,7 +421,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     required={false}
                     value={maternalFiliationContact}
                     onChange={(e) => setMaternalFiliationContact(e.target.value)}
-                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
                   />
                 </div>
               </div>
@@ -426,7 +430,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
               <div className="grid sm:grid-cols-2 gap-4 w-full">
                 <div className='flex flex-row w-full'>
                   <button
-                    className='gap-4 w-full bg-yellow-400 bg-opacity-5 text-yellow-600 border border-yellow-400 text-sm p-3 rounded-lg font-light hover:bg-opacity-25 hover:text-yellow-700 transition-color duration-300'
+                    className='gap-4 w-full bg-subMain bg-opacity-5 text-subMain border border-subMain text-sm p-3 rounded font-light hover:bg-opacity-25 hover:text-subMain transition-color duration-300'
                     onClick={handleChangeStep}
                   >
                     <p className='flex flex-row w-full justify-center items-center text-center text-sm font-medium'>

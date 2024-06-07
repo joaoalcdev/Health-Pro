@@ -463,14 +463,14 @@ export function PatientsTable({ functions, used, noData, patientData }) {
                 className={
                   `select-none py-1 px-4 ${item.gender === 1 ? 'bg-subMain text-subMain hover:bg-subMain hover:text-white' : 'bg-orange-500 text-orange-500 hover:bg-orange-400 hover:text-white'} bg-opacity-10 text-xs rounded-xl duration-300`}
               >
-                {item.gender === 1 ? 'M' : item.gender === 2 ? 'F' : 'O'}
+                {item.gender === 1 ? 'M' : item.gender === 2 ? 'F' : '-'}
               </span>
             </td>
             {!used && (
               <>
                 <td className={tdclass}>
                   {/* {item.bloodType} */}
-                  {item.bloodType === 1 ? 'Não informado...' : item.bloodType === 2 ? 'A+' : item.bloodType === 3 ? 'A-' : item.bloodType === 4 ? 'B+' : item.bloodType === 5 ? 'B-' : item.bloodType === 6 ? 'AB+' : item.bloodType === 7 ? 'AB-' : item.bloodType === 8 ? 'O+' : item.bloodType === 9 ? 'O-' : 'Não informado...'}
+                  {item.bloodType === 1 ? '-' : item.bloodType === 2 ? 'A+' : item.bloodType === 3 ? 'A-' : item.bloodType === 4 ? 'B+' : item.bloodType === 5 ? 'B-' : item.bloodType === 6 ? 'AB+' : item.bloodType === 7 ? 'AB-' : item.bloodType === 8 ? 'O+' : item.bloodType === 9 ? 'O-' : '-'}
                 </td>
                 <td className={tdclass}>{calculateDate(item.dateBirth)}</td>
                 <td className={tdclass}>{formatDate(new Date(item.dateBirth))}</td>
@@ -501,7 +501,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
                 </div>
               </MenuSelect>
             </td> */}
-            <td className={tdclassAction}>
+            {/* <td className={tdclassAction}>
               <button
                 onClick={() => functions.preview(item.id)}
                 key={index}
@@ -509,6 +509,32 @@ export function PatientsTable({ functions, used, noData, patientData }) {
               >
                 <FiEye className="flex text-lg text-subMain" />
               </button>
+            </td> */}
+            <td className={tdclass}>
+              <div className="flex gap-4 items-center">
+                <button
+                  onClick={() => functions.preview(item.id)}
+                  className={`flex gap-4 items-center hover:text-subMain`}
+                >
+                  <FiEye className="text-md text-subMain" />
+                </button>
+
+                {item.deletedAt === null ?
+                  <button
+                    onClick={() => functions.deletePatient(item.id)}
+                    className={`flex gap-4 items-center hover:text-subMain`}
+                  >
+                    <RiDeleteBin6Line className="text-xl text-red-600" />
+                  </button>
+                  :
+                  <button
+                    onClick={() => functions.restorePatient(item.id)}
+                    className={`flex gap-4 items-center hover:text-subMain`}
+                  >
+                    <BiUndo className="text-xl text-subMain" />
+                  </button>
+                }
+              </div>
             </td>
           </tr>
         ))}

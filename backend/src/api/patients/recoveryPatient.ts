@@ -1,23 +1,25 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { supabase } from "../../supabaseConnection";
 
-export const getPatient = async (app: FastifyInstance) => {
-  app.get("/patient/:id", async (req: FastifyRequest, res: FastifyReply) => {
+export const RecoveryPatient = async (app: FastifyInstance) => {
+  app.put("/patients/recovery/:id", async (req: FastifyRequest, res: FastifyReply) => {
     try {
+
       const { id } = req.params as { id: string }
-      const { data, error } = await supabase
+
+      const { data: Patient, error } = await supabase
         .from("patients")
-        .select("*")
-        .eq("id", id)
+        .update({
+          deletedAt: null
+        }).eq("id", id).select()
 
       if (error) {
         throw error
       } else {
-        return res.status(200).send(data ? data : null)
+        return res.status(200).send(Patient ? Patient : null)
       }
     } catch (error) {
       return res.status(400).send(error)
     }
   })
-
 }

@@ -176,7 +176,7 @@ function PersonalInfo({ titles, data, status }) {
                     <HiMiniFingerPrint />
                   </p>
                   <p className='flex text-sm font-medium'>
-                    {formatCPF(data.cpf) ? formatCPF(data.cpf) : "Não informado..."}
+                    {formatCPF(data.cpf) ? formatCPF(data.cpf) : "-"}
                   </p>
                 </div>
               </div>
@@ -269,23 +269,10 @@ function PersonalInfo({ titles, data, status }) {
                     <HiOutlineHome />
                   </p>
                   <p className='flex text-sm font-medium'>
-                    {data.address ? data.address : "Não informado..."}, {data.region ? data.region : "Não informado..."}
+                    {data.address ? data.address : "-"}, {data.region ? data.region : "-"}
                   </p>
                 </div>
               </div>
-              {/* Region */}
-              {/* <div className=''>
-                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Bairro<span className='text-required'></span></p>
-                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
-                  <p className='flex text-2xl font-light pr-1'>
-                    <HiOutlineMapPin />
-                  </p>
-                  <p className='flex text-sm font-medium'>
-                    {data.region ? data.region : "Não informado..."}
-                  </p>
-                </div>
-              </div> */}
-              {/* City */}
               <div className=''>
                 <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Cidade<span className='text-required'></span></p>
                 <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
@@ -293,22 +280,10 @@ function PersonalInfo({ titles, data, status }) {
                     <HiOutlineMapPin />
                   </p>
                   <p className='flex text-sm font-medium'>
-                    {data.city ? data.city : "Não informado..."}, ({data.state ? brStateDatas.states[data.state - 1].UF : "-"})
+                    {data.city ? data.city : "-"}, ({data.state ? brStateDatas.states[data.state - 1].UF : "-"})
                   </p>
                 </div>
               </div>
-              {/* State */}
-              {/* <div className=''>
-                <p className='pl-0 mb-[-7px] text-sm font-bold text-black'>Estado<span className='text-required'></span></p>
-                <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
-                  <p className='flex text-2xl font-light pr-1'>
-                    <HiOutlineMapPin />
-                  </p>
-                  <p className='flex text-sm font-medium'>
-                    {data.state ? brStateDatas.states[data.state - 1].UF : "-"}
-                  </p>
-                </div>
-              </div> */}
             </div>
             <div className="grid sm:grid-cols-2 gap-4 w-full">
               {/* paternalFiliation */}
@@ -319,7 +294,7 @@ function PersonalInfo({ titles, data, status }) {
                     <HiOutlineIdentification />
                   </p>
                   <p className='flex text-sm font-medium'>
-                    {data.paternalFiliation ? data.paternalFiliation : "Não informado..."}
+                    {data.paternalFiliation ? data.paternalFiliation : "-"}
                   </p>
                 </div>
 
@@ -332,7 +307,7 @@ function PersonalInfo({ titles, data, status }) {
                     <HiOutlineIdentification />
                   </p>
                   <p className='flex text-sm font-medium'>
-                    {data.maternalFiliation ? data.maternalFiliation : "Não informado..."}
+                    {data.maternalFiliation ? data.maternalFiliation : "-"}
                   </p>
                 </div>
               </div>
@@ -366,13 +341,7 @@ function PersonalInfo({ titles, data, status }) {
         </form>
         {/* submit */}
         <div className="grid grid-cols-1 sm:grid-cols-1 gap-4 w-full">
-          {/* <Button
-            label={'Deletar Paciente'}
-            Icon={RiDeleteBin5Line}
-            onClick={() => {
-              toast.error('Ainda não disponível');
-            }}
-          /> */}
+
           <Button
             label={'Editar Informações'}
             Icon={HiMiniPencilSquare}
@@ -639,7 +608,7 @@ function PersonalInfo({ titles, data, status }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full pt-4">
           <div className='flex flex-row w-full'>
             <button
-              className='gap-4 w-full bg-subMain bg-opacity-5 text-subMain border border-subMain text-sm p-3 rounded-lg font-light hover:bg-opacity-25 hover:text-subMain transition-color duration-300'
+              className='gap-4 w-full bg-subMain bg-opacity-5 text-subMain border border-subMain text-sm p-3 rounded font-light hover:bg-opacity-25 hover:text-subMain transition-color duration-300'
               onClick={handleChange2Edit}
             >
               <p className='flex flex-row w-full justify-center items-center text-center text-sm font-medium'>

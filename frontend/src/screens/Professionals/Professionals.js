@@ -34,7 +34,9 @@ function Professionals() {
     const response = await getProfessionals(tab === 1 ? '' : 'true')
     if (response.length === 0) {
       setNoData(true);
+      setNoResult(true);
       setLoading(false);
+      return
     }
     setData(response)
     setAllData(response)
@@ -127,49 +129,49 @@ function Professionals() {
         }}
         />
       </div>
-      <div
-        data-aos="fade-up"
-        data-aos-duration="1000"
-        data-aos-delay="100"
-        data-aos-offset="200"
-        className="bg-white my-8 rounded-xl border-[1px] border-border p-5"
-      >
-        {/* datas */}
+      {/* datas */}
 
-        {loading && !noData ?
-          <div className="flex items-center justify-center h-auto">
-            <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
-          </div>
-          : noData ?
-            <div className="flex items-center justify-center h-auto">
-              <p className="text-sm text-main">Nenhum dado encontrado</p>
-            </div>
-            :
-            <>
-              <div className="grid md:grid-cols-6 sm:grid-cols-2 grid-cols-1 gap-2">
-                <div className="md:col-span-5 grid lg:grid-cols-4 items-center gap-6">
-                  <input
-                    type="text"
-                    placeholder='Pesquise por nome...'
-                    onChange={(e) => {
-                      setSearchTerm(e.target.value)
-                    }}
-                    className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
-                  />
+      {loading ?
+        <div className="flex absolute items-center justify-center w-full h-1/2">
+          <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
+        </div>
+        :
+        <>
+          <div
+            data-aos="fade-up"
+            data-aos-duration="1000"
+            data-aos-delay="100"
+            data-aos-offset="200"
+            className="bg-white my-8 rounded-xl border-[1px] border-border p-5"
+          >
 
+            <div className="grid md:grid-cols-6 sm:grid-cols-2 grid-cols-1 gap-2">
+              <input
+                type="text"
+                placeholder='Pesquise por nome...'
+                onChange={(e) => {
+                  setSearchTerm(e.target.value)
+                }}
+                className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
+              />
+
+              <FilterSelect
+                selectedPerson={filterTerm}
+                setSelectedPerson={setFilterTerm}
+                datas={specialties.specialty}
+              >
+                <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
+                  <p>{filterTerm.name}</p>
+                  <BiChevronDown className="text-xl" />
                 </div>
-                <FilterSelect
-                  selectedPerson={filterTerm}
-                  setSelectedPerson={setFilterTerm}
-                  datas={specialties.specialty}
-                >
-                  <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
-                    <p>{filterTerm.name}</p>
-                    <BiChevronDown className="text-xl" />
-                  </div>
-                </FilterSelect>
-              </div>
-              <div className="mt-8 w-full overflow-x-scroll">
+              </FilterSelect>
+            </div>
+            <div className="mt-8 w-full overflow-x-scroll">
+              {noResult ?
+                <div className="bg-greyed pt-8 pb-8 flex items-center justify-center h-auto">
+                  <p className="text-sm text-main">Nenhum profissional encontrado</p>
+                </div>
+                :
                 < ProfessionalsTable
                   doctor={true}
                   data={data}
@@ -178,11 +180,12 @@ function Professionals() {
                     preview: preview,
                   }}
                 />
-              </div>
-            </>
-        }
-      </div>
-    </Layout>
+              }
+            </div>
+          </div>
+        </>
+      }
+    </Layout >
   );
 }
 

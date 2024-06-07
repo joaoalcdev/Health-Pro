@@ -23,6 +23,16 @@ export const AddPatient = async (app: FastifyInstance) => {
         maternalFiliationContact
       } = req.body as Patients
 
+      const { data: cpfData, error: cpfError } = await supabase
+        .from("patients")
+        .select("cpf")
+        .eq("cpf", cpf)
+      if (cpfError) {
+        throw cpfError
+      } else if (cpfData && cpfData.length > 0) {
+        return res.status(400).send({ message: "CPF já cadastrado" })
+      }
+
       const { data, error } = await supabase
         .from("patients")
         .insert([{
@@ -43,7 +53,6 @@ export const AddPatient = async (app: FastifyInstance) => {
           paternalFiliationContact,
           maternalFiliationContact
         }]).select()
-
       if (error) {
         throw error
       } else {

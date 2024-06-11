@@ -278,7 +278,7 @@ export function DatePickerComp({ label, startDate, onChange, color, locale, show
 
 // time picker
 
-export function TimePickerComp({ label, startDate, onChange }) {
+export function TimePickerComp({ label, startDate, onChange, placeholderText }) {
   return (
     <div className="flex flex-col text-sm w-full">
       <label className={'text-black text-sm'}>{label}</label>
@@ -288,6 +288,7 @@ export function TimePickerComp({ label, startDate, onChange }) {
         showTimeSelect
         showTimeSelectOnly
         timeIntervals={30}
+        placeholderText={placeholderText}
         minTime={new Date().setHours(6, 0)}
         maxTime={new Date().setHours(21, 0)}
         timeCaption="Time"

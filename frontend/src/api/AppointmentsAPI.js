@@ -28,3 +28,12 @@ export const rescheduleAppointment = async (appointmentData, appointmentId) => {
     return error
   }
 }
+
+export const deleteAppointment = async (appointmentId) => {
+  try {
+    const response = await axios.delete(apiBaseUrl(`appointment/delete/${appointmentId}`))
+    return response
+  } catch (error) {
+    return error
+  }
+}

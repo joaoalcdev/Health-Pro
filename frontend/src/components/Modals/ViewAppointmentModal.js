@@ -11,17 +11,14 @@ import { FiAlertTriangle } from "react-icons/fi";
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { formatDate, formatDateTime } from '../../utils/formatDate';
-import { rescheduleAppointment } from '../../api/AppointmentsAPI';
+import { rescheduleAppointment, deleteAppointment } from '../../api/AppointmentsAPI';
 
 
 function ViewAppointmentModal({ closeModal, isOpen, datas, status }) {
 
-
   //controllers
   const [open, setOpen] = useState(false);
   const [showReschedule, setShowReschedule] = useState(false);
-
-
 
   //data
   const [startDate, setStartDate] = useState(datas.start);
@@ -63,6 +60,21 @@ function ViewAppointmentModal({ closeModal, isOpen, datas, status }) {
       status(true)
     }
     status(true);
+  }
+
+  const handleDelete = async () => {
+    const response = await deleteAppointment(datas.id);
+    if (response.response && response.response.data.error === 1) {
+      toast.error('Agendamento não pode ser deletado!');
+      closeModal();
+      status(true);
+      return;
+    }
+    if (response.status && response.status === 200) {
+      toast.success('Agendamento deletado com sucesso!');
+      closeModal();
+      status(true)
+    }
   }
 
   const handleShowReschedule = () => {
@@ -153,7 +165,7 @@ function ViewAppointmentModal({ closeModal, isOpen, datas, status }) {
                 <ButtonNegative
                   label="Desmarcar"
                   //Icon={FaRegEdit}
-                  onClick={() => toast.error('Implementar metodo de desmarcar')}
+                  onClick={() => handleDelete()}
                 />
               </div>
             </>

@@ -55,7 +55,6 @@ const CustomToolbar = (toolbar) => {
     }
   };
 
-
   // today button handler
   const goToCurrent = () => {
     toolbar.onNavigate('TODAY');
@@ -274,7 +273,6 @@ function Appointments() {
           allDay: 'Dia todo',
           showMore: (total) => `+ ${total} mais`,
         }}
-
         style={{
           // height fix screen
           height: 900,
@@ -297,7 +295,7 @@ function Appointments() {
             color: event.type === 2 ? 'black' : 'white',
             border: '1px solid',
             borderColor: 'white',
-            //shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
+            // shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
             fontSize: '12px',
             padding: '5px 5px',
           };

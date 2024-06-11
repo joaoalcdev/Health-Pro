@@ -1,27 +1,11 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import checkIsCompleted from '../../utils/checkIsCompleted';
 
 export const DeleteAppointment = async (app: FastifyInstance) => {
   app.delete("/appointment/delete/:id", async (req: FastifyRequest, res: FastifyReply) => {
     try {
-      
-      const { id } = req.params as { id: string }
-      async function checkIsCompleted(id: string) {
-        const { data, error } = await supabase.from("appointments")
-          .select()
-          .eq("id", id)
-          .single()
-
-        if (error) {
-          return true
-        } else {
-          if (data?.eventStatus === 3) {
-            return true
-          }
-          return false
-        }
-      }
-      
+      const { id } = req.params as { id: string }      
       const isCompleted = await checkIsCompleted(id)
       if (isCompleted) {
         return res.status(400).send({error: 1})

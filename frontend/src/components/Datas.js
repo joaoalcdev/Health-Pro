@@ -102,6 +102,7 @@ export const eventTypes = [
   { id: 1, name: 'Consulta', color: '#5DADE2' },
   { id: 2, name: 'Retorno', color: '#F7DC6F' },
   { id: 3, name: 'Atendimento', color: '#66b5a3' },
+  { id: 4, name: 'Conflito', color: '#ff9900' },
 ];
 
 export const roleOptions = {

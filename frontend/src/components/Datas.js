@@ -98,6 +98,12 @@ export const MenuDatas = [
   },
 ];
 
+export const eventTypes = [
+  { id: 1, name: 'Consulta', color: '#5DADE2' },
+  { id: 2, name: 'Retorno', color: '#F7DC6F' },
+  { id: 3, name: 'Atendimento', color: '#66b5a3' },
+];
+
 export const roleOptions = {
   roles: [
     {

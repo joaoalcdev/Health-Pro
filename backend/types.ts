@@ -54,4 +54,6 @@ type Appointment = {
   status: number,
   service: number,
   agreement: number,
+  type: number,
+  eventStatus: number
 }

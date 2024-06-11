@@ -11,7 +11,7 @@ import {
   TimePickerComp,
 } from '../Form';
 import { BiChevronDown, BiPlus } from 'react-icons/bi';
-import { memberData, specialties, agreements } from '../Datas';
+import { specialties, agreements, eventTypes } from '../Datas';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import PatientMedicineServiceModal from './PatientMedicineServiceModal';
@@ -21,15 +21,20 @@ import { createAppointment } from '../../api/AppointmentsAPI';
 
 
 function AddAppointmentModal({ closeModal, isOpen, datas, status }) {
+
+  //controllers
+  const [open, setOpen] = useState(false);
+
+  //data
   const [services, setServices] = useState(specialties.specialty[0]);
   const [startDate, setStartDate] = useState();
   const [startTime, setStartTime] = useState();
-  const [open, setOpen] = useState(false);
   const [patientsData, setPatientsData] = useState([]);
   const [professionalsData, setProfessionalsData] = useState([]);
   const [patient, setPatient] = useState({});
   const [professional, setProfessional] = useState({ firstName: 'Selecione um Profissional' });
   const [agreement, setAgreement] = useState(agreements.agreement[0]);
+  const [type, setType] = useState(eventTypes[2]);
 
 
   const fetch = async () => {
@@ -39,7 +44,6 @@ function AddAppointmentModal({ closeModal, isOpen, datas, status }) {
     setPatientsData(patientsResponse)
     setProfessionalsData(professionalsResponse)
 
-    console.log(professional)
   }
 
   useEffect(() => {
@@ -88,19 +92,16 @@ function AddAppointmentModal({ closeModal, isOpen, datas, status }) {
         startTime.getMinutes() + 30,
       ),
       service: services.id,
-      agreement: agreement.id
+      agreement: agreement.id,
+      type: type.id,
     };
-
-    console.log(data);
 
     const response = createAppointment(data);
     if (response) {
-      toast.success('Consulta salva com sucesso');
+      toast.success('Agendamento realizado com sucesso!');
       status(true);
       closeModal();
     }
-
-
   }
 
   return (
@@ -144,7 +145,6 @@ function AddAppointmentModal({ closeModal, isOpen, datas, status }) {
               placeholderText={"Selecionar data"}
               onChange={(date) => {
                 setStartDate(date)
-                console.log(date)
               }}
             />
             <TimePickerComp
@@ -155,7 +155,22 @@ function AddAppointmentModal({ closeModal, isOpen, datas, status }) {
             />
 
           </div>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-4 w-full">
 
+          <div className="flex w-full flex-col gap-3">
+            <p className="text-black text-sm">Tipo</p>
+            <Select
+              selectedPerson={type}
+              setSelectedPerson={setType}
+              datas={eventTypes}
+            >
+              <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
+                {type ? type.name : ""} <BiChevronDown className="text-xl" />
+              </div>
+            </Select>
+          </div>
+          <div></div>
         </div>
         <div className="grid sm:grid-cols-12 gap-4 w-full items-center">
           <div className="sm:col-span-10">
@@ -207,10 +222,7 @@ function AddAppointmentModal({ closeModal, isOpen, datas, status }) {
               </Select>
               : <p>Loading...</p>}
           </div>
-
-
         </div>
-
 
         {/* buttones */}
         <div className="grid sm:grid-cols-2 gap-4 w-full">

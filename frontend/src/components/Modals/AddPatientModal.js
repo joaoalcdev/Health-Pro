@@ -99,7 +99,14 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
       }
     )
 
-    if (response) {
+    if (response.response && response.response.data.code === 4001) {
+      toast.error("CPF existente", {
+        position: "top-center",
+      })
+      setLoading(false)
+      return
+    }
+    if (response.status && response.status === 200) {
       toast.success("Paciente criado com sucesso!", {
         position: "top-center",
       })

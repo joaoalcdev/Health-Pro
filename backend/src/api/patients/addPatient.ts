@@ -30,7 +30,7 @@ export const AddPatient = async (app: FastifyInstance) => {
       if (cpfError) {
         throw cpfError
       } else if (cpfData && cpfData.length > 0) {
-        return res.status(400).send({ message: "CPF já cadastrado" })
+        return res.status(400).send({ message: "CPF já cadastrado", code: 4001})
       }
 
       const { data, error } = await supabase

@@ -8,7 +8,6 @@ import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { PiPassword } from "react-icons/pi";
 import { toast } from 'react-hot-toast';
 import { InputMaskComp } from '../Form';
-import { set } from 'rsuite/esm/utils/dateUtils';
 
 
 function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {

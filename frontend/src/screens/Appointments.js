@@ -2,18 +2,19 @@ import { useState, useEffect } from 'react';
 import Layout from '../Layout';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import { BiChevronLeft, BiChevronRight, BiPlus, BiTime } from 'react-icons/bi';
+import { BiChevronLeft, BiChevronRight, BiPlus, BiTime, BiChevronDown } from 'react-icons/bi';
 import { HiOutlineViewGrid } from 'react-icons/hi';
 import { HiOutlineCalendarDays, HiOutlineBookOpen } from 'react-icons/hi2';
 import AddAppointmentModal from '../components/Modals/AddApointmentModal';
 import ViewAppointmentModal from '../components/Modals/ViewAppointmentModal';
-import { listAppointments } from '../api/AppointmentsAPI';
+import { listAppointments, getAppointmentsWithFilter } from '../api/AppointmentsAPI';
+import { getProfessionals } from '../api/ProfessionalsAPI';
 import { eventTypes } from '../components/Datas';
+import { FilterSelect } from '../components/Form';
 import 'moment/locale/pt-br';
 
 // custom toolbar
 const CustomToolbar = (toolbar) => {
-
 
   // go to back handler
   const goToBack = () => {
@@ -89,21 +90,7 @@ const CustomToolbar = (toolbar) => {
 
   return (
     <div className="flex flex-col gap-4 mb-8">
-      <h1 key={''} className="text-xl font-semibold">Agendamentos</h1>
-      <div className="flex gap-4 items-center justify-end">
-        <h1 className="text-xs font-semibold">Legenda:</h1>
-        {
-          eventTypes.map((item, index) => (
-            <div key={index} className="flex gap-2 items-center">
-              <div
-                className="w-3 h-3 rounded"
-                style={{ backgroundColor: item.color }}
-              ></div>
-              <span className='text-xs'>{item.name}</span>
-              {index === eventTypes.length - 1 ? '' : ' |'}
-            </div>
-          ))}
-      </div >
+
       <div className="grid sm:grid-cols-2 md:grid-cols-12 gap-4">
         <div className="md:col-span-1 flex sm:justify-start justify-center items-center">
           <button
@@ -170,33 +157,79 @@ function Appointments() {
   const [view, setView] = useState(false);
   const [data, setData] = useState({});
   const [status, setStatus] = useState(false);
-  const [eventsData, setEventsData] = useState([])
+  const [eventsData, setEventsData] = useState([]);
+  const [professionalsList, setProfessionalsList] = useState([]);
+
+  //filter controllers
+  const [filterTerm, setFilterTerm] = useState({ id: 0, name: "Todos" });
+
+  const fetchProfessionals = async () => {
+    const response = await getProfessionals();
+    if (response.length === 0) {
+      return;
+    };
+
+    var rebaseProfessionalsList = response.map((item) => {
+      return {
+        id: item.id,
+        name: item.firstName + ' ' + item.lastName,
+      }
+    })
+
+    setProfessionalsList(rebaseProfessionalsList);
+  }
+
+  useEffect(() => {
+    fetchProfessionals()
+  }, [])
 
   const fetch = async () => {
-    const response = await listAppointments()
-    if (response.length === 0) {
+    if (filterTerm.id !== 0) {
+      const response = await getAppointmentsWithFilter(filterTerm.id, 0);
+      if (response.length === 0) {
+        setStatus(false);
+        return;
+      };
+      let rebaseData = response.data.map((item) => {
+        return {
+          id: item.id,
+          start: moment(item.startTime).toDate(),
+          end: moment(item.endTime).toDate(),
+          title: item.title,
+          color: item.hasConflict === true ? '#ff9900' : eventTypes[item.type - 1].color,
+          ...item
+        }
+      })
+      setEventsData(rebaseData)
       setStatus(false)
       return
     }
 
-    var rebaseData = response.data.map((item) => {
+    if (filterTerm.id === 0) {
+      const response = await listAppointments();
+      if (response.length === 0) {
+        setStatus(false);
+        return;
+      };
 
-      return {
-        id: item.id,
-        start: moment(item.startTime).toDate(),
-        end: moment(item.endTime).toDate(),
-        title: item.title,
-        color: item.hasConflict === true ? '#ff9900' : eventTypes[item.type - 1].color,
-        ...item
-      }
-    })
-    setEventsData(rebaseData)
-    setStatus(false)
+      let rebaseData = response.data.map((item) => {
+        return {
+          id: item.id,
+          start: moment(item.startTime).toDate(),
+          end: moment(item.endTime).toDate(),
+          title: item.title,
+          color: item.hasConflict === true ? '#ff9900' : eventTypes[item.type - 1].color,
+          ...item
+        }
+      })
+      setEventsData(rebaseData)
+      setStatus(false)
+    }
   }
 
   useEffect(() => {
     fetch()
-  }, [status])
+  }, [status, filterTerm])
 
   // useEffect(() => {
   //   console.log(eventsData)
@@ -252,6 +285,43 @@ function Appointments() {
       >
         <BiPlus className="text-2xl" />
       </button>
+      <div className='flex flex-col gap-6 mb-8'>
+
+        <h1 key={''} className="items-start text-xl font-semibold">Agendamentos</h1>
+
+        <div className="flex items-center justify-between">
+          <div className='w-80'>
+
+            <FilterSelect
+              selectedPerson={filterTerm}
+              setSelectedPerson={setFilterTerm}
+              datas={professionalsList}
+            >
+              <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
+                <p>{filterTerm.name}</p>
+                <BiChevronDown className="text-xl" />
+              </div>
+            </FilterSelect>
+          </div>
+          <div className="flex gap-2 items-center">
+
+            <h1 className="text-xs font-semibold">Legenda:</h1>
+            {
+              eventTypes.map((item, index) => (
+                <div key={index} className="flex gap-2 items-center">
+                  <div
+                    className="w-3 h-3 rounded"
+                    style={{ backgroundColor: item.color }}
+                  ></div>
+                  <span className='text-xs'>{item.name}</span>
+                  {index === eventTypes.length - 1 ? '' : ' |'}
+                </div>
+              ))}
+          </div>
+        </div >
+      </div>
+
+
 
       <Calendar
         localizer={localizer}
@@ -319,7 +389,7 @@ function Appointments() {
         // custom view
         views={['month', 'day', 'week', 'agenda']}
         // default view
-        defaultView="month"
+        defaultView="week"
       />
     </Layout>
   );

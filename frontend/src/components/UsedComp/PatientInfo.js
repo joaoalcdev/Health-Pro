@@ -6,7 +6,6 @@ import { toast } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 // import { HiOutlineCheckCircle, HiPencilAlt, HiArrowSmLeft } from 'react-icons/hi';
 import { HiOutlinePhone, HiOutlineCalendarDays, HiOutlineIdentification, HiOutlineMapPin, HiOutlineCheckCircle, HiMiniPencilSquare, HiArrowLeft, HiMap, HiCake, HiOutlineHome, HiMiniFingerPrint } from 'react-icons/hi2';
-import { RiDropFill, RiDropLine, RiGenderlessLine, RiGenderlessFill } from "react-icons/ri";
 import { TbUserHeart } from "react-icons/tb";
 import { LiaGenderlessSolid } from "react-icons/lia";
 import { LiaTintSolid } from "react-icons/lia";
@@ -16,7 +15,6 @@ import { updatePatient, getPatient } from '../../api/PatientsAPI';
 import { formatDate } from '../../utils/formatDate';
 import { formatCPF } from '../../utils/formatCPF';
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
-import { set } from 'rsuite/esm/utils/dateUtils';
 
 function PersonalInfo({ titles, data, status }) {
   const [isEdit, setIsEdit] = useState(false)

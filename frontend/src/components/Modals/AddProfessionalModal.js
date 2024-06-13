@@ -7,7 +7,6 @@ import { HiOutlineCheckCircle, HiArrowRight } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { brStateDatas, roleOptions, specialties, councilDatas, genderDatas } from '../Datas';
 import { InputMaskComp } from '../Form';
-import { set } from 'rsuite/esm/utils/dateUtils';
 import { createProfessional } from '../../api/ProfessionalsAPI';
 
 function AddProfessionalModal({ closeModal, isOpen, professional, datas, status }) {

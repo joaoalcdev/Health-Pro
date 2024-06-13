@@ -37,3 +37,12 @@ export const deleteAppointment = async (appointmentId) => {
     return error
   }
 }
+
+export const getAppointmentsWithFilter = async (professionalId, patientId) => {
+  try {
+    const data = await axios.get(apiBaseUrl(`appointments/get?${professionalId !== 0 ? `professional=${professionalId}` : ''}${professionalId && patientId ? '&' : ''}${patientId !== 0 ? `patient=${patientId}` : ''}`))
+    return data
+  } catch (error) {
+    return error
+  }
+}

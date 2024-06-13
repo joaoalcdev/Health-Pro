@@ -1,9 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Menu, MenuButton, MenuItem, MenuItems, Transition, Listbox, Switch, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
-import clsx from 'clsx'
-import { Fragment } from 'react'
-import React, { useState } from 'react';
+import { Menu, Listbox, Switch } from '@headlessui/react';
 import { BiLoaderCircle } from 'react-icons/bi';
 import DatePicker from 'react-datepicker';
 import { FaCheck } from 'react-icons/fa';
@@ -112,7 +109,7 @@ export function ButtonNegative({ label, onClick, loading, Icon, type, disabled }
 
 export function MenuSelect({ children, datas, item: data }) {
   return (
-    <div className="text-sm w-full absolute">
+    <div className="text-sm w-full relative">
       <Menu>
         <Menu.Button>{children}</Menu.Button>
         <Menu.Items className="flex flex-col z-50 gap-4 absolute right-0  bg-white rounded-md shadow-lg py-4 px-6 ring-1 ring-border focus:outline-none">
@@ -158,136 +155,6 @@ export function Select({ children, selectedPerson, setSelectedPerson, datas }) {
   );
 }
 
-
-
-export function SelectTest({ }) {
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-  }
-  return (
-    <>
-      <Menu as="div" className="relative inline-block text-left">
-        <div>
-          <MenuButton className=" inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-            Options
-            {/* <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" /> */}
-          </MenuButton>
-        </div>
-
-        <Transition
-          enter="transition ease-out duration-100"
-          enterFrom="transform opacity-0 scale-95"
-          enterTo="transform opacity-100 scale-100"
-          leave="transition ease-in duration-75"
-          leaveFrom="transform opacity-100 scale-100"
-          leaveTo="transform opacity-0 scale-95"
-        >
-          <MenuItems className="relative right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div className="py-1">
-              <MenuItem>
-                {({ focus }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    Edit
-                  </a>
-                )}
-              </MenuItem>
-              <MenuItem>
-                {({ focus }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    Duplicate
-                  </a>
-                )}
-              </MenuItem>
-            </div>
-            <div className="py-1">
-              <MenuItem>
-                {({ focus }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    Archive
-                  </a>
-                )}
-              </MenuItem>
-              <MenuItem>
-                {({ focus }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    Move
-                  </a>
-                )}
-              </MenuItem>
-            </div>
-            <div className="py-1">
-              <MenuItem>
-                {({ focus }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    Share
-                  </a>
-                )}
-              </MenuItem>
-              <MenuItem>
-                {({ focus }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    Add to favorites
-                  </a>
-                )}
-              </MenuItem>
-            </div>
-            <div className="py-1">
-              <MenuItem>
-                {({ focus }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    Delete
-                  </a>
-                )}
-              </MenuItem>
-            </div>
-          </MenuItems>
-        </Transition>
-      </Menu>
-    </>
-  )
-}
 
 export function FilterSelect({ children, selectedPerson, setSelectedPerson, datas }) {
   return (

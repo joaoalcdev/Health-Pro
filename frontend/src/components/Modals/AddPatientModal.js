@@ -12,7 +12,7 @@ import { registerLocale, setDefaultLocale } from "react-datepicker";
 import { HiArrowLeft, HiMiniXMark } from 'react-icons/hi2';
 
 import ptBR from 'date-fns/locale/pt-BR';
-import { set } from 'rsuite/esm/utils/dateUtils';
+
 
 
 registerLocale('pt', ptBR);

@@ -12,8 +12,6 @@ import { getProfessionals } from '../api/ProfessionalsAPI';
 import { eventTypes } from '../components/Datas';
 import { FilterSelect } from '../components/Form';
 import 'moment/locale/pt-br';
-import { set } from 'rsuite/esm/utils/dateUtils';
-
 
 // custom toolbar
 const CustomToolbar = (toolbar) => {

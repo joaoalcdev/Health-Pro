@@ -11,7 +11,8 @@ import { getSpecialties } from '../api/specialtiesAPI';
 
 
 function Specialties() {
-  const [data, setData] = useState([]);
+  const [datas, setDatas] = useState([]);
+  const [data, setData] = useState({});
 
   //controllers
   const [isOpen, setIsOpen] = useState(false);
@@ -29,15 +30,14 @@ function Specialties() {
       setLoading(false);
       return
     }
-    setData(response)
+    setDatas(response)
     setLoading(false)
     setStatus(false)
   }
 
   useEffect(() => {
-    console.log('aqui')
     fetch()
-  }, []);
+  }, [status]);
 
 
 
@@ -58,6 +58,7 @@ function Specialties() {
           datas={data}
           isOpen={isOpen}
           closeModal={onCloseModal}
+          setStatus={setStatus}
         />
       )}
       {/* add button */}
@@ -106,7 +107,7 @@ function Specialties() {
           />
         </div>
         <div className="mt-8 w-full overflow-x-scroll">
-          <SpecialtyTable data={data} onEdit={onEdit} />
+          <SpecialtyTable data={datas} onEdit={onEdit} />
         </div>
       </div>
     </Layout>

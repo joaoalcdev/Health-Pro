@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MenuSelect, Button } from '../Form';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
-import { FiEdit } from 'react-icons/fi';
+import { FiEdit, FiEye } from 'react-icons/fi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { toast } from 'react-hot-toast';
 import { formatDate } from '../../utils/formatDate';
@@ -34,7 +34,7 @@ export default function SpecialtyTable({ data, onEdit }) {
           <th className={thclass}>Especialidade</th>
           <th className={thclass}>Data de criação</th>
           <th className={thclass}>Status</th>
-          <th className={thclass}>Ações</th>
+          <th className={`text-center text-sm font-medium py-3 px-2 whitespace-nowrap`}>Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -50,18 +50,22 @@ export default function SpecialtyTable({ data, onEdit }) {
             <td className={tdclass}>{formatDate(item?.createdAt)}</td>
             <td className={tdclass}>
               <span
-                className={`text-xs font-medium ${item?.specialtyStatus === 2 ? 'text-red-600' : 'text-green-600'
+                className={`text-xs font-medium ${item?.deletedAt ? 'text-red-600' : 'text-green-600'
                   }`}
               >
-                {item?.specialtyStatus === 2 ? 'Disabled' : 'Enabled'}
+                {item?.deletedAt ? 'Desativado' : 'Ativado'}
               </span>
             </td>
             <td className={tdclass}>
-              <MenuSelect datas={DropDown1} item={item}>
-                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
-                  <BiDotsHorizontalRounded />
-                </div>
-              </MenuSelect>
+              <div className="flex gap-4 items-center justify-center">
+                <button
+                  onClick={() => onEdit(item)}
+                  key={index}
+                  className={`flex gap-4 items-center hover:text-subMain`}
+                >
+                  <FiEye className="text-md text-subMain" />
+                </button>
+              </div>
             </td>
           </tr>
         ))}

@@ -7,6 +7,7 @@ export const UpdatePatient = async (app: FastifyInstance) => {
       const {
         fullName,
         cpf,
+        rg,
         bloodType,
         marital,
         gender,
@@ -15,6 +16,8 @@ export const UpdatePatient = async (app: FastifyInstance) => {
         region,
         city,
         state,
+        insurance,
+        cardNumber,
         phoneNumber,
         emergencyContact,
         paternalFiliation,
@@ -30,6 +33,7 @@ export const UpdatePatient = async (app: FastifyInstance) => {
         .update({
           fullName,
           cpf,
+          rg,
           bloodType,
           marital,
           gender,
@@ -38,6 +42,8 @@ export const UpdatePatient = async (app: FastifyInstance) => {
           region,
           city,
           state,
+          insurance,
+          cardNumber,
           phoneNumber,
           emergencyContact,
           paternalFiliation,

@@ -57,3 +57,9 @@ type Appointment = {
   type: number,
   eventStatus: number
 }
+
+type Specialty = {
+  id?: number,
+  name: string,
+  status: boolean,
+}

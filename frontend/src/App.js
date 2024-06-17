@@ -40,6 +40,7 @@ import Receptions from './screens/Receptions';
 import NewMedicalRecode from './screens/Patients/NewMedicalRecode';
 import NotFound from './screens/NotFound';
 import Users from './screens/Users';
+import Specialties from './screens/Specialties';
 
 // AuthProvider
 // import Login from './screens/Login';
@@ -93,6 +94,7 @@ function App() {
               <Route path="/campaigns" element={<ProtectedRoute roleId={1}><Campaings /></ProtectedRoute>} />
               <Route path="/medicine" element={<ProtectedRoute roleId={1}><Medicine /></ProtectedRoute>} />
               <Route path="/services" element={<ProtectedRoute roleId={1}><Services /></ProtectedRoute>} />
+              <Route path="/specialties" element={<ProtectedRoute roleId={1}><Specialties /></ProtectedRoute>} />
               <Route path="/settings" element={<ProtectedRoute roleId={3}><Settings /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>

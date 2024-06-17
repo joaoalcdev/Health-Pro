@@ -43,17 +43,17 @@ export const MenuDatas = [
     roleAllowed: 1
   },
   {
-    title: 'Patientes',
+    title: 'Pacientes',
     path: '/patients',
     icon: TbUsers,
     roleAllowed: 2
   },
-  {
-    title: 'Receptions',
-    path: '/receptions',
-    icon: HiOutlineUsers,
-    roleAllowed: 2
-  },
+  // {
+  //   title: 'Receptions',
+  //   path: '/receptions',
+  //   icon: HiOutlineUsers,
+  //   roleAllowed: 2
+  // },
   {
     title: 'Profissionais',
     path: '/professionals',
@@ -72,22 +72,28 @@ export const MenuDatas = [
     icon: MdListAlt,
     roleAllowed: 1
   },
-  {
-    title: 'Invoices',
-    path: '/invoices',
-    icon: TbFileInvoice,
-    roleAllowed: 1
-  },
+  // {
+  //   title: 'Invoices',
+  //   path: '/invoices',
+  //   icon: TbFileInvoice,
+  //   roleAllowed: 1
+  // },
   {
     title: 'Services',
     path: '/services',
     icon: MdOutlineInventory2,
     roleAllowed: 1
   },
+  // {
+  //   title: 'Campaigns',
+  //   path: '/campaigns',
+  //   icon: MdOutlineCampaign,
+  //   roleAllowed: 1
+  // },
   {
-    title: 'Campaigns',
-    path: '/campaigns',
-    icon: MdOutlineCampaign,
+    title: 'Especialidades',
+    path: '/specialties',
+    icon: MdOutlineInventory2,
     roleAllowed: 1
   },
   {

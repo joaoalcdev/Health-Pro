@@ -4,7 +4,7 @@ import { Button, Input, Switchi, Textarea } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { addSpecialties, updateSpecialties } from '../../api/specialtiesAPI';
-import { set } from 'rsuite/esm/utils/dateUtils';
+
 
 function AddEditSpecialtiesModal({ closeModal, isOpen, datas, setStatus }) {
   const [check, setCheck] = useState(true);

@@ -23,7 +23,7 @@ function Services() {
 
   //filter and search controllers
   const [specialties, setSpecialties] = useState([]);
-  const [filterTerm, setFilterTerm] = useState({ id: 0, name: "Todos" });
+  const [filterTerm, setFilterTerm] = useState({ id: 0, name: "Filtre por Especialidade" });
   const [searchTerm, setSearchTerm] = useState("");
 
   const fetch = async () => {

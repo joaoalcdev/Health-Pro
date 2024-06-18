@@ -7,6 +7,7 @@ export const UpdatePatient = async (app: FastifyInstance) => {
       const {
         fullName,
         cpf,
+        rg,
         bloodType,
         marital,
         gender,
@@ -15,6 +16,8 @@ export const UpdatePatient = async (app: FastifyInstance) => {
         region,
         city,
         state,
+        insurance,
+        cardNumber,
         phoneNumber,
         emergencyContact,
         paternalFiliation,
@@ -30,6 +33,7 @@ export const UpdatePatient = async (app: FastifyInstance) => {
         .update({
           fullName,
           cpf,
+          rg,
           bloodType,
           marital,
           gender,
@@ -38,6 +42,8 @@ export const UpdatePatient = async (app: FastifyInstance) => {
           region,
           city,
           state,
+          insurance,
+          cardNumber,
           phoneNumber,
           emergencyContact,
           paternalFiliation,
@@ -46,11 +52,36 @@ export const UpdatePatient = async (app: FastifyInstance) => {
           maternalFiliationContact
         }).eq("id", id).select()
 
+      // RG is unique
+      const { data: rgData, error: rgError } = await supabase
+        .from("patients")
+        .select("rg")
+        .eq("rg", rg)
+        .neq("id", id)
+      if (rgError) {
+        throw rgError
+      } else if (rgData && rgData.length > 0) {
+        return res.status(400).send({ message: "RG já cadastrado", code: "RG001" })
+      }
+
+      // CPF is unique
+      const { data: cpfData, error: cpfError } = await supabase
+        .from("patients")
+        .select("cpf")
+        .eq("cpf", cpf)
+        .neq("id", id)
+      if (cpfError) {
+        throw cpfError
+      } else if (cpfData && cpfData.length > 0) {
+        return res.status(400).send({ message: "CPF já cadastrado", code: "CPF001" })
+      }
+
       if (error) {
         throw error
       } else {
         return res.status(200).send(data ? data : null)
       }
+
     } catch (error) {
       return res.status(400).send(error)
     }

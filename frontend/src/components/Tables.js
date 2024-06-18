@@ -759,16 +759,19 @@ export function DoctorsTable({ data, functions, doctor }) {
 }
 
 // appointment table
+// get the data patient relative to the doctor appointment
+
+
 export function AppointmentTable({ data, functions, doctor }) {
   return (
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
-          <th className={thclass}>Date</th>
-          <th className={thclass}>{doctor ? 'Patient' : 'Doctor'}</th>
+          <th className={thclass}>Data</th>
+          <th className={thclass}>{doctor ? 'Paciente' : 'Doutor'}</th>
           <th className={thclass}>Status</th>
-          <th className={thclass}>Time</th>
-          <th className={thclass}>Action</th>
+          <th className={thclass}>Hora</th>
+          <th className={thclass}>Ações</th>
         </tr>
       </thead>
       <tbody>

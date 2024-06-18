@@ -63,3 +63,12 @@ type Specialty = {
   name: string,
   status: boolean,
 }
+
+type Service = {
+  id?: number,
+  name: string,
+  status: boolean,
+  specialtyId: number,
+  initialPrice: number,
+  recurringPrice: number,
+}

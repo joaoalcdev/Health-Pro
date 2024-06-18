@@ -79,7 +79,13 @@ export const MenuDatas = [
   //   roleAllowed: 1
   // },
   {
-    title: 'Services',
+    title: 'Especialidades',
+    path: '/specialties',
+    icon: MdOutlineInventory2,
+    roleAllowed: 1
+  },
+  {
+    title: 'Serviços',
     path: '/services',
     icon: MdOutlineInventory2,
     roleAllowed: 1
@@ -90,12 +96,6 @@ export const MenuDatas = [
   //   icon: MdOutlineCampaign,
   //   roleAllowed: 1
   // },
-  {
-    title: 'Especialidades',
-    path: '/specialties',
-    icon: MdOutlineInventory2,
-    roleAllowed: 1
-  },
   {
     title: 'Settings',
     path: '/settings',

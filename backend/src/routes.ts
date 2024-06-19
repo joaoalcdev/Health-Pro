@@ -8,9 +8,11 @@ import { SpecialtiesRoutes } from './api/specialties/@specialtiesRoutes';
 import { ServicesRoutes } from './api/services/@servicesRoutes';
 
 export const routes = async (app: FastifyInstance) => {
-  app.register(AuthRoutes)
-  app.register(UsersRoutes)
-  app.register(PatientsRoutes)
-  app.register(ProfessionalsRoutes)
-  app.register(AppointmentRoutes)
+  app.register(AuthRoutes);
+  app.register(UsersRoutes);
+  app.register(PatientsRoutes);
+  app.register(ProfessionalsRoutes);
+  app.register(AppointmentRoutes);
+  app.register(SpecialtiesRoutes);
+  app.register(ServicesRoutes);
 } 

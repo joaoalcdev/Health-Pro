@@ -4,13 +4,11 @@ import { Button, Input, Switchi, CurrencyInputMask } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { addSpecialties, updateSpecialties } from '../../api/specialtiesAPI';
-import { set } from 'rsuite/esm/utils/dateUtils';
-
 
 function AddEditSpecialtiesModal({ closeModal, isOpen, datas, setStatus }) {
   const [check, setCheck] = useState(true);
   const [name, setName] = useState('');
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState('');
 
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +27,7 @@ function AddEditSpecialtiesModal({ closeModal, isOpen, datas, setStatus }) {
       setLoading(false);
       return
     }
-    if (price === 0) {
+    if (price === '') {
       toast.error('Valor da consulta é obrigatório.');
       setLoading(false);
       return

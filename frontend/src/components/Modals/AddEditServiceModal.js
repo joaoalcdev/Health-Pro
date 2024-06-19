@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
-import { Button, Input, Switchi, Select } from '../Form';
+import { Button, Input, Switchi, Select, CurrencyInputMask } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { getSpecialties } from '../../api/specialtiesAPI';
@@ -19,8 +19,8 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
   const [name, setName] = useState('');
   const [check, setCheck] = useState(true);
   const [specialty, setSpecialty] = useState({ id: 0, name: 'Selecione uma especialidade' });
-  const [initialPrice, setInitialPrice] = useState(0);
-  const [recurringPrice, setRecurrringPrice] = useState(0);
+  const [initialPrice, setInitialPrice] = useState('');
+  const [recurringPrice, setRecurrringPrice] = useState('');
 
 
   useEffect(() => {
@@ -85,7 +85,7 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
       setLoading(false);
       return
     }
-    if (specialty.id === 0 || initialPrice === 0 || recurringPrice === 0) {
+    if (specialty.id === 0 || initialPrice === '' || recurringPrice === '') {
       toast.error('Preencha todos os campos.')
       setLoading(false);
       return
@@ -109,8 +109,6 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
     closeModal();
     setLoading(false);
   };
-
-
 
   return (
     <Modal
@@ -152,21 +150,48 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
             </Select>
           </div>
           <div></div>
-          <Input
-            label="Preço do primeiro atendimento"
-            type="number"
+          <CurrencyInputMask
+            label={"Preço do primeiro atendimento"}
             color={true}
+            inputStyle={{ color: 'black' }}
+            unstyled={true}
+            autoClear={false}
+            placeholder={'R$ 220,00'}
+            maxFractionDigits={2}
+            maxLength={12}
+            unmask={true}
+            required={false}
+            inputId={'currency-brazil'}
             value={initialPrice}
-            placeholder={datas?.price ? datas.price : 0}
-            onChange={(e) => setInitialPrice(e.target.value)}
+            onValueChange={(e) => setInitialPrice(e.target.value)}
+            mode={'currency'}
+            currency={'BRL'}
+            locale={'pt-BR'}
+            allowEmpty={true}
+            inputClassName={`w-full bg-white text-sm mt-3 p-4 border 'border-border font-light' 'border-white text-white'
+        rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
           />
-          <Input
-            label="Preço dos atendimentos recorrentes"
-            type="number"
+
+          <CurrencyInputMask
+            label={"Preço dos atendimentos recorrentes"}
             color={true}
+            inputStyle={{ color: 'black' }}
+            unstyled={true}
+            autoClear={false}
+            placeholder={'R$ 220,00'}
+            maxFractionDigits={2}
+            maxLength={12}
+            unmask={true}
+            required={false}
+            inputId={'currency-brazil'}
             value={recurringPrice}
-            placeholder={datas?.price ? datas.price : 0}
-            onChange={(e) => setRecurrringPrice(e.target.value)}
+            onValueChange={(e) => setRecurrringPrice(e.target.value)}
+            mode={'currency'}
+            currency={'BRL'}
+            locale={'pt-BR'}
+            allowEmpty={true}
+            inputClassName={`w-full bg-white text-sm mt-3 p-4 border 'border-border font-light' 'border-white text-white'
+        rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
           />
         </div>
 

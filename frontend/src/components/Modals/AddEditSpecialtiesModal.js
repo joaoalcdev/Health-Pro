@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
-import { Button, Input, Switchi, Textarea } from '../Form';
+import { Button, Input, Switchi, CurrencyInputMask } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { addSpecialties, updateSpecialties } from '../../api/specialtiesAPI';
+import { set } from 'rsuite/esm/utils/dateUtils';
 
 
 function AddEditSpecialtiesModal({ closeModal, isOpen, datas, setStatus }) {
   const [check, setCheck] = useState(true);
   const [name, setName] = useState('');
+  const [price, setPrice] = useState(0);
 
   const [loading, setLoading] = useState(false);
 
@@ -16,15 +18,23 @@ function AddEditSpecialtiesModal({ closeModal, isOpen, datas, setStatus }) {
     if (datas?.name) {
       setName(datas.name);
       setCheck(datas.deletedAt ? false : true);
+      setPrice(datas.price);
     }
   }, [datas]);
 
   const handleSave = async () => {
     setLoading(true);
     if (name === '') {
-      return toast.error('Especialidade é obrigatória');
+      toast.error('Nome da especialidade é obrigatório.');
+      setLoading(false);
+      return
     }
-    const response = await updateSpecialties(datas.id, { name, status: check });
+    if (price === 0) {
+      toast.error('Valor da consulta é obrigatório.');
+      setLoading(false);
+      return
+    }
+    const response = await updateSpecialties(datas.id, { name, status: check, price });
     if (response.code) {
       if (response.response.data.code === "23505") {
         toast.error('Especialidade com esse nome já existe');
@@ -47,7 +57,7 @@ function AddEditSpecialtiesModal({ closeModal, isOpen, datas, setStatus }) {
     if (name === '') {
       return toast.error('Especialidade é obrigatória');
     }
-    const response = await addSpecialties({ name, status: check });
+    const response = await addSpecialties({ name, status: check, price });
     if (response.code) {
       if (response.response.data.code === "23505") {
         toast.error('Especialidade já existe');
@@ -92,6 +102,30 @@ function AddEditSpecialtiesModal({ closeModal, isOpen, datas, setStatus }) {
             {check ? 'Ativado' : 'Desativado'}
           </p>
         </div>
+
+        <CurrencyInputMask
+          label={'Valor da Consulta'}
+          color={true}
+          inputStyle={{ color: 'black' }}
+          unstyled={true}
+          autoClear={false}
+          placeholder={'R$ 220,00'}
+          maxFractionDigits={2}
+          maxLength={12}
+          unmask={true}
+          required={false}
+          inputId={'currency-brazil'}
+          value={price}
+          onValueChange={(e) => setPrice(e.target.value)}
+          mode={'currency'}
+          currency={'BRL'}
+          locale={'pt-BR'}
+          allowEmpty={true}
+          inputClassName={`w-full bg-white text-sm mt-3 p-4 border 'border-border font-light' 'border-white text-white'
+        rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+        />
+        <div></div>
+
         {/* buttones */}
         <button
           onClick={closeModal}

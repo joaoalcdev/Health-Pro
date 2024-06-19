@@ -214,7 +214,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
                 key={i}
                 className={`flex justify-center items-center text-center bg-greyed transition-colors rounded-full h-10 w-10 mx-1 ${currentPage === n ? 'z-50 bg-subMain hover:bg-subMain/90 rounded-full text-white transition-colors' : ''}`}
               >
-                <button className="flex justify-center items-center py-2 px-4" onClick={() => changeCPage(n)}>
+                <button className="select-none flex justify-center items-center py-2 px-4" onClick={() => changeCPage(n)}>
                   {n}
                 </button>
               </li>

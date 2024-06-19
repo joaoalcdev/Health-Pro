@@ -37,10 +37,20 @@ export default function ServiceTable({ data, onEdit, noData }) {
               <h4 className="text-sm font-medium">{item?.name}</h4>
             </td>
             <td className={tdclass}>
-              <h4 className="text-sm font-medium">{item?.specialtyName}</h4>
+              {item?.specialtyName}
             </td>
-            <td className={`${tdclass} font-semibold`}>R$ {item?.initialPrice.toFixed(2)}</td>
-            <td className={`${tdclass} font-semibold`}>R$ {item?.recurringPrice.toFixed(2)}</td>
+            <td className={tdclass}>{item?.initialPrice.toLocaleString('pt-BR',
+              {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2
+              })}</td>
+            <td className={tdclass}>{item?.recurringPrice.toLocaleString('pt-BR',
+              {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2
+              })}</td>
             <td className={tdclass}>
               <span
                 className={`text-xs font-medium ${item?.deletedAt ? 'text-red-600' : 'text-green-600'

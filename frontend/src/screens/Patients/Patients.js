@@ -13,7 +13,7 @@ import ViewUserModal from '../../components/Modals/ViewUserModal';
 
 
 import AddPatientModal from '../../components/Modals/AddPatientModal';
-import { PatientsTable } from '../../components/Tables';
+import { PatientsTable } from '../../components/Tables/PatientTable';
 import { deletePatient, getPatients, recoveryPatient } from '../../api/PatientsAPI';
 // import ViewUserModal from '../components/Modals/ViewUserModal';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';

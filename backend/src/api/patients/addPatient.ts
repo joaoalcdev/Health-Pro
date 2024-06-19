@@ -31,21 +31,26 @@ export const AddPatient = async (app: FastifyInstance) => {
         .from("patients")
         .select("cpf")
         .eq("cpf", cpf)
+        // if CPF is empty, create a patient without CPF
+        .neq("cpf", "")
       if (cpfError) {
         throw cpfError
       } else if (cpfData && cpfData.length > 0) {
-        return res.status(400).send({ message: "CPF já cadastrado", code: "CPF001"})
+        return res.status(400).send({ message: "CPF já cadastrado", code: "CPF001" })
       }
+
 
       // RG is unique
       const { data: rgData, error: rgError } = await supabase
         .from("patients")
         .select("rg")
         .eq("rg", rg)
+        // if RG is empty, create a patient without RG
+        .neq("rg", "")
       if (rgError) {
         throw rgError
       } else if (rgData && rgData.length > 0) {
-        return res.status(400).send({ message: "RG já cadastrado", code: "RG001"})
+        return res.status(400).send({ message: "RG já cadastrado", code: "RG001" })
       }
 
       const { data, error } = await supabase

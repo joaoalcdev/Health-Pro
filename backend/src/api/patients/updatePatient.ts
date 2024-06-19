@@ -58,6 +58,8 @@ export const UpdatePatient = async (app: FastifyInstance) => {
         .select("rg")
         .eq("rg", rg)
         .neq("id", id)
+        // if RG is empty, create a patient without RG
+        .neq("rg", "")
       if (rgError) {
         throw rgError
       } else if (rgData && rgData.length > 0) {
@@ -70,6 +72,8 @@ export const UpdatePatient = async (app: FastifyInstance) => {
         .select("cpf")
         .eq("cpf", cpf)
         .neq("id", id)
+        // if CPF is empty, create a patient without CPF
+        .neq("cpf", "")
       if (cpfError) {
         throw cpfError
       } else if (cpfData && cpfData.length > 0) {

@@ -79,7 +79,13 @@ export const MenuDatas = [
   //   roleAllowed: 1
   // },
   {
-    title: 'Services',
+    title: 'Especialidades',
+    path: '/specialties',
+    icon: MdOutlineInventory2,
+    roleAllowed: 1
+  },
+  {
+    title: 'Serviços',
     path: '/services',
     icon: MdOutlineInventory2,
     roleAllowed: 1
@@ -90,12 +96,6 @@ export const MenuDatas = [
   //   icon: MdOutlineCampaign,
   //   roleAllowed: 1
   // },
-  {
-    title: 'Especialidades',
-    path: '/specialties',
-    icon: MdOutlineInventory2,
-    roleAllowed: 1
-  },
   {
     title: 'Settings',
     path: '/settings',
@@ -167,6 +167,31 @@ export const maritalDatas = {
     {
       id: 3,
       name: 'Não informado...',
+    },
+  ]
+}
+
+export const insuranceDatas = {
+  insurance: [
+    {
+      id: 1,
+      name: 'Particular',
+    },
+    {
+      id: 2,
+      name: 'Unimed',
+    },
+    {
+      id: 3,
+      name: 'CapSesp',
+    },
+    {
+      id: 4,
+      name: 'Cassi',
+    },
+    {
+      id: 5,
+      name: 'Outro...',
     },
   ]
 }

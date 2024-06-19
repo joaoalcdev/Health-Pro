@@ -5,7 +5,7 @@ import { BiChevronDown } from 'react-icons/bi';
 import { sortsDatas } from '../Datas';
 import { HiOutlineCheckCircle, HiArrowRight } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
-import { brStateDatas, genderDatas, maritalDatas } from '../Datas';
+import { brStateDatas, genderDatas, maritalDatas, insuranceDatas } from '../Datas';
 import { InputMaskComp, ButtonNegative, DatePickerComp } from '../Form';
 import { createPatient } from '../../api/PatientsAPI';
 import { registerLocale, setDefaultLocale } from "react-datepicker";
@@ -25,6 +25,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
   // patient info
   const [fullName, setFullName] = useState('');
   const [cpf, setCpf] = useState('');
+  const [rg, setRg] = useState('');
   const [bloodType, setBloodType] = useState(sortsDatas.bloodTypeFilter[0]);
   const [marital, setMarital] = useState(maritalDatas.marital[2]);
   const [dateBirth, setDateBirth] = useState(new Date());
@@ -35,6 +36,8 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
   const [region, setRegion] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState(brStateDatas.states[5]);
+  const [insurance, setInsurance] = useState(insuranceDatas.insurance[0]);
+  const [cardNumber, setCardNumber] = useState('');
 
   // family info
   const [paternalFiliation, setPaternalFiliation] = useState('');
@@ -81,7 +84,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
       {
         fullName,
         cpf,
-        // age,
+        rg,
         bloodType: bloodType.id,
         marital: marital.id,
         gender: gender.id,
@@ -92,6 +95,8 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
         region,
         city,
         state: state.id,
+        insurance: insurance.id,
+        cardNumber,
         paternalFiliation,
         maternalFiliation,
         paternalFiliationContact,
@@ -99,8 +104,15 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
       }
     )
 
-    if (response.response && response.response.data.code === 4001) {
+    if (response.response && response.response.data.code === "CPF001") {
       toast.error("CPF existente", {
+        position: "top-center",
+      })
+      setLoading(false)
+      return
+    }
+    if (response.response && response.response.data.code === "RG001") {
+      toast.error("RG existente", {
         position: "top-center",
       })
       setLoading(false)
@@ -154,10 +166,25 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                   <Input
                     color={true}
                     required={true}
-                    placeholder="Maria..."
+                    placeholder="Maria de Lima..."
                     type={'text'}
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
+                  />
+                </div>
+                {/* RG */}
+                <div className=''>
+                  <p className='pl-1 mb-[-7px] text-sm text-black'>
+                    RG
+                    {/* <span className='text-required'>*</span> */}
+                  </p>
+                  <Input
+                    color={true}
+                    required={false}
+                    placeholder="___________"
+                    type={'number'}
+                    value={rg}
+                    onChange={(e) => setRg(e.target.value)}
                   />
                 </div>
                 {/* CPF */}
@@ -178,6 +205,8 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
                   />
                 </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4 w-full">
                 <div className=''>
                   <p className='pl-1 mb-[-7px] text-sm text-black'>
                     Data de Nascimento
@@ -198,8 +227,6 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     onChange={(dateBirth) => setDateBirth(dateBirth)}
                   />
                 </div>
-              </div>
-              <div className="grid sm:grid-cols-3 gap-4 w-full">
                 <div className="flex w-full flex-col gap-1">
                   <p className="text-black text-sm">
                     Tipo Sanguíneo
@@ -286,63 +313,36 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4 w-full">
-                {/* Address */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Endereço
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
-                  <Input
-                    color={true}
-                    required={false}
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    placeholder={'Rua, Número'}
-                  />
-                </div>
-                {/* Region */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Bairro
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
-                  <Input
-                    color={true}
-                    required={false}
-                    value={region}
-                    onChange={(e) => setRegion(e.target.value)}
-                    placeholder={'Centro'}
-                  />
-                </div>
-                {/* City */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Cidade
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
-                  <Input
-                    color={true}
-                    required={false}
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    placeholder={'Russas'}
-                  />
-                </div>
-                {/* State */}
+                {/* Insurance */}
                 <div className="flex w-full flex-col gap-1">
                   <p className='pl-1 text-sm text-black'>
-                    Estado
+                    Convênio
                     {/* <span className='text-required'>*</span> */}
                   </p>
                   <Select
-                    selectedPerson={state}
-                    setSelectedPerson={setState}
-                    datas={brStateDatas.states}
+                    selectedPerson={insurance}
+                    setSelectedPerson={setInsurance}
+                    datas={insuranceDatas.insurance}
                   >
                     <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded focus:border focus:border-subMain overflow-auto">
-                      {state.name} ({state.UF}) <BiChevronDown className="text-xl" />
+                      {insurance.name} <BiChevronDown className="text-xl" />
                     </div>
                   </Select>
+                </div>
+                {/* Insurance Card Number */}
+                <div className=''>
+                  <p className='pl-1 mb-[-7px] text-sm text-black'>
+                    Nº Cartão (Convênio)
+                    {/* <span className='text-required'>*</span> */}
+                  </p>
+                  <Input
+                    color={true}
+                    required={false}
+                    placeholder={'9821498214949217'}
+                    type={'number'}
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
+                  />
                 </div>
               </div>
             </div>
@@ -430,6 +430,64 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     onChange={(e) => setMaternalFiliationContact(e.target.value)}
                     className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
                   />
+                </div>
+                {/* Address */}
+                <div className=''>
+                  <p className='pl-1 mb-[-7px] text-sm text-black'>
+                    Endereço
+                    {/* <span className='text-required'>*</span> */}
+                  </p>
+                  <Input
+                    color={true}
+                    required={false}
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder={'Rua, Número'}
+                  />
+                </div>
+                {/* Region */}
+                <div className=''>
+                  <p className='pl-1 mb-[-7px] text-sm text-black'>
+                    Bairro
+                    {/* <span className='text-required'>*</span> */}
+                  </p>
+                  <Input
+                    color={true}
+                    required={false}
+                    value={region}
+                    onChange={(e) => setRegion(e.target.value)}
+                    placeholder={'Centro'}
+                  />
+                </div>
+                {/* City */}
+                <div className=''>
+                  <p className='pl-1 mb-[-7px] text-sm text-black'>
+                    Cidade
+                    {/* <span className='text-required'>*</span> */}
+                  </p>
+                  <Input
+                    color={true}
+                    required={false}
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    placeholder={'Russas'}
+                  />
+                </div>
+                {/* State */}
+                <div className="flex w-full flex-col gap-1">
+                  <p className='pl-1 text-sm text-black'>
+                    Estado
+                    {/* <span className='text-required'>*</span> */}
+                  </p>
+                  <Select
+                    selectedPerson={state}
+                    setSelectedPerson={setState}
+                    datas={brStateDatas.states}
+                  >
+                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded focus:border focus:border-subMain overflow-auto">
+                      {state.name} ({state.UF}) <BiChevronDown className="text-xl" />
+                    </div>
+                  </Select>
                 </div>
               </div>
 

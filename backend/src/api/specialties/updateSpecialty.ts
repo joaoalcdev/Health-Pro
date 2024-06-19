@@ -9,6 +9,7 @@ export const UpdateSpecialty = async (app: FastifyInstance) => {
       const {
         name,
         status,
+        price,
       } = req.body as Specialty
 
       const { data, error } = await supabase
@@ -16,6 +17,7 @@ export const UpdateSpecialty = async (app: FastifyInstance) => {
       .update([{
         name,
         deletedAt: status === true ? null : new Date(), 
+        price,
       }])
       .eq("id", id)
       .select()

@@ -9,6 +9,7 @@ export const ListSpecialties = async (app: FastifyInstance) => {
       let { data, error } = await supabase
         .from("specialties")
         .select("*")
+        .order("name")
       
       if (error) {
         throw error

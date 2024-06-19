@@ -6,7 +6,40 @@ import DatePicker from 'react-datepicker';
 import { FaCheck } from 'react-icons/fa';
 import { roleOptions, specialties } from './Datas';
 import { InputMask } from 'primereact/inputmask';
+import { InputNumber } from 'primereact/inputnumber';
 
+
+export function CurrencyInputMask({ label, name, color, placeholder, register, value, required, maxLength, unmask, inputId, onValueChange, mode, currency, locale, inputStyle, unstyled, maxFractionDigits, allowEmpty, inputClassName }) {
+  return (
+    <div className="text-sm w-full">
+      <label
+        className={`${color ? 'text-black text-sm' : 'text-white font-semibold'
+          } `}
+      >
+        {label}
+      </label>
+      <InputNumber
+        name={name}
+        placeholder={placeholder}
+        inputStyle={inputStyle}
+        unstyled={unstyled}
+        {...register}
+        value={value}
+        onValueChange={onValueChange}
+        required={required}
+        maxLength={maxLength}
+        inputId={inputId}
+        unmask={unmask}
+        mode={mode}
+        currency={currency}
+        locale={locale}
+        maxFractionDigits={maxFractionDigits}
+        allowEmpty={allowEmpty}
+        inputClassName={inputClassName}
+      />
+    </div>
+  );
+}
 
 export function InputMaskComp({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, mask, unmask, autoClear }) {
   return (

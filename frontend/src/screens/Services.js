@@ -52,33 +52,6 @@ function Services() {
     fetchSpecialties();
   }, [status]);
 
-  //filter and search
-  useEffect(() => {
-    setDatas(allData.filter((item) => {
-      //case 1 - no filter and no search
-      if (searchTerm === "" && filterTerm.id === 0) {
-        setNoResult(false)
-        return item
-      }
-      //case 2 - no filter but has search
-      if (filterTerm.id === 0 && item.name.toLowerCase().includes(searchTerm.toLowerCase())) {
-        setNoResult(false)
-        return item
-      }
-      //case 3 - no search but has filter
-      if (searchTerm === "" && filterTerm.id === item.specialtyId) {
-        setNoResult(false)
-        return item
-      }
-      //case 4 - has filter and search
-      if (item.name.toLowerCase().includes(searchTerm.toLowerCase()) && filterTerm.id === item.specialtyId) {
-        setNoResult(false)
-        return item
-      }
-    })
-    )
-  }, [searchTerm, filterTerm])
-
   const onCloseModal = () => {
     setIsOpen(false);
     setData({});

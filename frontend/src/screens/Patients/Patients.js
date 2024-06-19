@@ -13,7 +13,7 @@ import ViewUserModal from '../../components/Modals/ViewUserModal';
 
 
 import AddPatientModal from '../../components/Modals/AddPatientModal';
-import { PatientsTable } from '../../components/Tables';
+import { PatientsTable } from '../../components/Tables/PatientTable';
 import { deletePatient, getPatients, recoveryPatient } from '../../api/PatientsAPI';
 // import ViewUserModal from '../components/Modals/ViewUserModal';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';
@@ -45,7 +45,7 @@ function Patients() {
   const boxes = [
     {
       id: 1,
-      title: 'Today Patients',
+      title: 'Total Patients',
       // value from api
       value: '20',
       color: ['bg-subMain', 'text-subMain'],
@@ -271,12 +271,15 @@ function Patients() {
                 <h2 className="text-sm font-medium">{box.title}</h2>
                 <h2 className="text-xl my-6 font-medium">{box.value}</h2>
                 <p className="text-xs text-textGray">
-                  Total Patients <span className={box.color[1]}>{box.value}</span>{' '}
-                  {box.title === 'Today Patients'
-                    ? 'today'
-                    : box.title === 'Monthly Patients'
-                      ? 'this month'
-                      : 'this year'}
+                  Total Patients
+                  <span className={box.color[1]}>{box.value}</span>{' '}
+                  {
+                    box.title === 'Total Patients'
+                      ? 'today'
+                      : box.title === 'Monthly Patients'
+                        ? 'this month'
+                        : 'this year'
+                  }
                 </p>
               </div>
               <div

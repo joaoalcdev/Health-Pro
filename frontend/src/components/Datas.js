@@ -171,6 +171,31 @@ export const maritalDatas = {
   ]
 }
 
+export const insuranceDatas = {
+  insurance: [
+    {
+      id: 1,
+      name: 'Particular',
+    },
+    {
+      id: 2,
+      name: 'Unimed',
+    },
+    {
+      id: 3,
+      name: 'CapSesp',
+    },
+    {
+      id: 4,
+      name: 'Cassi',
+    },
+    {
+      id: 5,
+      name: 'Outro...',
+    },
+  ]
+}
+
 export const councilDatas = {
 
   council: [

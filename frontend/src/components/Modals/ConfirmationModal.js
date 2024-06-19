@@ -1,7 +1,10 @@
 import React from 'react';
 import Modal from './Modal';
+import { RiDeleteBin6Line } from 'react-icons/ri';
+import { ButtonNegative } from '../Form';
 
-function ConfirmationModal({ title, closeModal, isOpen, onConfirm, question, user }) {
+
+function ConfirmationModal({ title, closeModal, isOpen, onConfirm, question, user, loading }) {
 
   return (
     <Modal
@@ -19,16 +22,12 @@ function ConfirmationModal({ title, closeModal, isOpen, onConfirm, question, use
       <div className="grid sm:grid-cols-2 gap-4 w-full">
         <button
           onClick={closeModal}
-          className="bg-red-600 bg-opacity-5 text-red-600 text-sm p-4 rounded-lg font-light"
+          className="bg-red-600 text-white text-sm p-4 rounded font-light"
         >
           Cancelar
         </button>
-        <button
-          onClick={onConfirm}
-          className="bg-red-600  text-white text-sm p-4 rounded-lg font-light"
-        >
-          Deletar
-        </button>
+        <ButtonNegative label="Desativar" disable={loading} loading={loading} Icon={RiDeleteBin6Line} onClick={onConfirm} />
+
       </div>
     </Modal >
   );

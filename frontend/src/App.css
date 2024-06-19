@@ -6,11 +6,19 @@
 @layer tailwind-base, primereact, tailwind-utilities;
 
 /* IMPORTANT: In "styled" mode you must add the PrimeReact Theme here. Do NOT include in "unstyled" mode */
-@import "primereact/resources/themes/lara-light-blue/theme.css"
-  layer(primereact);
+/* @import "primereact/resources/themes/lara-light-blue/theme.css" */
+  /* layer(primereact); */
 
 @layer tailwind-base {
   @tailwind base;
+}
+
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 @layer tailwind-utilities {

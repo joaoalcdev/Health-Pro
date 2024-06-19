@@ -1,11 +1,45 @@
-import { Listbox, Menu, Switch } from '@headlessui/react';
-import React from 'react';
+/* eslint-disable no-undef */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { Menu, Listbox, Switch } from '@headlessui/react';
 import { BiLoaderCircle } from 'react-icons/bi';
 import DatePicker from 'react-datepicker';
 import { FaCheck } from 'react-icons/fa';
 import { roleOptions, specialties } from './Datas';
 import { InputMask } from 'primereact/inputmask';
+import { InputNumber } from 'primereact/inputnumber';
 
+
+export function CurrencyInputMask({ label, name, color, placeholder, register, value, required, maxLength, unmask, inputId, onValueChange, mode, currency, locale, inputStyle, unstyled, maxFractionDigits, allowEmpty, inputClassName }) {
+  return (
+    <div className="text-sm w-full">
+      <label
+        className={`${color ? 'text-black text-sm' : 'text-white font-semibold'
+          } `}
+      >
+        {label}
+      </label>
+      <InputNumber
+        name={name}
+        placeholder={placeholder}
+        inputStyle={inputStyle}
+        unstyled={unstyled}
+        {...register}
+        value={value}
+        onValueChange={onValueChange}
+        required={required}
+        maxLength={maxLength}
+        inputId={inputId}
+        unmask={unmask}
+        mode={mode}
+        currency={currency}
+        locale={locale}
+        maxFractionDigits={maxFractionDigits}
+        allowEmpty={allowEmpty}
+        inputClassName={inputClassName}
+      />
+    </div>
+  );
+}
 
 export function InputMaskComp({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, mask, unmask, autoClear }) {
   return (
@@ -73,7 +107,7 @@ export function Button({ label, onClick, loading, Icon, type, disabled }) {
       className={`w-full flex-rows gap-4 transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} bg-subMain text-white text-sm font-medium px-2 py-4 rounded`}
     >
       {loading ? (
-        <BiLoaderCircle className="animate-spin text-white text-2xl" />
+        <BiLoaderCircle className="animate-spin text-white text-xl" />
       ) : (
         <>
           {label}
@@ -108,7 +142,7 @@ export function ButtonNegative({ label, onClick, loading, Icon, type, disabled }
 
 export function MenuSelect({ children, datas, item: data }) {
   return (
-    <div className="text-sm w-full  relative">
+    <div className="text-sm w-full relative">
       <Menu>
         <Menu.Button>{children}</Menu.Button>
         <Menu.Items className="flex flex-col z-50 gap-4 absolute right-0  bg-white rounded-md shadow-lg py-4 px-6 ring-1 ring-border focus:outline-none">
@@ -132,14 +166,14 @@ export function MenuSelect({ children, datas, item: data }) {
 
 export function Select({ children, selectedPerson, setSelectedPerson, datas }) {
   return (
-    <div className="text-sm relative w-full ">
+    <div className="flex text-sm relative w-full ">
       <div className="w-full">
         <Listbox value={selectedPerson} onChange={setSelectedPerson}>
           <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
-          <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded-md shadow-lg py-2 px-6 ring-1 ring-border focus:outline-none">
+          <Listbox.Options className="flex flex-col top-15 z-50 absolute left-0 w-full h-[8rem] overflow-y-scroll bg-white rounded-md shadow-lg py-2 px-6 ring-1 ring-border focus:outline-none">
             {datas.map((person) => (
               <Listbox.Option
-                className={`cursor-pointer text-xs hover:text-subMain hover:bg-black hover:bg-opacity-5 py-2 px-1`}
+                className={`flex relative cursor-pointer text-xs hover:text-subMain hover:bg-black hover:bg-opacity-5 py-2 px-1`}
                 key={person.id}
                 value={person}
                 disabled={person.unavailable}
@@ -153,6 +187,7 @@ export function Select({ children, selectedPerson, setSelectedPerson, datas }) {
     </div>
   );
 }
+
 
 export function FilterSelect({ children, selectedPerson, setSelectedPerson, datas }) {
   return (
@@ -278,7 +313,7 @@ export function DatePickerComp({ label, startDate, onChange, color, locale, show
 
 // time picker
 
-export function TimePickerComp({ label, startDate, onChange }) {
+export function TimePickerComp({ label, startDate, onChange, placeholderText }) {
   return (
     <div className="flex flex-col text-sm w-full">
       <label className={'text-black text-sm'}>{label}</label>
@@ -288,6 +323,7 @@ export function TimePickerComp({ label, startDate, onChange }) {
         showTimeSelect
         showTimeSelectOnly
         timeIntervals={30}
+        placeholderText={placeholderText}
         minTime={new Date().setHours(6, 0)}
         maxTime={new Date().setHours(21, 0)}
         timeCaption="Time"

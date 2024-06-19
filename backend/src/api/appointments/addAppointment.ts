@@ -1,5 +1,6 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import checkAvailability from '../../utils/checkAvailability';
 
 export const AddAppointment = async (app: FastifyInstance) => {
   app.post("/appointments", async (req: FastifyRequest, res: FastifyReply) => {
@@ -11,18 +12,22 @@ export const AddAppointment = async (app: FastifyInstance) => {
         endTime,
         service,
         agreement,
+        type,
       } = req.body as Appointment
 
-      const status = 1;
-
-      const { data, error  } = await supabase.from("appointments").insert([{
+      const hasConflict = await checkAvailability(professionalId, startTime, endTime);
+      
+      const { data, error  } = await supabase.from("appointments")
+      .insert([{
         patientId,
         professionalId,
         startTime,
         endTime,
-        status,
         service,
         agreement,
+        type,
+        eventStatus: 1,
+        hasConflict,
       }]).select()
 
       if (error) {

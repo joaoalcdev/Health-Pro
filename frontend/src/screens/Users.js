@@ -10,6 +10,8 @@ import { deleteUser, getUsers } from '../api/UsersAPI';
 import { FilterSelect } from '../components/Form';
 import { roleOptions } from '../components/Datas';
 import { BiChevronDown, BiLoaderCircle } from 'react-icons/bi';
+import { recoveryUser } from '../api/UsersAPI';
+import Tab from '../components/Tab';
 
 function Users() {
   //data
@@ -26,39 +28,47 @@ function Users() {
   const [noData, setNoData] = React.useState(false)
   const [noResult, setNoResult] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
+  const [tab, setTab] = React.useState(1);
 
   //filter and search controllers
-  const [filterTerm, setFilterProfessionals] = React.useState({ id: 0, name: "Todos" });
+  const [filterTerm, setFilterTerm] = React.useState({ id: 0, name: "Todos" });
   const [searchTerm, setSearchTerm] = React.useState("");
 
   const fetch = async () => {
     setLoading(true)
-    const response = await getUsers()
+    const response = await getUsers(tab === 1 ? '' : 'true')
     if (response.length === 0) {
       setNoData(true)
+      setNoResult(true)
       setLoading(false)
-      return
     }
     setData(response)
     setAllData(response)
-    setNoResult(false)
     setLoading(false)
     setStatus(false)
   }
 
   useEffect(() => {
     fetch()
-  }, [status])
+  }, [status, tab])
 
   const handleDelete = async () => {
+    setLoading(true)
     const response = await deleteUser(user)
     if (response) {
       toast.success('Usuário deletado com sucesso')
       setStatus(true)
       setIsConfirmationOpen(false)
+      setLoading(false)
     } else {
       toast.error('Não foi possível deletar o usuário')
     }
+  }
+
+  const onChangeTab = (index) => {
+    index === 1 ? setTab(1) : setTab(2);
+    setFilterTerm({ id: 0, name: "Todos" });
+    setSearchTerm("");
   }
 
   const onCloseModal = () => {
@@ -76,6 +86,19 @@ function Users() {
   const preview = (data) => {
     setIsViewOpen(true);
     setUser(data)
+  };
+
+  const restoreUser = async (data) => {
+    setLoading(true);
+    const response = await recoveryUser(data.id);
+    if (response) {
+      toast.success('Profissional restaurado com sucesso');
+      onStatus(true);
+      setLoading(false);
+    } else {
+      toast.error('Não foi possível restaurar o profissional');
+    }
+
   };
 
   const onStatus = () => {
@@ -119,7 +142,9 @@ function Users() {
   useEffect(() => {
     if (data.length === 0) {
       setNoResult(true)
+      return
     }
+    setNoResult(false)
   }, [data])
 
   return (
@@ -128,9 +153,10 @@ function Users() {
         //confirmation modal
         isConfirmationOpen && (
           <ConfirmationModal
-            title={'Deletar Usuário'}
+            title={'Desativar Usuário'}
             closeModal={onCloseModal}
             isOpen={isConfirmationOpen}
+            loading={loading}
             question={"Você tem certeza que deseja desativar esse usuário?"}
             onConfirm={handleDelete}
           />
@@ -171,62 +197,69 @@ function Users() {
         <BiPlus className="text-2xl" />
       </button>
       {/*  */}
-      <h1 className="text-xl font-semibold">Usuários</h1>
-      <div
-        data-aos="fade-up"
-        data-aos-duration="1000"
-        data-aos-delay="100"
-        data-aos-offset="200"
-        className="bg-white my-8 rounded-xl border-[1px] border-border p-5"
-      >
-        {/* datas */}
-        {loading && !noData ?
-          <div className="flex items-center justify-center h-auto">
-            <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
-          </div>
-          : noData ?
-            <div className="flex items-center justify-center h-auto">
-              <p className="text-sm text-main">Nenhum dado encontrado</p>
-            </div>
-            :
-            <>
-              <div className="grid md:grid-cols-6 sm:grid-cols-2 grid-cols-1 gap-2">
-                <div className="md:col-span-5 grid lg:grid-cols-4 items-center gap-6">
-                  <input
-                    type="text"
-                    placeholder='Pesquise por nome...'
-                    onChange={(e) => {
-                      setSearchTerm(e.target.value)
-                    }}
-                    className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
-                  />
+      <div className="sm:flex grid grid-cols-1 gap-4 items-center justify-between">
+        <h1 className="text-xl font-semibold">Usuários</h1>
+        <Tab selectedTab={tab} functions={{
+          onChangeTab: onChangeTab
+        }}
+        />
+      </div>
+      {/* datas */}
+      {loading ?
+        <div className="flex absolute items-center justify-center w-full h-1/2">
+          <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
+        </div>
+        :
+        <>
+          <div
+            data-aos="fade-up"
+            data-aos-duration="1000"
+            data-aos-delay="100"
+            data-aos-offset="200"
+            className="bg-white my-8 rounded-xl border-[1px] border-border p-5"
+          >
+            <div className="grid md:grid-cols-6 sm:grid-cols-2 grid-cols-1 gap-2">
+              <input
+                type="text"
+                placeholder='Pesquise por nome...'
+                onChange={(e) => {
+                  setSearchTerm(e.target.value)
+                }}
+                className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
+              />
+              <FilterSelect
+                selectedPerson={filterTerm}
+                setSelectedPerson={setFilterTerm}
+                datas={roleOptions.roles}
+              >
+                <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
+                  <p>{filterTerm.name}</p>
+                  <BiChevronDown className="text-xl" />
                 </div>
-                <FilterSelect
-                  selectedPerson={filterTerm}
-                  setSelectedPerson={setFilterProfessionals}
-                  datas={roleOptions.roles}
-                >
-                  <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
-                    <p>{filterTerm.name}</p>
-                    <BiChevronDown className="text-xl" />
-                  </div>
-                </FilterSelect>
-              </div>
-              <div className="mt-8 w-full overflow-x-scroll">
+              </FilterSelect>
+            </div>
+            <div className="mt-8 w-full overflow-x-scroll">
+              {noResult ?
+                <div className="bg-greyed pt-8 pb-8 flex items-center justify-center h-auto">
+                  <p className="text-sm text-main">Nenhum usuário encontrado</p>
+                </div>
+                :
                 <UsersTable
-                  doctor={false}
+                  doctor={true}
                   data={data}
                   noData={noResult}
                   functions={{
                     preview: preview,
                     deleteUser: removeUser,
+                    restoreUser: restoreUser,
                   }}
                 />
-              </div>
-            </>
-        }
-      </div>
-    </Layout>
+              }
+            </div>
+          </div>
+        </>
+      }
+    </Layout >
   );
 }
 

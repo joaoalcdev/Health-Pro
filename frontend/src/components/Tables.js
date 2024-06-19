@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MenuSelect } from './Form';
-import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { MenuSelect, Button } from './Form';
+import { BiDotsHorizontalRounded, BiUndo } from 'react-icons/bi';
 import { FiEdit, FiEye } from 'react-icons/fi';
 import { RiDeleteBin6Line, RiDeleteBinLine } from 'react-icons/ri';
 import { toast } from 'react-hot-toast';
@@ -10,7 +10,6 @@ import { formatDate } from '../utils/formatDate';
 import { calculateDate } from '../utils/calculateDate';
 import { brStateDatas, specialties, councilDatas, roleOptions } from './Datas';
 import AddPatientModal from './Modals/AddPatientModal';
-import { getPatients } from '../api/PatientsAPI';
 import getAvatar from '../utils/getAvatar';
 
 const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
@@ -260,283 +259,10 @@ export function MedicineTable({ data, onEdit }) {
   );
 }
 
-// service table
-export function ServiceTable({ data, onEdit }) {
-  const DropDown1 = [
-    {
-      title: 'Edit',
-      icon: FiEdit,
-      onClick: (item) => {
-        onEdit(item);
-      },
-    },
-    {
-      title: 'Delete',
-      icon: RiDeleteBin6Line,
-      onClick: () => {
-        toast.error('This feature is not available yet');
-      },
-    },
-  ];
-  return (
-    <table className="table-auto w-full">
-      <thead className="bg-dry rounded-md overflow-hidden">
-        <tr>
-          <th className={thclass}>Name</th>
-          <th className={thclass}>Created At</th>
-          <th className={thclass}>
-            Price <span className="text-xs font-light">(Tsh)</span>
-          </th>
-          <th className={thclass}>Status</th>
-          <th className={thclass}>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((item, index) => (
-          <tr
-            key={item.id}
-            className="border-b border-border hover:bg-greyed transitions"
-          >
-            <td className={tdclass}>
-              <h4 className="text-sm font-medium">{item?.name}</h4>
-            </td>
-            <td className={tdclass}>{item?.date}</td>
-            <td className={`${tdclass} font-semibold`}>{item?.price}</td>
-            <td className={tdclass}>
-              <span
-                className={`text-xs font-medium ${!item?.status ? 'text-red-600' : 'text-green-600'
-                  }`}
-              >
-                {!item?.status ? 'Disabled' : 'Enabled'}
-              </span>
-            </td>
-            <td className={tdclass}>
-              <MenuSelect datas={DropDown1} item={item}>
-                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
-                  <BiDotsHorizontalRounded />
-                </div>
-              </MenuSelect>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
-
-
-// patient table
-export function PatientsTable({ functions, used, noData, patientData }) {
-
-  const [status, setStatus] = useState(true);
-  // const [patientData, setPatientData] = useState([]);
-
-  // const fetch = async () => {
-  //   const response = await getPatients()
-  //   setPatientData(response)
-  //   setStatus(false)
-  // }
-
-  // useEffect(() => {
-  //   fetch()
-  //   console.log("Effect")
-  // }, [status])
-
-
-  const DropDown1 = !used
-    ? [
-      {
-        title: 'Ver',
-        icon: FiEye,
-        // preview patient
-        onClick: (data) => {
-          functions.preview(data.id);
-        }
-      },
-    ]
-    : [
-      {
-        title: 'Ver',
-        icon: FiEye,
-        onClick: (data) => {
-          functions.preview(data.id);
-        },
-      },
-    ];
-  // const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
-  // const tdclass = 'text-start text-xs py-4 px-2 whitespace-nowrap';
-  const tdclassAction = 'text-start text-xs py-4 px-5 whitespace-nowrap';
-
-
-  const [isOpen, setIsOpen] = useState(false);
-  const onCloseModal = () => {
-    setIsOpen(false);
-  };
-
-  const onStatus = () => {
-    setStatus(true)
-  }
-
-
-  return (noData ?
-    <>
-      {
-        // add patient modal
-        isOpen && (
-          <AddPatientModal
-            closeModal={onCloseModal}
-            isOpen={isOpen}
-            patient={true}
-            status={onStatus}
-            datas={null}
-          />
-        )
-      }
-      <div className='flex w-full py-8 justify-center items-center'>
-        <div className="relative flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
-          <div className="p-6">
-            <h5 className="mb-2 block font-sans text-xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased">
-              Nenhum dado foi encontrado!
-            </h5>
-            <p className="block font-sans text-base font-light leading-relaxed text-inherit antialiased">
-              Talvez você não tenha pacientes cadastrados.
-              Adicione seu primeiro paciente no botão abaixo.
-            </p>
-          </div>
-          <div className="p-6 pt-0">
-            <button
-              className="w-full select-none rounded-lg bg-subMain py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-              type="button"
-              data-ripple-light="true"
-              onClick={() => setIsOpen(true)}
-            >
-              Novo Paciente
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
-    :
-    <table className="table-auto w-full">
-      <thead className="bg-dry rounded-md overflow-hidden">
-        <tr>
-          <th className={thclass}>#</th>
-          <th className={thclass}>Paciente</th>
-          <th className={thclass}>Gênero</th>
-
-          {!used && (
-            <>
-              <th className={thclass}>Tipo Sanguíneo</th>
-              <th className={thclass}>Idade</th>
-              <th className={thclass}>Nascimento</th>
-            </>
-          )}
-
-          <th className={thclass}>Endereço, Cidade (UF)</th>
-          <th className={thclass}>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {patientData.map((item, index) => (
-          <tr
-            key={item.id}
-            className="border-b border-border hover:bg-greyed transitions"
-          >
-            <td className={tdclass}>{index + 1}</td>
-            <td className={tdclass}>
-              <div className="flex gap-4 items-center">
-                <span className="w-12">
-                  <img src={getAvatar(item.gender)} alt='avatar_image' className="w-12 h-12 rounded-full object-cover border border-border" />
-                </span>
-                <div className=''>
-                  <h4 className="text-sm font-medium">{item.fullName}</h4>
-                  <p className="text-xs mt-1 text-textGray">
-                    {formatPhoneNumber(item.phoneNumber)}
-                    <br />
-                    {formatPhoneNumber(item.emergencyContact)}
-                  </p>
-                </div>
-              </div>
-            </td>
-            <td className={tdclass}>
-              <span
-                className={
-                  `py-1 px-4 ${item.gender === 'Masculino' ? 'bg-subMain text-subMain' : 'bg-orange-500 text-orange-500'} bg-opacity-10 text-xs rounded-xl`}
-              >
-                {item.gender === 1 ? 'M' : item.gender === 2 ? 'F' : 'O'}
-              </span>
-            </td>
-            {!used && (
-              <>
-                <td className={tdclass}>
-                  {/* {item.bloodType} */}
-                  {item.bloodType === 1 ? 'Não informado...' : item.bloodType === 2 ? 'A+' : item.bloodType === 3 ? 'A-' : item.bloodType === 4 ? 'B+' : item.bloodType === 5 ? 'B-' : item.bloodType === 6 ? 'AB+' : item.bloodType === 7 ? 'AB-' : item.bloodType === 8 ? 'O+' : item.bloodType === 9 ? 'O-' : 'Não informado...'}
-                </td>
-                <td className={tdclass}>{calculateDate(item.dateBirth)}</td>
-                <td className={tdclass}>{formatDate(new Date(item.dateBirth))}</td>
-              </>
-            )}
-            <th className={thclass}>
-              {/* if dont have address, dont show */}
-              <div className="text-xs text-black">
-                <p>
-                  {item.address === '' ? '-' : item.address}
-                </p>
-                <div className='flex'>
-                  <p className='pr-1'>
-                    {item.city === '' ? '-' : item.city}
-                  </p>
-                  <p className=''>
-                    ({item.state ? brStateDatas.states[item.state - 1].UF : "-"})
-                  </p>
-                </div>
-                {/* {item.council ? councilDatas.council[item.council - 1].name : "-"} */}
-              </div>
-            </th>
-
-            {/* <td className={tdclass}>
-              <MenuSelect datas={DropDown1} item={item}>
-                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
-                  <BiDotsHorizontalRounded />
-                </div>
-              </MenuSelect>
-            </td> */}
-            <td className={tdclassAction}>
-              <button
-                onClick={() => functions.preview(item.id)}
-                key={index}
-                className={`flex items-center hover:text-subMain`}
-              >
-                <FiEye className="flex text-lg text-subMain" />
-              </button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
-
-
 // users table
 export function UsersTable({ data, functions, user, noData }) {
-  const DropDown1 = [
-    {
-      title: 'Ver',
-      icon: FiEye,
-      onClick: (data) => {
-        functions.preview(data);
-      },
-    },
-    {
-      title: 'Deletar',
-      icon: RiDeleteBin6Line,
-      onClick: (data) => {
-        functions.deleteUser(data);
-      },
-    },
-  ];
-  return (noData ? <div className="text-center pb-10 text-lg text-main">Nenhum dado encontrado</div> :
+
+  return (noData ? <div className="text-center pb-10 text-lg text-main">Nenhum usuário encontrado</div> :
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
@@ -546,7 +272,7 @@ export function UsersTable({ data, functions, user, noData }) {
           <th className={thclass}>Telefone</th>
           <th className={thclass}>Permissão</th>
           <th className={thclass}>Data de Criação</th>
-          <th className={thclass}>Actions</th>
+          <th className={`text-center text-sm font-medium py-3 px-2 whitespace-nowrap`} >Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -572,16 +298,35 @@ export function UsersTable({ data, functions, user, noData }) {
             <td className={tdclass}>{item.createdAt ? formatDate(new Date(item.createdAt)) : "-"}</td>
 
             <td className={tdclass}>
-              <MenuSelect datas={DropDown1} item={item}>
-                <div className="bg-dry border text-main text-xl py-2 px-4 rounded-lg">
-                  <BiDotsHorizontalRounded />
-                </div>
-              </MenuSelect>
+              <div className="flex gap-4 items-center justify-center">
+                <button
+                  onClick={() => functions.preview(item)}
+                  className={`flex gap-4 items-center hover:text-subMain`}
+                >
+                  <FiEye className="text-md text-subMain" />
+                </button>
+
+                {item.deletedAt === null ?
+                  <button
+                    onClick={() => functions.deleteUser(item)}
+                    className={`flex gap-4 items-center hover:text-subMain`}
+                  >
+                    <RiDeleteBin6Line className="text-xl text-red-600" />
+                  </button>
+                  :
+                  <button
+                    onClick={() => functions.restoreUser(item)}
+                    className={`flex gap-4 items-center hover:text-subMain`}
+                  >
+                    <BiUndo className="text-xl text-subMain" />
+                  </button>
+                }
+              </div>
             </td>
           </tr>
         ))}
       </tbody>
-    </table>
+    </table >
   );
 }
 
@@ -603,7 +348,8 @@ export function ProfessionalsTable({ data, functions, professional, noData }) {
       },
     },
   ];
-  return (noData ? <div className="text-center pb-10 text-lg text-main">Nenhum dado encontrado</div> :
+  return (noData ?
+    <div className="text-center pb-10 text-lg text-main">Nenhum profissional encontrado</div> :
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
@@ -613,7 +359,7 @@ export function ProfessionalsTable({ data, functions, professional, noData }) {
           <th className={thclass}>Telefone</th>
           <th className={thclass}>Email</th>
           <th className={thclass}>Conselho</th>
-          <th className={thclass}>Actions</th>
+          <th className={`text-center text-sm font-medium py-3 px-2 whitespace-nowrap`} >Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -639,13 +385,15 @@ export function ProfessionalsTable({ data, functions, professional, noData }) {
             <td className={tdclass}>{item.council ? councilDatas.council[item.council - 1].name : "-"} - {item.councilNumber}</td>
 
             <td className={tdclass}>
-              <button
-                onClick={() => functions.preview(item)}
-                key={index}
-                className={`flex gap-4 items-center hover:text-subMain`}
-              >
-                <FiEye className="text-md text-subMain" />
-              </button>
+              <div className="flex gap-4 items-center justify-center">
+                <button
+                  onClick={() => functions.preview(item)}
+                  key={index}
+                  className={`flex gap-4 items-center hover:text-subMain`}
+                >
+                  <FiEye className="text-md text-subMain" />
+                </button>
+              </div>
             </td>
           </tr>
         ))}
@@ -726,16 +474,19 @@ export function DoctorsTable({ data, functions, doctor }) {
 }
 
 // appointment table
+// get the data patient relative to the doctor appointment
+
+
 export function AppointmentTable({ data, functions, doctor }) {
   return (
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
-          <th className={thclass}>Date</th>
-          <th className={thclass}>{doctor ? 'Patient' : 'Doctor'}</th>
+          <th className={thclass}>Data</th>
+          <th className={thclass}>{doctor ? 'Paciente' : 'Doutor'}</th>
           <th className={thclass}>Status</th>
-          <th className={thclass}>Time</th>
-          <th className={thclass}>Action</th>
+          <th className={thclass}>Hora</th>
+          <th className={thclass}>Ações</th>
         </tr>
       </thead>
       <tbody>

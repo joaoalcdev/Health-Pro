@@ -12,6 +12,8 @@ import { InputMaskComp } from '../Form';
 
 function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
 
+  const [loading, setLoading] = useState(false)
+
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
@@ -23,6 +25,12 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
   const [gender, setGender] = useState(genderDatas.gender[2])
   const [password, setPassword] = useState("")
   const [roleId, setRoleId] = useState(roleOptions.roles[1]);
+
+  const roles = roleOptions.roles.filter((role) => {
+    if (role.id !== 3) {
+      return role
+    }
+  })
 
   useEffect(() => {
     if (datas) {
@@ -40,6 +48,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     if (!isAdd) {
       await updateUser(
         {
@@ -60,11 +69,12 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
 
       closeModal(true)
       status(true)
+      setLoading(false)
       toast.success("Usuário atualizado com sucesso!", {
         position: "top-center",
       })
     } else {
-      await createUser(
+      const { data, error } = await createUser(
         {
           firstName,
           lastName,
@@ -80,8 +90,19 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
         }
       )
 
+      if (error) {
+        if (error.response.status === 422) {
+          toast.error("Email já cadastrado!")
+        } else {
+          toast.error("Erro ao criar usuário!")
+        }
+        setLoading(false)
+        return
+      }
+
       closeModal(true)
       status(true)
+      setLoading(false)
       toast.success("Usuário criado com sucesso!", {
         position: "top-center",
       })
@@ -220,7 +241,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
               <Select
                 selectedPerson={roleId}
                 setSelectedPerson={setRoleId}
-                datas={roleOptions.roles}
+                datas={roles}
               >
                 <div className="w-full flex-btn text-black text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
                   {roleId.name} <BiChevronDown className="text-xl" />
@@ -241,6 +262,8 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
             <Button
               onClick={handleSubmit}
               label="Salvar"
+              disabled={loading}
+              loading={loading}
               Icon={HiOutlineCheckCircle}
             />
           </div>

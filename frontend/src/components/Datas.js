@@ -43,17 +43,17 @@ export const MenuDatas = [
     roleAllowed: 1
   },
   {
-    title: 'Patientes',
+    title: 'Pacientes',
     path: '/patients',
     icon: TbUsers,
     roleAllowed: 2
   },
-  {
-    title: 'Receptions',
-    path: '/receptions',
-    icon: HiOutlineUsers,
-    roleAllowed: 2
-  },
+  // {
+  //   title: 'Receptions',
+  //   path: '/receptions',
+  //   icon: HiOutlineUsers,
+  //   roleAllowed: 2
+  // },
   {
     title: 'Profissionais',
     path: '/professionals',
@@ -72,30 +72,43 @@ export const MenuDatas = [
     icon: MdListAlt,
     roleAllowed: 1
   },
+  // {
+  //   title: 'Invoices',
+  //   path: '/invoices',
+  //   icon: TbFileInvoice,
+  //   roleAllowed: 1
+  // },
   {
-    title: 'Invoices',
-    path: '/invoices',
-    icon: TbFileInvoice,
-    roleAllowed: 1
-  },
-  {
-    title: 'Services',
-    path: '/services',
+    title: 'Especialidades',
+    path: '/specialties',
     icon: MdOutlineInventory2,
     roleAllowed: 1
   },
   {
-    title: 'Campaigns',
-    path: '/campaigns',
-    icon: MdOutlineCampaign,
+    title: 'Serviços',
+    path: '/services',
+    icon: MdOutlineInventory2,
     roleAllowed: 1
   },
+  // {
+  //   title: 'Campaigns',
+  //   path: '/campaigns',
+  //   icon: MdOutlineCampaign,
+  //   roleAllowed: 1
+  // },
   {
     title: 'Settings',
     path: '/settings',
     icon: AiOutlineSetting,
     roleAllowed: 3
   },
+];
+
+export const eventTypes = [
+  { id: 1, name: 'Consulta', color: '#5DADE2' },
+  { id: 2, name: 'Retorno', color: '#F7DC6F' },
+  { id: 3, name: 'Atendimento', color: '#66b5a3' },
+  { id: 4, name: 'Conflito', color: '#ff9900' },
 ];
 
 export const roleOptions = {
@@ -154,6 +167,31 @@ export const maritalDatas = {
     {
       id: 3,
       name: 'Não informado...',
+    },
+  ]
+}
+
+export const insuranceDatas = {
+  insurance: [
+    {
+      id: 1,
+      name: 'Particular',
+    },
+    {
+      id: 2,
+      name: 'Unimed',
+    },
+    {
+      id: 3,
+      name: 'CapSesp',
+    },
+    {
+      id: 4,
+      name: 'Cassi',
+    },
+    {
+      id: 5,
+      name: 'Outro...',
     },
   ]
 }

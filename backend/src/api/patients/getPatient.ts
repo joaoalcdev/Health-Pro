@@ -2,7 +2,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { supabase } from "../../supabaseConnection";
 
 export const getPatient = async (app: FastifyInstance) => {
-  app.get("/patients/:id", async (req: FastifyRequest, res: FastifyReply) => {
+  app.get("/patient/:id", async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const { id } = req.params as { id: string }
       const { data, error } = await supabase

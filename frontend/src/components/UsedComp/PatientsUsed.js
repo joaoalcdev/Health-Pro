@@ -14,16 +14,9 @@ function PatientsUsed() {
   };
   return (
     <div className="w-full">
-      <h1 className="text-sm font-medium mb-6">Patients</h1>
-      <div className="w-full overflow-x-scroll">
-        <PatientsTable
-          data={memberData}
-          functions={{
-            preview: preview,
-            edit: edit,
-          }}
-          used={false}
-        />
+      <h1 className="text-sm font-medium mb-6">Pacientes</h1>
+      <div className="w-full ">
+        Mostrar lista de pacientes ativos
       </div>
     </div>
   );

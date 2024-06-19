@@ -19,3 +19,30 @@ export const createAppointment = async (newAppointment) => {
     return error
   }
 }
+
+export const rescheduleAppointment = async (appointmentData, appointmentId) => {
+  try {
+    const data = await axios.put(apiBaseUrl(`appointment/reschedule/${appointmentId}`), appointmentData)
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+export const deleteAppointment = async (appointmentId) => {
+  try {
+    const response = await axios.delete(apiBaseUrl(`appointment/delete/${appointmentId}`))
+    return response
+  } catch (error) {
+    return error
+  }
+}
+
+export const getAppointmentsWithFilter = async (professionalId, patientId) => {
+  try {
+    const data = await axios.get(apiBaseUrl(`appointments/get?${professionalId !== 0 ? `professional=${professionalId}` : ''}${professionalId && patientId ? '&' : ''}${patientId !== 0 ? `patient=${patientId}` : ''}`))
+    return data
+  } catch (error) {
+    return error
+  }
+}

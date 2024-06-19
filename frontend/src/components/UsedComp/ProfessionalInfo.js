@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import Uploder from '../Uploader';
 import { genderDatas, specialties, councilDatas, brStateDatas } from '../Datas';
-import { Button, ButtonNegative, DatePickerComp, Input, Select } from '../Form';
+import { Button, ButtonNegative, Input, Select } from '../Form';
 import { BiChevronDown } from 'react-icons/bi';
 import { toast } from 'react-hot-toast';
 import { HiOutlineCheckCircle, HiOutlinePencilAlt } from 'react-icons/hi';
@@ -10,66 +9,66 @@ import { InputMaskComp } from '../Form';
 import { updateProfessional, deleteProfessional } from '../../api/ProfessionalsAPI';
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
 import ConfirmationModal from '../Modals/ConfirmationModal';
-import { set } from 'rsuite/esm/utils/dateUtils';
+import { recoveryUser } from '../../api/UsersAPI';
 
 function ProfessionalInfo({ data, onStatus }) {
-  const [isEdit, setIsEdit] = useState(false)
-  const [isDisabled, setIsDisabled] = useState(true)
-  const [loading, setLoading] = useState(false)
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false)
+  //controllers
+  const [isEdit, setIsEdit] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
-  const [firstName, setFirstName] = useState(data.firstName)
-  const [lastName, setLastName] = useState(data.lastName)
-  const [phoneNumber, setPhoneNumber] = useState(data.phoneNumber)
-  const [email, setEmail] = useState(data.email)
-  const [address, setAddress] = useState(data.address)
-  const [region, setRegion] = useState(data.region)
-  const [city, setCity] = useState(data.city)
+  //User data
+  const [firstName, setFirstName] = useState(data.firstName);
+  const [lastName, setLastName] = useState(data.lastName);
+  const [phoneNumber, setPhoneNumber] = useState(data.phoneNumber);
+  const [email, setEmail] = useState(data.email);
+  const [address, setAddress] = useState(data.address);
+  const [region, setRegion] = useState(data.region);
+  const [city, setCity] = useState(data.city);
   const [state, setState] = useState(brStateDatas.states[data.state - 1]);
+  const [gender, setGender] = useState(genderDatas.gender[data.gender - 1]);
 
-  const [fullName, setFullName] = useState(data.fullName)
-  const [rg, setRg] = useState(data.rg)
-  const [rgInssuance, setRgInssuance] = useState(data.rgInssuance)
-  const [cpf, setCpf] = useState(data.cpf)
-  const [gender, setGender] = useState(genderDatas.gender[data.gender - 1])
+  //Professional data
+  const [fullName, setFullName] = useState(data.fullName);
+  const [rg, setRg] = useState(data.rg);
+  const [rgInssuance, setRgInssuance] = useState(data.rgInssuance);
+  const [cpf, setCpf] = useState(data.cpf);
   const [specialty, setSpecialty] = useState(specialties.specialty[data.specialty - 1]);
   const [council, setCouncil] = useState(councilDatas.council[data.council - 1]);
-  const [councilNumber, setCouncilNumber] = useState(data.councilNumber)
+  const [councilNumber, setCouncilNumber] = useState(data.councilNumber);
 
-  const handleChange2Edit = () => {
-    setIsEdit(!isEdit)
-    setIsDisabled(true)
-    onStatus(true)
-  }
-
+  //set data on edit mode
   useEffect(() => {
-    setFullName(data.fullName)
-    setFirstName(data.firstName)
-    setLastName(data.lastName)
-    setPhoneNumber(data.phoneNumber)
-    setEmail(data.email)
-    setAddress(data.address)
-    setRegion(data.region)
-    setCity(data.city)
-    setState(brStateDatas.states[data.state - 1])
-    setRg(data.rg)
-    setRgInssuance(data.rgInssuance)
-    setCpf(data.cpf)
-    setGender(genderDatas.gender[data.gender - 1])
-    setSpecialty(specialties.specialty[data.specialty - 1])
-    setCouncil(councilDatas.council[data.council - 1])
-    setCouncilNumber(data.councilNumber)
-  }, [data])
+    setFullName(data.fullName);
+    setFirstName(data.firstName);
+    setLastName(data.lastName);
+    setPhoneNumber(data.phoneNumber);
+    setEmail(data.email);
+    setAddress(data.address);
+    setRegion(data.region);
+    setCity(data.city);
+    setState(brStateDatas.states[data.state - 1]);
+    setRg(data.rg);
+    setRgInssuance(data.rgInssuance);
+    setCpf(data.cpf);
+    setGender(genderDatas.gender[data.gender - 1]);
+    setSpecialty(specialties.specialty[data.specialty - 1]);
+    setCouncil(councilDatas.council[data.council - 1]);
+    setCouncilNumber(data.councilNumber);
+  }, [data]);
 
+  //check if the data has changed in order to enable the save button
   useEffect(() => {
 
     if (fullName !== data.fullName || firstName !== data.firstName || lastName !== data.lastName || phoneNumber !== data.phoneNumber || email !== data.email || address !== data.address || region !== data.region || city !== data.city || rg !== data.rg || rgInssuance !== data.rgInssuance || cpf !== data.cpf || councilNumber !== data.councilNumber) {
-      setIsDisabled(false)
+      setIsDisabled(false);
     } else {
-      setIsDisabled(true)
+      setIsDisabled(true);
     }
   }, [fullName, firstName, lastName, phoneNumber, email, address, region, city, state, rg, rgInssuance, cpf, councilNumber])
 
+  //edit professional
   const handleEditProfessional = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -93,7 +92,7 @@ function ProfessionalInfo({ data, onStatus }) {
         council: council.id,
         councilNumber,
       }
-    )
+    );
 
     if (response) {
       toast.success("Profissional atualizado com sucesso!", {
@@ -111,6 +110,27 @@ function ProfessionalInfo({ data, onStatus }) {
     }
   }
 
+  //change to edit mode
+  const handleChange2Edit = () => {
+    setIsEdit(!isEdit);
+    setIsDisabled(true);
+    onStatus(true);
+  }
+
+  //reactivate professional
+  const handleReactiveProfessional = async () => {
+    setLoading(true);
+    const response = await recoveryUser(data.userId);
+    if (response) {
+      toast.success('Profissional restaurado com sucesso');
+      onStatus(true);
+      setLoading(false);
+    } else {
+      toast.error('Não foi possível restaurar o profissional');
+    }
+  }
+
+  //delete professional
   const handleDeleteProfessional = async () => {
     const response = await deleteProfessional(data.userId)
     if (response) {
@@ -123,11 +143,12 @@ function ProfessionalInfo({ data, onStatus }) {
     }
   }
 
+  //close confirmation modal
   const onCloseModal = () => {
     setIsConfirmationOpen(false);
     setLoading(false);
   };
-
+  //open confirmation modal
   const handleClickDeactivateProfessional = () => {
     setIsConfirmationOpen(true);
     setLoading(true);
@@ -211,7 +232,8 @@ function ProfessionalInfo({ data, onStatus }) {
           <Button
             label={'Restaurar Profissional'}
             Icon={HiOutlinePencilAlt}
-            onClick={handleChange2Edit}
+            loading={loading}
+            onClick={handleReactiveProfessional}
           />
           :
           <ButtonNegative

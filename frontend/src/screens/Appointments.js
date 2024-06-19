@@ -2,18 +2,19 @@ import { useState, useEffect } from 'react';
 import Layout from '../Layout';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import { BiChevronLeft, BiChevronRight, BiPlus, BiTime } from 'react-icons/bi';
+import { BiChevronLeft, BiChevronRight, BiPlus, BiTime, BiChevronDown } from 'react-icons/bi';
 import { HiOutlineViewGrid } from 'react-icons/hi';
 import { HiOutlineCalendarDays, HiOutlineBookOpen } from 'react-icons/hi2';
 import AddAppointmentModal from '../components/Modals/AddApointmentModal';
-import { servicesData } from '../components/Datas';
-import { listAppointments } from '../api/AppointmentsAPI';
+import ViewAppointmentModal from '../components/Modals/ViewAppointmentModal';
+import { listAppointments, getAppointmentsWithFilter } from '../api/AppointmentsAPI';
+import { getProfessionals } from '../api/ProfessionalsAPI';
+import { eventTypes } from '../components/Datas';
+import { FilterSelect } from '../components/Form';
 import 'moment/locale/pt-br';
-
 
 // custom toolbar
 const CustomToolbar = (toolbar) => {
-
 
   // go to back handler
   const goToBack = () => {
@@ -55,7 +56,6 @@ const CustomToolbar = (toolbar) => {
     }
   };
 
-
   // today button handler
   const goToCurrent = () => {
     toolbar.onNavigate('TODAY');
@@ -89,8 +89,8 @@ const CustomToolbar = (toolbar) => {
   ];
 
   return (
-    <div className="flex flex-col gap-8 mb-8">
-      <h1 className="text-xl font-semibold">Atendimentos</h1>
+    <div className="flex flex-col gap-4 mb-8">
+
       <div className="grid sm:grid-cols-2 md:grid-cols-12 gap-4">
         <div className="md:col-span-1 flex sm:justify-start justify-center items-center">
           <button
@@ -154,32 +154,86 @@ function Appointments() {
 
   const localizer = momentLocalizer(moment);
   const [open, setOpen] = useState(false);
+  const [view, setView] = useState(false);
   const [data, setData] = useState({});
-  const [status, setStatus] = useState(true);
-  const [eventsData, setEventsData] = useState([])
+  const [status, setStatus] = useState(false);
+  const [eventsData, setEventsData] = useState([]);
+  const [professionalsList, setProfessionalsList] = useState([]);
 
-  const fetch = async () => {
-    const response = await listAppointments()
+  //filter controllers
+  const [filterTerm, setFilterTerm] = useState({ id: 0, name: "Todos" });
+
+  const fetchProfessionals = async () => {
+    const response = await getProfessionals();
     if (response.length === 0) {
-      return
-    }
-    var rebaseData = response.data.map((item) => {
+      return;
+    };
+
+    var rebaseProfessionalsList = response.map((item) => {
       return {
         id: item.id,
-        start: moment(item.startTime).toDate(),
-        end: moment(item.endTime).toDate(),
-        title: item.title,
-        color: '#66B5A3',
-        // ...item
+        name: item.firstName + ' ' + item.lastName,
       }
     })
-    setEventsData(rebaseData)
-    setStatus(false)
+
+    setProfessionalsList(rebaseProfessionalsList);
+  }
+
+  useEffect(() => {
+    fetchProfessionals()
+  }, [])
+
+  const fetch = async () => {
+    if (filterTerm.id !== 0) {
+      const response = await getAppointmentsWithFilter(filterTerm.id, 0);
+      if (response.length === 0) {
+        setStatus(false);
+        return;
+      };
+      let rebaseData = response.data.map((item) => {
+        return {
+          id: item.id,
+          start: moment(item.startTime).toDate(),
+          end: moment(item.endTime).toDate(),
+          title: item.title,
+          color: item.hasConflict === true ? '#ff9900' : eventTypes[item.type - 1].color,
+          ...item
+        }
+      })
+      setEventsData(rebaseData)
+      setStatus(false)
+      return
+    }
+
+    if (filterTerm.id === 0) {
+      const response = await listAppointments();
+      if (response.length === 0) {
+        setStatus(false);
+        return;
+      };
+
+      let rebaseData = response.data.map((item) => {
+        return {
+          id: item.id,
+          start: moment(item.startTime).toDate(),
+          end: moment(item.endTime).toDate(),
+          title: item.title,
+          color: item.hasConflict === true ? '#ff9900' : eventTypes[item.type - 1].color,
+          ...item
+        }
+      })
+      setEventsData(rebaseData)
+      setStatus(false)
+    }
   }
 
   useEffect(() => {
     fetch()
-  }, [status])
+  }, [status, filterTerm])
+
+  // useEffect(() => {
+  //   console.log(eventsData)
+  // }, [data])
 
 
   // handle modal close
@@ -188,71 +242,16 @@ function Appointments() {
     setData({});
   };
 
-  const events = [
-    {
-      id: 0,
-      start: moment({ day: 28, hours: 9 }).toDate(),
-      end: moment({ day: 28, hours: 10 }).toDate(),
-      //color: '#FB923C',
-      title: `Mateus Gondim | Fonoaudiologia | Mateus`,
-      //message: 'He is not sure about the time',
-      // service: servicesData[1],
-      // shareData: {
-      //   email: true,
-      //   sms: true,
-      //   whatsapp: false,
-      // },
-    },
-    {
-      id: 1,
-      start: moment({ day: 31, hours: 13 }).toDate(),
-      end: moment({ day: 31, hours: 14 }).toDate(),
-      color: '#FC8181',
-      title: `Taynara Gondim | Fonoaudiologia | Mateus`,
-      message: 'She is coming for checkup',
-      service: servicesData[2],
-      shareData: {
-        email: false,
-        sms: true,
-        whatsapp: false,
-      },
-    },
-
-    {
-      id: 2,
-      start: moment({ hours: 14 }).toDate(),
-      end: moment({ hours: 17 }).toDate(),
-      color: '#FFC107',
-      title: 'Irene P. Smith',
-      message: 'She is coming for checkup. but she is not sure about the time',
-      service: servicesData[3],
-      shareData: {
-        email: true,
-        sms: true,
-        whatsapp: true,
-      },
-    },
-    {
-      id: 3,
-      start: moment({ day: 28, hours: 7, minutes: 30 }).toDate(),
-      end: moment({ day: 28, hours: 9 }).toDate(),
-      color: '#FFC107',
-      title: 'Junior Gondim',
-      message: 'He is not sure about the time',
-      service: servicesData[1],
-      shareData: {
-        email: true,
-        sms: true,
-        whatsapp: false,
-      },
-    },
-  ];
 
   // onClick event handler
   const handleEventClick = (event) => {
     setData(event);
-    setOpen(!open);
+    setView(!view);
   };
+
+  const onStatus = (status) => {
+    setStatus(status);
+  }
 
   return (
     <Layout>
@@ -260,12 +259,25 @@ function Appointments() {
         <AddAppointmentModal
           datas={data}
           isOpen={open}
-          status={setStatus}
+          status={onStatus}
           closeModal={() => {
             handleClose();
           }}
+
         />
       )}
+      {
+        view && (
+          <ViewAppointmentModal
+            datas={data}
+            isOpen={view}
+            status={onStatus}
+            closeModal={() => {
+              setView(!view);
+            }}
+          />
+        )
+      }
       {/* calender */}
       <button
         onClick={handleClose}
@@ -273,10 +285,47 @@ function Appointments() {
       >
         <BiPlus className="text-2xl" />
       </button>
+      <div className='flex flex-col gap-6 mb-8'>
+
+        <h1 key={''} className="items-start text-xl font-semibold">Agendamentos</h1>
+
+        <div className="flex items-center justify-between">
+          <div className='w-80'>
+
+            <FilterSelect
+              selectedPerson={filterTerm}
+              setSelectedPerson={setFilterTerm}
+              datas={professionalsList}
+            >
+              <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
+                <p>{filterTerm.name}</p>
+                <BiChevronDown className="text-xl" />
+              </div>
+            </FilterSelect>
+          </div>
+          <div className="flex gap-2 items-center">
+
+            <h1 className="text-xs font-semibold">Legenda:</h1>
+            {
+              eventTypes.map((item, index) => (
+                <div key={index} className="flex gap-2 items-center">
+                  <div
+                    className="w-3 h-3 rounded"
+                    style={{ backgroundColor: item.color }}
+                  ></div>
+                  <span className='text-xs'>{item.name}</span>
+                  {index === eventTypes.length - 1 ? '' : ' |'}
+                </div>
+              ))}
+          </div>
+        </div >
+      </div>
+
+
 
       <Calendar
         localizer={localizer}
-        events={eventsData ? eventsData : events}
+        events={eventsData ? eventsData : ''}
         startAccessor="start"
         endAccessor="end"
         messages={{
@@ -294,7 +343,6 @@ function Appointments() {
           allDay: 'Dia todo',
           showMore: (total) => `+ ${total} mais`,
         }}
-
         style={{
           // height fix screen
           height: 900,
@@ -306,18 +354,20 @@ function Appointments() {
         resizable
         step={30}
         selectable={false}
+        min={new Date(2024, 0, 1, 6, 0)}
+        max={new Date(2040, 0, 1, 22, 0)}
         // custom event style
         eventLayout="overlap"
         eventPropGetter={(event) => {
           const style = {
-            backgroundColor: '#66B5A3', // color of event
+            backgroundColor: event.color, // color of event
             borderRadius: '4px',
-            color: 'white',
+            color: event.type === 2 ? 'black' : 'white',
             border: '1px solid',
-            borderColor: '#66B5A3',
-            //shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
+            borderColor: 'white',
+            // shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
             fontSize: '12px',
-            // padding: '5px 5px',
+            padding: '5px 5px',
           };
           return {
             style,
@@ -339,7 +389,7 @@ function Appointments() {
         // custom view
         views={['month', 'day', 'week', 'agenda']}
         // default view
-        defaultView="month"
+        defaultView="week"
       />
     </Layout>
   );

@@ -4,9 +4,9 @@ import { apiBaseUrl } from "./apiConfig"
 
 //Professionals
 
-export const getProfessionals = async () => {
+export const getProfessionals = async (showDeleted) => {
   try {
-    const res = await axios.get(apiBaseUrl('professionals'))
+    const res = await axios.get(apiBaseUrl(`professionals/${showDeleted ? showDeleted : false}`))
     const data = res.data
     return data
   } catch (error) {
@@ -26,10 +26,13 @@ export const getProfessionalById = async (professional) => {
 
 export const createProfessional = async (newProfessional) => {
   try {
-    const data = await axios.post(apiBaseUrl('professionals'), newProfessional)
+    const { data, error } = await axios.post(apiBaseUrl('professionals'), newProfessional)
+    if (error) {
+      throw error
+    }
     return data
   } catch (error) {
-    return error
+    return { error }
   }
 }
 

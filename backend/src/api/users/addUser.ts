@@ -24,7 +24,9 @@ export const AddUser = async (app: FastifyInstance) => {
         email,
         password
       })
-
+      if (error) {
+        throw error
+      }
       if(data) {
         const { data: createdUser, error } = await supabase
         .from("users")
@@ -46,7 +48,7 @@ export const AddUser = async (app: FastifyInstance) => {
         if (error) {
           throw error
         } else {
-          return res.status(200).send(createdUser ? createdUser : null)
+          return res.status(200).send(createdUser ? data : null)
         }
       }
 

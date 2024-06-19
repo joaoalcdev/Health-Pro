@@ -1,6 +1,5 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
-import { title } from 'process';
 
 export const ListAppointments = async (app: FastifyInstance) => {
   app.get("/appointments", async (req: FastifyRequest, res: FastifyReply) => {
@@ -17,10 +16,11 @@ export const ListAppointments = async (app: FastifyInstance) => {
           return {
             id: appointment.id,
             startTime: appointment.startTime,
-            color: '#FFC107',
             endTime: appointment.endTime,
             title: `${appointment.patientFullName} | ${appointment.service} | ${appointment.professionalFirstName} ${appointment.professionalLastName}`,
-            //...appointment
+            type: appointment.type,
+            hasConflict: appointment.hasConflict,
+            ...appointment
           }
         })
 

@@ -7,7 +7,6 @@ import { HiOutlineCheckCircle, HiArrowRight } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { brStateDatas, roleOptions, specialties, councilDatas, genderDatas } from '../Datas';
 import { InputMaskComp } from '../Form';
-import { set } from 'rsuite/esm/utils/dateUtils';
 import { createProfessional } from '../../api/ProfessionalsAPI';
 
 function AddProfessionalModal({ closeModal, isOpen, professional, datas, status }) {
@@ -39,7 +38,7 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const response = await createProfessional(
+    const { data, error } = await createProfessional(
       {
         firstName,
         lastName,
@@ -61,20 +60,25 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
       }
     )
 
-    if (response) {
-      toast.success("Profissional criado com sucesso!", {
-        position: "top-center",
-      })
-      status(true)
-      closeModal(true)
-      setLoading(false);
-    } else {
-      toast.error("Erro ao criar o profissional, tente novamente!", {
-        position: "top-center",
-      })
-      setLoading(false);
+    if (error) {
+      if (error.response.status === 422) {
+        toast.error("Email já cadastrado!")
+      } else {
+        toast.error("Erro ao criar profissional!")
+      }
+      setLoading(false)
+      return
     }
+
+
+    closeModal(true)
+    status(true)
+    setLoading(false);
+    toast.success("Profissional criado com sucesso!", {
+      position: "top-center",
+    })
   }
+
 
   const handleChangeStep = (e) => {
     e.preventDefault();

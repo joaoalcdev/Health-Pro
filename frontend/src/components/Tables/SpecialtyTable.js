@@ -14,7 +14,7 @@ export default function SpecialtyTable({ data, onEdit, noData }) {
         <tr>
           <th className={thclass}>#</th>
           <th className={thclass}>Especialidade</th>
-          <th className={thclass}>Data de criação</th>
+          <th className={thclass}>Valor da Consulta <span className="text-xs font-light">(R$)</span></th>
           <th className={thclass}>Status</th>
           <th className={`text-center text-sm font-medium py-3 px-2 whitespace-nowrap`}>Ações</th>
         </tr>
@@ -29,7 +29,13 @@ export default function SpecialtyTable({ data, onEdit, noData }) {
             <td className={tdclass}>
               <h4 className="text-sm font-medium">{item?.name}</h4>
             </td>
-            <td className={tdclass}>{formatDate(item?.createdAt)}</td>
+            <td className={tdclass}>{item?.price.toLocaleString('pt-BR',
+              {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2
+              })}
+            </td>
             <td className={tdclass}>
               <span
                 className={`text-xs font-medium ${item?.deletedAt ? 'text-red-600' : 'text-green-600'

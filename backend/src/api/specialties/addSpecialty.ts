@@ -7,6 +7,7 @@ export const AddSpecialty = async (app: FastifyInstance) => {
       const {
         name,
         status,
+        price,
       } = req.body as Specialty
 
       const { data, error } = await supabase
@@ -14,6 +15,7 @@ export const AddSpecialty = async (app: FastifyInstance) => {
       .insert([{
         name,
         deletedAt: status === true ? null : new Date(), 
+        price,
       }]).select()
 
       if (error) {

@@ -65,6 +65,7 @@ type Specialty = {
   id?: number,
   name: string,
   status: boolean,
+  price: number,
 }
 
 type Service = {
@@ -76,8 +77,3 @@ type Service = {
   recurringPrice: number,
 }
 
-type Specialty = {
-  id?: number,
-  name: string,
-  status: boolean,
-}

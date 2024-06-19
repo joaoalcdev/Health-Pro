@@ -86,7 +86,9 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
       return
     }
     if (specialty.id === 0 || initialPrice === 0 || recurringPrice === 0) {
-      return toast.error('Preencha todos os campos.')
+      toast.error('Preencha todos os campos.')
+      setLoading(false);
+      return
     }
     const response = await addServices(
       {

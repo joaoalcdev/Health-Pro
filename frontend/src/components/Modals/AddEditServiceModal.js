@@ -50,10 +50,14 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
   const handleSave = async () => {
     setLoading(true);
     if (name === '') {
-      return toast.error('Nome do Serviço é obrigatória.');
+      toast.error('Nome do Serviço é obrigatória.');
+      setLoading(false);
+      return
     }
     if (specialty.id === 0 || initialPrice === 0 || recurringPrice === 0) {
-      return toast.error('Preencha todos os campos.')
+      toast.error('Preencha todos os campos.');
+      setLoading(false);
+      return
     }
     const response = await updateServices(datas.id, {
       name,
@@ -77,10 +81,14 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
   const handleAdd = async () => {
     setLoading(true);
     if (name === '') {
-      return toast.error('Nome do Serviço é obrigatória.');
+      toast.error('Nome do Serviço é obrigatória.');
+      setLoading(false);
+      return
     }
     if (specialty.id === 0 || initialPrice === 0 || recurringPrice === 0) {
-      return toast.error('Preencha todos os campos.')
+      toast.error('Preencha todos os campos.')
+      setLoading(false);
+      return
     }
     const response = await addServices(
       {

@@ -13,6 +13,7 @@ export default function ServiceTable({ data, onEdit, noData }) {
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">
         <tr>
+          <th className={thclass}>#</th>
           <th className={thclass}>Serviço</th>
           <th className={thclass}>Especialidade</th>
           <th className={thclass}>
@@ -31,6 +32,7 @@ export default function ServiceTable({ data, onEdit, noData }) {
             key={item.id}
             className="border-b border-border hover:bg-greyed transitions"
           >
+            <td className={tdclass}>{index + 1}</td>
             <td className={tdclass}>
               <h4 className="text-sm font-medium">{item?.name}</h4>
             </td>

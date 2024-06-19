@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
-import { MdOutlineCloudDownload } from 'react-icons/md';
 import { toast } from 'react-hot-toast';
 import { BiChevronDown, BiPlus, BiLoaderCircle } from 'react-icons/bi';
 import Layout from '../Layout';
-import { Button, Select } from '../components/Form';
+import { Button, FilterSelect } from '../components/Form';
 import ServiceTable from '../components/Tables/ServiceTable';
-import { servicesData, sortsDatas } from '../components/Datas';
 import AddEditServiceModal from '../components/Modals/AddEditServiceModal';
 import { getServices } from '../api/ServicesAPI';
+import { getSpecialties } from '../api/specialtiesAPI';
 
 function Services() {
   //datas
+  const [allData, setAllData] = useState([])
   const [datas, setDatas] = useState([]);
   const [data, setData] = useState({});
 
@@ -20,6 +20,11 @@ function Services() {
   const [noData, setNoData] = useState(false);
   const [noResult, setNoResult] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  //filter and search controllers
+  const [specialties, setSpecialties] = useState([]);
+  const [filterTerm, setFilterTerm] = useState({ id: 0, name: "Filtre por Especialidade..." });
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetch = async () => {
     setLoading(true);
@@ -31,14 +36,48 @@ function Services() {
       return
     }
     setDatas(response)
+    setAllData(response)
     setLoading(false)
     setNoResult(false)
     setStatus(false)
   };
 
+  const fetchSpecialties = async () => {
+    const response = await getSpecialties()
+    setSpecialties(response)
+  }
+
   useEffect(() => {
-    fetch()
+    fetch();
+    fetchSpecialties();
   }, [status]);
+
+  //filter and search
+  useEffect(() => {
+    setDatas(allData.filter((item) => {
+      //case 1 - no filter and no search
+      if (searchTerm === "" && filterTerm.id === 0) {
+        setNoResult(false)
+        return item
+      }
+      //case 2 - no filter but has search
+      if (filterTerm.id === 0 && item.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+        setNoResult(false)
+        return item
+      }
+      //case 3 - no search but has filter
+      if (searchTerm === "" && filterTerm.id === item.specialtyId) {
+        setNoResult(false)
+        return item
+      }
+      //case 4 - has filter and search
+      if (item.name.toLowerCase().includes(searchTerm.toLowerCase()) && filterTerm.id === item.specialtyId) {
+        setNoResult(false)
+        return item
+      }
+    })
+    )
+  }, [searchTerm, filterTerm])
 
   const onCloseModal = () => {
     setIsOpen(false);
@@ -88,17 +127,22 @@ function Services() {
                 <input
                   type="text"
                   placeholder='Pesquise por serviço...'
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value)
+                  }}
                   className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
                 />
-                <Select
-                  selectedPerson={status}
-                  setSelectedPerson={setStatus}
-                  datas={sortsDatas.service}
+                <FilterSelect
+                  selectedPerson={filterTerm}
+                  setSelectedPerson={setFilterTerm}
+                  datas={specialties}
                 >
-                  <div className="w-full flex-btn text-main text-sm p-4 border bg-dry border-border font-light rounded-lg focus:border focus:border-subMain">
-                    Filtro por Especialidade{status.name} <BiChevronDown className="text-xl" />
+                  <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
+                    <p>{filterTerm.name}</p>
+                    <BiChevronDown className="text-xl" />
                   </div>
-                </Select>
+                </FilterSelect>
+
               </div>
             </div>
             <div className="mt-8 w-full overflow-x-scroll">

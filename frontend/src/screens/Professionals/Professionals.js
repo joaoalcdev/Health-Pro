@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { BiPlus, BiChevronDown } from 'react-icons/bi';
 import Layout from '../../Layout';
 import { FilterSelect } from '../../components/Form';
-import { ProfessionalsTable } from '../../components/Tables';
 import { useNavigate } from 'react-router-dom';
 import AddProfessionalModal from '../../components/Modals/AddProfessionalModal';
 import { getProfessionals } from '../../api/ProfessionalsAPI';
-import { specialties } from '../../components/Datas';
 import { BiLoaderCircle } from 'react-icons/bi';
 import Tab from '../../components/Tab';
+import ProfessionalTable from '../../components/Tables/ProfessionalTable';
+import { getSpecialties } from '../../api/specialtiesAPI';
 
 function Professionals() {
   const navigate = useNavigate();
@@ -17,6 +17,7 @@ function Professionals() {
   //data
   const [allData, setAllData] = useState([])
   const [data, setData] = useState([]);
+  const [specialties, setSpecialties] = useState([]);
 
   //controllers
   const [isOpen, setIsOpen] = useState(false);
@@ -44,8 +45,14 @@ function Professionals() {
     setStatus(false)
   }
 
+  const fetchSpecialties = async () => {
+    const response = await getSpecialties()
+    setSpecialties(response)
+  }
+
   useEffect(() => {
     fetch()
+    fetchSpecialties()
   }, [status, tab])
 
   const onCloseModal = () => {
@@ -158,7 +165,7 @@ function Professionals() {
               <FilterSelect
                 selectedPerson={filterTerm}
                 setSelectedPerson={setFilterTerm}
-                datas={specialties.specialty}
+                datas={specialties}
               >
                 <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
                   <p>{filterTerm.name}</p>
@@ -172,7 +179,7 @@ function Professionals() {
                   <p className="text-sm text-main">Nenhum profissional encontrado</p>
                 </div>
                 :
-                < ProfessionalsTable
+                < ProfessionalTable
                   doctor={true}
                   data={data}
                   noData={noResult}

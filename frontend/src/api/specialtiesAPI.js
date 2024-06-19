@@ -3,9 +3,9 @@ import axios from "axios"
 import { apiBaseUrl } from "./apiConfig"
 
 //Specialties
-export const getSpecialties = async () => {
+export const getSpecialties = async (status) => {
   try {
-    const res = await axios.get(apiBaseUrl('specialties'))
+    const res = await axios.get(apiBaseUrl(`specialties${status ? '?status=true' : ''}`))
     const data = res.data
     return data
   } catch (error) {

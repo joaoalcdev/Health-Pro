@@ -77,6 +77,9 @@ function Services() {
       }
     })
     )
+    if (datas.length === 0) {
+      setNoResult(true)
+    }
   }, [searchTerm, filterTerm])
 
   const onCloseModal = () => {

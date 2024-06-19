@@ -8,7 +8,7 @@ const tdclass = 'text-start text-sm py-4 px-2 whitespace-nowrap';
 export default function ServiceTable({ data, onEdit, noData }) {
 
   return (noData ?
-    <div className="text-center pb-10 text-lg text-main">Nenhum serviço encontrado</div>
+    <div className="text-center pb-10 text-lg text-main">Nenhum serviço encontrado.</div>
     :
     <table className="table-auto w-full">
       <thead className="bg-dry rounded-md overflow-hidden">

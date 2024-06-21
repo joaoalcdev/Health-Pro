@@ -1,50 +1,44 @@
-import { useState, useEffect } from 'react';
-import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
-import getAvatar from '../../utils/getAvatar';
-import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
-import { calculateDate } from '../../utils/calculateDate';
-import { formatDate } from '../../utils/formatDate';
-import { brStateDatas } from '../Datas';
+// dependencies - libraries
+import { useState } from 'react';
+
+// components 
+import Pagination from '../Pagination';
 import AddPatientModal from '../Modals/AddPatientModal';
-import { FiEye } from 'react-icons/fi';
-import { BiUndo } from 'react-icons/bi';
-import { RiDeleteBin6Line } from 'react-icons/ri';
+
+// icons
+import { HiOutlineEye, HiOutlineTrash, HiMiniArrowUturnLeft } from "react-icons/hi2";
+
+// data
+import { brStateDatas } from '../Datas';
+
+// utils
+import getAvatar from '../../utils/getAvatar';
+import { formatDate } from '../../utils/formatDate';
+import { calculateDate } from '../../utils/calculateDate';
+import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
 
 export function PatientsTable({ functions, used, noData, patientData }) {
 
+  // table classes styles
   const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
   const tdclass = 'text-start text-sm py-4 px-2 whitespace-nowrap';
 
+  // add patient modal states
   const [status, setStatus] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+
   const onCloseModal = () => {
     setIsOpen(false);
   };
 
   const onStatus = () => {
-    setStatus(true)
+    setStatus(true);
   }
 
-  // paginate the table results
-  const [currentPage, setCurrentPage] = useState(1); // current page
-  const recordsPerPage = 4; // define results per page (change to 25)
-  const lastIndex = currentPage * recordsPerPage; // last index
-  const firstIndex = lastIndex - recordsPerPage; // first index
-  const records = patientData.slice(firstIndex, lastIndex); // current records = array data 
-  const npage = Math.ceil(patientData.length / recordsPerPage); // number of pages
-  const numbers = [...Array(npage).keys()].map((i) => i + 1); // array of pages
-
-  function prevPage() {
-    setCurrentPage(currentPage - 1)
-  }
-
-  function changeCPage(id) {
-    setCurrentPage(id)
-  }
-
-  function nextPage() {
-    setCurrentPage(currentPage + 1)
-  }
+  // pagination states
+  const [records, setRecords] = useState(patientData);
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 8;
 
   return (noData ?
     <>
@@ -111,8 +105,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
               key={item.id}
               className="border-b border-border hover:bg-greyed transitions"
             >
-              <td className={tdclass}>{index + 1}</td>
-
+              <td className={tdclass}>{(currentPage * recordsPerPage) - recordsPerPage + index + 1}</td>
               <td className={tdclass}>
                 <div className="flex gap-4 items-center">
                   <span className="w-12">
@@ -141,26 +134,34 @@ export function PatientsTable({ functions, used, noData, patientData }) {
               {!used && (
                 <>
                   <td className={tdclass}>
-                    {/* {item.bloodType} */}
+                    {/* bloodType */}
                     {item.bloodType === 1 ? '-' : item.bloodType === 2 ? 'A+' : item.bloodType === 3 ? 'A-' : item.bloodType === 4 ? 'B+' : item.bloodType === 5 ? 'B-' : item.bloodType === 6 ? 'AB+' : item.bloodType === 7 ? 'AB-' : item.bloodType === 8 ? 'O+' : item.bloodType === 9 ? 'O-' : '-'}
                   </td>
-                  <td className={tdclass}>{calculateDate(item.dateBirth)}</td>
-                  <td className={tdclass}>{formatDate(new Date(item.dateBirth))}</td>
+                  <td className={tdclass}>
+                    {/* age */}
+                    {calculateDate(item.dateBirth) > 1 ? calculateDate(item.dateBirth) + ' anos' : calculateDate(item.dateBirth) + ' ano'}
+                  </td>
+                  <td className={tdclass}>
+                    {/* dateBirth */}
+                    {formatDate(new Date(item.dateBirth))}
+                  </td>
                 </>
               )}
 
               <th className={thclass}>
-                {/* if dont have address, dont show */}
                 <div className="text-xs text-black">
                   <p>
-                    {item.address === '' ? '-' : item.address}
+                    {item.address === '' ? '' : item.address}
                   </p>
                   <div className='flex'>
                     <p className='pr-1'>
-                      {item.city === '' ? '-' : item.city}
+                      {item.region === '' ? '' : item.region + ','}
+                    </p>
+                    <p className='pr-1'>
+                      {item.city === '' ? '' : item.city}
                     </p>
                     <p className=''>
-                      ({item.state ? brStateDatas.states[item.state - 1].UF : "-"})
+                      ({item.state ? brStateDatas.states[item.state - 1].UF : ""})
                     </p>
                   </div>
                 </div>
@@ -172,21 +173,21 @@ export function PatientsTable({ functions, used, noData, patientData }) {
                     onClick={() => functions.preview(item.id)}
                     className={`flex gap-4 items-center hover:text-subMain`}
                   >
-                    <FiEye className="text-md text-subMain" />
+                    <HiOutlineEye className="text-xl text-subMain" />
                   </button>
                   {item.deletedAt === null ?
                     <button
                       onClick={() => functions.deletePatient(item.id)}
                       className={`flex gap-4 items-center hover:text-subMain`}
                     >
-                      <RiDeleteBin6Line className="text-xl text-red-600" />
+                      <HiOutlineTrash className="text-xl text-red-600" />
                     </button>
                     :
                     <button
                       onClick={() => functions.restorePatient(item.id)}
                       className={`flex gap-4 items-center hover:text-subMain`}
                     >
-                      <BiUndo className="text-xl text-subMain" />
+                      <HiMiniArrowUturnLeft className="text-lg text-subMain" />
                     </button>
                   }
                 </div>
@@ -197,40 +198,13 @@ export function PatientsTable({ functions, used, noData, patientData }) {
       </table>
 
       {/* pagination */}
-      <div className='flex flex-row w-full py-3 justify-center items-center text-center'>
-        <nav>
-          <ul className="flex flex-row justify-center items-center text-center">
-            <li className="flex justify-center items-center text-center">
-              <button
-                className={`flex ml-1 text-xl font-bold ${currentPage === 1 ? 'text-gray-300 hover:cursor-not-allowed' : 'text-black'}`}
-                onClick={prevPage}
-                disabled={currentPage === 1 ? true : false}
-              >
-                <HiChevronLeft />
-              </button>
-            </li>
-            {numbers.map((n, i) => (
-              <li
-                key={i}
-                className={`flex justify-center items-center text-center bg-greyed transition-colors rounded-full h-10 w-10 mx-1 ${currentPage === n ? 'z-50 bg-subMain hover:bg-subMain/90 rounded-full text-white transition-colors' : ''}`}
-              >
-                <button className="select-none flex justify-center items-center py-2 px-4" onClick={() => changeCPage(n)}>
-                  {n}
-                </button>
-              </li>
-            ))}
-            <li className="flex justify-center items-center text-center">
-              <button
-                className={`flex ml-1 text-xl font-bold ${currentPage === npage ? 'text-gray-300 hover:cursor-not-allowed' : 'text-black'}`}
-                onClick={nextPage}
-                disabled={currentPage === npage ? true : false}
-              >
-                <HiChevronRight />
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <Pagination
+        records={patientData}
+        setRecords={setRecords}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        recordsPerPage={recordsPerPage}
+      />
     </>
   );
 }

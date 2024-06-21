@@ -9,7 +9,6 @@ import { brStateDatas, roleOptions, specialties, councilDatas, genderDatas } fro
 import { InputMaskComp } from '../Form';
 import { createProfessional } from '../../api/ProfessionalsAPI';
 import { getSpecialties } from '../../api/specialtiesAPI';
-import { set } from 'rsuite/esm/utils/dateUtils';
 
 function AddProfessionalModal({ closeModal, isOpen, professional, datas, status }) {
   //controllers

@@ -14,7 +14,6 @@ import { HiArrowLeft, HiMiniXMark } from 'react-icons/hi2';
 import ptBR from 'date-fns/locale/pt-BR';
 
 
-
 registerLocale('pt', ptBR);
 setDefaultLocale('pt');
 
@@ -51,34 +50,6 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // if (
-    //   !fullName
-    // ) {
-    //   return toast.error('Favor, informe o nome do paciente!',
-    //     {
-    //       position: "top-center",
-    //     }
-    //   );
-    // }
-    // if (
-    //   !cpf || cpf.length < 11
-    // ) {
-    //   return toast.error('Favor, informe o CPF do paciente!',
-    //     {
-    //       position: "top-center",
-    //     }
-    //   );
-    // }
-    // informe ao menos um telefone
-    // if ((!phoneNumber && !emergencyContact) || (phoneNumber.length < 11 && emergencyContact.length < 11)) {
-    //   return toast.error('Informe ao menos um telefone de contato!',
-    //     {
-    //       position: "top-center",
-    //     }
-    //   );
-    // }
-    // setLoading(true);
-
 
     const response = await createPatient(
       {
@@ -141,6 +112,29 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
     } else {
       setStep1(false);
       setStep2(true);
+    }
+  }
+
+  function handleInsurance() {
+    if (insurance.id !== 1) {
+      return (
+        <>
+          <div className=''>
+            <p className='pl-1 mb-[-7px] text-sm text-black'>
+              Nº Cartão (Convênio)
+              {/* <span className='text-required'>*</span> */}
+            </p>
+            <Input
+              color={true}
+              required={false}
+              placeholder={'9821498214949217'}
+              type={'number'}
+              value={cardNumber}
+              onChange={(e) => setCardNumber(e.target.value)}
+            />
+          </div>
+        </>
+      )
     }
   }
 
@@ -329,21 +323,8 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     </div>
                   </Select>
                 </div>
-                {/* Insurance Card Number */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Nº Cartão (Convênio)
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
-                  <Input
-                    color={true}
-                    required={false}
-                    placeholder={'9821498214949217'}
-                    type={'number'}
-                    value={cardNumber}
-                    onChange={(e) => setCardNumber(e.target.value)}
-                  />
-                </div>
+                {/* cardNumber (insurance) */}
+                {handleInsurance()}
               </div>
             </div>
             {/* buttones */}
@@ -510,7 +491,6 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
           </form>
         }
       </>
-
     </Modal>
   );
 }

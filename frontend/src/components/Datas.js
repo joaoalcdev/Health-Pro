@@ -1,4 +1,5 @@
 import { HiOutlineHome, HiOutlineMail, HiOutlineUsers } from 'react-icons/hi';
+
 import {
   TbCalendar,
   TbChartHistogram,
@@ -7,6 +8,7 @@ import {
   TbLockAccess,
   TbUsers,
 } from 'react-icons/tb';
+import { getPatients } from '../api/PatientsAPI';
 import { FaRegCalendarAlt, FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
 import {
   RiFileList3Line,
@@ -28,6 +30,7 @@ import {
 } from 'react-icons/md';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { BiCalendar, BiUserPlus } from 'react-icons/bi';
+
 
 export const MenuDatas = [
   {
@@ -1101,44 +1104,6 @@ export const transactionData = [
   },
 ];
 
-export const dashboardCards = [
-  {
-    id: 1,
-    title: 'Total Patients',
-    icon: TbUsers,
-    value: 1600,
-    percent: 45.06,
-    color: ['bg-subMain', 'text-subMain', '#66B5A3'],
-    datas: [92, 80, 45, 15, 49, 77, 70, 51, 110, 20, 90, 60],
-  },
-  {
-    id: 2,
-    title: 'Appointments',
-    icon: TbCalendar,
-    value: 130,
-    percent: 25.06,
-    color: ['bg-yellow-500', 'text-yellow-500', '#F9C851'],
-    datas: [20, 50, 75, 15, 108, 97, 70, 41, 50, 20, 90, 60],
-  },
-  {
-    id: 3,
-    title: 'Prescriptions',
-    icon: TbFile,
-    value: 4160,
-    percent: 65.06,
-    color: ['bg-green-500', 'text-green-500', '#34C759'],
-    datas: [92, 80, 45, 15, 49, 77, 70, 51, 110, 20, 90, 60],
-  },
-  {
-    id: 4,
-    title: 'Total Earnings',
-    icon: MdOutlineAttachMoney,
-    value: 4590,
-    percent: 45.06,
-    color: ['bg-red-500', 'text-red-500', '#FF3B30'],
-    datas: [20, 50, 75, 15, 108, 97, 70, 41, 50, 20, 90, 60],
-  },
-];
 
 export const notificationsData = [
   {

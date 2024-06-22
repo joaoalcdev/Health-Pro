@@ -11,6 +11,9 @@ import { listAppointments, getAppointmentsWithFilter } from '../api/Appointments
 import { getProfessionals } from '../api/ProfessionalsAPI';
 import { eventTypes } from '../components/Datas';
 import { FilterSelect } from '../components/Form';
+import Drawer from 'react-modern-drawer';
+import EventsForm from '../components/Forms/EventsForm';
+import { getEventsFiltering, listEvents } from '../api/EventsAPI';
 import 'moment/locale/pt-br';
 
 // custom toolbar
@@ -185,7 +188,7 @@ function Appointments() {
 
   const fetch = async () => {
     if (filterTerm.id !== 0) {
-      const response = await getAppointmentsWithFilter(filterTerm.id, 0);
+      const response = await getEventsFiltering(filterTerm.id, 0);
       if (response.length === 0) {
         setStatus(false);
         return;
@@ -206,7 +209,7 @@ function Appointments() {
     }
 
     if (filterTerm.id === 0) {
-      const response = await listAppointments();
+      const response = await listEvents();
       if (response.length === 0) {
         setStatus(false);
         return;
@@ -253,18 +256,41 @@ function Appointments() {
     setStatus(status);
   }
 
+  const DrawerBody = () => {
+    return (
+      <div style={{ padding: 20 }}>
+        <h1 style={{ fontWeight: 'bold' }}>Hello World! 🚀🥳</h1>
+      </div>
+    )
+  }
+
   return (
     <Layout>
-      {open && (
-        <AddAppointmentModal
-          datas={data}
-          isOpen={open}
-          status={onStatus}
-          closeModal={() => {
-            handleClose();
-          }}
 
-        />
+      {open && (
+        <>
+          <Drawer
+            open={open}
+            onClose={handleClose}
+            direction='right'
+            size={460}
+            zIndex={50}
+            enableOverlay={true}
+          >
+            <EventsForm onClose={handleClose} status={setStatus} />
+          </Drawer>
+
+
+          {/* <AddAppointmentModal
+            datas={data}
+            isOpen={open}
+            status={onStatus}
+            closeModal={() => {
+              handleClose();
+            }}
+
+          /> */}
+        </>
       )}
       {
         view && (
@@ -285,6 +311,7 @@ function Appointments() {
       >
         <BiPlus className="text-2xl" />
       </button>
+
       <div className='flex flex-col gap-6 mb-8'>
 
         <h1 key={''} className="items-start text-xl font-semibold">Agendamentos</h1>

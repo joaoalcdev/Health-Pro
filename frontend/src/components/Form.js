@@ -69,7 +69,7 @@ export function InputMaskComp({ label, name, type, color, placeholder, register,
   );
 }
 
-export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, disabled, autoComplete }) {
+export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, disabled, autoComplete, cursor }) {
   return (
     <div className="text-sm w-full">
       <label
@@ -90,7 +90,7 @@ export function Input({ label, name, type, color, placeholder, register, value, 
         disabled={disabled}
         placeholder={placeholder}
         className={`w-full bg-transparent text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
-          } rounded-lg focus:border focus:border-subMain hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+          }  rounded-lg focus:border focus:border-subMain hover:cursor${cursor ? cursor : 'pointer'} focus:cursor-text focus:bg-greyed caret-subMain`}
       />
     </div>
   );
@@ -164,23 +164,32 @@ export function MenuSelect({ children, datas, item: data }) {
 
 // select 2
 
-export function Select({ children, selectedPerson, setSelectedPerson, datas }) {
+export function Select({ children, selectedPerson, setSelectedPerson, datas, maxHeigth }) {
   return (
     <div className="flex text-sm relative w-full ">
       <div className="w-full">
         <Listbox value={selectedPerson} onChange={setSelectedPerson}>
           <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
-          <Listbox.Options className="flex flex-col top-15 z-50 absolute left-0 w-full h-[8rem] overflow-y-scroll bg-white rounded-md shadow-lg py-2 px-6 ring-1 ring-border focus:outline-none">
-            {datas.map((person) => (
-              <Listbox.Option
-                className={`flex relative cursor-pointer text-xs hover:text-subMain hover:bg-black hover:bg-opacity-5 py-2 px-1`}
-                key={person.id}
-                value={person}
-                disabled={person.unavailable}
-              >
-                {person.name} {person.UF && `(${person.UF})`} {person.type && `(${person.type})`}
-              </Listbox.Option>
-            ))}
+          <Listbox.Options className={`flex flex-col top-14 z-50 absolute left-0 w-full h-auto max-h-${maxHeigth ? maxHeigth : '25'} overflow-y-scroll bg-white rounded-md shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none`}>
+            {
+              datas.length > 0 ?
+                datas.map((person) => (
+                  <Listbox.Option
+                    className={`flex relative cursor-pointer text-sm hover:text-subMain hover:bg-black rounded hover:bg-opacity-5 py-2 px-2`}
+                    key={person.id}
+                    value={person}
+                    disabled={person.unavailable}
+                  >
+                    {person.name} {person.UF && `(${person.UF})`} {person.type && `(${person.type})`}
+                  </Listbox.Option>
+                ))
+                :
+                <div className='h-8 flex text-center items-center justify-center'>
+                  <p>
+                    Sem opções
+                  </p>
+                </div>
+            }
           </Listbox.Options>
         </Listbox>
       </div>
@@ -195,9 +204,9 @@ export function FilterSelect({ children, selectedPerson, setSelectedPerson, data
       <div className="w-full">
         <Listbox value={selectedPerson} onChange={setSelectedPerson}>
           <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
-          <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded-md shadow-lg py-2 px-6 ring-1 ring-border focus:outline-none">
+          <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none">
             <Listbox.Option
-              className={`cursor-pointer text-xs hover:text-subMain hover:bg-black hover:bg-opacity-5 py-2 px-1`}
+              className={`cursor-pointer text-sm hover:text-subMain hover:bg-black rounded hover:bg-opacity-5 py-2 px-2`}
               key={0}
               value={{ id: 0, name: "Todos" }}
             >
@@ -226,10 +235,10 @@ export function SelectProfessional({ children, selectedPerson, setSelectedPerson
       <div className="w-full">
         <Listbox value={selectedPerson} onChange={setSelectedPerson}>
           <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
-          <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded-md shadow-lg py-2 px-6 ring-1 ring-border focus:outline-none">
+          <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded-md shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none">
             {datas.map((person) => (
               <Listbox.Option
-                className={`cursor-pointer text-xs hover:text-subMain hover:bg-black hover:bg-opacity-5 py-2 px-1`}
+                className={`cursor-pointer text-sm hover:text-subMain hover:bg-black rounded hover:bg-opacity-5 py-2 px-2`}
                 key={person.id}
                 value={person}
                 disabled={person.unavailable}
@@ -311,6 +320,39 @@ export function DatePickerComp({ label, startDate, onChange, color, locale, show
   );
 }
 
+export function DatePickerEvents({ label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll, showTimeSelect, highlightWithRanges, minDate, maxDate }) {
+  return (
+    <div className="flex flex-col text-sm w-full">
+      <label
+        className={`${color ? 'text-black text-sm' : 'text-white font-semibold'
+          } `}
+      >
+        {label}
+      </label>
+      <DatePicker
+        selected={startDate}
+        onChange={onChange}
+        color={color}
+        closeOnScroll={closeOnScroll}
+        dateFormat={dateFormat}
+        placeholderText={placeholderText}
+        minDate={minDate}
+        maxDate={maxDate}
+        showYearDropdown={showYearDropdown}
+        showTimeSelect={showTimeSelect}
+        highlightDates={highlightWithRanges}
+        scrollableYearDropdown={scrollableYearDropdown}
+        yearDropdownItemNumber={yearDropdownItemNumber}
+        filterTime={date => date.getHours() > 5 && date.getHours() < 20}
+        filterDate={date => date.getDay() !== 0 && date.getDay() !== 6}
+        locale={locale}
+        className={`w-full bg-white text-xl mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
+          } rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+      />
+    </div>
+  );
+}
+
 // time picker
 
 export function TimePickerComp({ label, startDate, onChange, placeholderText }) {
@@ -324,8 +366,9 @@ export function TimePickerComp({ label, startDate, onChange, placeholderText }) 
         showTimeSelectOnly
         timeIntervals={30}
         placeholderText={placeholderText}
-        minTime={new Date().setHours(6, 0)}
-        maxTime={new Date().setHours(21, 0)}
+        //minTime={new Date().setHours(6, 0)}
+        //maxTime={new Date().setHours(21, 0)}
+        filterTime={date => date.getHours() > 5 && date.getHours() < 20}
         timeCaption="Time"
         dateFormat="h:mm aa"
         className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"

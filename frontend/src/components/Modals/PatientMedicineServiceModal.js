@@ -6,7 +6,7 @@ import { RadioGroup } from '@headlessui/react';
 import { Button } from '../Form';
 
 function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPatient }) {
-  const [selected, setSelected] = useState(memberData[0]);
+  const [selected, setSelected] = useState();
   const datas = patient
     ? memberData
     : // combine medicine and services data and sort by name
@@ -16,6 +16,7 @@ function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPat
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleInclude = () => {
+    setPatient(selected);
     closeModal()
   }
 
@@ -24,7 +25,7 @@ function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPat
     <Modal
       closeModal={closeModal}
       isOpen={isOpen}
-      title={patient ? 'Patients' : 'Medicine & Services'}
+      title={'Pacientes'}
       width={'max-w-xl'}
     >
       <div className="flex-colo gap-6">
@@ -32,7 +33,7 @@ function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPat
         <div className="flex items-center gap-4 w-full border border-border rounded-lg p-3">
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Pesquise por nome..."
             className="w-full"
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -43,7 +44,7 @@ function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPat
         </div>
         {/* data */}
         <div className="w-full h-[50vh] overflow-y-scroll">
-          <RadioGroup value={selected} onChange={setSelected}>
+          <RadioGroup >
             <div className="space-y-2">
               {data ? data.filter((user) => {
                 if (searchTerm === "") {
@@ -51,32 +52,25 @@ function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPat
                 } else if (user.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
                   return user
                 }
-              }).map((user, key) => {
+              }).map((item, key) => {
                 return (
                   <div>
                     <RadioGroup.Option
-                      key={user.id}
-                      value={user}
-                      onClick={() => setPatient(user)}
+                      key={item.id}
+                      value={item}
+                      onClick={() => setSelected(item)}
                       className={({ active, checked }) =>
                         `
                     ${active ? 'border-subMain bg-subMain text-white' : ''}
-                    rounded-xl border-[1px] border-border p-4 group hover:bg-subMain hover:text-white`
+                    rounded-xl border-[1px] border-border p-4 group hover:bg-subMain hover:text-white cursor-pointer`
                       }
                     >
                       {({ active, checked }) => (
                         <>
                           <h6 className="text-sm">
-                            {patient ? user.fullName : user.fullName}
+                            {patient ? item.fullName : item.fullName}
                           </h6>
-                          {patient && (
-                            <p
-                              className={`${active && 'text-white'
-                                } text-xs group-hover:text-white text-textGray mt-1`}
-                            >
-                              {user.bloodType}
-                            </p>
-                          )}
+
                         </>
                       )}
                     </RadioGroup.Option>
@@ -89,7 +83,7 @@ function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPat
         </div>
         {/* button */}
 
-        <Button onClick={handleInclude} label="Incluir" Icon={BiPlus} />
+        <Button onClick={handleInclude} label="Selecionar" />
       </div>
     </Modal>
   );

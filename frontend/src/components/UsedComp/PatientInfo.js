@@ -15,6 +15,7 @@ import { updatePatient, getPatient } from '../../api/PatientsAPI';
 import { formatDate } from '../../utils/formatDate';
 import { formatCPF } from '../../utils/formatCPF';
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
+import { set } from 'rsuite/esm/internals/utils/date';
 
 function PersonalInfo({ titles, data, status }) {
   const [isEdit, setIsEdit] = useState(false)
@@ -53,22 +54,22 @@ function PersonalInfo({ titles, data, status }) {
     setFullName(data.fullName);
     setCpf(data.cpf);
     setRg(data.rg);
-    // setDateBirth(new Date(data.dateBirth));
-    // setBloodType(data.bloodType);
-    // setGender(data.gender)
-    // setMarital(data.marital)
+    setDateBirth(new Date(data.dateBirth));
+    setBloodType(sortsDatas.bloodTypeFilter[data.bloodType - 1]);
+    setGender(genderDatas.gender[data.gender - 1])
+    setMarital(maritalDatas.marital[data.marital - 1])
     setPhoneNumber(data.phoneNumber);
     setEmergencyContact(data.emergencyContact);
     setAddress(data.address);
     setRegion(data.region);
     setCity(data.city);
-    // setInsurance(data.insurance);
+    setInsurance(insuranceDatas.insurance[data.insurance - 1]);
     setCardNumber(data.cardNumber);
     setPaternalFiliation(data.paternalFiliation);
     setMaternalFiliation(data.maternalFiliation);
     setPaternalFiliationContact(data.paternalFiliationContact);
     setMaternalFiliationContact(data.maternalFiliationContact);
-    // setState(data.state);
+    setState(brStateDatas.states[data.state - 1]);
   }
 
   const handleEditPatient = async (e) => {
@@ -141,24 +142,25 @@ function PersonalInfo({ titles, data, status }) {
 
   useEffect(() => {
     if (
-      fullName !== data.fullName ||
-      cpf !== data.cpf ||
-      rg !== data.rg ||
-      bloodType.id !== data.bloodType ||
-      marital.id !== data.marital ||
-      gender.id !== data.gender ||
-      phoneNumber !== data.phoneNumber ||
-      emergencyContact !== data.emergencyContact ||
-      address !== data.address ||
-      region !== data.region ||
-      city !== data.city ||
-      state.id !== data.state ||
-      insurance.id !== data.insurance ||
-      cardNumber !== data.cardNumber ||
-      paternalFiliation !== data.paternalFiliation ||
-      maternalFiliation !== data.maternalFiliation ||
-      paternalFiliationContact !== data.paternalFiliationContact ||
-      maternalFiliationContact !== data.maternalFiliationContact
+      (fullName !== data.fullName && fullName !== '') ||
+      (rg !== data.rg && rg !== '') ||
+      (cpf !== data.cpf && cpf !== '') ||
+      // (dateBirth !== data.dateBirth && dateBirth !== formatDate(data.dateBirth) && new Date(data.dateBirth)) ||
+      (bloodType.id !== data.bloodType && bloodType.id !== '') ||
+      (marital.id !== data.marital && marital.id !== '') ||
+      (gender.id !== data.gender && gender.id !== '') ||
+      (phoneNumber !== data.phoneNumber && phoneNumber !== '') ||
+      (emergencyContact !== data.emergencyContact && emergencyContact !== '') ||
+      (address !== data.address && address !== '') ||
+      (region !== data.region && region !== '') ||
+      (city !== data.city && city !== '') ||
+      (state.id !== data.state && state.id !== '') ||
+      (insurance.id !== data.insurance && insurance.id !== '') ||
+      (cardNumber !== data.cardNumber && cardNumber !== '') ||
+      (paternalFiliation !== data.paternalFiliation && paternalFiliation !== '') ||
+      (maternalFiliation !== data.maternalFiliation && maternalFiliation !== '') ||
+      (paternalFiliationContact !== data.paternalFiliationContact && paternalFiliationContact !== '') ||
+      (maternalFiliationContact !== data.maternalFiliationContact && maternalFiliationContact !== '')
     ) {
       setIsDisabled(false)
     } else {
@@ -168,6 +170,7 @@ function PersonalInfo({ titles, data, status }) {
     fullName, data.fullName,
     cpf, data.cpf,
     rg, data.rg,
+    // dateBirth, data.dateBirth,
     gender.id, data.gender,
     bloodType.id, data.bloodType,
     marital.id, data.marital,
@@ -185,6 +188,53 @@ function PersonalInfo({ titles, data, status }) {
     maternalFiliationContact, data.maternalFiliationContact
   ])
 
+  function handleInsurance() {
+    if (insurance.id !== 1) {
+
+      return (
+        <>
+          <div className=''>
+            <p className='pl-1 mb-[-7px] text-sm text-black'>
+              Nº Cartão (Convênio)
+              {/* <span className='text-required'>*</span> */}
+            </p>
+            <Input
+              color={true}
+              required={false}
+              placeholder={'9821498214949217'}
+              type={'number'}
+              value={cardNumber}
+              onChange={(e) => setCardNumber(e.target.value)}
+            />
+          </div>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <div className=''>
+            <p className='pl-1 mb-[-7px] text-sm text-black'>
+              Nº Cartão (Convênio) -
+              <span className='text-required'> Desabilitado</span>
+            </p>
+            <Input
+              color={true}
+              required={false}
+              placeholder={'Opção indisponível para este convênio.'}
+              type={'number'}
+              value={cardNumber}
+              onChange={(e) => setCardNumber(e.target.value)}
+              disabled={insurance.id === 1 ? true : false}
+            />
+          </div>
+        </>
+      )
+    }
+  }
+
+  useEffect(() => {
+    setCardNumber('');
+  }, [insurance])
 
   return (!isEdit ?
     <>
@@ -547,18 +597,8 @@ function PersonalInfo({ titles, data, status }) {
                 </div>
               </Select>
             </div>
-            {/* cardNumber insurance */}
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Nº Cartão (Convênio)<span className='text-required'></span></p>
-              <Input
-                color={true}
-                required={false}
-                placeholder={'9821498214949217'}
-                type={'number'}
-                value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
-              />
-            </div>
+            {/* cardNumber (insurance) */}
+            {handleInsurance()}
           </div>
           <div className="grid sm:grid-cols-2 gap-4 w-full">
             {/* Tel */}

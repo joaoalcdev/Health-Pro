@@ -62,7 +62,7 @@ export function InputMaskComp({ label, name, type, color, placeholder, register,
         value={value}
         mask={mask}
         placeholder={placeholder}
-        className={`w-full bg-white text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
+        className={`w-full bg-white transitions text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
           } rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
       />
     </div>
@@ -89,8 +89,8 @@ export function Input({ label, name, type, color, placeholder, register, value, 
         value={value}
         disabled={disabled}
         placeholder={placeholder}
-        className={`w-full bg-transparent text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
-          } rounded-lg focus:border focus:border-subMain hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+        className={`w-full rounded-lg text-sm mt-3 p-4 border transitions ${color ? 'border-border font-light' : 'border-white text-white'
+          }  ${disabled ? 'border-red-400 bg-greyed hover:cursor-not-allowed' : 'focus:border focus:border-subMain hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain'}`}
       />
     </div>
   );
@@ -275,7 +275,7 @@ export function Textarea({ label, name, register, placeholder, rows }) {
         rows={rows}
         {...register}
         placeholder={placeholder}
-        className={`focus:border-subMain w-full bg-transparent text-sm mt-3 p-4 border border-border rounded font-light 
+        className={`transitions focus:border-subMain w-full bg-transparent text-sm mt-3 p-4 border border-border rounded font-light 
          `}
       />
     </div>
@@ -304,7 +304,7 @@ export function DatePickerComp({ label, startDate, onChange, color, locale, show
         scrollableYearDropdown={scrollableYearDropdown}
         yearDropdownItemNumber={yearDropdownItemNumber}
         locale={locale}
-        className={`w-full bg-white text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
+        className={`transitions w-full bg-white text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
           } rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
       />
     </div>
@@ -328,7 +328,7 @@ export function TimePickerComp({ label, startDate, onChange, placeholderText }) 
         maxTime={new Date().setHours(21, 0)}
         timeCaption="Time"
         dateFormat="h:mm aa"
-        className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+        className="transitions w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
       />
     </div>
   );
@@ -374,7 +374,7 @@ export function FromToDate({ label, startDate, onChange, endDate, bg }) {
         startDate={startDate}
         endDate={endDate}
         onChange={onChange}
-        className={`w-full ${bg ? bg : 'bg-transparent'
+        className={`transitions w-full ${bg ? bg : 'bg-transparent'
           }  text-xs px-4 h-14 border border-border text-main font-normal rounded-lg focus:border focus:border-subMain`}
       />
     </div>

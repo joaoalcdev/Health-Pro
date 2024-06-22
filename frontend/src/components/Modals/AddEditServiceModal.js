@@ -168,7 +168,7 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
             currency={'BRL'}
             locale={'pt-BR'}
             allowEmpty={true}
-            inputClassName={`w-full bg-white text-sm mt-3 p-4 border 'border-border font-light' 'border-white text-white'
+            inputClassName={`transitions w-full bg-white text-sm mt-3 p-4 border 'border-border font-light' 'border-white text-white'
         rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
           />
 
@@ -190,7 +190,7 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
             currency={'BRL'}
             locale={'pt-BR'}
             allowEmpty={true}
-            inputClassName={`w-full bg-white text-sm mt-3 p-4 border 'border-border font-light' 'border-white text-white'
+            inputClassName={`transitions w-full bg-white text-sm mt-3 p-4 border 'border-border font-light' 'border-white text-white'
         rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
           />
         </div>

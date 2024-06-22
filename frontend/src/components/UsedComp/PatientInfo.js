@@ -15,7 +15,6 @@ import { updatePatient, getPatient } from '../../api/PatientsAPI';
 import { formatDate } from '../../utils/formatDate';
 import { formatCPF } from '../../utils/formatCPF';
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
-import { set } from 'rsuite/esm/internals/utils/date';
 
 function PersonalInfo({ titles, data, status }) {
   const [isEdit, setIsEdit] = useState(false)

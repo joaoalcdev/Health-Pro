@@ -150,7 +150,7 @@ const CustomToolbar = (toolbar) => {
   );
 };
 
-function Appointments() {
+function Schedule() {
 
   // config timezone
   moment.locale('pt-br');
@@ -203,6 +203,8 @@ function Appointments() {
           ...item
         }
       })
+
+      console.log(rebaseData)
       setEventsData(rebaseData)
       setStatus(false)
       return
@@ -217,6 +219,7 @@ function Appointments() {
 
       console.log(response.data)
 
+
       let rebaseData = response.data.map((item) => {
         return {
           id: item.id,
@@ -227,6 +230,7 @@ function Appointments() {
           ...item
         }
       })
+      console.log(rebaseData)
       setEventsData(rebaseData)
       setStatus(false)
     }
@@ -433,4 +437,4 @@ function Appointments() {
   );
 }
 
-export default Appointments;
+export default Schedule;

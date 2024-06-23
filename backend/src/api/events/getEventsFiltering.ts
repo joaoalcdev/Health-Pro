@@ -1,5 +1,6 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import moment from 'moment-timezone';
 
 export const GetEventsFiltering = async (app: FastifyInstance) => {
   app.get("/events/get",async (req: FastifyRequest, res: FastifyReply) => {
@@ -10,7 +11,6 @@ export const GetEventsFiltering = async (app: FastifyInstance) => {
     patient = patient ? patient : "0";  
 
 
-    var currentTime = new Date().toISOString();
     try {
       let { data, error } = await supabase
         .from("view_events")
@@ -25,14 +25,9 @@ export const GetEventsFiltering = async (app: FastifyInstance) => {
           return {
             id: item.eventInstanceId,
             startTime: item.startTime,
-            endTime: new Date(
-              item.startTime.getFullYear(),
-              item.startTime.getMonth(),
-              item.startTime.getDate(),
-              item.startTime.getHours(),
-              item.startTime.getMinutes() + 30,
-            ),
-            title: `${item.patientFullName} |  | ${item.professionalFirstName} ${item.professionalLastName}`,
+            endTime: item.endTime,
+            title: `${item.patientFullName} | ${
+              item.eventType === 4 ? 'Consulta' :  (item.eventType === 5? 'Retorno': item.serviceName) } | ${item.professionalFirstName} ${item.professionalLastName}`,
             type: item.eventType,
             hasConflict: false,
             ...item

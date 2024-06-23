@@ -13,15 +13,14 @@ export const AddEvents = async (app: FastifyInstance) => {
         patientId,
         professionalId,
         startDate,
+        endTime,
         serviceId,
         agreementId,
         eventType,
       } = req.body as ScheduleEvent
 
-      console.log(startDate)
-
       var start = moment.tz(startDate, "America/Fortaleza");
-      console.log(start.format())
+      var end = moment.tz(endTime, "America/Fortaleza");
 
       //const hasConflict = await checkAvailability(professionalId, startTime, endTime);
 
@@ -45,6 +44,7 @@ export const AddEvents = async (app: FastifyInstance) => {
             const { data: instance , error: instanceError  } = await createEventInstance(
               eventData[0].id,
               start.format(),
+              end.format(),
               agreementId
             ) 
             
@@ -126,7 +126,8 @@ function createEvent(
 
 function createEventInstance(
   eventId: number, 
-  startTime: string, 
+  startTime: string,
+  endTime: string, 
   agreementId: number) {
 
   return supabase
@@ -134,6 +135,7 @@ function createEventInstance(
   .insert([{
     eventId,
     startTime,
+    endTime,
     agreementId,
   }]).select()
 }

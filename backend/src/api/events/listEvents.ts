@@ -1,5 +1,6 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import moment from 'moment-timezone';
 
 export const ListEvents = async (app: FastifyInstance) => {
   app.get("/events", async (req: FastifyRequest, res: FastifyReply) => {
@@ -16,17 +17,12 @@ export const ListEvents = async (app: FastifyInstance) => {
           return {
             id: item.eventInstanceId,
             startTime: item.startTime,
-            endTime: new Date(
-              new Date(item.startTime).getFullYear(),
-              new Date(item.startTime).getMonth(),
-              new Date(item.startTime).getDate(),
-              new Date(item.startTime).getHours(),
-              new Date(item.startTime).getMinutes() + 30,
-            ),
-            title: `${item.patientFullName} |  | ${item.professionalFirstName} ${item.professionalLastName}`,
+            endTime: item.endTime,
+            title: `${item.patientFullName} | ${
+              item.eventType === 4 ? 'Consulta' :  (item.eventType === 5? 'Retorno': item.serviceName) } | ${item.professionalFirstName} ${item.professionalLastName}`,
             type: item.eventType,
             hasConflict: false,
-            ...item
+            //...item
           }
         })
 

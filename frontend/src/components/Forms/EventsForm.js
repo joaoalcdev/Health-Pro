@@ -63,12 +63,11 @@ export default function EventsForm({ datas, onClose, status }) {
   }, [professional])
 
   const handleSave = async () => {
-    console.log(startDate)
-
     const data = {
       patientId: patient.id,
       professionalId: professional.id,
       startDate: startDate,
+      endTime: moment(startDate).add(30, 'minutes').toDate(),
       serviceId: (eventType === 4 || eventType === 5 || service.id === 0) ? null : service.id,
       agreementId: agreement.id,
       eventType: eventType.id,

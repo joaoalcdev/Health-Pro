@@ -1,5 +1,3 @@
-import { on } from "rsuite/esm/DOMHelper";
-
 function Tab({ selectedTab, functions }) {
 
   const tabs = [{ name: "Ativos" }, { name: "Arquivados" }]

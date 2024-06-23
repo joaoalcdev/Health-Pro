@@ -68,7 +68,7 @@ export default function EventsForm({ datas, onClose, status }) {
     const data = {
       patientId: patient.id,
       professionalId: professional.id,
-      startDate: moment(startDate).format('LLL'),
+      startDate: startDate,
       serviceId: (eventType === 4 || eventType === 5 || service.id === 0) ? null : service.id,
       agreementId: agreement.id,
       eventType: eventType.id,

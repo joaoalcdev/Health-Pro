@@ -1,9 +1,15 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
 import moment from 'moment-timezone';
-import checkAvailability from '../../utils/checkAvailability';
 
 import 'moment/locale/pt-br';
+
+interface SingleEvent {
+  eventId: number; 
+  startTime: string;
+  endTime: string;
+  agreementId: number;
+}
 
 
 export const AddEvents = async (app: FastifyInstance) => {
@@ -13,19 +19,80 @@ export const AddEvents = async (app: FastifyInstance) => {
         patientId,
         professionalId,
         startDate,
-        endTime,
+        //endTime,
         serviceId,
         agreementId,
         eventType,
+        eventsPerWeek,
+        eventsQty,
       } = req.body as ScheduleEvent
 
-      var start = moment.tz(startDate, "America/Fortaleza");
-      var end = moment.tz(endTime, "America/Fortaleza");
+      //types 1,2 - Multiple events like recurring
+      if (eventType === 2 || eventType === 1) {
+        
+        const qty = eventType === 1 ? 10 : (eventsQty?? 1);
 
-      //const hasConflict = await checkAvailability(professionalId, startTime, endTime);
+        let createdEventsQty = 0;
+        let createdEvents = [];
+
+        var start = moment.tz(startDate[0], "America/Fortaleza");
+        var end = moment.tz(startDate[0], "America/Fortaleza");
+        end.add(30, 'minutes');
+
+        const { data: eventData, error } = await 
+        createEvent(
+          patientId,
+          professionalId,
+          start.format(),
+          serviceId,
+          agreementId,
+          eventType,
+        )
+
+        if (error) {
+          throw error
+        } else {
+          if (eventData) {
+            
+            for (let i = 0; createdEventsQty< qty ; i++) {
+              for (let j = 0; j < (eventsPerWeek ?? 0); j++) {
+
+                start = moment.tz(startDate[j], "America/Fortaleza");
+                end = moment.tz(startDate[j], "America/Fortaleza");
+                end.add(30, 'minutes');
+                
+              let instance = { 
+                eventId: eventData[0].id,
+                startTime: start.add(i * 7,'days').format(),
+                endTime: end.add(i * 7,'days').format(),
+                agreementId
+              }
+              createdEventsQty++;
+              createdEvents.push(instance)
+              }
+            }
+            let arraytEvents = createdEvents.filter((item, index)=>{
+              if (index < qty) {
+                return item
+              }
+            })
+            console.log(arraytEvents)
+            const { data: instances , error: instanceError  } = await createMultipleEventsInstaces(arraytEvents as SingleEvent[])
+            
+            if (instanceError) {
+              throw error
+            } else {
+              return res.status(200).send(instances ? instances : null)
+            }
+          }
+        }
+      }
 
       //types 3,4,5 - Single events like Simple Sceduling, Appointment and Return
       if(eventType === 3 || eventType === 4 || eventType === 5) {
+
+        var start = moment.tz(startDate[0], "America/Fortaleza");
+        var end = moment.tz(startDate[0], "America/Fortaleza");
         
         const { data: eventData, error } = await 
         createEvent(
@@ -44,7 +111,7 @@ export const AddEvents = async (app: FastifyInstance) => {
             const { data: instance , error: instanceError  } = await createEventInstance(
               eventData[0].id,
               start.format(),
-              end.format(),
+              end.add(30, 'minutes').format(),
               agreementId
             ) 
             
@@ -56,7 +123,6 @@ export const AddEvents = async (app: FastifyInstance) => {
           }
         }
       }
-
 
     } catch (error) {
       return res.status(400).send(error)
@@ -138,4 +204,13 @@ function createEventInstance(
     endTime,
     agreementId,
   }]).select()
+}
+
+function createMultipleEventsInstaces(eventsArray: SingleEvent[]){
+
+  return supabase
+  .from("eventInstances")
+  .insert(eventsArray)
+  .select()
+
 }

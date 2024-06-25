@@ -7,12 +7,7 @@ import { Button } from '../Form';
 
 function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPatient }) {
   const [selected, setSelected] = useState();
-  const datas = patient
-    ? memberData
-    : // combine medicine and services data and sort by name
-    [...servicesData.slice(1, 100), ...medicineData].sort((a, b) =>
-      a.name > b.name ? 1 : -1
-    );
+
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleInclude = () => {
@@ -44,7 +39,7 @@ function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPat
         </div>
         {/* data */}
         <div className="w-full h-[50vh] overflow-y-scroll">
-          <RadioGroup >
+          <RadioGroup>
             <div className="space-y-2">
               {data ? data.filter((user) => {
                 if (searchTerm === "") {

@@ -9,18 +9,21 @@ export const ListEvents = async (app: FastifyInstance) => {
         .from("view_events")
         .select("*")
         .order("startTime", { ascending: true })
+
       
       if (error) {
         throw error
       } else {
-        const events = data?.map((item: any) => {
+        const events = data?.map( (item: any) => {
+
           return {
             id: item.eventInstanceId,
             startTime: item.startTime,
             endTime: item.endTime,
             title: `${item.patientFullName} | ${
-              item.eventType === 4 ? 'Consulta' :  (item.eventType === 5? 'Retorno': item.serviceName) } | ${item.professionalFirstName} ${item.professionalLastName}`,
+              item.eventType === 4 ? 'Consulta' :  (item.eventType === 5? 'Retorno':  item.serviceName) } | ${item.professionalFirstName} ${item.professionalLastName}`,
             type: item.eventType,
+            eventStatus: item.eventStatus,
             hasConflict: false,
             //...item
           }
@@ -33,3 +36,5 @@ export const ListEvents = async (app: FastifyInstance) => {
     }
   })
 }
+
+

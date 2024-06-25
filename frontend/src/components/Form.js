@@ -69,7 +69,7 @@ export function InputMaskComp({ label, name, type, color, placeholder, register,
   );
 }
 
-export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, disabled, autoComplete, cursor }) {
+export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, disabled, autoComplete, cursor, max }) {
   return (
     <div className="text-sm w-full">
       <label
@@ -84,6 +84,7 @@ export function Input({ label, name, type, color, placeholder, register, value, 
         required={required}
         maxLength={maxLength}
         onChange={onChange}
+        max={max}
         {...register}
         type={type}
         value={value}
@@ -320,6 +321,27 @@ export function DatePickerComp({ label, startDate, onChange, color, locale, show
   );
 }
 
+export function MultiplesDatePickers({ key, label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll, showTimeSelect, highlightWithRanges, minDate, maxDate }) {
+  return <DatePickerEvents
+    key={key}
+    label={label}
+    startDate={startDate}
+    showTimeSelect={showTimeSelect}
+    minDate={minDate}
+    maxDate={maxDate}
+    color={color}
+    dateFormat={dateFormat}
+    placeholderText={placeholderText}
+    locale={locale}
+    onChange={onChange}
+    showYearDropdown={showYearDropdown}
+    scrollableYearDropdown={scrollableYearDropdown}
+    yearDropdownItemNumber={yearDropdownItemNumber}
+    closeOnScroll={closeOnScroll}
+    highlightWithRanges={highlightWithRanges}
+  />
+}
+
 export function DatePickerEvents({ label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll, showTimeSelect, highlightWithRanges, minDate, maxDate }) {
   return (
     <div className="flex flex-col text-sm w-full">
@@ -343,10 +365,11 @@ export function DatePickerEvents({ label, startDate, onChange, color, locale, sh
         highlightDates={highlightWithRanges}
         scrollableYearDropdown={scrollableYearDropdown}
         yearDropdownItemNumber={yearDropdownItemNumber}
-        filterTime={date => date.getHours() > 5 && date.getHours() < 20}
+        filterTime={date => date.getHours() > 5 && date.getHours() < 11 || date.getHours() > 13 && date.getHours() < 20}
         filterDate={date => date.getDay() !== 0 && date.getDay() !== 6}
         locale={locale}
-        className={`w-full bg-white text-xl mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
+        fixedHeight
+        className={`w-full bg-white text-md mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
           } rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
       />
     </div>

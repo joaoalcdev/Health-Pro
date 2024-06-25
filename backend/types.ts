@@ -88,5 +88,7 @@ type ScheduleEvent = {
   title?: string,
   eventType: number,
   hasConflict?: boolean,
+  eventsPerWeek?: number,
+  eventsQty?: number,
 }
 

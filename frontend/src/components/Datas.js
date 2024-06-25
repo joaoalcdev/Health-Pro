@@ -105,11 +105,16 @@ export const MenuDatas = [
 ];
 
 export const eventTypes = [
-  { id: 1, name: 'Sessão recorrente', color: '#5DADE2' },
+  { id: 1, name: 'Sessão recorrente (sem previsão de alta)', color: '#5DADE2' },
   { id: 2, name: 'Sessão recorrente simples', color: '#F7DC6F' },
   { id: 3, name: 'Atendimento/Sessão', color: '#66b5a3' },
   { id: 4, name: 'Consulta', color: '#ff9900' },
   { id: 5, name: 'Retorno', color: '#ff0000' },
+];
+
+export const eventStatus = [
+  { id: 1, name: 'Agendado', color: '#F7DC6F' },
+  { id: 2, name: 'Concluído', color: '#66b5a3' },
 ];
 
 export const roleOptions = {

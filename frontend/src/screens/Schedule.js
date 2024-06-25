@@ -5,16 +5,15 @@ import moment from 'moment';
 import { BiChevronLeft, BiChevronRight, BiPlus, BiTime, BiChevronDown } from 'react-icons/bi';
 import { HiOutlineViewGrid } from 'react-icons/hi';
 import { HiOutlineCalendarDays, HiOutlineBookOpen } from 'react-icons/hi2';
-import AddAppointmentModal from '../components/Modals/AddApointmentModal';
-import ViewAppointmentModal from '../components/Modals/ViewAppointmentModal';
-import { listAppointments, getAppointmentsWithFilter } from '../api/AppointmentsAPI';
 import { getProfessionals } from '../api/ProfessionalsAPI';
-import { eventTypes } from '../components/Datas';
+import { eventTypes, eventStatus } from '../components/Datas';
 import { FilterSelect } from '../components/Form';
 import Drawer from 'react-modern-drawer';
 import EventsForm from '../components/Forms/EventsForm';
 import { getEventsFiltering, listEvents } from '../api/EventsAPI';
+import ViewAppointmentModal from '../components/Modals/ViewAppointmentModal';
 import 'moment/locale/pt-br';
+import { set } from 'rsuite/esm/utils/dateUtils';
 
 // custom toolbar
 const CustomToolbar = (toolbar) => {
@@ -155,6 +154,8 @@ function Schedule() {
   // config timezone
   moment.locale('pt-br');
 
+  const [loading, setLoading] = useState(false);
+
   const localizer = momentLocalizer(moment);
   const [open, setOpen] = useState(false);
   const [view, setView] = useState(false);
@@ -167,8 +168,10 @@ function Schedule() {
   const [filterTerm, setFilterTerm] = useState({ id: 0, name: "Todos" });
 
   const fetchProfessionals = async () => {
+    setLoading(true);
     const response = await getProfessionals();
     if (response.length === 0) {
+      setLoading(false);
       return;
     };
 
@@ -180,6 +183,7 @@ function Schedule() {
     })
 
     setProfessionalsList(rebaseProfessionalsList);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -187,6 +191,7 @@ function Schedule() {
   }, [])
 
   const fetch = async () => {
+    setLoading(true);
     if (filterTerm.id !== 0) {
       const response = await getEventsFiltering(filterTerm.id, 0);
       if (response.length === 0) {
@@ -199,7 +204,7 @@ function Schedule() {
           start: moment(item.startTime).toDate(),
           end: moment(item.endTime).toDate(),
           title: item.title,
-          color: item.hasConflict === true ? '#ff9900' : eventTypes[item.type - 1].color,
+          color: item.eventStatus === 1 ? eventStatus[0].color : eventStatus[1].color,
           ...item
         }
       })
@@ -217,8 +222,6 @@ function Schedule() {
         return;
       };
 
-      console.log(response.data)
-
 
       let rebaseData = response.data.map((item) => {
         return {
@@ -226,11 +229,10 @@ function Schedule() {
           start: moment(item.startTime).toDate(),
           end: moment(item.endTime).toDate(),
           title: item.title,
-          color: item.hasConflict === true ? '#ff9900' : eventTypes[item.type - 1].color,
+          color: item.eventStatus === 1 ? eventStatus[0].color : eventStatus[1].color,
           ...item
         }
       })
-      console.log(rebaseData)
       setEventsData(rebaseData)
       setStatus(false)
     }
@@ -298,7 +300,7 @@ function Schedule() {
           /> */}
         </>
       )}
-      {/* {
+      {
         view && (
           <ViewAppointmentModal
             datas={data}
@@ -309,7 +311,7 @@ function Schedule() {
             }}
           />
         )
-      } */}
+      }
       {/* calender */}
       <button
         onClick={handleClose}
@@ -340,7 +342,7 @@ function Schedule() {
 
             <h1 className="text-xs font-semibold">Legenda:</h1>
             {
-              eventTypes.map((item, index) => (
+              eventStatus.map((item, index) => (
                 <div key={index} className="flex gap-2 items-center">
                   <div
                     className="w-3 h-3 rounded"
@@ -353,86 +355,91 @@ function Schedule() {
           </div>
         </div >
       </div>
-
-
-      {eventsData.length === 0 ?
-
-        <div className="flex justify-center items-center h-96">
-          <p className="text-lg text-subMain">Não há atendimentos cadastrados.</p>
+      {loading ?
+        <div className="flex absolute items-center justify-center w-full h-1/2">
+          <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
         </div>
         :
-        <>
 
-          <Calendar
-            localizer={localizer}
-            events={eventsData ? eventsData : {}}
-            startAccessor="start"
-            endAccessor="end"
-            messages={{
-              next: 'Próximo',
-              previous: 'Anterior',
-              today: 'Hoje',
-              month: 'Mês',
-              week: 'Semana',
-              day: 'Dia',
-              agenda: 'Agenda',
-              date: 'Data',
-              time: 'Hora',
-              noEventsInRange: `${eventsData.length === 0 ? 'Não há atendimentos nesta faixa.' : `Só existem atendimentos cadastrados na seguinte faixa: ${moment(eventsData[0].start).format(`DD [de] MMMM, YYYY`)} - ${moment(eventsData[eventsData.length - 1].end).format(`DD [de] MMMM, YYYY`)}`}`,
-              event: 'Paciente | Serviço | Profissional',
-              allDay: 'Dia todo',
-              showMore: (total) => `+ ${total} mais`,
-            }}
-            style={{
-              // height fix screen
-              height: 900,
-              marginBottom: 50,
-            }}
-            onSelectEvent={(event) => handleEventClick(event)}
-            defaultDate={new Date()}
-            timeslots={1}
-            resizable
-            step={30}
-            selectable={false}
-            min={new Date(2024, 0, 1, 6, 0)}
-            max={new Date(2040, 0, 1, 22, 0)}
-            // custom event style
-            eventLayout="overlap"
-            eventPropGetter={(event) => {
-              const style = {
-                backgroundColor: event.color, // color of event
-                borderRadius: '4px',
-                color: event.type === 2 ? 'black' : 'white',
-                border: '1px solid',
-                borderColor: 'white',
-                // shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
-                fontSize: '12px',
-                padding: '5px 5px',
-              };
-              return {
-                style,
-              };
-            }}
-            // custom date style
-            dayLayout="overlap"
-            dayPropGetter={(date) => {
-              const style = {
-                backgroundColor: 'white',
-              };
-              return {
-                style,
-              };
-            }}
-            // custom toolbar
-            toolbar={true}
-            components={{ toolbar: CustomToolbar }}
-            // custom view
-            views={['month', 'day', 'week', 'agenda']}
-            // default view
-            defaultView="week"
-          />
-        </>
-      }
+
+        eventsData.length === 0 ?
+
+          <div className="flex justify-center items-center h-96">
+            <p className="text-lg text-subMain">Não há atendimentos cadastrados.</p>
+          </div>
+          :
+          <>
+            <Calendar
+              localizer={localizer}
+              events={eventsData ? eventsData : {}}
+              startAccessor="start"
+              endAccessor="end"
+              messages={{
+                next: 'Próximo',
+                previous: 'Anterior',
+                today: 'Hoje',
+                month: 'Mês',
+                week: 'Semana',
+                day: 'Dia',
+                agenda: 'Agenda',
+                date: 'Data',
+                time: 'Hora',
+                noEventsInRange: `${eventsData.length === 0 ? 'Não há atendimentos nesta faixa.' : `Só existem atendimentos cadastrados na seguinte faixa: ${moment(eventsData[0].start).format(`DD [de] MMMM, YYYY`)} - ${moment(eventsData[eventsData.length - 1].end).format(`DD [de] MMMM, YYYY`)}`}`,
+                event: 'Paciente | Serviço | Profissional',
+                allDay: 'Dia todo',
+                showMore: (total) => `+ ${total} mais`,
+              }}
+              style={{
+                // height fix screen
+                height: '85vh',
+                marginBottom: 20,
+              }}
+              onSelectEvent={(event) => handleEventClick(event)}
+              defaultDate={new Date()}
+              timeslots={1}
+              resizable
+              step={15}
+              selectable={false}
+              min={new Date(2024, 0, 1, 6, 0)}
+              max={new Date(2040, 0, 1, 22, 0)}
+              filterTime={date => (date.getHours() > 5 && date.getHours() < 11) || (date.getHours() > 13 && date.getHours() < 20)}
+              // custom event style
+              eventLayout="overlap"
+              eventPropGetter={(event) => {
+                const style = {
+                  backgroundColor: event.color, // color of event
+                  borderRadius: '4px',
+                  color: event.eventStatus === 1 ? 'black' : 'white',
+                  border: '1px solid',
+                  borderColor: 'white',
+                  shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
+                  fontSize: '12px',
+                  padding: '5px 5px',
+                };
+                return {
+                  style,
+                };
+              }}
+              // custom date style
+              dayLayout="overlap"
+              dayPropGetter={(date) => {
+                const style = {
+                  backgroundColor: 'white',
+                };
+                return {
+                  style,
+                };
+              }}
+              // custom toolbar
+              toolbar={true}
+              components={{ toolbar: CustomToolbar }}
+              // custom view
+              views={['month', 'day', 'week', 'agenda']}
+              // default view
+              defaultView="week"
+            />
+          </>
+      }}
     </Layout>
   );
 }

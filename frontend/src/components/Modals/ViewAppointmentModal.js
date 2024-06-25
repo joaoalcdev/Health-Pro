@@ -53,12 +53,12 @@ function ViewAppointmentModal({ closeModal, isOpen, datas, status }) {
       ),
     };
 
-    const response = rescheduleAppointment(data, datas.id);
-    if (response) {
-      toast.success('Agendamento atualizado com sucesso!');
-      closeModal();
-      status(true)
-    }
+    //const response = rescheduleAppointment(data, datas.id);
+    // if (response) {
+    //   toast.success('Agendamento atualizado com sucesso!');
+    //   closeModal();
+    //   status(true)
+    // }
     status(true);
   }
 
@@ -86,7 +86,7 @@ function ViewAppointmentModal({ closeModal, isOpen, datas, status }) {
       closeModal={closeModal}
       isOpen={isOpen}
       title={showReschedule ? 'Remarcar' : 'Visualização'}
-      width={'max-w-3xl'}
+      width={'max-w-2xl'}
       height={'sm:h-[65%vh]'}
     >
 

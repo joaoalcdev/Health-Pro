@@ -5,7 +5,7 @@ import { apiBaseUrl } from "./apiConfig"
 //Specialties
 export const getServices = async (status, specialtyId) => {
   try {
-    const res = await axios.get(apiBaseUrl(`services${status || specialtyId ? '?' : ''}${status ? 'status=true' : ''}&${specialtyId ? `specialtyId=${specialtyId}` : ''}`))
+    const res = await axios.get(apiBaseUrl(`services${status || specialtyId ? '?' : ''}${status ? 'status=true' : ''}${status && specialtyId ? '&' : ''}${specialtyId ? `specialtyId=${specialtyId}` : ''}`))
     const data = res.data
     return data
   } catch (error) {

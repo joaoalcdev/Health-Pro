@@ -320,8 +320,6 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
               </div>
             </div>
 
-
-
             {/* buttones */}
             <div className="grid sm:grid-cols-2 gap-4 w-full">
               <button

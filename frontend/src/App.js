@@ -17,7 +17,7 @@ import Aos from 'aos';
 import Dashboard from './screens/Dashboard';
 import Toast from './components/Notifications/Toast';
 import Payments from './screens/Payments/Payments';
-import Appointments from './screens/Appointments';
+import Schedule from './screens/Schedule';
 import Patients from './screens/Patients/Patients';
 import Campaings from './screens/Campaings';
 import Services from './screens/Services';
@@ -90,7 +90,7 @@ function App() {
               {/* reception */}
               <Route path="/receptions" element={<ProtectedRoute roleId={1}><Receptions /></ProtectedRoute>} />
               {/* others */}
-              <Route path="/appointments" element={<ProtectedRoute roleId={3}><Appointments /></ProtectedRoute>} />
+              <Route path="/schedule" element={<ProtectedRoute roleId={3}><Schedule /></ProtectedRoute>} />
               <Route path="/campaigns" element={<ProtectedRoute roleId={1}><Campaings /></ProtectedRoute>} />
               <Route path="/medicine" element={<ProtectedRoute roleId={1}><Medicine /></ProtectedRoute>} />
               <Route path="/services" element={<ProtectedRoute roleId={1}><Services /></ProtectedRoute>} />

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../Layout';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import { BiChevronLeft, BiChevronRight, BiPlus, BiTime, BiChevronDown } from 'react-icons/bi';
+import { BiChevronLeft, BiChevronRight, BiPlus, BiTime, BiChevronDown, BiLoaderCircle } from 'react-icons/bi';
 import { HiOutlineViewGrid } from 'react-icons/hi';
 import { HiOutlineCalendarDays, HiOutlineBookOpen } from 'react-icons/hi2';
 import { getProfessionals } from '../api/ProfessionalsAPI';
@@ -196,6 +196,7 @@ function Schedule() {
       const response = await getEventsFiltering(filterTerm.id, 0);
       if (response.length === 0) {
         setStatus(false);
+        setLoading(false);
         return;
       };
       let rebaseData = response.data.map((item) => {
@@ -212,6 +213,7 @@ function Schedule() {
       console.log(rebaseData)
       setEventsData(rebaseData)
       setStatus(false)
+      setLoading(false);
       return
     }
 
@@ -361,85 +363,78 @@ function Schedule() {
         </div>
         :
 
-
-        eventsData.length === 0 ?
-
-          <div className="flex justify-center items-center h-96">
-            <p className="text-lg text-subMain">Não há atendimentos cadastrados.</p>
-          </div>
-          :
-          <>
-            <Calendar
-              localizer={localizer}
-              events={eventsData ? eventsData : {}}
-              startAccessor="start"
-              endAccessor="end"
-              messages={{
-                next: 'Próximo',
-                previous: 'Anterior',
-                today: 'Hoje',
-                month: 'Mês',
-                week: 'Semana',
-                day: 'Dia',
-                agenda: 'Agenda',
-                date: 'Data',
-                time: 'Hora',
-                noEventsInRange: `${eventsData.length === 0 ? 'Não há atendimentos nesta faixa.' : `Só existem atendimentos cadastrados na seguinte faixa: ${moment(eventsData[0].start).format(`DD [de] MMMM, YYYY`)} - ${moment(eventsData[eventsData.length - 1].end).format(`DD [de] MMMM, YYYY`)}`}`,
-                event: 'Paciente | Serviço | Profissional',
-                allDay: 'Dia todo',
-                showMore: (total) => `+ ${total} mais`,
-              }}
-              style={{
-                // height fix screen
-                height: '85vh',
-                marginBottom: 20,
-              }}
-              onSelectEvent={(event) => handleEventClick(event)}
-              defaultDate={new Date()}
-              timeslots={1}
-              resizable
-              step={15}
-              selectable={false}
-              min={new Date(2024, 0, 1, 6, 0)}
-              max={new Date(2040, 0, 1, 22, 0)}
-              filterTime={date => (date.getHours() > 5 && date.getHours() < 11) || (date.getHours() > 13 && date.getHours() < 20)}
-              // custom event style
-              eventLayout="overlap"
-              eventPropGetter={(event) => {
-                const style = {
-                  backgroundColor: event.color, // color of event
-                  borderRadius: '4px',
-                  color: event.eventStatus === 1 ? 'black' : 'white',
-                  border: '1px solid',
-                  borderColor: 'white',
-                  shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
-                  fontSize: '12px',
-                  padding: '5px 5px',
-                };
-                return {
-                  style,
-                };
-              }}
-              // custom date style
-              dayLayout="overlap"
-              dayPropGetter={(date) => {
-                const style = {
-                  backgroundColor: 'white',
-                };
-                return {
-                  style,
-                };
-              }}
-              // custom toolbar
-              toolbar={true}
-              components={{ toolbar: CustomToolbar }}
-              // custom view
-              views={['month', 'day', 'week', 'agenda']}
-              // default view
-              defaultView="week"
-            />
-          </>
-      }}
+        <>
+          <Calendar
+            localizer={localizer}
+            events={eventsData ? eventsData : {}}
+            startAccessor="start"
+            endAccessor="end"
+            messages={{
+              next: 'Próximo',
+              previous: 'Anterior',
+              today: 'Hoje',
+              month: 'Mês',
+              week: 'Semana',
+              day: 'Dia',
+              agenda: 'Agenda',
+              date: 'Data',
+              time: 'Hora',
+              noEventsInRange: `${eventsData.length === 0 ? 'Não há atendimentos nesta faixa.' : `Só existem atendimentos cadastrados na seguinte faixa: ${moment(eventsData[0].start).format(`DD [de] MMMM, YYYY`)} - ${moment(eventsData[eventsData.length - 1].end).format(`DD [de] MMMM, YYYY`)}`}`,
+              event: 'Paciente | Serviço | Profissional',
+              allDay: 'Dia todo',
+              showMore: (total) => `+ ${total} mais`,
+            }}
+            style={{
+              // height fix screen
+              height: '85vh',
+              marginBottom: 20,
+            }}
+            onSelectEvent={(event) => handleEventClick(event)}
+            defaultDate={new Date()}
+            timeslots={1}
+            resizable
+            step={15}
+            selectable={false}
+            min={new Date(2024, 0, 1, 6, 0)}
+            max={new Date(2040, 0, 1, 22, 0)}
+            filterTime={date => (date.getHours() > 5 && date.getHours() < 11) || (date.getHours() > 13 && date.getHours() < 20)}
+            // custom event style
+            eventLayout="overlap"
+            eventPropGetter={(event) => {
+              const style = {
+                backgroundColor: event.color, // color of event
+                borderRadius: '4px',
+                color: event.eventStatus === 1 ? 'black' : 'white',
+                border: '1px solid',
+                borderColor: 'white',
+                shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
+                fontSize: '12px',
+                padding: '5px 5px',
+              };
+              return {
+                style,
+              };
+            }}
+            // custom date style
+            dayLayout="overlap"
+            dayPropGetter={(date) => {
+              const style = {
+                backgroundColor: 'white',
+              };
+              return {
+                style,
+              };
+            }}
+            // custom toolbar
+            toolbar={true}
+            components={{ toolbar: CustomToolbar }}
+            // custom view
+            views={['month', 'day', 'week', 'agenda']}
+            // default view
+            defaultView="week"
+          />
+        </>
+      }
     </Layout>
   );
 }

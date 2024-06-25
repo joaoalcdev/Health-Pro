@@ -77,3 +77,18 @@ type Service = {
   recurringPrice: number,
 }
 
+type ScheduleEvent = {
+  id?: number,
+  patientId: number,
+  professionalId: number,
+  serviceId: number,
+  startDate: string,
+  agreementId: number,
+  endTime?: string,
+  title?: string,
+  eventType: number,
+  hasConflict?: boolean,
+  eventsPerWeek?: number,
+  eventsQty?: number,
+}
+

@@ -41,6 +41,7 @@ import NewMedicalRecode from './screens/Patients/NewMedicalRecode';
 import NotFound from './screens/NotFound';
 import Users from './screens/Users';
 import Specialties from './screens/Specialties';
+import ImageUploader from './components/ImageUploader';
 
 // AuthProvider
 // import Login from './screens/Login';
@@ -64,6 +65,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/" element={<ProtectedRoute roleId={3}><Dashboard /></ProtectedRoute>} />
               <Route path="/home" element={<ProtectedRoute roleId={3}><Dashboard /></ProtectedRoute>} />
+              <Route path="/imageuploader" element={<ProtectedRoute roleId={3}><ImageUploader /></ProtectedRoute>} />
               {/* users */}
               <Route path="/users" element={<ProtectedRoute roleId={1} ><Users /></ProtectedRoute>} />
               {/* invoce */}

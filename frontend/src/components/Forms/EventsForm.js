@@ -3,7 +3,7 @@ import moment from 'moment';
 import { HiChevronDoubleRight, HiOutlineCheckCircle } from 'react-icons/hi';
 import { FaTimes } from 'react-icons/fa';
 import PatientMedicineServiceModal from '../Modals/PatientMedicineServiceModal';
-import { specialties, agreements, eventTypes } from '../Datas';
+import { specialties, agreements, eventTypes, weekDays } from '../Datas';
 import { BiChevronDown, BiPlus } from 'react-icons/bi';
 import { Select, SelectProfessional, Input, Button, DatePickerEvents, TimePickerComp, MultiplesDatePickers } from '../Form';
 import { getPatients } from '../../api/PatientsAPI';
@@ -39,6 +39,7 @@ export default function EventsForm({ datas, onClose, status }) {
   );
   const [eventsQty, setEventsQty] = useState(1)
   const [eventsPerWeek, setEventsPerWeek] = useState({ id: 1, name: '1x' })
+
 
 
   const fetch = async () => {
@@ -138,7 +139,7 @@ export default function EventsForm({ datas, onClose, status }) {
     componentsArrayDatePickers.push(
       <MultiplesDatePickers
         key={i}
-        label="Data do Agendamento"
+        label={`Data do Agendamento ${i + 1}`}
         startDate={arrayDates[i]}
         showTimeSelect={true}
         minDate={new Date()}
@@ -150,6 +151,7 @@ export default function EventsForm({ datas, onClose, status }) {
           handleAddArrayDates(date, i)
         }}
       />);
+
   }
 
 
@@ -220,7 +222,7 @@ export default function EventsForm({ datas, onClose, status }) {
               </div>
 
               {/* Event Type */}
-              <div div className="flex w-full flex-col gap-3 ">
+              <div className="flex w-full flex-col gap-3 ">
                 <p className="text-black text-sm">Tipo de Agendamento</p>
                 <Select
                   selectedPerson={eventType}

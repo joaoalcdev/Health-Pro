@@ -13,7 +13,6 @@ import EventsForm from '../components/Forms/EventsForm';
 import { getEventsFiltering, listEvents } from '../api/EventsAPI';
 import ViewAppointmentModal from '../components/Modals/ViewAppointmentModal';
 import 'moment/locale/pt-br';
-import { set } from 'rsuite/esm/utils/dateUtils';
 
 // custom toolbar
 const CustomToolbar = (toolbar) => {
@@ -210,9 +209,8 @@ function Schedule() {
         }
       })
 
-      console.log(rebaseData)
-      setEventsData(rebaseData)
-      setStatus(false)
+      setEventsData(rebaseData);
+      setStatus(false);
       setLoading(false);
       return
     }
@@ -235,8 +233,9 @@ function Schedule() {
           ...item
         }
       })
-      setEventsData(rebaseData)
-      setStatus(false)
+      setEventsData(rebaseData);
+      setStatus(false);
+      setLoading(false);
     }
   }
 

@@ -76,7 +76,15 @@ export const AddEvents = async (app: FastifyInstance) => {
                 return item
               }
             })
+
+            let lastEvents = arraytEvents.filter ((item, index) => {
+              //return last eventsPerWeek items
+              if (eventsPerWeek && index >= arraytEvents.length - eventsPerWeek) {
+                return item
+                }
+               })
             console.log(arraytEvents)
+            const {data: lastEventsData, error: lastEventsError} = await includeLastDays2ParentEvent(eventData[0].id, lastEvents as SingleEvent[])
             const { data: instances , error: instanceError  } = await createMultipleEventsInstaces(arraytEvents as SingleEvent[])
             
             if (instanceError) {
@@ -213,4 +221,14 @@ function createMultipleEventsInstaces(eventsArray: SingleEvent[]){
   .insert(eventsArray)
   .select()
 
+}
+
+function includeLastDays2ParentEvent(eventId: number, eventsArray: SingleEvent[]){
+  return supabase
+  .from("events")
+  .update({
+    timecodes: eventsArray
+  })
+  .eq('id', eventId)
+  .select()
 }

@@ -1,24 +1,102 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../Layout';
-import {
-  BsArrowDownLeft,
-  BsArrowDownRight,
-  BsArrowUpRight,
-  BsCheckCircleFill,
-  BsClockFill,
-  BsXCircleFill,
-} from 'react-icons/bs';
+import { BsArrowDownLeft, BsArrowDownRight, BsArrowUpRight, BsCheckCircleFill, BsClockFill, BsXCircleFill } from 'react-icons/bs';
+import { TbCalendar, TbFile, TbUsers } from 'react-icons/tb';
 import { DashboardBigChart, DashboardSmallChart } from '../components/Charts';
-import {
-  appointmentsData,
-  dashboardCards,
-  memberData,
-  transactionData,
-} from '../components/Datas';
+import { getPatients } from '../api/PatientsAPI';
+import { appointmentsData, memberData, transactionData } from '../components/Datas';
 import { Transactiontable } from '../components/Tables';
 import { Link } from 'react-router-dom';
 
+
 function Dashboard() {
+  const [dataPatient, setDataPatient] = useState([]);
+  const [status, setStatus] = useState(false);
+
+  // api - get patients
+  const fetchPatients = async () => {
+    const responseDataPatient = await getPatients();
+    if (responseDataPatient.length === 0) {
+      return
+    }
+    setDataPatient(responseDataPatient)
+    setStatus(false)
+  }
+
+  // dependencies
+  useEffect(() => {
+    fetchPatients()
+  }, [status])
+
+
+  // boxes data - months
+  const months = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
+
+  const dynamicMonths = months.map((month) => {
+    const monthData = dataPatient.filter((item) => {
+      const date = new Date(item.createdAt);
+      return date.getMonth() === parseInt(month);
+    });
+    return monthData.length
+  });
+
+  const totalPatientsCalcPercent = (data) => {
+    // compare with the last month data
+    const last30Days = dataPatient.filter((item) => {
+      const date = new Date(item.createdAt);
+      return date.getMonth() === new Date().getMonth() - 1;
+    }
+    );
+
+    // total patients archived
+    const archived = dataPatient.filter((item) => item.status === 'archived');
+
+
+    const total = dataPatient.length;
+    const difference = total - last30Days.length;
+    const percent = (difference / total) * 100;
+    return percent;
+  }
+
+  const dashboardCards = [
+    {
+      id: 1,
+      title: 'Pacientes Totais (Ativos)',
+      icon: TbUsers,
+      value: [dataPatient.length],
+      percent: [totalPatientsCalcPercent(dataPatient.length)],
+      color: ['bg-subMain', 'text-subMain', '#66B5A3'],
+      datas: [dynamicMonths[0], dynamicMonths[1], dynamicMonths[2], dynamicMonths[3], dynamicMonths[4], dynamicMonths[5], dynamicMonths[6], dynamicMonths[7], dynamicMonths[8], dynamicMonths[9], dynamicMonths[10], dynamicMonths[11]],
+    },
+    {
+      id: 2,
+      title: 'Atendimentos',
+      icon: TbCalendar,
+      value: 1,
+      percent: 25.06,
+      color: ['bg-yellow-500', 'text-yellow-500', '#F9C851'],
+      datas: [6, 3, 8, 3, 7, 9, 5, 2, 5, 6, 9, 11],
+    },
+    {
+      id: 3,
+      title: 'Prescriptions',
+      icon: TbFile,
+      value: 4160,
+      percent: 65.06,
+      color: ['bg-green-500', 'text-green-500', '#34C759'],
+      datas: [92, 80, 45, 15, 49, 77, 70, 51, 110, 20, 90, 60],
+    },
+    {
+      id: 4,
+      title: 'Total Earnings',
+      icon: TbFile,
+      value: 4590,
+      percent: 45.06,
+      color: ['bg-red-500', 'text-red-500', '#FF3B30'],
+      datas: [20, 50, 75, 15, 108, 97, 70, 41, 50, 20, 90, 60],
+    },
+  ];
+
   return (
     <Layout>
       {/* boxes */}
@@ -66,11 +144,13 @@ function Dashboard() {
         <div className="xl:col-span-6  w-full">
           <div className="bg-white rounded-xl border-[1px] border-border p-5">
             <div className="flex-btn gap-2">
-              <h2 className="text-sm font-medium">Earning Reports</h2>
+              <h2 className="text-sm font-medium">
+                Gráfico (alterar)
+              </h2>
               <p className="flex gap-4 text-sm items-center">
-                5.44%{' '}
+                5.44% (alterar)
                 <span className="py-1 px-2 bg-subMain text-white text-xs rounded-xl">
-                  +2.4%
+                  +2.4% (alterar)
                 </span>
               </p>
             </div>
@@ -146,17 +226,14 @@ function Dashboard() {
                   <hr className="w-[2px] h-20 bg-border" />
                   <div
                     className={`w-7 h-7 flex-colo text-sm bg-opacity-10
-                   ${
-                     appointment.status === 'Pending' &&
-                     'bg-orange-500 text-orange-500'
-                   }
-                  ${
-                    appointment.status === 'Cancel' && 'bg-red-500 text-red-500'
-                  }
-                  ${
-                    appointment.status === 'Approved' &&
-                    'bg-green-500 text-green-500'
-                  }
+                   ${appointment.status === 'Pending' &&
+                      'bg-orange-500 text-orange-500'
+                      }
+                  ${appointment.status === 'Cancel' && 'bg-red-500 text-red-500'
+                      }
+                  ${appointment.status === 'Approved' &&
+                      'bg-green-500 text-green-500'
+                      }
                    rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
                   >
                     {appointment.status === 'Pending' && <BsClockFill />}

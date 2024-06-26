@@ -157,14 +157,16 @@ function Patients() {
     const date = new Date(item.createdAt);
     return date >= last30Days;
   });
-
   const last30DaysPatients = valueOnRange.length;
+
+  // archived patients
+  const archivedPatients = data.filter((item) => item.deletedAt !== null).length;
+
   // component - boxes data
   const boxes = tab === 1 ? [
     {
       id: 1,
       title: 'Pacientes Diários',
-      // value: [data.filter((item) => item.createdAt === today).length],
       value: ['0'],
       text: 'No Data :(',
       color: ['bg-subMain', 'text-subMain'],
@@ -188,10 +190,10 @@ function Patients() {
     },
   ] : [
     {
-      id: 1,
+      id: 4,
       title: 'Pacientes Arquivados (Total)',
-      value: data.length,
-      text: 'pacientes arquivados',
+      value: ['', archivedPatients, ''],
+      text: ['pacientes arquivados'],
       color: ['bg-red-500', 'text-red-500'],
       icon: HiOutlineTrash,
     },

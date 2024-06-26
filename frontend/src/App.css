@@ -5,9 +5,6 @@
 
 @layer tailwind-base, primereact, tailwind-utilities;
 
-/* IMPORTANT: In "styled" mode you must add the PrimeReact Theme here. Do NOT include in "unstyled" mode */
-/* @import "primereact/resources/themes/lara-light-blue/theme.css" */
-/* layer(primereact); */
 
 @layer tailwind-base {
   @tailwind base;
@@ -29,9 +26,7 @@
 body {
   font-family: 'Poppins', sans-serif;
 }
-::-webkit-scrollbar {
-  /* display: none; */
-}
+
 input:focus,
 textarea:focus,
 select:focus,
@@ -63,6 +58,10 @@ button:focus {
 
 .h-calc {
   height: calc(100vh - 150px);
+}
+
+.h-calc-layout-pages {
+  margin: -1px 0px;
 }
 
 /* calender */
@@ -184,6 +183,7 @@ button:focus {
 ::-webkit-scrollbar {
   height: 8px;
   width: 8px;
+  display: flex;
 }
 ::-webkit-scrollbar-track {
   border-radius: 20px;

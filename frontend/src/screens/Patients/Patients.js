@@ -264,15 +264,15 @@ function Patients() {
           {boxes.map((box) => (
             <div
               data-aos="fade-left"
-              data-aos-duration="1000"
+              data-aos-duration="800"
               data-aos-delay="10"
               data-aos-offset="100"
               data-aos-easing="ease"
               data-aos-once="true"
               className=""
+              key={box.id}
             >
               <div
-                key={box.id}
                 className="select-text bg-white flex-btn gap-4 rounded-xl border-[1px] border-border p-5 hover:-translate-y-2 hover:shadow-md transition-all duration-300 ease-in-out"
               >
                 <div className="w-3/4">

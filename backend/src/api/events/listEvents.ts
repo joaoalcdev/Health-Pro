@@ -24,7 +24,7 @@ export const ListEvents = async (app: FastifyInstance) => {
             type: item.eventType,
             eventStatus: item.eventStatus,
             hasConflict: false,
-            //...item
+            ...item
           }
         })
 

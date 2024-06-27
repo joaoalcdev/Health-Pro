@@ -11,7 +11,7 @@ import { FilterSelect } from '../components/Form';
 import Drawer from 'react-modern-drawer';
 import EventsForm from '../components/Forms/EventsForm';
 import { getEventsFiltering, listEvents } from '../api/EventsAPI';
-import ViewAppointmentModal from '../components/Modals/ViewAppointmentModal';
+import ViewEventModal from '../components/Modals/ViewEventModal';
 import 'moment/locale/pt-br';
 
 // custom toolbar
@@ -283,27 +283,16 @@ function Schedule() {
             onClose={handleClose}
             direction='right'
             size={460}
-            zIndex={50}
+            zIndex={40}
             enableOverlay={true}
           >
             <EventsForm onClose={handleClose} status={setStatus} />
           </Drawer>
-
-
-          {/* <AddAppointmentModal
-            datas={data}
-            isOpen={open}
-            status={onStatus}
-            closeModal={() => {
-              handleClose();
-            }}
-
-          /> */}
         </>
       )}
       {
         view && (
-          <ViewAppointmentModal
+          <ViewEventModal
             datas={data}
             isOpen={view}
             status={onStatus}
@@ -322,12 +311,9 @@ function Schedule() {
       </button>
 
       <div className='flex flex-col gap-6 mb-8'>
-
         <h1 key={''} className="items-start text-xl font-semibold">Agendamentos</h1>
-
         <div className="flex items-center justify-between">
           <div className='w-80'>
-
             <FilterSelect
               selectedPerson={filterTerm}
               setSelectedPerson={setFilterTerm}
@@ -350,7 +336,7 @@ function Schedule() {
                     style={{ backgroundColor: item.color }}
                   ></div>
                   <span className='text-xs'>{item.name}</span>
-                  {index === eventTypes.length - 1 ? '' : ' |'}
+                  {index === eventStatus.length - 1 ? '' : ' |'}
                 </div>
               ))}
           </div>

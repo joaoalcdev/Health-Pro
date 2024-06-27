@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
-import { BiSearch, BiPlus } from 'react-icons/bi';
-import { memberData, servicesData, medicineData } from '../Datas';
+import { BiSearch } from 'react-icons/bi';
 import { RadioGroup, Radio, RadioGroupOption } from '@headlessui/react';
 import { Button } from '../Form';
 
 function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPatient }) {
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState(patient);
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -25,7 +24,7 @@ function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPat
     >
       <div className="flex-colo gap-6">
         {/* search */}
-        <div className="flex items-center gap-3 w-full border border-border rounded-lg p-3">
+        <div className="flex items-center gap-2 w-full border border-border rounded-lg p-3">
           <input
             type="text"
             placeholder="Pesquise por nome..."
@@ -70,8 +69,7 @@ function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPat
           </RadioGroup>
         </div>
         {/* button */}
-
-        <Button onClick={handleInclude} label="Selecionar" />
+        <Button onClick={handleInclude} disabled={selected.id === 0 ? true : false} label="Selecionar" />
       </div>
     </Modal>
   );

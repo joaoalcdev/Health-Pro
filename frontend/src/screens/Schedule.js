@@ -305,7 +305,7 @@ function Schedule() {
       {/* calender */}
       <button
         onClick={handleClose}
-        className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
+        className="w-16 animate-bounce h-16 border border-border z-40 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
       >
         <BiPlus className="text-2xl" />
       </button>

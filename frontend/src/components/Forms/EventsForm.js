@@ -158,7 +158,7 @@ export default function EventsForm({ datas, onClose, status }) {
         showTimeSelect={true}
         minDate={new Date()}
         color={'red-600'}
-        dateFormat={'dd/MM/yyyy       hh:mm aa'}
+        dateFormat={'dd/MM/yyyy    hh:mm aa'}
         placeholderText={"Selecionar data"}
         locale={'pt-BR'}
         onChange={(date) => {

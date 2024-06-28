@@ -151,20 +151,30 @@ export default function EventsForm({ datas, onClose, status }) {
   const componentsArrayDatePickers = [];
   for (let i = 0; i < eventsPerWeek.id; i++) {
     componentsArrayDatePickers.push(
-      <MultiplesDatePickers
-        key={i}
-        label={`Data do Agendamento ${i + 1}`}
-        startDate={arrayDates[i]}
-        showTimeSelect={true}
-        minDate={new Date()}
-        color={'red-600'}
-        dateFormat={'dd/MM/yyyy    hh:mm aa'}
-        placeholderText={"Selecionar data"}
-        locale={'pt-BR'}
-        onChange={(date) => {
-          handleAddArrayDates(date, i)
-        }}
-      />);
+      <>
+        <p className='text-black text-sm'>
+          {`Data do Agendamento ${eventsPerWeek === 1 ? '' : i + 1}`}
+        </p>
+        <div className='flex w-full px-4 space-x-1  bg-white text-md border items-center border-border font-light rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain'>
+          <MultiplesDatePickers
+            key={i}
+            startDate={arrayDates[i]}
+            showTimeSelect={true}
+            minDate={new Date()}
+            color={'red-600'}
+            dateFormat={'dd/MM/yyyy - hh:mm aa'}
+            placeholderText={"Selecionar data"}
+            locale={'pt-BR'}
+            onChange={(date) => {
+              handleAddArrayDates(date, i)
+            }}
+          />
+          <p className='w-full py-4 text-xl font-light capitalize'>
+            {arrayDates[i] ? arrayDates[i].toLocaleDateString('pt-BR', { weekday: 'long' }) : ''}
+          </p>
+        </div>
+      </>
+    );
   }
 
   return (

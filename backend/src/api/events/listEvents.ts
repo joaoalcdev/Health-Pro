@@ -15,7 +15,6 @@ export const ListEvents = async (app: FastifyInstance) => {
         throw error
       } else {
         const events = data?.map( (item: any) => {
-
           return {
             id: item.eventInstanceId,
             startTime: item.startTime,
@@ -25,7 +24,7 @@ export const ListEvents = async (app: FastifyInstance) => {
             type: item.eventType,
             eventStatus: item.eventStatus,
             hasConflict: false,
-            //...item
+            ...item
           }
         })
 

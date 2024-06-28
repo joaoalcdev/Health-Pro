@@ -12,9 +12,10 @@ import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { formatDate, formatDateTime } from '../../utils/formatDate';
 import { rescheduleAppointment, deleteAppointment } from '../../api/AppointmentsAPI';
+import { weekDays } from '../Datas';
 
 
-function ViewAppointmentModal({ closeModal, isOpen, datas, status }) {
+function ViewEventModal({ closeModal, isOpen, datas, status }) {
 
   //controllers
   const [open, setOpen] = useState(false);
@@ -25,33 +26,34 @@ function ViewAppointmentModal({ closeModal, isOpen, datas, status }) {
   const [startTime, setStartTime] = useState(datas.start);
 
   const handleReschedule = () => {
-    if (!startDate) {
-      toast.error('Selecione a data');
-      return;
-    }
-    if (!startTime) {
-      toast.error('Selecione a hora');
-      return;
-    }
-    const data = {
-      appointmentId: datas.id,
-      patientId: datas.patientId,
-      professionalId: datas.professionalId,
-      startTime: new Date(
-        startDate.getFullYear(),
-        startDate.getMonth(),
-        startDate.getDate(),
-        startTime.getHours(),
-        startTime.getMinutes(),
-      ),
-      endTime: new Date(
-        startDate.getFullYear(),
-        startDate.getMonth(),
-        startDate.getDate(),
-        startTime.getHours(),
-        startTime.getMinutes() + 30,
-      ),
-    };
+    toast.error('Implementar função de remarcar');
+    // if (!startDate) {
+    //   toast.error('Selecione a data');
+    //   return;
+    // }
+    // if (!startTime) {
+    //   toast.error('Selecione a hora');
+    //   return;
+    // }
+    // const data = {
+    //   appointmentId: datas.id,
+    //   patientId: datas.patientId,
+    //   professionalId: datas.professionalId,
+    //   startTime: new Date(
+    //     startDate.getFullYear(),
+    //     startDate.getMonth(),
+    //     startDate.getDate(),
+    //     startTime.getHours(),
+    //     startTime.getMinutes(),
+    //   ),
+    //   endTime: new Date(
+    //     startDate.getFullYear(),
+    //     startDate.getMonth(),
+    //     startDate.getDate(),
+    //     startTime.getHours(),
+    //     startTime.getMinutes() + 30,
+    //   ),
+    //};
 
     //const response = rescheduleAppointment(data, datas.id);
     // if (response) {
@@ -59,22 +61,23 @@ function ViewAppointmentModal({ closeModal, isOpen, datas, status }) {
     //   closeModal();
     //   status(true)
     // }
-    status(true);
+    // status(true);
   }
 
   const handleDelete = async () => {
-    const response = await deleteAppointment(datas.id);
-    if (response.response && response.response.data.error === 1) {
-      toast.error('Agendamento não pode ser deletado!');
-      closeModal();
-      status(true);
-      return;
-    }
-    if (response.status && response.status === 200) {
-      toast.success('Agendamento deletado com sucesso!');
-      closeModal();
-      status(true)
-    }
+    toast.error('Implementar função de deletar');
+    // const response = await deleteAppointment(datas.id);
+    // if (response.response && response.response.data.error === 1) {
+    //   toast.error('Agendamento não pode ser deletado!');
+    //   closeModal();
+    //   status(true);
+    //   return;
+    // }
+    // if (response.status && response.status === 200) {
+    //   toast.success('Agendamento deletado com sucesso!');
+    //   closeModal();
+    //   status(true)
+    // }
   }
 
   const handleShowReschedule = () => {
@@ -85,8 +88,11 @@ function ViewAppointmentModal({ closeModal, isOpen, datas, status }) {
     <Modal
       closeModal={closeModal}
       isOpen={isOpen}
-      title={showReschedule ? 'Remarcar' : 'Visualização'}
-      width={'max-w-2xl'}
+      title={
+        datas.eventType === 4 ? 'Consulta' :
+          datas.eventType === 5 ? 'Retorno' : 'Atendimento'
+      }
+      width={'max-w-xl'}
       height={'sm:h-[65%vh]'}
     >
 
@@ -101,9 +107,18 @@ function ViewAppointmentModal({ closeModal, isOpen, datas, status }) {
             <p>{datas.patientFullName}</p>
           </div>
         </div>
-        <div className="grid sm:grid-cols-2 gap-4 w-full">
+        {datas.serviceName &&
 
+          <div className="grid sm:grid-cols-1 gap-4 w-full">
+            <div>
+              <h1 className="font-bold">Serviço</h1>
+              <p>{datas.serviceName}</p>
+            </div>
 
+          </div>
+        }
+
+        <div className="grid sm:grid-cols-1 gap-4 w-full">
           {showReschedule ?
             <>
               <div className="grid sm:grid-cols-2 z-[100] gap-4 w-full">
@@ -142,12 +157,12 @@ function ViewAppointmentModal({ closeModal, isOpen, datas, status }) {
               <div className="grid sm:grid-cols-2 gap-4 w-full">
                 <div>
                   <h1 className="font-bold">Data</h1>
-                  <p>{formatDate(datas.startTime)}</p>
+                  <p>{formatDate(datas.startTime)} <span className='text-sm text-gray-500'>({weekDays[new Date(datas.startTime).getDay()].name})</span></p>
                 </div>
                 <div>
                   <h1 className="font-bold">Hora</h1>
                   <div className="flex flex-row gap-6">
-                    {formatDateTime(datas.startTime)}
+                    {formatDateTime(datas.startTime)} - {formatDateTime(datas.endTime)}
                     {
                       datas.hasConflict ? <span className=" text-red-500 flex gap-2 items-center">
                         <FiAlertTriangle className='text-md' />
@@ -190,4 +205,4 @@ function ViewAppointmentModal({ closeModal, isOpen, datas, status }) {
   );
 }
 
-export default ViewAppointmentModal;
+export default ViewEventModal;

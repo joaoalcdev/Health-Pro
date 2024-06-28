@@ -115,6 +115,16 @@ export const eventTypes = [
   { id: 5, name: 'Retorno', color: '#ff0000' },
 ];
 
+export const weekDays = [
+  { id: 0, name: 'Domingo' },
+  { id: 1, name: 'Segunda-feira' },
+  { id: 2, name: 'Terça-feira' },
+  { id: 3, name: 'Quarta-feira' },
+  { id: 4, name: 'Quinta-feira' },
+  { id: 5, name: 'Sexta-feira' },
+  { id: 6, name: 'Sábado' },
+];
+
 export const eventStatus = [
   { id: 1, name: 'Agendado', color: '#F7DC6F' },
   { id: 2, name: 'Concluído', color: '#66b5a3' },

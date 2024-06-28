@@ -9,7 +9,7 @@ function index({ children, title }) {
         <div className="col-span-2 xl:block hidden">
           <Sidebar />
         </div>
-        <div className="col-span-10 xl:h-screen overflow-y-scroll relative">
+        <div className="col-span-10 xl:h-screen xl:overflow-y-scroll relative">
           <Header title={title} />
           <div className="xs:px-8 px-2 pt-24">{children}</div>
         </div>

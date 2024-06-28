@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import moment from 'moment';
 import { HiChevronDoubleRight, HiOutlineCheckCircle } from 'react-icons/hi';
 import { FaTimes } from 'react-icons/fa';
 import PatientMedicineServiceModal from '../Modals/PatientMedicineServiceModal';
 import { specialties, agreements, eventTypes } from '../Datas';
-import { BiChevronDown, BiPlus } from 'react-icons/bi';
-import { Select, SelectProfessional, Input, Button, DatePickerEvents, TimePickerComp, MultiplesDatePickers } from '../Form';
+import { BiChevronDown } from 'react-icons/bi';
+import { Select, SelectProfessional, Input, Button, MultiplesDatePickers } from '../Form';
 import { getPatients } from '../../api/PatientsAPI';
 import { getProfessionals } from '../../api/ProfessionalsAPI';
 import { getServices } from '../../api/ServicesAPI';
@@ -13,11 +12,12 @@ import { createEvents } from '../../api/EventsAPI';
 import { toast } from 'react-hot-toast';
 import 'moment/locale/pt-br';
 
-
 export default function EventsForm({ datas, onClose, status }) {
 
   //controllers
   const [openModal, setOpenModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
   //form steps
   const [step1, setStep1] = useState(true);
@@ -41,37 +41,36 @@ export default function EventsForm({ datas, onClose, status }) {
   const [eventsPerWeek, setEventsPerWeek] = useState({ id: 1, name: '1x' })
 
 
+  //popuplate professionals and patients selectors
   const fetch = async () => {
     const patientsResponse = await getPatients()
     const professionalsResponse = await getProfessionals()
-
     setPatientsData(patientsResponse)
     setProfessionalsData(professionalsResponse)
-
   }
-
   useEffect(() => {
     fetch()
   }, [])
 
+  //Populate services selector based on professional specialty
   const fetchServicesBySpecialtyId = async (specialtyIdId) => {
     const servicesResponse = await getServices(true, specialtyIdId)
     setServicesData(servicesResponse)
   }
-
   useEffect(() => {
     fetchServicesBySpecialtyId(professional.specialty)
   }, [professional])
 
+  //Save event
   const handleSave = async () => {
+    setLoading(true);
 
+    //ensure arrayDates has correct lenght
     setArrayDates(arrayDates.filter((date, index) => {
       if (index < eventsPerWeek.id) {
         return date
       }
     }))
-
-    console.log("array", arrayDates)
 
     const data = {
       patientId: patient.id,
@@ -85,20 +84,21 @@ export default function EventsForm({ datas, onClose, status }) {
       eventsQty: Number(eventsQty),
     };
 
-
     const response = await createEvents(data);
 
     if (response.code) {
       toast.error('Erro ao criar agendamento');
+      setLoading(false);
       return
     }
 
     toast.success('Agendamento realizado com sucesso!');
     status(true);
+    setLoading(false);
     onClose();
   }
 
-
+  //Change drawer step
   const handleChangeStep = () => {
     //Prevent default
     if (professional.id === 0 || patient.id === 0 || eventType.id === 0) {
@@ -120,6 +120,7 @@ export default function EventsForm({ datas, onClose, status }) {
     }
   }
 
+  //insert date in arrayDates
   const handleAddArrayDates = (date, index) => {
     setStartDate(date);
     const newDate = [...arrayDates];
@@ -127,32 +128,54 @@ export default function EventsForm({ datas, onClose, status }) {
     setArrayDates(newDate);
   }
 
-  // useEffect(() => {
-  //   console.log("startDate", startDate)
-  //   console.log("array", arrayDates)
+  //Enable save button when all dates are filled
+  useEffect(() => {
+    for (let i = 0; i < eventsPerWeek.id; i++) {
+      if (arrayDates[i] === '' || arrayDates[i] === undefined) {
+        setDisabled(true)
+        return
+      }
+    }
+    setDisabled(false)
+  }, [arrayDates, eventsPerWeek])
 
-  // }, [arrayDates, startDate])
+  //ensure eventsQty minimum must be eventsPerWeek
+  useEffect(() => {
+    if (eventsQty < eventsPerWeek.id) {
+      setEventsQty(eventsPerWeek.id)
+    }
+  }, [eventsPerWeek])
 
+
+  //Create array of DatePickers based on eventsPerWeek
   const componentsArrayDatePickers = [];
   for (let i = 0; i < eventsPerWeek.id; i++) {
     componentsArrayDatePickers.push(
-      <MultiplesDatePickers
-        key={i}
-        label="Data do Agendamento"
-        startDate={arrayDates[i]}
-        showTimeSelect={true}
-        minDate={new Date()}
-        color={'red-600'}
-        dateFormat={'dd/MM/yyyy       hh:mm aa'}
-        placeholderText={"Selecionar data"}
-        locale={'pt-BR'}
-        onChange={(date) => {
-          handleAddArrayDates(date, i)
-        }}
-      />);
+      <>
+        <p className='text-black text-sm'>
+          {`Data do Agendamento ${eventsPerWeek === 1 ? '' : i + 1}`}
+        </p>
+        <div className='flex w-full px-4 space-x-1  bg-white text-md border items-center border-border font-light rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain'>
+          <MultiplesDatePickers
+            key={i}
+            startDate={arrayDates[i]}
+            showTimeSelect={true}
+            minDate={new Date()}
+            color={'red-600'}
+            dateFormat={'dd/MM/yyyy - hh:mm aa'}
+            placeholderText={"Selecionar data"}
+            locale={'pt-BR'}
+            onChange={(date) => {
+              handleAddArrayDates(date, i)
+            }}
+          />
+          <p className='w-full py-4 text-xl font-light capitalize'>
+            {arrayDates[i] ? arrayDates[i].toLocaleDateString('pt-BR', { weekday: 'long' }) : ''}
+          </p>
+        </div>
+      </>
+    );
   }
-
-
 
   return (
     <>
@@ -162,7 +185,7 @@ export default function EventsForm({ datas, onClose, status }) {
           isOpen={openModal}
           data={patientsData}
           setPatient={setPatient}
-          patient={true}
+          patient={patient}
         />
       )}
       <div className='relative h-full z-50 grid grid-cols-1'>
@@ -220,7 +243,7 @@ export default function EventsForm({ datas, onClose, status }) {
               </div>
 
               {/* Event Type */}
-              <div div className="flex w-full flex-col gap-3 ">
+              <div className="flex w-full flex-col gap-3 ">
                 <p className="text-black text-sm">Tipo de Agendamento</p>
                 <Select
                   selectedPerson={eventType}
@@ -293,7 +316,8 @@ export default function EventsForm({ datas, onClose, status }) {
                   max='50'
                   value={eventsQty}
                   onChange={(e) => {
-                    e.target.value > 50 ? setEventsQty(50) : setEventsQty(e.target.value)
+                    e.target.value > 50 ? setEventsQty(50) : setEventsQty(e.target.value);
+
                   }}
                 />
               }
@@ -335,10 +359,13 @@ export default function EventsForm({ datas, onClose, status }) {
                     {'Voltar'}
                   </>
                 </button>
+
                 <Button
                   label="Salvar"
                   Icon={HiOutlineCheckCircle}
                   onClick={() => handleSave()}
+                  loading={loading}
+                  disabled={disabled}
                   className="flex-1"
                 />
               </div>}

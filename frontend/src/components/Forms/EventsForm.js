@@ -155,7 +155,7 @@ export default function EventsForm({ datas, onClose, status }) {
         <p className='text-black text-sm'>
           {`Data do Agendamento ${eventsPerWeek === 1 ? '' : i + 1}`}
         </p>
-        <div className='flex w-full px-4 space-x-1  bg-white text-md border items-center border-border font-light rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain'>
+        <div className='flex w-full px-4 space-x-1  bg-white text-xl border items-center border-border font-light rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain'>
           <MultiplesDatePickers
             key={i}
             startDate={arrayDates[i]}
@@ -235,7 +235,6 @@ export default function EventsForm({ datas, onClose, status }) {
                       <Button
                         label="Selecionar"
                         onClick={() => setOpenModal(!openModal)}
-
                       />
                     </div>
                   </div>

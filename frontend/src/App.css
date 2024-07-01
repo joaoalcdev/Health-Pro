@@ -183,7 +183,6 @@ button:focus {
 ::-webkit-scrollbar {
   height: 8px;
   width: 8px;
-  display: flex;
 }
 ::-webkit-scrollbar-track {
   border-radius: 20px;
@@ -210,3 +209,7 @@ button:focus {
 ::-webkit-scrollbar-thumb:active {
   background-color: #43776b;
 }
+
+/* .test-max-w {
+  max-width: 544px !important;
+} */

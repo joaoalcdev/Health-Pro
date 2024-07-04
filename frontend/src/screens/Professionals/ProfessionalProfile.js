@@ -25,9 +25,8 @@ function ProfessionalProfile() {
   const { id } = useParams()
 
   const fetch = async () => {
-    await getProfessionalById(id).then(response => {
-      setProfessional(response[0])
-    })
+    const response = await getProfessionalById(id)
+    setProfessional(response[0])
   }
 
   useEffect(() => {

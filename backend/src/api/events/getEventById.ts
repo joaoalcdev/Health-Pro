@@ -12,8 +12,6 @@ export const GetEventById = async (app: FastifyInstance) => {
         .select("*")
         .eq("eventInstanceId", id)
       
-
-      
       if (error) {
         throw error
       } else {

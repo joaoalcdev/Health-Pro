@@ -17,6 +17,7 @@ import EventDetailsInfo from './EventDetailsInfo';
 import EventDetailsPatientInfo from './EventDetailsPatientInfo';
 import EventDetailsProfessionalInfo from './EventDetailsProfessionalInfo';
 import EventDetailsReminder from './EventDetailsReminder';
+import moment from 'moment';
 
 
 function EventDetails() {
@@ -41,7 +42,7 @@ function EventDetails() {
     setEventData(response.data[0])
     setLoading(false)
 
-    console.log(eventData)
+    console.log(new Date(eventData.startTime).getDay())
   }
 
   useEffect(() => {
@@ -93,10 +94,29 @@ function EventDetails() {
             className="col-span-12 flex-colo gap-6 lg:col-span-4 bg-white rounded-xl border-[1px] border-border p-6 lg:sticky top-28"
           >
 
-            <div className="gap-2 flex-colo">
+            <div className="gap-4 flex-colo">
+              <div className='flex-coloh-full w-full bg-subMain rounded '>
+                <div className='flex-colo m-[4px] w-98% border rounded justify-center'>
+                  <div className='flex items-end justify-end'>
+                    <h1 className='text-sm text-white p-2 text-right uppercase'>
+                      {moment(eventData.startTime).format('MMMM/YYYY')}
+                    </h1>
+                  </div>
+                  <h1 className='text-[100px] leading-[100px] text-white font-bold  '>
+                    {new Date(eventData.startTime).getDate() < 10 ? '0' + new Date(eventData.startTime).getDate() : new Date(eventData.startTime).getDate()}
+                  </h1>
+                  <h1 className='text-md text-white uppercase'>
+                    {moment(eventData.startTime).calendar().split(' ')[0] === 'Ontem' ? 'Ontem' :
+                      moment(eventData.startTime).calendar().split(' ')[0] === 'Hoje' ? 'Hoje' : moment(eventData.startTime).calendar().split(' ')[0] === 'Amanhã' ? 'Amanhã' : moment(eventData.startTime).format('dddd')}
+                  </h1>
+                  <h1 className='text-[30px] text-white font-bold'>
+                    {moment(eventData.startTime).format('h:mm A')}
+                  </h1>
+
+                </div>
+              </div>
               <h2 className="text-md font-semibold">{eventData.professionalFirstName} {eventData.professionalLastName}</h2>
-              <h2 className="text-sm text-textGray">{eventData.patientFullName}</h2>
-              <h2 className="text-md">{formatDate(eventData.startTime)} - {formatDateTime(eventData.startTime)}</h2>
+              <h2 className="text-md text-textGray">{eventData.patientFullName}</h2>
             </div>
             {/* tabs */}
             <div className="flex-colo gap-3   w-full">

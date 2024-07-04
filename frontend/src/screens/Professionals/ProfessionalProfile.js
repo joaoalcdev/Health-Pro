@@ -1,19 +1,32 @@
+// react & dep - imports
 import { useState, useEffect } from 'react';
-import Layout from '../../Layout';
-import ProfessionalInfo from '../../components/UsedComp/ProfessionalInfo';
-import ChangePassword from '../../components/UsedComp/ChangePassword';
 import { Link } from 'react-router-dom';
-import { IoArrowBackOutline } from 'react-icons/io5';
-import PatientsUsed from '../../components/UsedComp/PatientsUsed';
-import AppointmentsUsed from '../../components/UsedComp/AppointmentsUsed';
-import { doctorTab } from '../../components/Datas';
-import PaymentsUsed from '../../components/UsedComp/PaymentUsed';
-import InvoiceUsed from '../../components/UsedComp/InvoiceUsed';
-import Access from '../../components/Access';
 import { useParams } from 'react-router-dom';
-import { getProfessionalById } from '../../api/ProfessionalsAPI';
-import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
+
+// icons - imports
+import { IoArrowBackOutline } from 'react-icons/io5';
+
+// utils - imports
 import getAvatar from '../../utils/getAvatar';
+import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
+
+// API's - imports
+import { getProfessionalById } from '../../api/ProfessionalsAPI';
+
+// datas - imports
+import { doctorTab } from '../../components/Datas';
+
+// components - imports
+import Layout from '../../Layout';
+import Access from '../../components/Access';
+import InvoiceUsed from '../../components/UsedComp/InvoiceUsed';
+import PaymentsUsed from '../../components/UsedComp/PaymentUsed';
+import ScheduleUsed from '../../components/UsedComp/ScheduleUsed';
+import PatientsUsed from '../../components/UsedComp/PatientsUsed';
+import ChangePassword from '../../components/UsedComp/ChangePassword';
+import AppointmentsUsed from '../../components/UsedComp/AppointmentsUsed';
+import ProfessionalInfo from '../../components/UsedComp/ProfessionalInfo';
+
 
 
 function ProfessionalProfile() {
@@ -55,6 +68,8 @@ function ProfessionalProfile() {
         return <Access setAccess={setAccess} />;
       case 7:
         return <ChangePassword />;
+      case 8:
+        return <ScheduleUsed />;
       default:
         return;
     }

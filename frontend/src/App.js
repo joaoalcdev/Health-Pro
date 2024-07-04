@@ -33,7 +33,7 @@ import PatientProfile from './screens/Patients/PatientProfile';
 import CreatePatient from './screens/Patients/CreatePatient';
 import EditPatient from './screens/Patients/EditPatient';
 import Professionals from './screens/Professionals/Professionals';
-import ProfessionalProfile from './screens/Events/EventDetails';
+import ProfessionalProfile from './screens/Professionals/ProfessionalProfile';
 import Doctors from './screens/Doctors/Doctors';
 import DoctorProfile from './screens/Doctors/DoctorProfile';
 import Receptions from './screens/Receptions';

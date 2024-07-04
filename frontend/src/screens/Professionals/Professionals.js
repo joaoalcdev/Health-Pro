@@ -139,7 +139,7 @@ function Professionals() {
       {/* datas */}
 
       {loading ?
-        <div className="flex absolute items-center justify-center w-full h-1/2">
+        <div className="flex relative w-full h-1/2 top-20 justify-center items-center"> {/* resolve style: generating scroll x = flex absolute items-center justify-center w-full h-1/2*/}
           <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
         </div>
         :

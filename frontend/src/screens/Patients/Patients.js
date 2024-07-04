@@ -263,16 +263,16 @@ function Patients() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
           {boxes.map((box) => (
             <div
-              data-aos="fade-left"
-              data-aos-duration="1000"
+              data-aos="fade-up"
+              data-aos-duration="800"
               data-aos-delay="10"
               data-aos-offset="100"
               data-aos-easing="ease"
               data-aos-once="true"
               className=""
+              key={box.id}
             >
               <div
-                key={box.id}
                 className="select-text bg-white flex-btn gap-4 rounded-xl border-[1px] border-border p-5 hover:-translate-y-2 hover:shadow-md transition-all duration-300 ease-in-out"
               >
                 <div className="w-3/4">
@@ -301,7 +301,7 @@ function Patients() {
       }
       {/* datas */}
       {loading ?
-        <div className="flex absolute items-center justify-center w-full h-1/2">
+        <div className="flex relative w-full h-1/2 top-20 justify-center items-center"> {/* resolve style: generating scroll x = flex absolute items-center justify-center w-full h-1/2*/}
           <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
         </div>
         :

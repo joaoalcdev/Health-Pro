@@ -103,13 +103,16 @@ export function PatientsTable({ functions, used, noData, patientData }) {
           {records.map((item, index) => (
             <tr
               key={item.id}
-              className="border-b border-border hover:bg-greyed transitions"
+              className="group border-b border-border hover:bg-greyed transitions"
             >
               <td className={tdclass}>{(currentPage * recordsPerPage) - recordsPerPage + index + 1}</td>
               <td className={tdclass}>
                 <div className="flex gap-4 items-center">
                   <span className="w-12">
-                    <img src={getAvatar(item.gender)} alt='avatar_image' className="w-12 h-12 rounded-full object-cover border border-border" />
+                    <img
+                      src={getAvatar(item.gender)}
+                      alt='avatar_image'
+                      className={`transition-all duration-300 ease-in-out w-12 h-12 rounded-full object-cover border border-border group-hover:ring-2 ${item.gender === 1 ? 'group-hover:ring group-hover:ring-subMain' : 'group-hover:ring group-hover:ring-orange-500'}`} />
                   </span>
                   <div className=''>
                     <h4 className="text-sm font-medium">{item.fullName}</h4>
@@ -125,7 +128,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
               <td className={tdclass}>
                 <span
                   className={
-                    `select-none py-1 px-4 ${item.gender === 1 ? 'bg-subMain text-subMain hover:bg-subMain hover:text-white' : 'bg-orange-500 text-orange-500 hover:bg-orange-400 hover:text-white'} bg-opacity-10 text-xs rounded-xl duration-300`}
+                    `select-none py-1 px-4 ${item.gender === 1 ? 'bg-subMain text-subMain group-hover:bg-subMain group-hover:text-white' : 'bg-orange-500 text-orange-500 group-hover:bg-orange-400 group-hover:text-white'} bg-opacity-10 text-xs rounded-xl duration-300`}
                 >
                   {item.gender === 1 ? 'M' : item.gender === 2 ? 'F' : '-'}
                 </span>
@@ -171,21 +174,21 @@ export function PatientsTable({ functions, used, noData, patientData }) {
                 <div className="flex gap-4 items-center">
                   <button
                     onClick={() => functions.preview(item.id)}
-                    className={`flex gap-4 items-center hover:text-subMain`}
+                    className={`flex gap-4 items-center group-hover:text-subMain`}
                   >
                     <HiOutlineEye className="text-xl text-subMain" />
                   </button>
                   {item.deletedAt === null ?
                     <button
                       onClick={() => functions.deletePatient(item.id)}
-                      className={`flex gap-4 items-center hover:text-subMain`}
+                      className={`flex gap-4 items-center group-hover:text-subMain`}
                     >
                       <HiOutlineTrash className="text-xl text-red-600" />
                     </button>
                     :
                     <button
                       onClick={() => functions.restorePatient(item.id)}
-                      className={`flex gap-4 items-center hover:text-subMain`}
+                      className={`flex gap-4 items-center group-hover:text-subMain`}
                     >
                       <HiMiniArrowUturnLeft className="text-lg text-subMain" />
                     </button>

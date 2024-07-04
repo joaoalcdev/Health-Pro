@@ -629,38 +629,47 @@ export const sortsDatas = {
     {
       id: 1,
       name: 'Não informado...',
+      available: true,
     },
     {
       id: 2,
       name: 'A+',
+      available: true,
     },
     {
       id: 3,
       name: 'A-',
+      available: true,
     },
     {
       id: 4,
       name: 'B+',
+      available: true,
     },
     {
       id: 5,
       name: 'B-',
+      available: true,
     },
     {
       id: 6,
       name: 'AB+',
+      available: true,
     },
     {
       id: 7,
       name: 'AB-',
+      available: true,
     },
     {
       id: 8,
       name: 'O+',
+      available: true,
     },
     {
       id: 9,
       name: 'O-',
+      available: true,
     },
   ],
   dosage: [

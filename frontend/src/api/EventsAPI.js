@@ -46,3 +46,12 @@ export const getEventsFiltering = async (professionalId, patientId) => {
     return error
   }
 }
+
+export const getEventById = async (id) => {
+  try {
+    const data = await axios.get(apiBaseUrl(`events/${id}`))
+    return data
+  } catch (error) {
+    return error
+  }
+}

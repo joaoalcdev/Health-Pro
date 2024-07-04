@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Modal from './Modal';
+import { useNavigate } from 'react-router-dom';
 import {
   Button,
   ButtonNegative,
@@ -16,6 +17,7 @@ import { weekDays } from '../Datas';
 
 
 function ViewEventModal({ closeModal, isOpen, datas, status }) {
+  const navigate = useNavigate();
 
   //controllers
   const [open, setOpen] = useState(false);
@@ -198,7 +200,9 @@ function ViewEventModal({ closeModal, isOpen, datas, status }) {
           label="Ver"
           disabled={showReschedule}
           //Icon={FaRegEdit}
-          onClick={() => toast.error('Implementar pagina de visualizar')}
+          onClick={() => {
+            navigate(`/events/details/${datas.eventInstanceId}`)
+          }}
         />
       </div>
     </Modal >

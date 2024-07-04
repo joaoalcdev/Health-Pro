@@ -33,7 +33,7 @@ import PatientProfile from './screens/Patients/PatientProfile';
 import CreatePatient from './screens/Patients/CreatePatient';
 import EditPatient from './screens/Patients/EditPatient';
 import Professionals from './screens/Professionals/Professionals';
-import ProfessionalProfile from './screens/Professionals/ProfessionalProfile';
+import ProfessionalProfile from './screens/Events/EventDetails';
 import Doctors from './screens/Doctors/Doctors';
 import DoctorProfile from './screens/Doctors/DoctorProfile';
 import Receptions from './screens/Receptions';
@@ -49,6 +49,7 @@ import Login from './screens/Login.js';
 import { AuthProvider } from './hooks/Auth';
 import ProtectedRoute from "./components/ProtectedRoute";
 import RootLayout from './components/RootLayout';
+import EventDetails from './screens/Events/EventDetails';
 
 function App() {
   Aos.init();
@@ -86,6 +87,8 @@ function App() {
               {/* professionals */}
               <Route path="/professionals" element={<ProtectedRoute roleId={1}><Professionals /></ProtectedRoute>} />
               <Route path="/professionals/preview/:id" element={<ProtectedRoute roleId={1}><ProfessionalProfile /></ProtectedRoute>} />
+              {/* events */}
+              <Route path="/events/details/:id" element={<ProtectedRoute roleId={1}><EventDetails /></ProtectedRoute>} />
               {/* doctors */}
               <Route path="/doctors" element={<ProtectedRoute roleId={1}><Doctors /></ProtectedRoute>} />
               <Route path="/doctors/preview/:id" element={<ProtectedRoute roleId={1}><DoctorProfile /></ProtectedRoute>} />

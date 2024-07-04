@@ -9,6 +9,7 @@ import {
   TbUsers,
 } from 'react-icons/tb';
 import { getPatients } from '../api/PatientsAPI';
+import { AiOutlineNotification } from "react-icons/ai";
 import { FaRegCalendarAlt, FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
 import {
   RiFileList3Line,
@@ -21,6 +22,7 @@ import {
   RiUserHeartLine,
   RiUserLine,
 } from 'react-icons/ri';
+import { LiaUserNurseSolid } from "react-icons/lia";
 import {
   MdListAlt,
   MdOutlineAttachMoney,
@@ -1303,6 +1305,45 @@ export const patientTab = [
   //   icon: RiHeartLine,
   // },
 ];
+
+export const eventsTab = [
+  {
+    id: 1,
+    title: 'Informações do Evento',
+    icon: BiCalendar,
+  },
+  {
+    id: 2,
+    title: 'Informações do Paciente',
+    icon: RiUserLine,
+  },
+  {
+    id: 3,
+    title: 'Informações do Profissional',
+    icon: LiaUserNurseSolid,
+  },
+  {
+    id: 4,
+    title: 'Lembrete',
+    icon: AiOutlineNotification,
+  },
+  // {
+  //   id: 5,
+  //   title: 'Invoices',
+  //   icon: RiFileList3Line,
+  // },
+  // {
+  //   id: 6,
+  //   title: 'Access Control',
+  //   icon: TbLockAccess,
+  // },
+  // {
+  //   id: 7,
+  //   title: 'Change Password',
+  //   icon: RiLockPasswordLine,
+  // },
+];
+
 
 export const doctorTab = [
   {

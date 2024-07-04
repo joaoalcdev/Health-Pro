@@ -1312,7 +1312,7 @@ export const doctorTab = [
   },
   {
     id: 4,
-    title: 'Pagamerntos',
+    title: 'Pagamentos',
     icon: RiMoneyDollarCircleLine,
   },
   // {
@@ -1330,6 +1330,11 @@ export const doctorTab = [
   //   title: 'Change Password',
   //   icon: RiLockPasswordLine,
   // },
+  {
+    id: 8,
+    title: 'Calendário',
+    icon: BiCalendar,
+  }
 ];
 
 export const medicalRecodData = [

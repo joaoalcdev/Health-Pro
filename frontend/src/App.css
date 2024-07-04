@@ -102,6 +102,15 @@ button:focus {
 .rbc-time-view {
   background-color: #fff !important;
 }
+.rbc-events-container {
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+.rbc-agenda-event-cell {
+  padding: 0px !important;
+  margin: 0px !important;
+}
 .rbc-show-more {
   font-weight: 600 !important;
   font-size: 12px !important;
@@ -209,7 +218,3 @@ button:focus {
 ::-webkit-scrollbar-thumb:active {
   background-color: #43776b;
 }
-
-/* .test-max-w {
-  max-width: 544px !important;
-} */

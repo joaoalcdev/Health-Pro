@@ -11,7 +11,7 @@ import { FilterSelect } from '../Form';
 import Drawer from 'react-modern-drawer';
 import EventsForm from '../Forms/EventsForm';
 import { getEventsFiltering, listEvents } from '../../api/EventsAPI';
-import ViewAppointmentModal from '../Modals/ViewAppointmentModal';
+import ViewEventModal from '../Modals/ViewEventModal';
 import 'moment/locale/pt-br';
 import { useParams } from 'react-router-dom';
 
@@ -337,7 +337,7 @@ function ScheduleUsed() {
       )}
       {
         view && (
-          <ViewAppointmentModal
+          <ViewEventModal
             datas={data}
             isOpen={view}
             status={onStatus}
@@ -445,7 +445,7 @@ function ScheduleUsed() {
                 shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
                 fontSize: '12px',
                 padding: '5px 5px',
-                
+
               };
               return {
                 style,

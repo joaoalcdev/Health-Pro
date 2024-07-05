@@ -1309,7 +1309,7 @@ export const patientTab = [
 export const eventsTab = [
   {
     id: 1,
-    title: 'Informações do Evento',
+    title: 'Informações',
     icon: BiCalendar,
   },
   {

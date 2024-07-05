@@ -2,11 +2,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Menu, Listbox, Switch } from '@headlessui/react';
 import { BiLoaderCircle } from 'react-icons/bi';
+import { TbReload } from "react-icons/tb";
 import DatePicker from 'react-datepicker';
 import { FaCheck } from 'react-icons/fa';
 import { roleOptions, specialties } from './Datas';
 import { InputMask } from 'primereact/inputmask';
 import { InputNumber } from 'primereact/inputnumber';
+import { CgClose } from 'react-icons/cg';
+
 
 
 export function CurrencyInputMask({ label, name, color, placeholder, register, value, required, maxLength, unmask, inputId, onValueChange, mode, currency, locale, inputStyle, unstyled, maxFractionDigits, allowEmpty, inputClassName }) {
@@ -69,6 +72,7 @@ export function InputMaskComp({ label, name, type, color, placeholder, register,
   );
 }
 
+
 export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, disabled, autoComplete, cursor, max }) {
   return (
     <div className="text-sm w-full">
@@ -90,7 +94,7 @@ export function Input({ label, name, type, color, placeholder, register, value, 
         value={value}
         disabled={disabled}
         placeholder={placeholder}
-        className={`w-full bg-transparent text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
+        className={`w-full bg-transparent text-sm mt-2 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
           }  rounded-lg focus:border focus:border-subMain hover:cursor${cursor ? cursor : 'pointer'} focus:cursor-text focus:bg-greyed caret-subMain`}
       />
     </div>
@@ -106,6 +110,26 @@ export function Button({ label, onClick, loading, Icon, type, disabled }) {
       disabled={disabled}
       onClick={onClick}
       className={`w-full flex-rows gap-4 transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} bg-subMain text-white text-sm font-medium px-2 py-4 rounded`}
+    >
+      {loading ? (
+        <BiLoaderCircle className="animate-spin text-white text-xl" />
+      ) : (
+        <>
+          {label}
+          {Icon && <Icon className="text-white text-xl" />}
+        </>
+      )}
+    </button>
+  );
+}
+
+export function OutLinedButton({ label, onClick, loading, Icon, type, disabled }) {
+  return (
+    <button
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+      className={`w-full flex-rows gap-4 transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} border border-subMain  text-subMain text-sm font-medium px-2 py-4 rounded`}
     >
       {loading ? (
         <BiLoaderCircle className="animate-spin text-white text-xl" />
@@ -294,7 +318,7 @@ export function Textarea({ label, name, register, placeholder, rows }) {
 
 // date picker
 
-export function DatePickerComp({ label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll }) {
+export function DatePickerComp({ label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll, isClearable, children, maxDate }) {
   return (
     <div className="flex flex-col text-sm w-full">
       <label
@@ -313,10 +337,16 @@ export function DatePickerComp({ label, startDate, onChange, color, locale, show
         showYearDropdown={showYearDropdown}
         scrollableYearDropdown={scrollableYearDropdown}
         yearDropdownItemNumber={yearDropdownItemNumber}
+        isClearable={isClearable}
         locale={locale}
+        maxDate={maxDate}
         className={`transitions w-full bg-white text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
           } rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
-      />
+      >
+        <div className=''>
+          {children}
+        </div>
+      </DatePicker>
     </div>
   );
 }

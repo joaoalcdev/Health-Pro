@@ -55,3 +55,12 @@ export const getEventById = async (id) => {
     return error
   }
 }
+
+export const updateEventAgreement = async (data, eventInstanceId) => {
+  try {
+    const response = await axios.put(apiBaseUrl(`eventInstance/${eventInstanceId}`), data)
+    return response
+  } catch (error) {
+    return error
+  }
+}

@@ -1307,13 +1307,13 @@ export const patientTab = [
 export const doctorTab = [
   {
     id: 1,
-    title: 'Informações do Profissional',
-    icon: RiUserLine,
+    title: 'Calendário',
+    icon: BiCalendar,
   },
   {
     id: 2,
-    title: 'Pacientes',
-    icon: BiUserPlus,
+    title: 'Informações do Profissional',
+    icon: RiUserLine,
   },
   {
     id: 3,
@@ -1342,8 +1342,8 @@ export const doctorTab = [
   // },
   {
     id: 8,
-    title: 'Calendário',
-    icon: BiCalendar,
+    title: 'Pacientes',
+    icon: BiUserPlus,
   }
 ];
 

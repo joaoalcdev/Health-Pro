@@ -55,9 +55,9 @@ function ProfessionalProfile() {
   const tabPanel = () => {
     switch (activeTab) {
       case 1:
-        return <ProfessionalInfo data={professional} onStatus={onStatus} />;
+        return <ScheduleUsed />;
       case 2:
-        return <PatientsUsed />;
+        return <ProfessionalInfo data={professional} onStatus={onStatus} />;
       case 3:
         return <AppointmentsUsed doctor={true} />;
       case 4:
@@ -68,8 +68,8 @@ function ProfessionalProfile() {
         return <Access setAccess={setAccess} />;
       case 7:
         return <ChangePassword />;
-      case 8:
-        return <ScheduleUsed />;
+      case 8: 
+        return <PatientsUsed />;
       default:
         return;
     }
@@ -92,7 +92,7 @@ function ProfessionalProfile() {
           data-aos-duration="1000"
           data-aos-delay="100"
           data-aos-offset="200"
-          className="col-span-12 flex-colo gap-6 lg:col-span-4 bg-white rounded-xl border-[1px] border-border p-6 lg:sticky top-28"
+          className="col-span-12 flex-colo gap-6 lg:col-span-3 bg-white rounded-xl border-[1px] border-border p-6 lg:sticky top-28"
         >
           <img
             src={getAvatar(professional.gender) || getAvatar(3)}
@@ -105,15 +105,15 @@ function ProfessionalProfile() {
             <p className="text-xs">{formatPhoneNumber(professional.phoneNumber)}</p>
           </div>
           {/* tabs */}
-          <div className="flex-colo gap-3 px-2 2xl:px-12 w-full">
+          <div className="flex-colo gap-3 w-full">
             {doctorTab.map((tab, index) => (
               <button
                 onClick={() => setActiveTab(tab.id)}
                 key={index}
                 className={`
                 ${activeTab === tab.id
-                    ? 'bg-text text-subMain'
-                    : 'bg-dry text-main hover:bg-text hover:text-subMain'
+                    ? ' text-left text-pretty bg-text text-subMain'
+                    : ' text-left text-pretty bg-dry text-main hover:bg-text hover:text-subMain'
                   }
                 text-xs gap-4 flex items-center w-full p-4 rounded`}
               >
@@ -121,7 +121,6 @@ function ProfessionalProfile() {
               </button>
             ))}
           </div>
-
         </div>
         {/* tab panel */}
         <div
@@ -129,7 +128,7 @@ function ProfessionalProfile() {
           data-aos-duration="1000"
           data-aos-delay="100"
           data-aos-offset="200"
-          className="col-span-12 lg:col-span-8 bg-white rounded-xl border-[1px] border-border p-6"
+          className="col-span-12 lg:col-span-9 bg-white rounded-xl border-[1px] border-border p-6"
         >
           {tabPanel()}
         </div>

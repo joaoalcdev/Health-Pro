@@ -1,19 +1,26 @@
+// react & dep - imports
 import { useState, useEffect } from 'react';
-
-import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import { BiChevronLeft, BiChevronRight, BiPlus, BiTime, BiChevronDown, BiLoaderCircle } from 'react-icons/bi';
-import { HiOutlineViewGrid } from 'react-icons/hi';
-import { HiOutlineCalendarDays, HiOutlineBookOpen } from 'react-icons/hi2';
-import { getProfessionalById, getProfessionals } from '../../api/ProfessionalsAPI';
-import { eventTypes, eventStatus } from '../Datas';
-import { FilterSelect } from '../Form';
-import Drawer from 'react-modern-drawer';
-import EventsForm from '../Forms/EventsForm';
-import { getEventsFiltering, listEvents } from '../../api/EventsAPI';
-import ViewEventModal from '../Modals/ViewEventModal';
 import 'moment/locale/pt-br';
 import { useParams } from 'react-router-dom';
+
+// icons - imports
+import { BiChevronLeft, BiChevronRight, BiTime, BiLoaderCircle } from 'react-icons/bi';
+import { HiOutlineBookOpen, HiOutlineUserPlus, HiOutlineUser, HiOutlinePuzzlePiece } from 'react-icons/hi2';
+import { HiOutlineViewGrid } from 'react-icons/hi';
+
+// API's - imports
+import { getProfessionalById, getProfessionals } from '../../api/ProfessionalsAPI';
+import { getEventsFiltering, listEvents } from '../../api/EventsAPI';
+
+// datas - imports
+import { eventTypes, eventStatus } from '../Datas';
+
+// components - imports
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import Drawer from 'react-modern-drawer';
+import EventsForm from '../Forms/EventsForm';
+import ViewEventModal from '../Modals/ViewEventModal';
 
 // custom toolbar
 const CustomToolbar = (toolbar) => {
@@ -30,7 +37,7 @@ const CustomToolbar = (toolbar) => {
       toolbar.date.setDate(toolbar.date.getDate() - 1);
       toolbar.onNavigate('prev');
     } else if (toolbar.view === 'agenda') {
-      toolbar.date.setDate(toolbar.date.getDate() - 7);
+      toolbar.date.setDate(toolbar.date.getDate() - 1);
       toolbar.onNavigate('next');
     } else {
       toolbar.date.setDate(toolbar.date.getDate() - 1);
@@ -50,7 +57,7 @@ const CustomToolbar = (toolbar) => {
       toolbar.date.setDate(toolbar.date.getDate() + 1);
       toolbar.onNavigate('next');
     } else if (toolbar.view === 'agenda') {
-      toolbar.date.setDate(toolbar.date.getDate() + 7);
+      toolbar.date.setDate(toolbar.date.getDate() + 1);
       toolbar.onNavigate('next');
     } else {
       toolbar.date.setDate(toolbar.date.getDate() + 1);
@@ -93,8 +100,8 @@ const CustomToolbar = (toolbar) => {
   return (
     <div className="flex flex-col gap-4 mb-8">
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-12 gap-4">
-        <div className="md:col-span-1 flex sm:justify-start justify-center items-center">
+      <div className="grid sm:grid-cols-1 md:grid-cols-12 gap-4">
+        <div className="md:col-span-1 flex md:justify-start justify-center items-center">
           <button
             onClick={goToCurrent}
             className="px-6 py-2 border border-subMain rounded-md text-subMain"
@@ -107,12 +114,12 @@ const CustomToolbar = (toolbar) => {
           <button onClick={goToBack} className="text-2xl text-subMain">
             <BiChevronLeft />
           </button>
-          <span className="text-xl font-semibold select-none hover:cursor-text">
+          <span className="flex sm:text-xl text-sm font-semibold select-none hover:cursor-text text-left break-normal text-wrap ">
             {/* {moment(toolbar.date).format('DD MMMM YYYY')}  */}
             {/* {toolbar.view === 'day' && moment(toolbar.date).format(`DD [de] MMMM, YYYY`)} */}
             {/* {toolbar.view === 'month' && ` ${moment(toolbar.date).startOf('month').format(`DD [de] MMMM, YYYY`)} - ${moment(toolbar.date).endOf('month').format(`DD [de] MMMM, YYYY`)}`} */}
             {toolbar.view === 'week' && ` ${moment(toolbar.date).startOf('week').format(`DD [de] MMMM, YYYY`)} - ${moment(toolbar.date).endOf('week').format(`DD [de] MMMM, YYYY`)}`}
-            {toolbar.view === 'agenda' && ` ${moment(toolbar.date).startOf('week').format(`DD [de] MMMM, YYYY`)} - ${moment(toolbar.date).endOf('month').format(`DD [de] MMMM, YYYY`)}`}
+            {toolbar.view === 'agenda' && ` ${moment(toolbar.date).format(`DD [de] MMMM, YYYY`)}`}
             {/* {toolbar.view === 'agenda' && ` <-> ${moment(toolbar.date).format(`DD [de] MMMM, YYYY`)}`} */}
           </span>
           <button onClick={goToNext} className="text-2xl text-subMain">
@@ -277,9 +284,39 @@ function ScheduleUsed() {
     fetch()
   }, [status, filterTerm])
 
-  // useEffect(() => {
-  //   console.log(eventsData)
-  // }, [data])
+
+
+
+  // custom agenda range view
+  const CustomAgenda = ({ event }) => {
+    return (
+      <div className={`group hover:cursor-pointer`}>
+        <div className="flex justify-start items-start flex-col px-1 py-1 space-y-[1px] transition duration-200 hover:bg-white/20">
+          <div className='flex justify-center items-center'>
+            <HiOutlineUser className="h-[18px] w-[18px] flex" />
+            <p className='flex text-xs text-left break-words text-pretty ml-1'>{event.patientFullName}</p>
+          </div>
+          <div className='flex justify-center items-center'>
+            <HiOutlinePuzzlePiece
+              className="h-[18px] w-[18px] flex" />
+            <p className='flex text-xs text-left break-words text-pretty ml-1'>
+              {event.serviceName ? event.serviceName : 'Serviço não informado'}
+            </p>
+          </div>
+          <div className='flex justify-center items-center'>
+            <HiOutlineUserPlus
+              className="h-[18px] w-[18px] flex" />
+            <p className='flex text-xs text-left break-words text-pretty ml-1'>{event.professionalLastName}</p>
+          </div>
+          <div className='flex justify-center items-center'>
+            <BiTime
+              className="h-[18px] w-[18px] flex" />
+            <p className='flex text-xs text-left break-words text-pretty ml-1'>{moment(event.start).format('HH:mm')} - {moment(event.end).format('HH:mm')}</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
 
   // handle modal close
@@ -322,17 +359,6 @@ function ScheduleUsed() {
           >
             <EventsForm onClose={handleClose} status={setStatus} />
           </Drawer>
-
-
-          {/* <AddAppointmentModal
-            datas={data}
-            isOpen={open}
-            status={onStatus}
-            closeModal={() => {
-              handleClose();
-            }}
-
-          /> */}
         </>
       )}
       {
@@ -355,28 +381,15 @@ function ScheduleUsed() {
         <BiPlus className="text-2xl" />
       </button> */}
 
-      <div className='flex flex-col gap-6 mb-8'>
-
+      {/* <div className='flex flex-col gap-6 mb-8'>
         <h1 key={''} className="items-start text-xl font-semibold">Agendamentos</h1>
-
-        <div className="flex items-center justify-between">
-          <div className='w-80'>
-            {/* <FilterSelect
-              selectedPerson={filterTerm}
-              setSelectedPerson={setFilterTerm}
-              datas={professionalsList}
-            >
-              <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
-                <p>{filterTerm.name}</p>
-                <BiChevronDown className="text-xl" />
-              </div>
-            </FilterSelect> */}
-            <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
-              <p className="">Agenda: <span className='text-subMain'>{professional.fullName}</span></p>
-              {/* <BiChevronDown className="text-xl" /> */}
+        <div className="flex flex-col md:flex-row items-center justify-between">
+          <div className='flex flex-row w-80'>
+            <div className="flex flex-row h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
+              <p className="flex text-xs text-left">Agenda:<span className='flex text-subMain ml-1 break-words text-pretty'>{professional.fullName}</span></p>
             </div>
           </div>
-          <div className="flex gap-2 items-center">
+          <div className="flex flex-row gap-2 items-center">
             <h1 className="text-xs font-semibold">Legenda:</h1>
             {
               eventStatus.map((item, index) => (
@@ -386,18 +399,17 @@ function ScheduleUsed() {
                     style={{ backgroundColor: item.color }}
                   ></div>
                   <span className='text-xs'>{item.name}</span>
-                  {index === eventTypes.length - 1 ? '' : ' |'}
+                  {index === eventTypes.length - 1 ? '' : ''}
                 </div>
               ))}
           </div>
-        </div >
-      </div>
+        </div>
+      </div> */}
       {loading ?
         <div className="flex relative w-full h-1/2 top-20 justify-center items-center"> {/* resolve style: generating scroll x = flex absolute items-center justify-center w-full h-1/2*/}
           <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
         </div>
         :
-
         <>
           <Calendar
             localizer={localizer}
@@ -428,10 +440,10 @@ function ScheduleUsed() {
             defaultDate={new Date()}
             resizable
             timeslots={1}
-            step={15}
+            step={30}
             selectable={false}
-            min={new Date(2024, 0, 1, 6, 0)}
-            max={new Date(2040, 0, 1, 22, 0)}
+            min={new Date(2024, 0, 1, 7, 0)}
+            max={new Date(2040, 0, 1, 20, 1)}
             filterTime={date => (date.getHours() > 5 && date.getHours() < 11) || (date.getHours() > 13 && date.getHours() < 20)}
             // custom event style
             eventLayout="overlap"
@@ -446,11 +458,16 @@ function ScheduleUsed() {
                 fontSize: '12px',
                 padding: '5px 5px',
 
+                paddingTop: '1px',
+                paddingBottom: '1px',
+                paddingLeft: '4px',
+                paddingRight: '4px',
               };
               return {
                 style,
               };
             }}
+
             // custom date style
             dayLayout="overlap"
             dayPropGetter={(date) => {
@@ -463,7 +480,7 @@ function ScheduleUsed() {
             }}
             // custom toolbar
             toolbar={true}
-            components={{ toolbar: CustomToolbar }}
+            components={{ toolbar: CustomToolbar, agenda: { event: CustomAgenda } }}
             // custom view
             views={['month', 'day', 'week', 'agenda']}
             // default view

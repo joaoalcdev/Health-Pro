@@ -9,6 +9,7 @@ import {
   TbUsers,
 } from 'react-icons/tb';
 import { getPatients } from '../api/PatientsAPI';
+import { AiOutlineNotification } from "react-icons/ai";
 import { FaRegCalendarAlt, FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
 import {
   RiFileList3Line,
@@ -21,6 +22,7 @@ import {
   RiUserHeartLine,
   RiUserLine,
 } from 'react-icons/ri';
+import { LiaUserNurseSolid } from "react-icons/lia";
 import {
   MdListAlt,
   MdOutlineAttachMoney,
@@ -113,6 +115,16 @@ export const eventTypes = [
   { id: 3, name: 'Atendimento/Sessão', color: '#66b5a3' },
   { id: 4, name: 'Consulta', color: '#ff9900' },
   { id: 5, name: 'Retorno', color: '#ff0000' },
+];
+
+export const weekDays = [
+  { id: 0, name: 'Domingo' },
+  { id: 1, name: 'Segunda-feira' },
+  { id: 2, name: 'Terça-feira' },
+  { id: 3, name: 'Quarta-feira' },
+  { id: 4, name: 'Quinta-feira' },
+  { id: 5, name: 'Sexta-feira' },
+  { id: 6, name: 'Sábado' },
 ];
 
 export const eventStatus = [
@@ -1293,6 +1305,45 @@ export const patientTab = [
   //   icon: RiHeartLine,
   // },
 ];
+
+export const eventsTab = [
+  {
+    id: 1,
+    title: 'Informações',
+    icon: BiCalendar,
+  },
+  {
+    id: 2,
+    title: 'Informações do Paciente',
+    icon: RiUserLine,
+  },
+  {
+    id: 3,
+    title: 'Informações do Profissional',
+    icon: LiaUserNurseSolid,
+  },
+  {
+    id: 4,
+    title: 'Lembrete',
+    icon: AiOutlineNotification,
+  },
+  // {
+  //   id: 5,
+  //   title: 'Invoices',
+  //   icon: RiFileList3Line,
+  // },
+  // {
+  //   id: 6,
+  //   title: 'Access Control',
+  //   icon: TbLockAccess,
+  // },
+  // {
+  //   id: 7,
+  //   title: 'Change Password',
+  //   icon: RiLockPasswordLine,
+  // },
+];
+
 
 export const doctorTab = [
   {

@@ -19,8 +19,11 @@ import { eventTypes, eventStatus } from '../Datas';
 // components - imports
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import ViewAppointmentModal from '../Modals/ViewAppointmentModal';
+import ViewEventModal from '../Modals/ViewEventModal';
 import Drawer from 'react-modern-drawer';
 import EventsForm from '../Forms/EventsForm';
+
+
 
 // custom toolbar
 const CustomToolbar = (toolbar) => {
@@ -374,7 +377,7 @@ function ScheduleUsed() {
       )}
       {
         view && (
-          <ViewAppointmentModal
+          <ViewEventModal
             datas={data}
             isOpen={view}
             status={onStatus}

@@ -22,6 +22,8 @@ import Drawer from 'react-modern-drawer';
 import EventsForm from '../Forms/EventsForm';
 import ViewEventModal from '../Modals/ViewEventModal';
 
+
+
 // custom toolbar
 const CustomToolbar = (toolbar) => {
 
@@ -456,8 +458,6 @@ function ScheduleUsed() {
                 borderColor: 'white',
                 shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
                 fontSize: '12px',
-                padding: '5px 5px',
-
                 paddingTop: '1px',
                 paddingBottom: '1px',
                 paddingLeft: '4px',

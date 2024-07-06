@@ -235,7 +235,6 @@ export default function EventsForm({ datas, onClose, status }) {
                       <Button
                         label="Selecionar"
                         onClick={() => setOpenModal(!openModal)}
-
                       />
                     </div>
                   </div>

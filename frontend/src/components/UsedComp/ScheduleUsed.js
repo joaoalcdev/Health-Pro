@@ -18,9 +18,11 @@ import { eventTypes, eventStatus } from '../Datas';
 
 // components - imports
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import ViewAppointmentModal from '../Modals/ViewAppointmentModal';
 import Drawer from 'react-modern-drawer';
 import EventsForm from '../Forms/EventsForm';
+import ViewEventModal from '../Modals/ViewEventModal';
+
+
 
 // custom toolbar
 const CustomToolbar = (toolbar) => {
@@ -359,22 +361,11 @@ function ScheduleUsed() {
           >
             <EventsForm onClose={handleClose} status={setStatus} />
           </Drawer>
-
-
-          {/* <AddAppointmentModal
-            datas={data}
-            isOpen={open}
-            status={onStatus}
-            closeModal={() => {
-              handleClose();
-            }}
-
-          /> */}
         </>
       )}
       {
         view && (
-          <ViewAppointmentModal
+          <ViewEventModal
             datas={data}
             isOpen={view}
             status={onStatus}

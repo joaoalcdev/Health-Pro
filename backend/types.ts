@@ -84,11 +84,16 @@ type ScheduleEvent = {
   serviceId: number,
   startDate: string,
   agreementId: number,
+  agAuthCode?: string,
+  agAuthDate?: string,
+  agPreCode?: string,
+  agPreCodeDate?: string,
   endTime?: string,
   title?: string,
   eventType: number,
   hasConflict?: boolean,
   eventsPerWeek?: number,
   eventsQty?: number,
+  checkInName?: string,
 }
 

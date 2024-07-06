@@ -55,7 +55,7 @@ function Dashboard() {
     const total = dataPatient.length;
     const difference = total - last30Days.length;
     const percent = (difference / total) * 100;
-    return percent;
+    return percent.toFixed(2);
   }
 
   const dashboardCards = [

@@ -4,6 +4,7 @@ import { ListEvents } from './listEvents';
 import { GetEventsFiltering } from './getEventsFiltering';
 import { GetEventById } from './getEventById';
 import { UpdateEvents } from './updateEvents';
+import { EventCheckIn } from './eventCheckIn';
 
 
 export const EventsRoutes =  async (app: FastifyInstance) => {
@@ -12,5 +13,6 @@ export const EventsRoutes =  async (app: FastifyInstance) => {
  app.register(GetEventsFiltering);
  app.register(GetEventById);
  app.register(UpdateEvents);
+ app.register(EventCheckIn);
 
 }

@@ -94,5 +94,6 @@ type ScheduleEvent = {
   hasConflict?: boolean,
   eventsPerWeek?: number,
   eventsQty?: number,
+  checkInName?: string,
 }
 

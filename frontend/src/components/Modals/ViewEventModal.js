@@ -100,23 +100,23 @@ function ViewEventModal({ closeModal, isOpen, datas, status }) {
 
       <div className="flex-colo gap-6 pb-8">
         <div className="grid sm:grid-cols-2 gap-4 w-full">
-          <div>
-            <h1 className="font-bold">Profissional</h1>
-            <p>{datas.professionalFirstName} {datas.professionalLastName}</p>
+
+          <div className="flex w-full flex-col gap-1">
+            <h1 className="text-gray-400 text-sm">Profissional</h1>
+            <p className="text-black text-md font-semibold">{datas.professionalFirstName} {datas.professionalLastName}</p>
           </div>
-          <div>
-            <h1 className="font-bold">Paciente</h1>
-            <p>{datas.patientFullName}</p>
+          <div className="flex w-full flex-col gap-1">
+            <h1 className="text-gray-400 text-sm">Paciente</h1>
+            <p className="text-black text-md font-semibold">{datas.patientFullName}</p>
           </div>
         </div>
         {datas.serviceName &&
 
           <div className="grid sm:grid-cols-1 gap-4 w-full">
-            <div>
-              <h1 className="font-bold">Serviço</h1>
-              <p>{datas.serviceName}</p>
+            <div className="flex w-full flex-col gap-1">
+              <h1 className="text-gray-400 text-sm">Serviço</h1>
+              <p className="text-black text-md font-semibold">{datas.serviceName}</p>
             </div>
-
           </div>
         }
 
@@ -158,11 +158,11 @@ function ViewEventModal({ closeModal, isOpen, datas, status }) {
             <>
               <div className="grid sm:grid-cols-2 gap-4 w-full">
                 <div>
-                  <h1 className="font-bold">Data</h1>
+                  <h1 className="text-gray-400 text-sm">Data</h1>
                   <p>{formatDate(datas.startTime)} <span className='text-sm text-gray-500'>({weekDays[new Date(datas.startTime).getDay()].name})</span></p>
                 </div>
                 <div>
-                  <h1 className="font-bold">Hora</h1>
+                  <h1 className="text-gray-400 text-sm">Hora</h1>
                   <div className="flex flex-row gap-6">
                     {formatDateTime(datas.startTime)} - {formatDateTime(datas.endTime)}
                     {
@@ -172,18 +172,6 @@ function ViewEventModal({ closeModal, isOpen, datas, status }) {
                     }
                   </div>
                 </div>
-              </div>
-              <div className="grid sm:grid-cols-2 gap-4 w-full">
-                <Button
-                  label="Remarcar"
-                  Icon={BiCalendar}
-                  onClick={handleShowReschedule}
-                />
-                <ButtonNegative
-                  label="Desmarcar"
-                  //Icon={FaRegEdit}
-                  onClick={() => handleDelete()}
-                />
               </div>
             </>
           }

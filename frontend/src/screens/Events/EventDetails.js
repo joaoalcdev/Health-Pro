@@ -39,7 +39,7 @@ function EventDetails() {
   useEffect(() => {
     fetch()
     setStatus(false)
-  }, [])
+  }, [status])
 
   const onStatus = (newStatus) => {
     setStatus(newStatus)
@@ -74,7 +74,10 @@ function EventDetails() {
           >
             <IoArrowBackOutline />
           </Link>
-          <h1 className="text-xl font-semibold">{eventData.serviceName}</h1>
+          <h1 className="text-xl font-semibold">{
+            eventData.eventType === 4 ? 'Consulta' :
+              eventData.eventType === 5 ? 'Retorno' :
+                eventData.serviceName}</h1>
         </div>
         <div className=" grid grid-cols-12 gap-6 my-8 items-start">
           <div

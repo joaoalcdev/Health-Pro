@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import { useNavigate } from 'react-router-dom';
 import SignatureCanvas from 'react-signature-canvas';
@@ -8,35 +8,52 @@ import {
   Input,
 } from '../Form';
 import { TbReload } from "react-icons/tb";
-import { BiCalendar } from 'react-icons/bi';
-import { FiAlertTriangle } from "react-icons/fi";
-import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
-import { formatDate, formatDateTime } from '../../utils/formatDate';
-import { rescheduleAppointment, deleteAppointment } from '../../api/AppointmentsAPI';
-import { weekDays } from '../Datas';
+import { eventCheckIn, updateEvent } from '../../api/EventsAPI';
+
 
 
 function EventCheckInModal({ closeModal, isOpen, datas, status }) {
   const navigate = useNavigate();
 
   //controllers
-  const [open, setOpen] = useState(false);
-  const [showReschedule, setShowReschedule] = useState(false);
   const [confirmationResponse, setConfirmationResponse] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   //data
   const [checkInName, setCheckInName] = useState("");
   const [signature, setSignature] = useState();
-  const [startDate, setStartDate] = useState(datas.start);
-  const [startTime, setStartTime] = useState(datas.start);
+
+  useEffect(() => {
+    console.log(datas)
+  }, [])
 
   const clearPad = () => {
     signature.clear();
   }
 
-  const handleShowReschedule = () => {
-    setShowReschedule(!showReschedule);
+  const handleCheckIn = () => {
+    setLoading(true);
+    setDisabled(true);
+    const data = {
+      checkInName: checkInName,
+      checkInSignature: signature.toDataURL('image/jpg'),
+    };
+
+    const response = eventCheckIn(data, datas.eventInstanceId);
+    if (response.response && response.response.status >= 400) {
+      toast.error('Check-In não realizado, tente novamente!');
+      setLoading(false)
+      setDisabled(false)
+      return
+    }
+
+    toast.success('Check-In realizado com sucesso!');
+    setLoading(false);
+    setDisabled(true);
+    status(true);
+    closeModal();
   }
 
   return (
@@ -96,10 +113,13 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
             <div className="w-full grid grid-cols-2 gap-4 mt-4 justify-end">
               <ButtonNegative
                 label={'Cancelar'}
+                onClick={closeModal}
               />
               <Button
                 label={'Check-In'}
-                onClick={closeModal}
+                loading={loading}
+                disabled={checkInName === "" || loading || disabled}
+                onClick={handleCheckIn}
               />
             </div>
           </div>

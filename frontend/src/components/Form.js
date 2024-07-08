@@ -1,5 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useState } from 'react';
+import clsx from 'clsx'
 import { Menu, Listbox, Switch } from '@headlessui/react';
 import { BiLoaderCircle } from 'react-icons/bi';
 import { TbReload } from "react-icons/tb";
@@ -10,6 +12,113 @@ import { InputMask } from 'primereact/inputmask';
 import { InputNumber } from 'primereact/inputnumber';
 import { CgClose } from 'react-icons/cg';
 
+import { sortsDatas } from './Datas';
+import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Label, Field, ComboboxButton } from '@headlessui/react'
+import { HiCheck } from 'react-icons/hi2';
+import { BiChevronDown } from 'react-icons/bi';
+
+
+export function InputFilterSelect({ label, name, placeholder, color, register, value, onChange, required, maxLength, mask, unmask, autoClear, datas }) {
+
+  const [selectedPerson, setSelectedPerson] = useState('')
+  const [query, setQuery] = useState('')
+
+  const filtredData =
+    query === ''
+      ? sortsDatas.bloodTypeFilter
+      : sortsDatas.bloodTypeFilter.filter((person) => {
+        return person.name.toLowerCase().includes(query.toLowerCase())
+      })
+
+  const handleResetValueInput = () => {
+    setSelectedPerson('')
+  }
+
+  return (
+    <>
+      <div className="flex w-full flex-col">
+        <Field className={`flex w-full flex-col`}>
+          <Label
+            className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'
+              } `}
+          >
+            {label}
+          </Label>
+        </Field>
+        {/* fragment component */}
+        <Combobox
+          immediate={true}
+          value={selectedPerson}
+          onChange={setSelectedPerson}
+          onClose={() => {
+            setQuery('');
+          }}
+          className='flex w-full'
+        >
+          {({ activeOption }) => (
+            <>
+              <div className='flex flex-row justify-center items-center text-center w-full max-h-full'>
+                <div className="relative w-full">
+                  <ComboboxInput
+                    className={clsx(`${color ? 'flex w-full z-50 bg-white transitions text-sm p-4 font-light rounded hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed' : ''} `)}
+                    // className='flex w-full z-50 bg-white transitions text-sm p-4 font-light rounded hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed'
+                    aria-label="Assignee"
+                    autoFocus={false}
+                    as='input'
+                    displayValue={(person) => person?.name}
+                    // value={bloodType.name}
+                    // onChange={(e) => setEmergencyContact(e.target.value)}
+                    onChange={(e) => { setQuery(e.target.value); }}
+                    onClick={handleResetValueInput}
+                  />
+                  {/* <ComboboxButton as={MyCustomButton}></ComboboxButton> */}
+                  <ComboboxButton className="group absolute inset-y-0 right-0 mx-4 rotate-0 data-[open]:rotate-180 transition ease-in-out duration-150">
+                    <BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />
+                  </ComboboxButton>
+                </div>
+                <ComboboxOptions
+                  static={false}
+                  unmount={false}
+                  portal={true}
+                  modal={false}
+                  as="ul"
+                  anchor="bottom start"
+                  className={clsx("w-[calc(var(--input-width))] test-max-w empty:visible",
+                    'h-[10rem] py-1 break-normal rounded bg-white px-2 border border-border shadow-lg z-50 ')}
+                // className="flex flex-col h-[10rem] w-[calc(var(--input-width)+25px)] py-1 break-normal rounded bg-white empty:visible px-2 border border-border shadow-lg overflow-auto z-50"
+                >
+                  {
+                    filtredData.length === 0 && (
+                      <ComboboxOption value={null} className="flex flex-row justify-center items-center text-center w-full bg-greyed py-2 hover:cursor-not-allowed hover:bg-opacity-75">
+                        <div className="text-sm text-black">Nenhum dado encontrado</div>
+                      </ComboboxOption>
+                    ) || filtredData.map((person) => (
+                      <ComboboxOption
+                        as="li"
+                        disabled={!person.available}
+                        key={person.id}
+                        value={person}
+                        className="text-black hover:text-subMain text-sm flex justify-left items-center text-justify py-1 my-[0.125rem] origin-top transition duration-200 rounded ease-out empty:visible data-[disabled]:opacity-75 data-[disabled]:text-black data-[disabled]:bg-red-100 data-[disabled]:cursor-not-allowed data-[closed]:scale-100 data-[closed]:opacity-0 group flex bg-white data-[selected]:text-white data-[selected]:bg-subMain hover:bg-black hover:bg-opacity-5 hover:cursor-pointer rounded"
+                      >
+                        <HiCheck className="font-bold text-lg text-white invisible group-data-[selected]:visible ml-2" />
+                        {person.name === activeOption?.name ? (
+                          <span className="px-1">{person.name}</span>
+                        ) : (
+                          <span className="px-1">{person.name}</span>
+                        )}
+                      </ComboboxOption>
+                    ))
+                  }
+                </ComboboxOptions>
+              </div>
+            </>
+          )}
+        </Combobox>
+
+      </div>
+    </>
+  )
+}
 
 
 export function CurrencyInputMask({ label, name, color, placeholder, register, value, required, maxLength, unmask, inputId, onValueChange, mode, currency, locale, inputStyle, unstyled, maxFractionDigits, allowEmpty, inputClassName }) {
@@ -47,12 +156,14 @@ export function CurrencyInputMask({ label, name, color, placeholder, register, v
 export function InputMaskComp({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, mask, unmask, autoClear }) {
   return (
     <div className="text-sm w-full">
-      <label
-        className={`${color ? 'text-black text-sm' : 'text-white font-semibold'
-          } `}
-      >
-        {label}
-      </label>
+      <Field className={`flex w-full flex-col`}>
+        <Label
+          className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'
+            } `}
+        >
+          {label}
+        </Label>
+      </Field>
       <InputMask
         name={name}
         required={required}
@@ -65,8 +176,8 @@ export function InputMaskComp({ label, name, type, color, placeholder, register,
         value={value}
         mask={mask}
         placeholder={placeholder}
-        className={`w-full bg-white transitions text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
-          } rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+        className={`w-full bg-white transitions text-sm p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
+          } rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
       />
     </div>
   );
@@ -76,12 +187,14 @@ export function InputMaskComp({ label, name, type, color, placeholder, register,
 export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, disabled, autoComplete, cursor, max }) {
   return (
     <div className="text-sm w-full">
-      <label
-        className={`${color ? 'text-black text-sm' : 'text-white font-semibold'
-          } `}
-      >
-        {label}
-      </label>
+      <Field className={`flex w-full flex-col`}>
+        <Label
+          className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'
+            } `}
+        >
+          {label}
+        </Label>
+      </Field>
       <input
         name={name}
         autoComplete={autoComplete}
@@ -94,8 +207,8 @@ export function Input({ label, name, type, color, placeholder, register, value, 
         value={value}
         disabled={disabled}
         placeholder={placeholder}
-        className={`w-full bg-transparent text-sm mt-2 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
-          }  rounded-lg focus:border focus:border-subMain hover:cursor${cursor ? cursor : 'pointer'} focus:cursor-text focus:bg-greyed caret-subMain`}
+        className={`w-full bg-white transitions text-sm p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
+          } rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
       />
     </div>
   );
@@ -170,7 +283,7 @@ export function MenuSelect({ children, datas, item: data }) {
     <div className="text-sm w-full relative">
       <Menu>
         <Menu.Button>{children}</Menu.Button>
-        <Menu.Items className="flex flex-col z-50 gap-4 absolute right-0  bg-white rounded-md shadow-lg py-4 px-6 ring-1 ring-border focus:outline-none">
+        <Menu.Items className="flex flex-col z-50 gap-4 absolute right-0  bg-white rounded shadow-lg py-4 px-6 ring-1 ring-border focus:outline-none">
           {datas.map((item, index) => (
             <button
               onClick={() => item.onClick(data)}
@@ -189,36 +302,46 @@ export function MenuSelect({ children, datas, item: data }) {
 
 // select 2
 
-export function Select({ children, selectedPerson, setSelectedPerson, datas, maxHeigth }) {
+export function Select({ children, selectedPerson, setSelectedPerson, datas, maxHeigth, label, color }) {
   return (
-    <div className="flex text-sm relative w-full ">
-      <div className="w-full">
-        <Listbox value={selectedPerson} onChange={setSelectedPerson}>
-          <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
-          <Listbox.Options className={`flex flex-col top-14 z-50 absolute left-0 w-full h-auto max-h-${maxHeigth ? maxHeigth : '25'} overflow-y-scroll bg-white rounded-md shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none`}>
-            {
-              datas.length > 0 ?
-                datas.map((person) => (
-                  <Listbox.Option
-                    className={`flex relative cursor-pointer text-sm hover:text-subMain hover:bg-black rounded hover:bg-opacity-5 py-2 px-2`}
-                    key={person.id}
-                    value={person}
-                    disabled={person.unavailable}
-                  >
-                    {person.name} {person.UF && `(${person.UF})`} {person.type && `(${person.type})`}
-                  </Listbox.Option>
-                ))
-                :
-                <div className='h-8 flex text-center items-center justify-center'>
-                  <p>
-                    Sem opções
-                  </p>
-                </div>
-            }
-          </Listbox.Options>
-        </Listbox>
+    <>
+      <Field className={`flex w-full flex-col`}>
+        <Label
+          className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'
+            } `}
+        >
+          {label}
+        </Label>
+      </Field>
+      <div className="flex text-sm relative w-full">
+        <div className="w-full">
+          <Listbox value={selectedPerson} onChange={setSelectedPerson}>
+            <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
+            <Listbox.Options className={`flex flex-col top-14 z-50 absolute left-0 w-full h-auto max-h-${maxHeigth ? maxHeigth : '25'} overflow-y-scroll bg-white rounded shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none`}>
+              {
+                datas.length > 0 ?
+                  datas.map((person) => (
+                    <Listbox.Option
+                      className={`flex relative cursor-pointer text-sm hover:text-subMain hover:bg-black rounded hover:bg-opacity-5 py-2 px-2`}
+                      key={person.id}
+                      value={person}
+                      disabled={person.unavailable}
+                    >
+                      {person.name} {person.UF && `(${person.UF})`} {person.type && `(${person.type})`}
+                    </Listbox.Option>
+                  ))
+                  :
+                  <div className='h-8 flex text-center items-center justify-center'>
+                    <p>
+                      Sem opções
+                    </p>
+                  </div>
+              }
+            </Listbox.Options>
+          </Listbox>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -260,7 +383,7 @@ export function SelectProfessional({ children, selectedPerson, setSelectedPerson
       <div className="w-full">
         <Listbox value={selectedPerson} onChange={setSelectedPerson}>
           <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
-          <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded-md shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none">
+          <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none">
             {datas.map((person) => (
               <Listbox.Option
                 className={`cursor-pointer text-sm hover:text-subMain hover:bg-black rounded hover:bg-opacity-5 py-2 px-2`}
@@ -321,12 +444,14 @@ export function Textarea({ label, name, register, placeholder, rows }) {
 export function DatePickerComp({ label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll, isClearable, children, maxDate }) {
   return (
     <div className="flex flex-col text-sm w-full">
-      <label
-        className={`${color ? 'text-black text-sm' : 'text-white font-semibold'
-          } `}
-      >
-        {label}
-      </label>
+      <Field className={`flex w-full flex-col`}>
+        <Label
+          className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'
+            } `}
+        >
+          {label}
+        </Label>
+      </Field>
       <DatePicker
         selected={startDate}
         onChange={onChange}
@@ -340,8 +465,8 @@ export function DatePickerComp({ label, startDate, onChange, color, locale, show
         isClearable={isClearable}
         locale={locale}
         maxDate={maxDate}
-        className={`transitions w-full bg-white text-sm mt-3 p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
-          } rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+        className={`transitions w-full bg-white text-sm p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
+          } rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
       >
         <div className=''>
           {children}
@@ -423,7 +548,7 @@ export function TimePickerComp({ label, startDate, onChange, placeholderText }) 
         filterTime={date => date.getHours() > 5 && date.getHours() < 20}
         timeCaption="Time"
         dateFormat="h:mm aa"
-        className="transitions w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+        className="transitions w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
       />
     </div>
   );
@@ -470,7 +595,7 @@ export function FromToDate({ label, startDate, onChange, endDate, bg }) {
         endDate={endDate}
         onChange={onChange}
         className={`transitions w-full ${bg ? bg : 'bg-transparent'
-          }  text-xs px-4 h-14 border border-border text-main font-normal rounded-lg focus:border focus:border-subMain`}
+          }  text-xs px-4 h-14 border border-border text-main font-normal rounded focus:border focus:border-subMain`}
       />
     </div>
   );

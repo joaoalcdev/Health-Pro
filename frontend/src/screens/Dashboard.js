@@ -55,7 +55,7 @@ function Dashboard() {
     const total = dataPatient.length;
     const difference = total - last30Days.length;
     const percent = (difference / total) * 100;
-    return percent;
+    return percent.toFixed(2);
   }
 
   const dashboardCards = [
@@ -181,10 +181,10 @@ function Dashboard() {
         </div>
         {/* side 2 */}
         <div
-          data-aos="fade-left"
-          data-aos-duration="1000"
-          data-aos-delay="10"
-          data-aos-offset="200"
+          // data-aos="fade-left"
+          // data-aos-duration="1000"
+          // data-aos-delay="10"
+          // data-aos-offset="200"
           className="xl:col-span-2 xl:block grid sm:grid-cols-2 gap-6"
         >
           {/* recent patients */}

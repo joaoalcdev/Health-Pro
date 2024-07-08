@@ -263,12 +263,12 @@ function Patients() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
           {boxes.map((box) => (
             <div
-              data-aos="fade-up"
-              data-aos-duration="800"
-              data-aos-delay="10"
-              data-aos-offset="100"
-              data-aos-easing="ease"
-              data-aos-once="true"
+              // data-aos="fade-up"
+              // data-aos-duration="800"
+              // data-aos-delay="10"
+              // data-aos-offset="100"
+              // data-aos-easing="ease"
+              // data-aos-once="true"
               className=""
               key={box.id}
             >
@@ -307,10 +307,10 @@ function Patients() {
         :
         <>
           <div
-            data-aos="fade-up"
-            data-aos-duration="1000"
-            data-aos-delay="10"
-            data-aos-offset="200"
+            // data-aos="fade-up"
+            // data-aos-duration="1000"
+            // data-aos-delay="10"
+            // data-aos-offset="200"
             className="bg-white my-8 rounded-xl border-[1px] border-border p-5"
           >
             <div className="grid lg:grid-cols-5 grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2">
@@ -330,7 +330,7 @@ function Patients() {
                 }}
               /> */}
             </div>
-            <div className="mt-8 w-full overflow-x-scroll">
+            <div className="mt-8 w-full">
               {noResult ?
                 <>
                   <div className="bg-greyed pt-8 pb-8 flex items-center justify-center h-auto">
@@ -338,16 +338,26 @@ function Patients() {
                   </div>
                 </>
                 :
-                <PatientsTable
-                  patientData={data}
-                  noData={noResult}
-                  functions={{
-                    preview: preview,
-                    deletePatient: removePatient,
-                    restorePatient: restorePatient,
-                  }}
-                  used={dynamicUsed}
-                />
+                <>
+                  {/* ini table main */}
+                  <div className="mt-6 bg-white rounded-xl border-[1px] border-border p-5">
+                    {/* ini table child */}
+                    <div className="mt-4 overflow-x-scroll">
+                      <PatientsTable
+                        patientData={data}
+                        noData={noResult}
+                        functions={{
+                          preview: preview,
+                          deletePatient: removePatient,
+                          restorePatient: restorePatient,
+                        }}
+                        // used={dynamicUsed}
+                      />
+                    </div>
+                    {/* end table child */}
+                  </div>
+                  {/* end table main */}
+                </>
               }
             </div>
           </div>

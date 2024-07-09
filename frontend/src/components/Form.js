@@ -189,7 +189,7 @@ export function Input({ label, name, type, color, placeholder, register, value, 
     <div className="text-sm w-full">
       <Field className={`flex w-full flex-col`}>
         <Label
-          className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'
+          className={`${color ? 'select-none text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'
             } `}
         >
           {label}
@@ -216,13 +216,13 @@ export function Input({ label, name, type, color, placeholder, register, value, 
 
 // button
 
-export function Button({ label, onClick, loading, Icon, type, disabled }) {
+export function Button({ label, onClick, loading, Icon, type, disabled, children }) {
   return (
     <button
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className={`w-full flex-rows gap-4 transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} bg-subMain text-white text-sm font-medium px-2 py-4 rounded`}
+      className={`select-none w-full flex-rows gap-4 transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} bg-subMain text-white text-sm font-medium px-2 py-4 rounded`}
     >
       {loading ? (
         <BiLoaderCircle className="animate-spin text-white text-xl" />
@@ -232,6 +232,7 @@ export function Button({ label, onClick, loading, Icon, type, disabled }) {
           {Icon && <Icon className="text-white text-xl" />}
         </>
       )}
+      <span>{children}</span>
     </button>
   );
 }

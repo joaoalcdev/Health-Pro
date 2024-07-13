@@ -4,31 +4,23 @@ import React, { useState } from 'react';
 import clsx from 'clsx'
 import { Menu, Listbox, Switch } from '@headlessui/react';
 import { BiLoaderCircle } from 'react-icons/bi';
-import { TbReload } from "react-icons/tb";
 import DatePicker from 'react-datepicker';
 import { FaCheck } from 'react-icons/fa';
-import { roleOptions, specialties } from './Datas';
+import { specialties, sortsDatas } from './Datas';
 import { InputMask } from 'primereact/inputmask';
 import { InputNumber } from 'primereact/inputnumber';
-import { CgClose } from 'react-icons/cg';
 
-import { sortsDatas } from './Datas';
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Label, Field, ComboboxButton } from '@headlessui/react'
 import { HiCheck } from 'react-icons/hi2';
-import { BiChevronDown } from 'react-icons/bi';
 
+export function InputFilterSelect({ iconButton, children, label, name, placeholder, color, register, value, onChange, required, maxLength, mask, unmask, autoClear, datas }) {
 
-export function InputFilterSelect({ label, name, placeholder, color, register, value, onChange, required, maxLength, mask, unmask, autoClear, datas }) {
-
-  const [selectedPerson, setSelectedPerson] = useState('')
+  const [selectedPerson, setSelectedPerson] = useState(sortsDatas.bloodTypeFilter[0]);
   const [query, setQuery] = useState('')
 
   const filtredData =
     query === ''
-      ? sortsDatas.bloodTypeFilter
-      : sortsDatas.bloodTypeFilter.filter((person) => {
-        return person.name.toLowerCase().includes(query.toLowerCase())
-      })
+      ? datas : datas.filter((person) => { return person.name.toLowerCase().includes(query.toLowerCase()) })
 
   const handleResetValueInput = () => {
     setSelectedPerson('')
@@ -39,8 +31,7 @@ export function InputFilterSelect({ label, name, placeholder, color, register, v
       <div className="flex w-full flex-col">
         <Field className={`flex w-full flex-col`}>
           <Label
-            className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'
-              } `}
+            className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'} `}
           >
             {label}
           </Label>
@@ -61,7 +52,6 @@ export function InputFilterSelect({ label, name, placeholder, color, register, v
                 <div className="relative w-full">
                   <ComboboxInput
                     className={clsx(`${color ? 'flex w-full z-50 bg-white transitions text-sm p-4 font-light rounded hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed' : ''} `)}
-                    // className='flex w-full z-50 bg-white transitions text-sm p-4 font-light rounded hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed'
                     aria-label="Assignee"
                     autoFocus={false}
                     as='input'
@@ -71,9 +61,8 @@ export function InputFilterSelect({ label, name, placeholder, color, register, v
                     onChange={(e) => { setQuery(e.target.value); }}
                     onClick={handleResetValueInput}
                   />
-                  {/* <ComboboxButton as={MyCustomButton}></ComboboxButton> */}
                   <ComboboxButton className="group absolute inset-y-0 right-0 mx-4 rotate-0 data-[open]:rotate-180 transition ease-in-out duration-150">
-                    <BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />
+                    {iconButton}
                   </ComboboxButton>
                 </div>
                 <ComboboxOptions
@@ -85,7 +74,6 @@ export function InputFilterSelect({ label, name, placeholder, color, register, v
                   anchor="bottom start"
                   className={clsx("w-[calc(var(--input-width))] test-max-w empty:visible",
                     'h-[10rem] py-1 break-normal rounded bg-white px-2 border border-border shadow-lg z-50 ')}
-                // className="flex flex-col h-[10rem] w-[calc(var(--input-width)+25px)] py-1 break-normal rounded bg-white empty:visible px-2 border border-border shadow-lg overflow-auto z-50"
                 >
                   {
                     filtredData.length === 0 && (
@@ -114,7 +102,6 @@ export function InputFilterSelect({ label, name, placeholder, color, register, v
             </>
           )}
         </Combobox>
-
       </div>
     </>
   )

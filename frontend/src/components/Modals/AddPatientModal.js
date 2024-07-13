@@ -288,7 +288,9 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     setQuery={setQuery}
                     datas={filtredData}
                     handleResetValueInput={handleResetValueInput}
-                  />
+                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+                  >
+                  </InputFilterSelect>
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4 w-full">

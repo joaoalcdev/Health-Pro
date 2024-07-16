@@ -8,7 +8,6 @@ import clsx from 'clsx'
 import Modal from './Modal';
 import { toast } from 'react-hot-toast';
 import { Button, Input, Select, InputMaskComp, ButtonNegative, DatePickerComp, InputFilterSelect } from '../Form';
-import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Label, Field, ComboboxButton } from '@headlessui/react'
 
 // datas - import
 import { brStateDatas, genderDatas, maritalDatas, insuranceDatas, sortsDatas } from '../Datas';
@@ -17,7 +16,7 @@ import { brStateDatas, genderDatas, maritalDatas, insuranceDatas, sortsDatas } f
 import { createPatient } from '../../api/PatientsAPI';
 
 // icons - import
-import { HiArrowLeft, HiCheck } from 'react-icons/hi2';
+import { HiArrowLeft } from 'react-icons/hi2';
 import { BiChevronDown } from 'react-icons/bi';
 import { HiOutlineCheckCircle, HiArrowRight } from 'react-icons/hi';
 
@@ -58,19 +57,14 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
 
 
   // combo box
-  const [selectedPerson, setSelectedPerson] = useState(sortsDatas.bloodTypeFilter[0]);
   const [query, setQuery] = useState('')
 
-  const filtredData =
+  const bloodTypeFilter =
     query === ''
       ? sortsDatas.bloodTypeFilter
       : sortsDatas.bloodTypeFilter.filter((person) => {
         return person.name.toLowerCase().includes(query.toLowerCase())
       })
-
-  const handleResetValueInput = () => {
-    setSelectedPerson('')
-  }
 
   // remove focus on combobox input 
 
@@ -282,13 +276,14 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                   <InputFilterSelect
                     label={'Tipo Sanguíneo'}
                     color={true}
-                    selectedPerson={selectedPerson}
-                    setSelectedPerson={setSelectedPerson}
+                    selectedPerson={bloodType}
+                    setSelectedPerson={setBloodType}
                     query={query}
                     setQuery={setQuery}
-                    datas={filtredData}
-                    handleResetValueInput={handleResetValueInput}
-                  />
+                    datas={bloodTypeFilter}
+                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+                  >
+                  </InputFilterSelect>
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4 w-full">

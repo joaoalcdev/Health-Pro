@@ -13,9 +13,9 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Label, Field, ComboboxButton } from '@headlessui/react'
 import { HiCheck } from 'react-icons/hi2';
 
-export function InputFilterSelect({ iconButton, children, label, name, placeholder, color, register, value, onChange, required, maxLength, mask, unmask, autoClear, datas }) {
+export function InputFilterSelect({ iconButton, children, label, name, placeholder, color, register, value, onChange, required, maxLength, mask, unmask, autoClear, selectedPerson, setSelectedPerson, datas }) {
 
-  const [selectedPerson, setSelectedPerson] = useState(sortsDatas.bloodTypeFilter[0]);
+  // const [selectedPerson, setSelectedPerson] = useState(sortsDatas.bloodTypeFilter[0]);
   const [query, setQuery] = useState('')
 
   const filtredData =

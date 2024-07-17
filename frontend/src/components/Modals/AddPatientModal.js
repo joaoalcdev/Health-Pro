@@ -7,8 +7,7 @@ import clsx from 'clsx'
 // components - import 
 import Modal from './Modal';
 import { toast } from 'react-hot-toast';
-import { Button, Input, Select, InputMaskComp, ButtonNegative, DatePickerComp } from '../Form';
-import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Label, Field, ComboboxButton } from '@headlessui/react'
+import { Button, Input, Select, InputMaskComp, ButtonNegative, DatePickerComp, InputFilterSelect } from '../Form';
 
 // datas - import
 import { brStateDatas, genderDatas, maritalDatas, insuranceDatas, sortsDatas } from '../Datas';
@@ -17,7 +16,7 @@ import { brStateDatas, genderDatas, maritalDatas, insuranceDatas, sortsDatas } f
 import { createPatient } from '../../api/PatientsAPI';
 
 // icons - import
-import { HiArrowLeft, HiCheck } from 'react-icons/hi2';
+import { HiArrowLeft } from 'react-icons/hi2';
 import { BiChevronDown } from 'react-icons/bi';
 import { HiOutlineCheckCircle, HiArrowRight } from 'react-icons/hi';
 
@@ -58,19 +57,14 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
 
 
   // combo box
-  const [selectedPerson, setSelectedPerson] = useState(sortsDatas.bloodTypeFilter[0]);
   const [query, setQuery] = useState('')
 
-  const filtredData =
+  const bloodTypeFilter =
     query === ''
       ? sortsDatas.bloodTypeFilter
       : sortsDatas.bloodTypeFilter.filter((person) => {
         return person.name.toLowerCase().includes(query.toLowerCase())
       })
-
-  const handleResetValueInput = () => {
-    setSelectedPerson('')
-  }
 
   // remove focus on combobox input 
 
@@ -150,12 +144,9 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
     if (insurance.id !== 1) {
       return (
         <>
-          <div className=''>
-            <p className='pl-1 mb-[-7px] text-sm text-black'>
-              Nº Cartão (Convênio)
-              {/* <span className='text-required'>*</span> */}
-            </p>
+          <div className="flex w-full flex-col">
             <Input
+              label={'Nº Cartão (Convênio)'}
               color={true}
               required={false}
               placeholder={'9821498214949217'}
@@ -184,12 +175,9 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
             <div className="flex-colo gap-6">
               <div className="grid sm:grid-cols-3 gap-4 w-full">
                 {/* Full Name */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Nome Completo
-                    <span className='text-required'>*</span>
-                  </p>
+                <div className="flex w-full flex-col">
                   <Input
+                    label={'Nome Completo'}
                     color={true}
                     required={true}
                     placeholder="Maria de Lima..."
@@ -199,12 +187,9 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                   />
                 </div>
                 {/* RG */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    RG
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <Input
+                    label={'RG'}
                     color={true}
                     required={false}
                     placeholder="___________"
@@ -214,12 +199,9 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                   />
                 </div>
                 {/* CPF */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    CPF
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <InputMaskComp
+                    label={'CPF'}
                     color={true}
                     mask="999.999.999-99"
                     autoClear={true}
@@ -228,18 +210,15 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     required={false}
                     value={cpf}
                     onChange={(e) => setCpf(e.target.value)}
-                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
+                    className="w-full bg-transparent text-sm border border-border font-light rounded focus:border focus:border-subMain"
                   />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4 w-full">
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Data de Nascimento
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   {/* DatePicker */}
                   <DatePickerComp
+                    label={'Data de Nascimento'}
                     color={true}
                     showYearDropdown={true}
                     scrollableYearDropdown={true}
@@ -253,7 +232,7 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     onChange={(dateBirth) => setDateBirth(dateBirth)}
                   />
                 </div>
-                {/* <div className="flex w-full flex-col gap-1">
+                {/* <div className="flex w-full flex-col">
                   <p className="text-black text-sm">
                     Tipo Sanguíneo
                   </p>
@@ -267,13 +246,11 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     </div>
                   </Select>
                 </div> */}
-                <div className="flex w-full flex-col gap-1">
-                  <p className="text-black text-sm">
-                    Estado Civil
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <Select
+                    label={'Estado Civil'}
                     selectedPerson={marital}
+                    color={true}
                     setSelectedPerson={setMarital}
                     datas={maritalDatas.marital}
                   >
@@ -282,12 +259,10 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     </div>
                   </Select>
                 </div>
-                <div className="flex w-full flex-col gap-1">
-                  <p className='pl-1 text-sm text-black'>
-                    Gênero
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <Select
+                    label={'Gênero'}
+                    color={true}
                     selectedPerson={gender}
                     setSelectedPerson={setGender}
                     datas={genderDatas.gender}
@@ -297,15 +272,25 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     </div>
                   </Select>
                 </div>
+                <div className="flex w-full flex-col">
+                  <InputFilterSelect
+                    label={'Tipo Sanguíneo'}
+                    color={true}
+                    selectedPerson={bloodType}
+                    setSelectedPerson={setBloodType}
+                    query={query}
+                    setQuery={setQuery}
+                    datas={bloodTypeFilter}
+                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+                  >
+                  </InputFilterSelect>
+                </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4 w-full">
                 {/* Tel */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Telefone de Contato
-                    {/* <span className='text-warn'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <InputMaskComp
+                    label={'Telefone de Contato'}
                     color={true}
                     mask="(99) 9 9999-9999"
                     placeholder={'(__) _ ____-____'}
@@ -314,16 +299,13 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     required={false}
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
+                    className="w-full bg-transparent text-sm border border-border font-light rounded focus:border focus:border-subMain"
                   />
                 </div>
                 {/* Emergncy Contact */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Telefone de emergência
-                    {/* <span className='text-warn'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <InputMaskComp
+                    label={'Telefone de Emergência'}
                     color={true}
                     mask="(99) 9 9999-9999"
                     placeholder={'(__) _ ____-____'}
@@ -332,101 +314,18 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     autoClear={true}
                     value={emergencyContact}
                     onChange={(e) => setEmergencyContact(e.target.value)}
-                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
+                    className="w-full bg-transparent text-sm border border-border font-light rounded focus:border focus:border-subMain"
                   />
-                </div>
-              </div>
-              <div className="grid sm:grid-cols-2 gap-4 w-full">
-                {/* Combobox -> Filter & Select */}
-                <div className="flex w-full flex-col">
-                  {/* <div className='flex w-full'> */}
-                  <Field className={`flex w-full flex-col`}>
-                    <Label className={`pl-1 py-1 text-sm text-black hover:cursor-pointer`}>Escolha seu tipo sanguíneo</Label>
-                    {/* fragment component */}
-                    <Combobox
-                      immediate={true}
-                      value={selectedPerson}
-                      onChange={setSelectedPerson}
-                      onClose={() => {
-                        setQuery('');
-                      }}
-                      className='flex w-full'
-                    >
-                      {({ activeOption }) => (
-                        <>
-                          <div className='flex flex-row justify-center items-center text-center w-full max-h-full'>
-                            <div className="relative w-full">
-                              <ComboboxInput
-                                className={clsx('flex w-full z-50 bg-white transitions text-sm p-4 font-light rounded hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed')}
-                                // className='flex w-full z-50 bg-white transitions text-sm p-4 font-light rounded hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed'
-                                aria-label="Assignee"
-                                autoFocus={false}
-                                as='input'
-                                displayValue={(person) => person?.name}
-                                // value={bloodType.name}
-                                // onChange={(e) => setEmergencyContact(e.target.value)}
-                                onChange={(e) => { setQuery(e.target.value); }}
-                                onClick={handleResetValueInput}
-                              />
-                              {/* <ComboboxButton as={MyCustomButton}></ComboboxButton> */}
-                              <ComboboxButton className="group absolute inset-y-0 right-0 mx-4 rotate-0 data-[open]:rotate-180 transition ease-in-out duration-150">
-                                <BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />
-                              </ComboboxButton>
-                            </div>
-                            {/* <div className="flex"> */}
-                            <ComboboxOptions
-                              static={false}
-                              unmount={false}
-                              portal={true}
-                              modal={false}
-                              as="ul"
-                              anchor="bottom start"
-                              className={clsx("sm:w-[calc(var(--input-width))] test-max-w empty:visible",
-                                'h-[10rem] py-1 break-normal rounded bg-white px-2 border border-border shadow-lg z-50 ')}
-                            // className="flex flex-col h-[10rem] w-[calc(var(--input-width)+25px)] py-1 break-normal rounded bg-white empty:visible px-2 border border-border shadow-lg overflow-auto z-50"
-                            >
-                              {
-                                filtredData.length === 0 && (
-                                  <ComboboxOption value={null} className="flex flex-row justify-center items-center text-center w-full bg-greyed py-2 hover:cursor-not-allowed hover:bg-opacity-75">
-                                    <div className="text-sm text-black">Nenhum dado encontrado</div>
-                                  </ComboboxOption>
-                                ) || filtredData.map((person) => (
-                                  <ComboboxOption
-                                    as="li"
-                                    disabled={!person.available}
-                                    key={person.id}
-                                    value={person}
-                                    className="text-black hover:text-subMain text-sm flex justify-left items-center text-justify py-1 my-[0.125rem] origin-top transition duration-200 rounded-sm ease-out empty:visible data-[disabled]:opacity-75 data-[disabled]:text-black data-[disabled]:bg-red-100 data-[disabled]:cursor-not-allowed data-[closed]:scale-100 data-[closed]:opacity-0 group flex bg-white data-[selected]:text-white data-[selected]:bg-subMain hover:bg-black hover:bg-opacity-5 hover:cursor-pointer rounded"
-                                  >
-                                    <HiCheck className="font-bold text-lg text-white invisible group-data-[selected]:visible ml-2" />
-                                    {person.name === activeOption?.name ? (
-                                      <span className="px-1">{person.name}</span>
-                                    ) : (
-                                      <span className="px-1">{person.name}</span>
-                                    )}
-                                  </ComboboxOption>
-                                ))
-                              }
-                            </ComboboxOptions>
-                            {/* </div> */}
-                          </div>
-                        </>
-                      )}
-                    </Combobox>
-                  </Field>
-                  {/* </div> */}
                 </div>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4 w-full">
                 {/* Insurance */}
-                <div className="flex w-full flex-col gap-1">
-                  <p className='pl-1 text-sm text-black'>
-                    Convênio
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <Select
+                    label={'Convênio'}
                     selectedPerson={insurance}
+                    color={true}
                     setSelectedPerson={setInsurance}
                     datas={insuranceDatas.insurance}
                   >
@@ -461,12 +360,9 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
             <div className="flex-colo gap-6">
               <div className="grid sm:grid-cols-2 gap-4 w-full">
                 {/* paternalFiliation */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Filiação Paterna
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <Input
+                    label={'Filiação Paterna'}
                     color={true}
                     required={false}
                     value={paternalFiliation}
@@ -475,12 +371,9 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                   />
                 </div>
                 {/* maternalFiliation */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Filiação Materna
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <Input
+                    label={'Filiação Materna'}
                     color={true}
                     required={false}
                     value={maternalFiliation}
@@ -489,12 +382,9 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                   />
                 </div>
                 {/* paternalFiliationContact */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Contato do responsável 1
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <InputMaskComp
+                    label={'Contato do responsável 1'}
                     color={true}
                     mask="(99) 9 9999-9999"
                     placeholder={'(__) _ ____-____'}
@@ -503,16 +393,13 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     required={false}
                     value={paternalFiliationContact}
                     onChange={(e) => setPaternalFiliationContact(e.target.value)}
-                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
+                    className="w-full bg-transparent text-sm border border-border font-light rounded focus:border focus:border-subMain"
                   />
                 </div>
                 {/* maternalFiliationContact */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Contato do responsável 2
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <InputMaskComp
+                    label={'Contato do responsável 2'}
                     color={true}
                     mask="(99) 9 9999-9999"
                     placeholder={'(__) _ ____-____'}
@@ -521,16 +408,13 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     required={false}
                     value={maternalFiliationContact}
                     onChange={(e) => setMaternalFiliationContact(e.target.value)}
-                    className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
+                    className="w-full bg-transparent text-sm border border-border font-light rounded focus:border focus:border-subMain"
                   />
                 </div>
                 {/* Address */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Endereço
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <Input
+                    label={'Endereço'}
                     color={true}
                     required={false}
                     value={address}
@@ -539,12 +423,9 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                   />
                 </div>
                 {/* Region */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Bairro
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <Input
+                    label={'Bairro'}
                     color={true}
                     required={false}
                     value={region}
@@ -553,12 +434,9 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                   />
                 </div>
                 {/* City */}
-                <div className=''>
-                  <p className='pl-1 mb-[-7px] text-sm text-black'>
-                    Cidade
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <Input
+                    label={'Cidade'}
                     color={true}
                     required={false}
                     value={city}
@@ -567,13 +445,11 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                   />
                 </div>
                 {/* State */}
-                <div className="flex w-full flex-col gap-1">
-                  <p className='pl-1 text-sm text-black'>
-                    Estado
-                    {/* <span className='text-required'>*</span> */}
-                  </p>
+                <div className="flex w-full flex-col">
                   <Select
+                    label={'Estado'}
                     selectedPerson={state}
+                    color={true}
                     setSelectedPerson={setState}
                     datas={brStateDatas.states}
                   >

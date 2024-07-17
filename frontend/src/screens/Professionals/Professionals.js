@@ -173,20 +173,30 @@ function Professionals() {
                 </div>
               </FilterSelect>
             </div>
-            <div className="mt-8 w-full overflow-x-scroll">
+            <div className="mt-8 w-full">
               {noResult ?
                 <div className="bg-greyed pt-8 pb-8 flex items-center justify-center h-auto">
                   <p className="text-sm text-main">Nenhum profissional encontrado</p>
                 </div>
                 :
-                < ProfessionalTable
-                  doctor={true}
-                  data={data}
-                  noData={noResult}
-                  functions={{
-                    preview: preview,
-                  }}
-                />
+                <>
+                  {/* ini table main */}
+                  <div className="mt-6 bg-white rounded-xl border-[1px] border-border p-5">
+                    {/* ini table child */}
+                    <div className="mt-4 overflow-x-scroll">
+                      <ProfessionalTable
+                        doctor={true}
+                        data={data}
+                        noData={noResult}
+                        functions={{
+                          preview: preview,
+                        }}
+                      />
+                    </div>
+                    {/* end table child */}
+                  </div>
+                  {/* end table main */}
+                </>
               }
             </div>
           </div>

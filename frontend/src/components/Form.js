@@ -209,14 +209,16 @@ export function Button({ label, onClick, loading, Icon, type, disabled, children
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className={`select-none w-full flex-rows gap-4 transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} bg-subMain text-white text-sm font-medium px-2 py-4 rounded`}
+      className={`select-none w-full flex-rows transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} bg-subMain text-white text-sm font-medium px-2 py-4 rounded`}
     >
       {loading ? (
         <BiLoaderCircle className="animate-spin text-white text-xl" />
       ) : (
         <>
-          {label}
-          {Icon && <Icon className="text-white text-xl" />}
+          <div className='flex flex-row justify-center items-center text-center'>
+            {label}
+            {/* {Icon && <Icon className="text-white text-xl" />} */}
+          </div>
         </>
       )}
       <span>{children}</span>

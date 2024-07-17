@@ -17,7 +17,7 @@ export const EventCheckIn = async (app: FastifyInstance) => {
     const buffer = Buffer.from(checkInSignature, "base64");
     Jimp.read(buffer, (err, res) => {
       if (err) throw new Error(err.message);
-      res.quality(5).write("resized.jpg");
+      res.quality(5);
     });
     
     try {

@@ -1,35 +1,12 @@
 import { HiOutlineHome, HiOutlineMail, HiOutlineUsers } from 'react-icons/hi';
 
-import {
-  TbCalendar,
-  TbChartHistogram,
-  TbFile,
-  TbFileInvoice,
-  TbLockAccess,
-  TbUsers,
-} from 'react-icons/tb';
+import { TbChartHistogram, TbUsers } from 'react-icons/tb';
 import { getPatients } from '../api/PatientsAPI';
 import { AiOutlineNotification } from "react-icons/ai";
 import { FaRegCalendarAlt, FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
-import {
-  RiFileList3Line,
-  RiHeartLine,
-  RiImageLine,
-  RiLockPasswordLine,
-  RiMedicineBottleLine,
-  RiMoneyDollarCircleLine,
-  RiStethoscopeLine,
-  RiUserHeartLine,
-  RiUserLine,
-} from 'react-icons/ri';
+import { RiFileList3Line, RiMoneyDollarCircleLine, RiUserHeartLine, RiUserLine } from 'react-icons/ri';
 import { LiaUserNurseSolid } from "react-icons/lia";
-import {
-  MdListAlt,
-  MdOutlineAttachMoney,
-  MdOutlineCampaign,
-  MdOutlineInventory2,
-  MdOutlineTextsms,
-} from 'react-icons/md';
+import { MdListAlt, MdOutlineInventory2, MdOutlineTextsms} from 'react-icons/md';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { BiCalendar, BiUserPlus } from 'react-icons/bi';
 
@@ -305,33 +282,33 @@ export const agreements = {
 
 export const brStateDatas = {
   states: [
-    { id: 1, name: "Acre", UF: "AC" },
-    { id: 2, name: "Alagoas", UF: "AL" },
-    { id: 3, name: "Amapá", UF: "AP" },
-    { id: 4, name: "Amazonas", UF: "AM" },
-    { id: 5, name: "Bahia", UF: "BA" },
-    { id: 6, name: "Ceará", UF: "CE" },
-    { id: 7, name: "Distrito Federal", UF: "DF" },
-    { id: 8, name: "Espírito Santo", UF: "ES" },
-    { id: 9, name: "Goiás", UF: "GO" },
-    { id: 10, name: "Maranhão", UF: "MA" },
-    { id: 11, name: "Mato Grosso", UF: "MT" },
-    { id: 12, name: "Mato Grosso do Sul", UF: "MS" },
-    { id: 13, name: "Minas Gerais", UF: "MG" },
-    { id: 14, name: "Pará", UF: "PA" },
-    { id: 15, name: "Paraíba", UF: "PB" },
-    { id: 16, name: "Paraná", UF: "PR" },
-    { id: 17, name: "Pernambuco", UF: "PE" },
-    { id: 18, name: "Piauí", UF: "PI" },
-    { id: 19, name: "Rio de Janeiro", UF: "RJ" },
-    { id: 20, name: "Rio Grande do Norte", UF: "RN" },
-    { id: 21, name: "Rio Grande do Sul", UF: "RS" },
-    { id: 22, name: "Rondônia", UF: "RO" },
-    { id: 23, name: "Roraima", UF: "RR" },
-    { id: 24, name: "Santa Catarina", UF: "SC" },
-    { id: 25, name: "São Paulo", UF: "SP" },
-    { id: 26, name: "Sergipe", UF: "SE" },
-    { id: 27, name: "Tocantins", UF: "TO" }
+    { id: 1, name: "Acre", UF: "AC", available: true },
+    { id: 2, name: "Alagoas", UF: "AL", available: true },
+    { id: 3, name: "Amapá", UF: "AP", available: true },
+    { id: 4, name: "Amazonas", UF: "AM", available: true },
+    { id: 5, name: "Bahia", UF: "BA", available: true },
+    { id: 6, name: "Ceará", UF: "CE", available: true },
+    { id: 7, name: "Distrito Federal", UF: "DF", available: true },
+    { id: 8, name: "Espírito Santo", UF: "ES", available: true },
+    { id: 9, name: "Goiás", UF: "GO", available: true },
+    { id: 10, name: "Maranhão", UF: "MA", available: true },
+    { id: 11, name: "Mato Grosso", UF: "MT", available: true },
+    { id: 12, name: "Mato Grosso do Sul", UF: "MS", available: true },
+    { id: 13, name: "Minas Gerais", UF: "MG", available: true },
+    { id: 14, name: "Pará", UF: "PA", available: true },
+    { id: 15, name: "Paraíba", UF: "PB", available: true },
+    { id: 16, name: "Paraná", UF: "PR", available: true },
+    { id: 17, name: "Pernambuco", UF: "PE", available: true },
+    { id: 18, name: "Piauí", UF: "PI", available: true },
+    { id: 19, name: "Rio de Janeiro", UF: "RJ", available: true },
+    { id: 20, name: "Rio Grande do Norte", UF: "RN", available: true },
+    { id: 21, name: "Rio Grande do Sul", UF: "RS", available: true },
+    { id: 22, name: "Rondônia", UF: "RO", available: true },
+    { id: 23, name: "Roraima", UF: "RR", available: true },
+    { id: 24, name: "Santa Catarina", UF: "SC", available: true },
+    { id: 25, name: "São Paulo", UF: "SP", available: true },
+    { id: 26, name: "Sergipe", UF: "SE", available: true },
+    { id: 27, name: "Tocantins", UF: "TO", available: true }
   ]
 }
 

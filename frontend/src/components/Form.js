@@ -29,7 +29,7 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
       <div className="flex w-full flex-col">
         <Field className={`flex w-full flex-col`}>
           <Label
-            className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'} `}
+            className={`${color ? 'text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'} `}
           >
             {label}
           </Label>
@@ -105,7 +105,7 @@ export function InputFilterSelect({ iconButton, children, label, name, placehold
       <div className="flex w-full flex-col">
         <Field className={`flex w-full flex-col`}>
           <Label
-            className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'} `}
+            className={`${color ? 'text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'} `}
           >
             {label}
           </Label>
@@ -217,7 +217,7 @@ export function InputMaskComp({ label, name, type, color, placeholder, register,
     <div className="text-sm w-full">
       <Field className={`flex w-full flex-col`}>
         <Label
-          className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'
+          className={`${color ? 'text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'
             } `}
         >
           {label}
@@ -369,7 +369,7 @@ export function Select({ children, selectedPerson, setSelectedPerson, datas, max
     <>
       <Field className={`flex w-full flex-col`}>
         <Label
-          className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'
+          className={`${color ? 'text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'
             } `}
         >
           {label}
@@ -508,7 +508,7 @@ export function DatePickerComp({ label, startDate, onChange, color, locale, show
     <div className="flex flex-col text-sm w-full">
       <Field className={`flex w-full flex-col`}>
         <Label
-          className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'
+          className={`${color ? 'text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'
             } `}
         >
           {label}

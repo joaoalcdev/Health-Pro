@@ -1,21 +1,95 @@
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/anchor-is-valid */
+
+// dependencies - libraries
 import React, { useState } from 'react';
 import clsx from 'clsx'
-import { Menu, Listbox, Switch } from '@headlessui/react';
-import { BiLoaderCircle } from 'react-icons/bi';
-import DatePicker from 'react-datepicker';
-import { FaCheck } from 'react-icons/fa';
-import { specialties, sortsDatas } from './Datas';
-import { InputMask } from 'primereact/inputmask';
-import { InputNumber } from 'primereact/inputnumber';
 
-import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Label, Field, ComboboxButton } from '@headlessui/react'
+// icons - import 
+import { BiLoaderCircle } from 'react-icons/bi';
+import { FaCheck } from 'react-icons/fa';
 import { HiCheck } from 'react-icons/hi2';
 
-export function InputFilterSelect({ iconButton, children, label, name, placeholder, color, register, value, onChange, required, maxLength, mask, unmask, autoClear, selectedPerson, setSelectedPerson, datas }) {
+// components - import 
+import DatePicker from 'react-datepicker';
+import { InputMask } from 'primereact/inputmask';
+import { InputNumber } from 'primereact/inputnumber';
+import { Menu, Switch, Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Label, Field, ComboboxButton, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 
-  // const [selectedPerson, setSelectedPerson] = useState(sortsDatas.bloodTypeFilter[0]);
+// datas - import
+import { specialties, sortsDatas } from './Datas';
+
+
+export function SelectListBox({ iconButton, children, label, color, selectedPerson, setSelectedPerson, datas }) {
+  const optionsListDatas = datas ? datas : datas.filter((person) => { return person.name.toLowerCase().includes(query.toLowerCase()) })
+
+
+  return (
+    <>
+      <div className="flex w-full flex-col">
+        <Field className={`flex w-full flex-col`}>
+          <Label
+            className={`${color ? 'text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'} `}
+          >
+            {label}
+          </Label>
+        </Field>
+        {/* fragment component */}
+        {/* <div className="mx-auto w-full"> */}
+        <Listbox value={selectedPerson} onChange={setSelectedPerson}>
+          {({ open }) => (
+            <>
+              <ListboxButton
+                className={clsx(
+                  'group relative block w-full bg-white text-sm p-4 font-light text-left rounded',
+                  // 'flex w-full z-50 bg-white transitions text-sm p-4 font-light rounded hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed',
+                  'hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed'
+                )}
+              >
+                {selectedPerson.name}
+                <span type='reset' className='group absolute -mt-0.5 right-0 mx-4 rotate-0 group-data-[open]:rotate-180 transition ease-in-out duration-150'>
+                  {iconButton}
+                </span>
+              </ListboxButton>
+              {open && (
+                <ListboxOptions
+                  anchor="bottom"
+                  static={false}
+                  unmount={false}
+                  portal={true}
+                  modal={false}
+                  transition
+                  className={clsx(
+                    `origin-top rounded bg-white shadow-lg space-y-1 !max-h-[10.3rem] overflow-y-scroll w-[var(--button-width)] border border-white/5 p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none`,
+                    'transition duration-100 ease-in data-[closed]:scale-100 data-[closed]:opacity-0'
+                  )}
+                >
+                  {optionsListDatas.map((person) => (
+                    <ListboxOption
+                      key={person.name}
+                      value={person}
+                      className={clsx(
+                        "group flex items-center gap-2 rounded-lg py-1.5 px-3 transitions",
+                        'bg-white hover:bg-greyed hover:cursor-pointer',
+                        'data-[selected]:bg-subMain '
+                      )}
+                    >
+                      <HiCheck className="invisible size-4 fill-white group-data-[selected]:visible" />
+                      <div className="text-sm/6 group-data-[selected]:text-white text-black">{person.name}</div>
+                    </ListboxOption>
+                  ))}
+                </ListboxOptions>
+              )}
+            </>
+          )}
+        </Listbox>
+        {/* </div> */}
+      </div>
+    </>
+  )
+}
+
+export function InputFilterSelect({ iconButton, children, label, name, placeholder, color, register, value, onChange, required, maxLength, mask, unmask, autoClear, selectedPerson, setSelectedPerson, datas }) {
   const [query, setQuery] = useState('')
 
   const filtredData =
@@ -56,8 +130,6 @@ export function InputFilterSelect({ iconButton, children, label, name, placehold
                     autoFocus={false}
                     as='input'
                     displayValue={(person) => person?.name}
-                    // value={bloodType.name}
-                    // onChange={(e) => setEmergencyContact(e.target.value)}
                     onChange={(e) => { setQuery(e.target.value); }}
                     onClick={handleResetValueInput}
                   />
@@ -72,14 +144,14 @@ export function InputFilterSelect({ iconButton, children, label, name, placehold
                   modal={false}
                   as="ul"
                   anchor="bottom start"
-                  className={clsx("w-[calc(var(--input-width))] test-max-w empty:visible",
-                    'h-[10rem] py-1 break-normal rounded bg-white px-2 border border-border shadow-lg z-50 ')}
+                  className={clsx("!w-[calc(var(--input-width))] !max-w-[calc(var(--input-width))] empty:visible",
+                    '!max-h-[10rem] py-1 break-normal rounded bg-white px-2 border border-border shadow-lg z-50')}
                 >
                   {
                     filtredData.length === 0 && (
-                      <ComboboxOption value={null} className="flex flex-row justify-center items-center text-center w-full bg-greyed py-2 hover:cursor-not-allowed hover:bg-opacity-75">
-                        <div className="text-sm text-black">Nenhum dado encontrado</div>
-                      </ComboboxOption>
+                      <div className="flex flex-row justify-center items-center text-center w-full bg-greyed py-2 hover:cursor-not-allowed hover:bg-opacity-75">
+                        <p className="text-sm text-black">Nenhum dado encontrado</p>
+                      </div>
                     ) || filtredData.map((person) => (
                       <ComboboxOption
                         as="li"
@@ -194,7 +266,7 @@ export function Input({ label, name, type, color, placeholder, register, value, 
         value={value}
         disabled={disabled}
         placeholder={placeholder}
-        className={`w-full bg-white transitions text-sm p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
+        className={`w-full bg-white transitions text-sm p-4 border ${disabled ? '!cursor-not-allowed' : 'cursor-pointer'} ${color ? 'border-border font-light' : 'border-white text-white'
           } rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
       />
     </div>

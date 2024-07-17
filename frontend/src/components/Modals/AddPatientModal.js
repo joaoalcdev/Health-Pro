@@ -7,7 +7,7 @@ import clsx from 'clsx'
 // components - import 
 import Modal from './Modal';
 import { toast } from 'react-hot-toast';
-import { Button, Input, Select, InputMaskComp, ButtonNegative, DatePickerComp, InputFilterSelect } from '../Form';
+import { Button, Input, InputMaskComp, ButtonNegative, DatePickerComp, InputFilterSelect, SelectListBox } from '../Form';
 
 // datas - import
 import { brStateDatas, genderDatas, maritalDatas, insuranceDatas, sortsDatas } from '../Datas';
@@ -66,7 +66,6 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
         return person.name.toLowerCase().includes(query.toLowerCase())
       })
 
-  // remove focus on combobox input 
 
 
 
@@ -166,8 +165,8 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
       closeModal={closeModal}
       isOpen={isOpen}
       title={'Adicionar Paciente'}
-      width={'max-w-6xl'}
-      height={'sm:min-h-[73svh]'}
+      width={'max-w-5xl'}
+      height={'sm:max-h-screen sm:h-auto'}
     > <>
         {step1 ? <>
           <form onSubmit={handleChangeStep} className=''>
@@ -232,22 +231,8 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     onChange={(dateBirth) => setDateBirth(dateBirth)}
                   />
                 </div>
-                {/* <div className="flex w-full flex-col">
-                  <p className="text-black text-sm">
-                    Tipo Sanguíneo
-                  </p>
-                  <Select
-                    selectedPerson={bloodType}
-                    setSelectedPerson={setBloodType}
-                    datas={sortsDatas.bloodTypeFilter}
-                  >
-                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded focus:border focus:border-subMain overflow-auto">
-                      {bloodType.name} <BiChevronDown className="text-xl" />
-                    </div>
-                  </Select>
-                </div> */}
                 <div className="flex w-full flex-col">
-                  <Select
+                  {/* <Select
                     label={'Estado Civil'}
                     selectedPerson={marital}
                     color={true}
@@ -257,23 +242,28 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded focus:border focus:border-subMain overflow-auto">
                       {marital.name} <BiChevronDown className="text-xl" />
                     </div>
-                  </Select>
+                  </Select> */}
+                  <SelectListBox
+                    label={'Estado Civil'}
+                    color={true}
+                    selectedPerson={marital}
+                    setSelectedPerson={setMarital}
+                    datas={maritalDatas.marital}
+                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+                  />
                 </div>
                 <div className="flex w-full flex-col">
-                  <Select
+                  <SelectListBox
                     label={'Gênero'}
                     color={true}
                     selectedPerson={gender}
                     setSelectedPerson={setGender}
                     datas={genderDatas.gender}
-                  >
-                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded focus:border focus:border-subMain overflow-auto">
-                      {gender.name}<BiChevronDown className="text-xl" />
-                    </div>
-                  </Select>
+                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+                  />
                 </div>
                 <div className="flex w-full flex-col">
-                  <InputFilterSelect
+                  {/* <InputFilterSelect
                     label={'Tipo Sanguíneo'}
                     color={true}
                     selectedPerson={bloodType}
@@ -283,7 +273,15 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                     datas={bloodTypeFilter}
                     iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
                   >
-                  </InputFilterSelect>
+                  </InputFilterSelect> */}
+                  <SelectListBox
+                    label={'Tipo Sanguíneo'}
+                    color={true}
+                    selectedPerson={bloodType}
+                    setSelectedPerson={setBloodType}
+                    datas={bloodTypeFilter}
+                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+                  />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4 w-full">
@@ -322,17 +320,14 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
               <div className="grid sm:grid-cols-2 gap-4 w-full">
                 {/* Insurance */}
                 <div className="flex w-full flex-col">
-                  <Select
+                  <SelectListBox
                     label={'Convênio'}
-                    selectedPerson={insurance}
                     color={true}
+                    selectedPerson={insurance}
                     setSelectedPerson={setInsurance}
                     datas={insuranceDatas.insurance}
-                  >
-                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded focus:border focus:border-subMain overflow-auto">
-                      {insurance.name} <BiChevronDown className="text-xl" />
-                    </div>
-                  </Select>
+                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+                  />
                 </div>
                 {/* cardNumber (insurance) */}
                 {handleInsurance()}
@@ -446,17 +441,25 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                 </div>
                 {/* State */}
                 <div className="flex w-full flex-col">
-                  <Select
+                  {/* <SelectListBox
                     label={'Estado'}
-                    selectedPerson={state}
                     color={true}
+                    selectedPerson={state}
                     setSelectedPerson={setState}
                     datas={brStateDatas.states}
+                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+                  /> */}
+                  <InputFilterSelect
+                    label={'Estado'}
+                    color={true}
+                    selectedPerson={state}
+                    setSelectedPerson={setState}
+                    query={query}
+                    setQuery={setQuery}
+                    datas={brStateDatas.states}
+                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
                   >
-                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded focus:border focus:border-subMain overflow-auto">
-                      {state.name} ({state.UF}) <BiChevronDown className="text-xl" />
-                    </div>
-                  </Select>
+                  </InputFilterSelect>
                 </div>
               </div>
 

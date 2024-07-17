@@ -162,12 +162,17 @@ function Patients() {
   // archived patients
   const archivedPatients = data.filter((item) => item.deletedAt !== null).length;
 
+  const diaryPatients = data.filter((item) => {
+    const date = new Date(item.createdAt);
+    return date.toDateString() === new Date().toDateString();
+  });
+
   // component - boxes data
   const boxes = tab === 1 ? [
     {
       id: 1,
       title: 'Pacientes Diários',
-      value: ['0'],
+      value: ['+', diaryPatients.length, ''],
       text: 'No Data :(',
       color: ['bg-subMain', 'text-subMain'],
       icon: HiOutlineClock,
@@ -209,9 +214,9 @@ function Patients() {
         setDynamicUsed(false);
       }
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, {passive: true});
     handleResize();
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize, {passive: true});
   }, []);
 
   return (
@@ -351,7 +356,7 @@ function Patients() {
                           deletePatient: removePatient,
                           restorePatient: restorePatient,
                         }}
-                        // used={dynamicUsed}
+                        used={dynamicUsed}
                       />
                     </div>
                     {/* end table child */}

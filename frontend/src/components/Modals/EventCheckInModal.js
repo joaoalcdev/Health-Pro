@@ -86,6 +86,7 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
           <Input
             label="Nome do responsável pelo check-in"
             value={checkInName}
+            placeholder={'Maria da Silva'}
             color={true}
             type="text"
             onChange={(e) => {

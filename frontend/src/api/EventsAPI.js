@@ -65,9 +65,10 @@ export const updateEvent = async (data, eventInstanceId) => {
   }
 }
 
-export const eventCheckIn = async (data, eventInstanceId) => {
+export const eventCheckIn = async (formData, eventInstanceId) => {
   try {
-    const response = await axios.put(apiBaseUrl(`checkIn/${eventInstanceId}`), data)
+    const response = await axios.post(apiBaseUrl(`checkIn/${eventInstanceId}`), formData,
+    )
     return response
   } catch (error) {
     return error

@@ -20,6 +20,7 @@ function EventDetailsInfo({ data, onStatus }) {
   const [authorizationDate, setAuthorizationDate] = useState(null);
   const [prePassword, setPrePassword] = useState(null);
   const [prePasswordDate, setPrePasswordDate] = useState(null);
+  const [eventStatus, setEventStatus] = useState(null);
 
 
   useEffect(() => {
@@ -29,6 +30,7 @@ function EventDetailsInfo({ data, onStatus }) {
     data.agAuthDate ? setAuthorizationDate(new Date(data.agAuthDate)) : setAuthorizationDate(null);
     data.agPreCode ? setPrePassword(data.agPreCode) : setPrePassword(null);
     data.agPreCodeDate ? setPrePasswordDate(new Date(data.agPreCodeDate)) : setPrePasswordDate(null);
+    data.eventStatus ? setEventStatus(data.eventStatus) : setEventStatus(null);
   }, [data]);
 
   useEffect(() => {
@@ -264,7 +266,7 @@ function EventDetailsInfo({ data, onStatus }) {
               </div>
             </div>
           }
-          {data.eventStatus === 3 &&
+          {eventStatus === 3 &&
             <div className="flex p-2 text-subMain justify-end items-center">
               <span className="mr-2"><GiConfirmed /></span>
               Check-in realizado por {data.checkInName}, {formatDate(data.checkInDate)} às {formatDateTime(data.checkInDate)}.

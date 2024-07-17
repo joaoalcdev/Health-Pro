@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
-import { useNavigate } from 'react-router-dom';
 import SignatureCanvas from 'react-signature-canvas';
 import {
   Button,
@@ -9,12 +8,11 @@ import {
 } from '../Form';
 import { TbReload } from "react-icons/tb";
 import { toast } from 'react-hot-toast';
-import { eventCheckIn, updateEvent } from '../../api/EventsAPI';
+import { eventCheckIn } from '../../api/EventsAPI';
 
 
 
 function EventCheckInModal({ closeModal, isOpen, datas, status }) {
-  const navigate = useNavigate();
 
   //controllers
   const [confirmationResponse, setConfirmationResponse] = useState(false);
@@ -25,34 +23,31 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
   const [checkInName, setCheckInName] = useState("");
   const [signature, setSignature] = useState();
 
-  useEffect(() => {
-    console.log(datas)
-  }, [])
-
   const clearPad = () => {
     signature.clear();
   }
 
-  const handleCheckIn = () => {
+  const handleCheckIn = async () => {
     setLoading(true);
     setDisabled(true);
-    const data = {
-      checkInName: checkInName,
-      checkInSignature: signature.toDataURL('image/jpg'),
-    };
 
-    const response = eventCheckIn(data, datas.eventInstanceId);
+    const sign = signature.toDataURL('image/png')
+
+    const response = await eventCheckIn({
+      checkInName: checkInName,
+      checkInSignature: sign.split(';base64,')[1],
+    }, datas.eventInstanceId);
+
     if (response.response && response.response.status >= 400) {
       toast.error('Check-In não realizado, tente novamente!');
       setLoading(false)
       setDisabled(false)
       return
     }
-
+    status(true);
     toast.success('Check-In realizado com sucesso!');
     setLoading(false);
     setDisabled(true);
-    status(true);
     closeModal();
   }
 
@@ -91,6 +86,7 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
           <Input
             label="Nome do responsável pelo check-in"
             value={checkInName}
+            placeholder={'Maria da Silva'}
             color={true}
             type="text"
             onChange={(e) => {

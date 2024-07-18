@@ -36,7 +36,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
   }
 
   // pagination states
-  const [records, setRecords] = useState(patientData);
+  // const [records, setRecords] = useState(patientData);
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 8;
 
@@ -100,7 +100,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
           </tr>
         </thead>
         <tbody>
-          {records.map((item, index) => (
+          {patientData.map((item, index) => (
             <tr
               key={item.id}
               className="group border-b border-border hover:bg-greyed transitions"
@@ -199,15 +199,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
           ))}
         </tbody>
       </table>
-
-      {/* pagination */}
-      <Pagination
-        records={patientData}
-        setRecords={setRecords}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        recordsPerPage={recordsPerPage}
-      />
+      
     </>
   );
 }

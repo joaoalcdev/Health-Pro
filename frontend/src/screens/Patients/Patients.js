@@ -15,9 +15,10 @@ import Tab from '../../components/Tab';
 import AddPatientModal from '../../components/Modals/AddPatientModal';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import { useNavigate } from 'react-router-dom';
+import Pagination from '../../components/Pagination';
 import { PatientsTable } from '../../components/Tables/PatientTable';
 
-function Patients() {
+function Patients(patientData) {
   const navigate = useNavigate();
 
   // data
@@ -214,10 +215,15 @@ function Patients() {
         setDynamicUsed(false);
       }
     };
-    window.addEventListener('resize', handleResize, {passive: true});
+    window.addEventListener('resize', handleResize, { passive: true });
     handleResize();
-    return () => window.removeEventListener('resize', handleResize, {passive: true});
+    return () => window.removeEventListener('resize', handleResize, { passive: true });
   }, []);
+
+  // pagination states
+  const [records, setRecords] = useState(patientData);
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 8;
 
   return (
     <Layout>
@@ -364,6 +370,15 @@ function Patients() {
                   {/* end table main */}
                 </>
               }
+              <div className='flex flex-row w-full'>
+                <Pagination
+                  records={data}
+                  setRecords={setRecords}
+                  recordsPerPage={recordsPerPage}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                />
+              </div>
             </div>
           </div>
         </>

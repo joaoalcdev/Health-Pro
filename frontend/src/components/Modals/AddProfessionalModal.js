@@ -275,6 +275,7 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
           <div className="flex-colo gap-6">
             <Input
               label="Nome Completo"
+              placeholder={'João da Silva'}
               color={true}
               required={true}
               value={fullName}
@@ -285,6 +286,7 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
               <div className="grid sm:grid-cols-2 gap-4 w-full">
                 <Input
                   label="RG"
+                  placeholder={'20062453598'}
                   color={true}
                   required={true}
                   value={rg}
@@ -293,6 +295,7 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
                 />
                 <Input
                   label="Expedição"
+                  placeholder={'SSP-SP'}
                   color={true}
                   value={rgInssuance}
                   onChange={(e) => setRgInssuance(e.target.value)}
@@ -314,17 +317,15 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
                   }
                   className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
                 />
-                <div className="flex w-full flex-col gap-3">
-                  <p className="text-black text-sm">Gênero</p>
-                  <Select
+                <div className="flex w-full flex-col">
+                  <SelectListBox
+                    label={'Gênero'}
+                    color={true}
                     selectedPerson={gender}
                     setSelectedPerson={setGender}
                     datas={genderDatas.gender}
-                  >
-                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                      {gender.name}<BiChevronDown className="text-xl" />
-                    </div>
-                  </Select>
+                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+                  />
                 </div>
               </div>
 
@@ -333,39 +334,36 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
 
             {/* specialty and  council*/}
             <div className="grid sm:grid-cols-2 gap-4 w-full">
-              <div className="flex w-full flex-col gap-3">
-                <p className="text-black text-sm">Especialidade</p>
-                <Select
+              <div className="flex w-full flex-col">
+                <SelectListBox
+                  label={'Especialidades'}
+                  color={true}
                   selectedPerson={specialty}
                   setSelectedPerson={setSpecialty}
                   datas={specialties}
-                >
-                  <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                    {specialty ? specialty.name : 'Sem dados'}<BiChevronDown className="text-xl" />
-                  </div>
-                </Select>
+                  iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+                />
               </div>
               <div className="grid sm:grid-cols-2 gap-4 w-full">
-                <div className="flex w-full flex-col gap-3">
-                  <p className="text-black text-sm">Conselho</p>
-                  <Select
+                <div className="flex w-full flex-col">
+                  <SelectListBox
+                    label={'Conselho'}
+                    color={true}
                     selectedPerson={council}
                     setSelectedPerson={setCouncil}
                     datas={councilDatas.council}
-                  >
-                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                      {council.name} <BiChevronDown className="text-xl" />
-                    </div>
-                  </Select>
+                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+                  />
                 </div>
                 <Input
                   label="Numero do Conselho"
+                  required={true}
+                  placeholder={'2123'}
                   color={true}
                   value={councilNumber}
                   maxLength={10}
                   onChange={(e) => setCouncilNumber(e.target.value)}
                 />
-
               </div>
             </div>
 

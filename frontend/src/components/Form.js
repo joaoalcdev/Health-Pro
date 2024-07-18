@@ -90,6 +90,8 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
 }
 
 export function InputFilterSelect({ iconButton, children, label, name, placeholder, color, register, value, onChange, required, maxLength, mask, unmask, autoClear, selectedPerson, setSelectedPerson, datas }) {
+  const isRequired = required ? <span className="text-red-500">*</span> : null;
+
   const [query, setQuery] = useState('')
 
   const filtredData =
@@ -107,7 +109,7 @@ export function InputFilterSelect({ iconButton, children, label, name, placehold
           <Label
             className={`${color ? 'text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'} `}
           >
-            {label}
+            {label}{isRequired}
           </Label>
         </Field>
         {/* fragment component */}
@@ -213,6 +215,7 @@ export function CurrencyInputMask({ label, name, color, placeholder, register, v
 }
 
 export function InputMaskComp({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, mask, unmask, autoClear }) {
+  const isRequired = required ? <span className="text-red-500">*</span> : null;
   return (
     <div className="text-sm w-full">
       <Field className={`flex w-full flex-col`}>
@@ -220,7 +223,7 @@ export function InputMaskComp({ label, name, type, color, placeholder, register,
           className={`${color ? 'text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'
             } `}
         >
-          {label}
+          {label}{isRequired}
         </Label>
       </Field>
       <InputMask
@@ -244,14 +247,17 @@ export function InputMaskComp({ label, name, type, color, placeholder, register,
 
 
 export function Input({ label, name, type, color, placeholder, register, value, onChange, required, maxLength, disabled, autoComplete, cursor, max }) {
+  const isRequired = required ? <span className="text-red-500">*</span> : null;
+
   return (
+
     <div className="text-sm w-full">
       <Field className={`flex w-full flex-col`}>
         <Label
-          className={`${color ? 'select-none text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'
+          className={`${color ? 'select-none text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'
             } `}
         >
-          {label}
+          {label}{isRequired}
         </Label>
       </Field>
       <input

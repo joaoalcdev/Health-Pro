@@ -1,13 +1,24 @@
+// dependencies - import
 import React, { useState, useEffect } from 'react';
-import { createUser, updateUser } from '../../api/UsersAPI';
+
+// components - import
 import Modal from './Modal';
-import { Button, Input, Select } from '../Form';
-import { BiChevronDown } from 'react-icons/bi';
-import { roleOptions, brStateDatas, genderDatas } from '../Datas';
-import { HiOutlineCheckCircle } from 'react-icons/hi';
-import { PiPassword } from "react-icons/pi";
 import { toast } from 'react-hot-toast';
-import { InputMaskComp } from '../Form';
+import { Button, Input, InputFilterSelect, SelectListBox, InputMaskComp } from '../Form';
+
+// datas - import
+import { sortsDatas, roleOptions, brStateDatas, genderDatas } from '../Datas';
+
+// api - import
+import { createUser, updateUser } from '../../api/UsersAPI';
+
+// icons
+import { PiPassword } from "react-icons/pi";
+import { BiChevronDown } from 'react-icons/bi';
+import { HiOutlineCheckCircle } from 'react-icons/hi';
+
+// utils
+
 
 
 function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
@@ -115,6 +126,16 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
     toast.success("Senha redefinida com sucesso!")
   };
 
+  // combo box
+  const [query, setQuery] = useState('')
+
+  const bloodTypeFilter =
+    query === ''
+      ? sortsDatas.bloodTypeFilter
+      : sortsDatas.bloodTypeFilter.filter((person) => {
+        return person.name.toLowerCase().includes(query.toLowerCase())
+      })
+
 
   return (
     <Modal
@@ -129,6 +150,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
           <div className="grid sm:grid-cols-2 gap-4 w-full">
             <Input
               label="Primeiro nome"
+              placeholder={'João'}
               color={true}
               required={true}
               value={firstName}
@@ -136,6 +158,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
             />
             <Input
               label="Sobrenome"
+              placeholder={'Silva'}
               color={true}
               required={true}
               value={lastName}
@@ -143,6 +166,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
             />
             <Input
               type="email"
+              placeholder={'joao@gmail.com'}
               label="Email"
               color={true}
               required={true}
@@ -151,29 +175,27 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
               onChange={(e) => setEmail(e.target.value)}
             />
             <div className="grid sm:grid-cols-2 gap-4 w-full">
-
               <InputMaskComp
-                label="Telefone"
+                label={'Telefone'}
                 color={true}
+                autoClear={true}
                 mask="(99) 9 9999-9999"
                 placeholder={'(__) _ ____-____'}
                 unmask={true}
-                required={true}
+                required={false}
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+                className="w-full bg-transparent text-sm border border-border font-light rounded focus:border focus:border-subMain"
               />
-              <div className="flex w-full flex-col gap-3">
-                <p className="text-black text-sm">Gênero</p>
-                <Select
+              <div className="flex w-full flex-col">
+                <SelectListBox
+                  label={'Gênero'}
+                  color={true}
                   selectedPerson={gender}
                   setSelectedPerson={setGender}
                   datas={genderDatas.gender}
-                >
-                  <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                    {gender.name}<BiChevronDown className="text-xl" />
-                  </div>
-                </Select>
+                  iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+                />
               </div>
             </div>
 
@@ -181,38 +203,52 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
 
           {/* Address*/}
           <div className="grid sm:grid-cols-2 gap-4 w-full">
-            <Input
-              label="Endereço"
-              color={true}
-              required={true}
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-            <Input
-              label="Bairro"
-              color={true}
-              required={true}
-              value={region}
-              onChange={(e) => setRegion(e.target.value)}
-            />
-            <Input
-              label="Cidade"
-              color={true}
-              required={true}
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-            />
-            <div className="flex w-full flex-col gap-3">
-              <p className="text-black text-sm">Estado</p>
-              <Select
+            {/* Address */}
+            <div className="flex w-full flex-col">
+              <Input
+                label={'Endereço'}
+                color={true}
+                required={false}
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder={'Rua, Número'}
+              />
+            </div>
+            {/* Region */}
+            <div className="flex w-full flex-col">
+              <Input
+                label={'Bairro'}
+                color={true}
+                required={false}
+                value={region}
+                onChange={(e) => setRegion(e.target.value)}
+                placeholder={'Centro'}
+              />
+            </div>
+            {/* City */}
+            <div className="flex w-full flex-col">
+              <Input
+                label={'Cidade'}
+                color={true}
+                required={false}
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                placeholder={'Russas'}
+              />
+            </div>
+            {/* State */}
+            <div className="flex w-full flex-col">
+              <InputFilterSelect
+                label={'Estado'}
+                color={true}
                 selectedPerson={state}
                 setSelectedPerson={setState}
+                query={query}
+                setQuery={setQuery}
                 datas={brStateDatas.states}
+                iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
               >
-                <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                  {state.name} ({state.UF}) <BiChevronDown className="text-xl" />
-                </div>
-              </Select>
+              </InputFilterSelect>
             </div>
 
           </div>
@@ -236,17 +272,15 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
                 <PiPassword className="text-xl" />
               </button>
             </div>}
-            <div className="flex w-full flex-col gap-3">
-              <p className="text-black text-sm">Permissão</p>
-              <Select
+            <div className="flex w-full flex-col">
+              <SelectListBox
+                label={'Gênero'}
+                color={true}
                 selectedPerson={roleId}
                 setSelectedPerson={setRoleId}
                 datas={roles}
-              >
-                <div className="w-full flex-btn text-black text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
-                  {roleId.name} <BiChevronDown className="text-xl" />
-                </div>
-              </Select>
+                iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+              />
             </div>
           </div>
 

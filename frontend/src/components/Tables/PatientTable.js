@@ -17,7 +17,7 @@ import { formatDate } from '../../utils/formatDate';
 import { calculateDate } from '../../utils/calculateDate';
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
 
-export function PatientsTable({ functions, used, noData, patientData }) {
+export function PatientsTable({ functions, used, noData, patientData, superIndex }) {
 
   // table classes styles
   const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
@@ -35,10 +35,6 @@ export function PatientsTable({ functions, used, noData, patientData }) {
     setStatus(true);
   }
 
-  // pagination states
-  // const [records, setRecords] = useState(patientData);
-  const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 8;
 
   return (noData ?
     <>
@@ -105,7 +101,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
               key={item.id}
               className="group border-b border-border hover:bg-greyed transitions"
             >
-              <td className={tdclass}>{(currentPage * recordsPerPage) - recordsPerPage + index + 1}</td>
+              <td className={tdclass}>{(superIndex) + (index + 1)}</td>
               <td className={tdclass}>
                 <div className="flex gap-4 items-center">
                   <span className="w-12">
@@ -199,7 +195,7 @@ export function PatientsTable({ functions, used, noData, patientData }) {
           ))}
         </tbody>
       </table>
-      
+
     </>
   );
 }

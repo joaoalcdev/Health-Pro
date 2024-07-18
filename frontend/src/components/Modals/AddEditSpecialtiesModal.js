@@ -83,14 +83,14 @@ function AddEditSpecialtiesModal({ closeModal, isOpen, datas, setStatus }) {
       <div className="grid sm:grid-cols-2 gap-4 w-full">
         <Input
           label="Especialidade"
+          required={true}
           color={true}
           value={name}
           placeholder={'Digite a especialidade'}
           onChange={(e) => setName(e.target.value)}
         />
-
         {/* switch */}
-        <div className="flex items-center pt-8 gap-2 w-full">
+        <div className="flex items-center gap-2 w-full">
           <Switchi
             label="Status"
             checked={check}
@@ -100,7 +100,6 @@ function AddEditSpecialtiesModal({ closeModal, isOpen, datas, setStatus }) {
             {check ? 'Ativado' : 'Desativado'}
           </p>
         </div>
-
         <CurrencyInputMask
           label={'Valor da Consulta'}
           color={true}
@@ -119,7 +118,7 @@ function AddEditSpecialtiesModal({ closeModal, isOpen, datas, setStatus }) {
           currency={'BRL'}
           locale={'pt-BR'}
           allowEmpty={true}
-          inputClassName={`transitions w-full bg-white text-sm mt-3 p-4 border 'border-border font-light' 'border-white text-white'
+          inputClassName={`transitions w-full bg-white text-sm p-4 border 'border-border font-light' 'border-white text-white'
         rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
         />
         <div></div>

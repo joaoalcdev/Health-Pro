@@ -1,14 +1,24 @@
+// dependencies - import
 import { useState, useEffect } from 'react';
-import Modal from './Modal';
-import { Button, Input, Select } from '../Form';
-import { BiChevronDown } from 'react-icons/bi';
-import { sortsDatas } from '../Datas';
-import { HiOutlineCheckCircle, HiArrowRight } from 'react-icons/hi';
+
+// components - import
 import { toast } from 'react-hot-toast';
-import { brStateDatas, roleOptions, specialties, councilDatas, genderDatas } from '../Datas';
-import { InputMaskComp } from '../Form';
+import Modal from './Modal';
+import { Button, Input, Select, InputMaskComp, SelectListBox, InputFilterSelect } from '../Form';
+
+// datas - import
+import { sortsDatas, brStateDatas, councilDatas, genderDatas } from '../Datas';
+
+// api - import
 import { createProfessional } from '../../api/ProfessionalsAPI';
 import { getSpecialties } from '../../api/specialtiesAPI';
+
+// icons
+import { BiChevronDown } from 'react-icons/bi';
+import { HiOutlineCheckCircle, HiArrowRight } from 'react-icons/hi';
+
+// utils
+
 
 function AddProfessionalModal({ closeModal, isOpen, professional, datas, status }) {
   //controllers
@@ -108,6 +118,18 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
     }
   }
 
+  // combo box
+  const [query, setQuery] = useState('')
+
+  const bloodTypeFilter =
+    query === ''
+      ? sortsDatas.bloodTypeFilter
+      : sortsDatas.bloodTypeFilter.filter((person) => {
+        return person.name.toLowerCase().includes(query.toLowerCase())
+      })
+
+
+
   return (
     <Modal
       closeModal={closeModal}
@@ -120,85 +142,112 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
           <h1 className='text-md font-light mb-4'>Passo 1: Informações para criação de Usuário/Acesso</h1>
           <div className="flex-colo gap-6">
             <div className="grid sm:grid-cols-2 gap-4 w-full">
-              <Input
-                label="Primeiro Name"
-                color={true}
-                required={true}
-                placeholder="John"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              <Input
-                label="Sobrenome"
-                color={true}
-                required={true}
-                placeholder="Doe"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
+              {/* first Name */}
+              <div className="flex w-full flex-col">
+                <Input
+                  label={'Primeiro Nome'}
+                  color={true}
+                  required={true}
+                  placeholder="João"
+                  type={'text'}
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </div>
+              {/* last Name */}
+              <div className="flex w-full flex-col">
+                <Input
+                  label={'Sobrenome'}
+                  color={true}
+                  required={true}
+                  placeholder="Silva"
+                  type={'text'}
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
             </div>
             <div className="grid sm:grid-cols-2 gap-4 w-full">
-              <Input
-                label="Email"
-                required={true}
-                color={true}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <InputMaskComp
-                label="Telefone"
-                color={true}
-                mask="(99) 9 9999-9999"
-                placeholder={'(__) _ ____-____'}
-                unmask={true}
-                required={true}
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
-              />
+              {/* last Name */}
+              <div className="flex w-full flex-col">
+                <Input
+                  label={'Email'}
+                  color={true}
+                  required={true}
+                  placeholder="joao@gmail.com"
+                  type={'email'}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="flex w-full flex-col">
+                <InputMaskComp
+                  label="Telefone"
+                  color={true}
+                  mask="(99) 9 9999-9999"
+                  placeholder={'(__) _ ____-____'}
+                  unmask={true}
+                  required={true}
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  className="w-full bg-transparent text-sm border border-border font-light rounded focus:border focus:border-subMain"
+                />
+              </div>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4 w-full">
-              <Input
-                label="Endereço"
-                color={true}
-                required={true}
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-              <Input
-                label="Bairro"
-                color={true}
-                required={true}
-                value={region}
-                onChange={(e) => setRegion(e.target.value)}
-              />
+              <div className="flex w-full flex-col">
+                <Input
+                  label="Endereço"
+                  placeholder={'Rua, 134'}
+                  color={true}
+                  required={true}
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
+              <div className="flex w-full flex-col">
+                <Input
+                  label="Bairro"
+                  placeholder={'Centro'}
+                  color={true}
+                  required={true}
+                  value={region}
+                  onChange={(e) => setRegion(e.target.value)}
+                />
+              </div>
             </div>
             <div className="grid sm:grid-cols-2 gap-4 w-full">
               <div className="grid sm:grid-cols-2 gap-4 w-full">
-                <Input
-                  label="Cidade"
-                  color={true}
-                  required={true}
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                />
-                <div className="flex w-full flex-col gap-3">
-                  <p className="text-black text-sm">Estado</p>
-                  <Select
+                <div className="flex w-full flex-col">
+                  <Input
+                    label="Cidade"
+                    placeholder={'São Paulo'}
+                    color={true}
+                    required={true}
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+                </div>
+                {/* State */}
+                <div className="flex w-full flex-col">
+                  <InputFilterSelect
+                    label={'Estado'}
+                    color={true}
                     selectedPerson={state}
                     setSelectedPerson={setState}
+                    query={query}
+                    setQuery={setQuery}
                     datas={brStateDatas.states}
+                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
                   >
-                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                      {state.name} ({state.UF}) <BiChevronDown className="text-xl" />
-                    </div>
-                  </Select>
+                  </InputFilterSelect>
                 </div>
               </div>
               {/* password */}
               <Input
-                label="Password"
+                label="Definir Senha"
+                placeholder={'**********'}
                 color={true}
                 required={true}
                 value={password}

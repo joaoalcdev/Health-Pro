@@ -18,10 +18,12 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
   const [confirmationResponse, setConfirmationResponse] = useState(false);
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false);
 
   //data
   const [checkInName, setCheckInName] = useState("");
-  const [signature, setSignature] = useState();
+  const [finalSignature, setFinalSignature] = useState("");
+  const [signature, setSignature] = useState('');
 
   const clearPad = () => {
     signature.clear();
@@ -31,11 +33,9 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
     setLoading(true);
     setDisabled(true);
 
-    const sign = signature.toDataURL('image/png')
-
     const response = await eventCheckIn({
       checkInName: checkInName,
-      checkInSignature: sign.split(';base64,')[1],
+      checkInSignature: finalSignature.split(';base64,')[1],
     }, datas.eventInstanceId);
 
     if (response.response && response.response.status >= 400) {
@@ -51,7 +51,55 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
     closeModal();
   }
 
-  return (
+  const handleCloseSignatureModal = () => {
+    console.log(signature.toDataURL());
+    setIsSignatureModalOpen(false);
+  }
+
+  const handleSaveSignature = () => {
+    setFinalSignature(signature.getTrimmedCanvas().toDataURL('image/png'));
+    setIsSignatureModalOpen(false);
+  }
+
+  return (<>
+    {isSignatureModalOpen && (
+      <Modal
+        closeModal={handleCloseSignatureModal}
+        isOpen={isSignatureModalOpen}
+        title={'Assinatura'}
+        width={'w-[90vw]'}
+        height={'h-[90vh]'}
+      >
+        <>
+          <div className='relative h-[80%] border border-subMain rounded-lg'>
+            <SignatureCanvas
+              ref={(ref) => setSignature(ref)}
+              minWidth={1}
+              maxWidth={1}
+              canvasProps={{ className: 'sigCanvas w-full h-full rounded-lg' }}
+            />
+            <span className='absolute bottom-0 right-0 p-2 text-subMain cursor-pointer' onClick={clearPad}>
+              <TbReload className='w-7 h-7' />
+            </span>
+          </div>
+          <div className="w-full grid grid-cols-4 gap-4 mt-4 justify-end">
+            <div className='col-start-3 col-end-4'>
+              <ButtonNegative
+                label={'Cancelar'}
+                onClick={handleCloseSignatureModal}
+              />
+            </div>
+            <div >
+              <Button
+                label={'Salvar'}
+                onClick={handleSaveSignature}
+              />
+            </div>
+          </div>
+        </>
+      </Modal>
+    )
+    }
     <Modal
       closeModal={closeModal}
       isOpen={isOpen}
@@ -82,7 +130,7 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
         </div>
       )}
       {confirmationResponse && (
-        <div className="pb-4 flex flex-col gap-4 text-left">
+        <div className="flex flex-col gap-4 text-left">
           <Input
             label="Nome do responsável pelo check-in"
             value={checkInName}
@@ -93,20 +141,26 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
               setCheckInName(e.target.value);
             }}
           />
-          <div className='relative border border-subMain rounded-lg'>
-            <SignatureCanvas
-              ref={(ref) => setSignature(ref)}
-              minWidth={2}
-              maxWidth={2}
-              backgroundColor={'#f5f5f5'}
-              canvasProps={{ className: 'sigCanvas w-full h-auto rounded-lg ' }}
-            />
-            <span className='absolute bottom-0 right-0 p-2 text-subMain cursor-pointer' onClick={clearPad}>
-              <TbReload className='w-7 h-7' />
-            </span>
-          </div>
+          {finalSignature === "" ?
+
+            <div>
+              <Button
+                label={'Assinar'}
+                onClick={() => setIsSignatureModalOpen(true)}
+                disabled={checkInName === "" || loading || disabled}
+                className='w-full'
+              />
+            </div>
+            :
+            <div className='relative w-full flex justify-center items-center border border-subMain rounded-lg p-4'>
+              <img src={finalSignature} alt="assinatura" className='w-full h-full' />
+              <span className='absolute top-0 right-0 p-2 text-subMain cursor-pointer' onClick={() => setIsSignatureModalOpen(true)}>
+                <TbReload className='w-7 h-7' />
+              </span>
+            </div>
+          }
           <div className='w-full flex justify-end items-end'>
-            <div className="w-full grid grid-cols-2 gap-4 mt-4 justify-end">
+            <div className="w-full grid grid-cols-2 gap-4 justify-end">
               <ButtonNegative
                 label={'Cancelar'}
                 onClick={closeModal}
@@ -123,7 +177,7 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
       )}
 
     </Modal >
-  );
+  </>);
 }
 
 export default EventCheckInModal;

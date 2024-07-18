@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { eventTypes } from "../../components/Datas";
 import { Select, Input, DatePickerComp, Button, OutLinedButton, ButtonNegative } from "../../components/Form";
 import { agreements } from "../../components/Datas";
-import { BiChevronDown, BiSave } from "react-icons/bi";
+import { BiChevronDown, BiLoaderCircle, BiSave } from "react-icons/bi";
 import { GiConfirmed } from "react-icons/gi";
 import { updateEvent } from "../../api/EventsAPI";
 import EventCheckInModal from "../../components/Modals/EventCheckInModal";
@@ -11,46 +11,30 @@ import { formatDate, formatDateTime } from "../../utils/formatDate";
 
 function EventDetailsInfo({ data, onStatus }) {
   const [loading, setLoading] = useState(true);
+
   const [disabled, setDisabled] = useState(true);
   const [viewCheckIn, setViewCheckIn] = useState(false);
 
 
   const [agreement, setAgreement] = useState({});
-  const [authorizationCode, setAuthorizationCode] = useState(null);
-  const [authorizationDate, setAuthorizationDate] = useState(null);
-  const [prePassword, setPrePassword] = useState(null);
-  const [prePasswordDate, setPrePasswordDate] = useState(null);
-  const [eventStatus, setEventStatus] = useState(null);
+  const [authorizationCode, setAuthorizationCode] = useState('');
+  const [authorizationDate, setAuthorizationDate] = useState('');
+  const [prePassword, setPrePassword] = useState('');
+  const [prePasswordDate, setPrePasswordDate] = useState('');
+  const [eventStatus, setEventStatus] = useState('');
 
 
   useEffect(() => {
     data ? setLoading(false) : setLoading(true);
     data.agreementId === 0 ? setAgreement('') : setAgreement(agreements.agreement[data.agreementId - 1]);
-    data.agAuthCode ? setAuthorizationCode(data.agAuthCode) : setAuthorizationCode(null);
-    data.agAuthDate ? setAuthorizationDate(new Date(data.agAuthDate)) : setAuthorizationDate(null);
-    data.agPreCode ? setPrePassword(data.agPreCode) : setPrePassword(null);
-    data.agPreCodeDate ? setPrePasswordDate(new Date(data.agPreCodeDate)) : setPrePasswordDate(null);
-    data.eventStatus ? setEventStatus(data.eventStatus) : setEventStatus(null);
+    data.agAuthCode ? setAuthorizationCode(data.agAuthCode) : setAuthorizationCode('');
+    data.agAuthDate ? setAuthorizationDate(new Date(data.agAuthDate)) : setAuthorizationDate('');
+    data.agPreCode ? setPrePassword(data.agPreCode) : setPrePassword('');
+    data.agPreCodeDate ? setPrePasswordDate(new Date(data.agPreCodeDate)) : setPrePasswordDate('');
+    data.eventStatus ? setEventStatus(data.eventStatus) : setEventStatus('');
   }, [data]);
 
-  useEffect(() => {
-    //enable Button when all fields have changed
-    if (agreement.id !== 1) {
-      if (authorizationCode !== data.agAuthCode || authorizationDate !== data.agAuthDate || prePassword !== data.agPreCode || prePasswordDate !== data.agPreCodeDate) {
-        setDisabled(false)
-      } else {
-        setDisabled(true)
-      }
-    } else {
-      if (agreement.id !== data.agreementId) {
-        setDisabled(false)
-      } else {
-        setDisabled(true)
-      }
-    }
-  }, [agreement, authorizationCode, authorizationDate, prePassword, prePasswordDate]);
-
-
+  //Update Agreement data
   const handleUpdateAgreement = async () => {
     setLoading(true)
     setDisabled(true)
@@ -78,21 +62,25 @@ function EventDetailsInfo({ data, onStatus }) {
 
   //Clear Authorization Date input
   const handleClearAuth = () => {
-    setAuthorizationDate(null)
+    setAuthorizationDate('')
   }
 
   //Clear PrePassword Date input
   const handleClearPreP = () => {
-    setPrePasswordDate(null)
+    setPrePasswordDate('')
   }
 
+  //Open CheckIn Modal
   const handleOpenCheckIn = () => {
     setViewCheckIn(true)
   }
 
 
 
-  return (loading ? <div>Carregando...</div> :
+  return (loading ?
+    <div className="flex  items-center justify-center w-full h-1/2 ">
+      <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
+    </div> :
     <>
       {viewCheckIn &&
         <EventCheckInModal
@@ -108,7 +96,7 @@ function EventDetailsInfo({ data, onStatus }) {
         <header className="">
           <h1 className="text-xl ">Detalhes do Agendamento</h1>
         </header>
-        <body className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="flex w-full flex-col gap-1">
               <h1 className=" text-gray-400 text-sm">Tipo de agendamento</h1>
@@ -131,29 +119,30 @@ function EventDetailsInfo({ data, onStatus }) {
               <p className="text-black text-md font-semibold">{data.patientFullName}</p>
             </div>
           </div>
+
+          {/* Box with Agreement data */}
           {data.eventType !== 5 &&
 
-            <div className="flex flex-col border-[3px] border-subMain/70 rounded-lg p-4 gap-2">
-              <h1 className=" text-black text-md">Convênio?</h1>
-              <div className="grid sm:grid-cols-2 2xl:grid-cols-4 gap-4 w-full">
-                <Select
-                  selectedPerson={agreement}
-                  setSelectedPerson={setAgreement}
-                  datas={agreements.agreement}
-                >
-                  <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                    {agreement.name ? agreement.name : ""}<BiChevronDown className="text-xl" />
-                  </div>
-                </Select>
-                <div className="w-[50%]">
-                  <Button
-                    label="Salvar"
-                    Icon={BiSave}
-                    onClick={handleUpdateAgreement}
-                    loading={loading}
-                    disabled={disabled}
-                  ></Button>
+            <div className="flex flex-col border-[3px] border-subMain/70 rounded-lg p-4 gap-4">
+              <div className="flex justify-between">
+                <h1 className=" text-black text-md">Convênio?</h1>
+                <div className="w-6 h-6 cursor-pointer" onClick={handleUpdateAgreement}>
+                  <span className="text-subMain"><BiSave className="w-full h-full" /></span>
                 </div>
+              </div>
+              <div className="grid sm:grid-cols-2 2xl:grid-cols-4 gap-4 w-full">
+                <div className="col-start-1 col-end-3">
+                  <Select
+                    selectedPerson={agreement}
+                    setSelectedPerson={setAgreement}
+                    datas={agreements.agreement}
+                  >
+                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
+                      {agreement.name ? agreement.name : ""}<BiChevronDown className="text-xl" />
+                    </div>
+                  </Select>
+                </div>
+
               </div>
               {
                 agreement.id > 1 &&
@@ -165,14 +154,14 @@ function EventDetailsInfo({ data, onStatus }) {
                     placeholder={'Opcional'}
                     type="text"
                     onChange={(e) => {
-                      e.target.value === "" ? setAuthorizationCode(null) : setAuthorizationCode(e.target.value)
+                      setAuthorizationCode(e.target.value)
                     }}
                   />
                   <div className='relative'>
-                    <p className='pl-1 mb-[-7px] text-sm text-black'>Data da Autorização</p>
                     {/* DatePicker */}
                     <div className="relative cursor-pointer border-gray-400">
                       <DatePickerComp
+                        label={'Data da Autorização'}
                         closeOnScroll={true}
                         color={true}
                         popperPlacement="top-end"
@@ -202,15 +191,14 @@ function EventDetailsInfo({ data, onStatus }) {
                     placeholder={'Opcional'}
                     type="text"
                     onChange={(e) => {
-                      e.target.value === "" ? setPrePassword(null) : setPrePassword(e.target.value)
+                      setPrePassword(e.target.value)
                     }}
                   />
                   <div className='relative'>
-                    <p className='pl-1 mb-[-7px] text-sm text-black'>Data da Pré-Senha</p>
                     {/* DatePicker */}
                     <div className="relative cursor-pointer border-gray-400">
-
                       <DatePickerComp
+                        label={'Data da Pré-Senha'}
                         closeOnScroll={true}
                         color={true}
                         popperPlacement="top-end"
@@ -237,7 +225,7 @@ function EventDetailsInfo({ data, onStatus }) {
               }
             </div >
           }
-        </body >
+        </div >
         <footer>
           {
             data.eventStatus === 1 &&

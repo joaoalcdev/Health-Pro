@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
 import { PatientsTable } from '../../components/Tables/PatientTable';
 
-function Patients(patientData) {
+function Patients(superIndex) {
   const navigate = useNavigate();
 
   // data
@@ -221,9 +221,11 @@ function Patients(patientData) {
   }, []);
 
   // pagination states
-  const [records, setRecords] = useState(patientData);
+  const [records, setRecords] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 8;
+  const recordsPerPage = 5;
+
+  superIndex = (currentPage * recordsPerPage) - recordsPerPage;
 
   return (
     <Layout>
@@ -355,8 +357,9 @@ function Patients(patientData) {
                     {/* ini table child */}
                     <div className="mt-4 overflow-x-scroll">
                       <PatientsTable
-                        patientData={data}
+                        patientData={records}
                         noData={noResult}
+                        superIndex={superIndex}
                         functions={{
                           preview: preview,
                           deletePatient: removePatient,

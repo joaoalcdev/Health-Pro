@@ -67,7 +67,7 @@ function Login() {
 
   return (
     <div className="w-full h-screen flex-colo bg-dry">
-      <form onSubmit={handleLogin} className="w-4/5 sm:w-2/5 md:w-8/12 lg:w-3/5 xl:w-2/5 max-w-[600px]  p-8 rounded-2xl mx-auto bg-white flex-colo">
+      <form onSubmit={handleLogin} className="w-4/5 sm:w-2/5 md:w-8/12 lg:w-3/5 xl:w-2/5 max-w-[600px] p-8 rounded-2xl mx-auto bg-white flex-colo">
         <img
           src="/images/logo.png"
           alt="logo"
@@ -102,15 +102,15 @@ function Login() {
                 aria-label={
                   showPassword ? "Senha visível" : "Senha Invisível"
                 }
-                className="text-black dark:text-white"
+                className="flex text-black dark:text-white"
                 onClick={() => {
                   setShowPassword((prev) => !prev);
                 }}
               >
                 {showPassword ? (
-                  <HiEye className="text-subMain w-6 select-none  cursor-pointer h-6 absolute top-9 right-2" />
+                  <HiEye className="text-subMain select-none  cursor-pointer size-6 absolute top-[50%] right-4" />
                 ) : (
-                  <HiEyeSlash className="text-subMain w-6 select-none  cursor-pointer h-6 absolute top-9 right-2" />
+                  <HiEyeSlash className="text-subMain select-none  cursor-pointer size-6 absolute top-[50%] right-4" />
                 )}
               </button>
             </div>

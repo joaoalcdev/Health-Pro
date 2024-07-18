@@ -20,7 +20,6 @@ import { HiOutlineCheckCircle, HiOutlinePencilAlt } from 'react-icons/hi';
 // utils
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
 
-
 function ProfessionalInfo({ data, onStatus }) {
   //controllers
   const [isEdit, setIsEdit] = useState(false);

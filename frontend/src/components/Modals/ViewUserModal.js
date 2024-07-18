@@ -1,7 +1,20 @@
+// dependencies - import
 import React from 'react';
+
+// components - import
 import Modal from './Modal';
-import { FaRegEdit } from "react-icons/fa";
 import { Button } from '../Form';
+
+// datas - import
+import { brStateDatas } from '../Datas';
+
+// api - import
+
+// icons
+import { FaRegEdit } from "react-icons/fa";
+
+// utils
+
 
 function ViewUserModal({ closeModal, isViewOpen, user, onEdit }) {
 
@@ -9,7 +22,7 @@ function ViewUserModal({ closeModal, isViewOpen, user, onEdit }) {
     <Modal
       closeModal={closeModal}
       isOpen={isViewOpen}
-      title={'Visualisar Usuário'}
+      title={'Visualizar Usuário'}
       width={'max-w-3xl'}
     >
       <div className="flex-colo gap-6 pb-8">
@@ -41,7 +54,7 @@ function ViewUserModal({ closeModal, isViewOpen, user, onEdit }) {
           </div>
           <div>
             <h1 className="font-bold">Cidade(UF)</h1>
-            <p>{user.city}({user.state})</p>
+            <p>{user.city} - ({user.state ? brStateDatas.states[user.state - 1].UF : ""})</p>
           </div>
         </div>
       </div>

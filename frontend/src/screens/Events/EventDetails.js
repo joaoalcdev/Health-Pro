@@ -74,10 +74,12 @@ function EventDetails() {
           >
             <IoArrowBackOutline />
           </Link>
-          <h1 className="text-xl font-semibold">{
-            eventData.eventType === 4 ? 'Consulta' :
-              eventData.eventType === 5 ? 'Retorno' :
-                eventData.serviceName}</h1>
+          <h1 className="text-xl font-semibold">
+            {
+              eventData.eventType === 4 ? 'Consulta' :
+                eventData.eventType === 5 ? 'Retorno' :
+                  eventData.serviceName}
+          </h1>
         </div>
         <div className=" grid grid-cols-12 gap-6 my-8 items-start">
           <div
@@ -96,7 +98,7 @@ function EventDetails() {
                       moment(eventData.startTime).calendar().split(' ')[0] === 'Hoje' ? 'Hoje' : moment(eventData.startTime).calendar().split(' ')[0] === 'Amanhã' ? 'Amanhã' : moment(eventData.startTime).format('dddd')}
                   </h1>
                   <h1 className='text-[100px] leading-[100px] text-white font-bold  '>
-                    {new Date(eventData.startTime).getDate() < 10 ? '0' + new Date(eventData.startTime).getDate() : new Date(eventData.startTime).getDate()}
+                    {new Date(eventData.startTime).getDate() < 10 ? '0' + new Date(eventData.startTime).getDate() : new Date(eventData.startTime).getDate().toString()}
                   </h1>
 
                   <div className='flex'>

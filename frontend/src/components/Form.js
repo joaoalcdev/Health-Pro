@@ -248,7 +248,7 @@ export function Input({ label, name, type, color, placeholder, register, value, 
     <div className="text-sm w-full">
       <Field className={`flex w-full flex-col`}>
         <Label
-          className={`${color ? 'select-none text-black text-sm pl-1 pb-0.5 text-sm text-black' : 'text-white font-semibold'
+          className={`${color ? 'select-none text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'
             } `}
         >
           {label}
@@ -586,7 +586,7 @@ export function DatePickerEvents({ label, startDate, onChange, color, locale, sh
         filterDate={date => date.getDay() !== 0 && date.getDay() !== 6}
         locale={locale}
         fixedHeight
-        className={`w-auto bg-white text-xl  py-4 hover:cursor-pointer focus:cursor-text caret-subMain`}
+        className={`w-auto bg-white text-xl py-4 hover:cursor-pointer focus:cursor-text caret-subMain`}
       />
     </div>
   );

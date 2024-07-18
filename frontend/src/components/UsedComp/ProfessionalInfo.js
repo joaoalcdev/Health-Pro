@@ -1,15 +1,25 @@
+// dependencies - import
 import { useState, useEffect } from 'react';
-import { genderDatas, specialties, councilDatas, brStateDatas } from '../Datas';
-import { Button, ButtonNegative, Input, Select } from '../Form';
-import { BiChevronDown } from 'react-icons/bi';
+
+// components - import
 import { toast } from 'react-hot-toast';
-import { HiOutlineCheckCircle, HiOutlinePencilAlt } from 'react-icons/hi';
-import { BiArchiveIn } from "react-icons/bi";
-import { InputMaskComp } from '../Form';
-import { updateProfessional, deleteProfessional } from '../../api/ProfessionalsAPI';
-import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
 import ConfirmationModal from '../Modals/ConfirmationModal';
+import { InputMaskComp, Button, ButtonNegative, Input, SelectListBox } from '../Form';
+
+// datas - import
+import { sortsDatas, genderDatas, specialties, councilDatas, brStateDatas } from '../Datas';
+
+// api - import
 import { recoveryUser } from '../../api/UsersAPI';
+import { updateProfessional, deleteProfessional } from '../../api/ProfessionalsAPI';
+
+// icons
+import { BiChevronDown, BiArchiveIn } from 'react-icons/bi';
+import { HiOutlineCheckCircle, HiOutlinePencilAlt } from 'react-icons/hi';
+
+// utils
+import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
+
 
 function ProfessionalInfo({ data, onStatus }) {
   //controllers
@@ -61,12 +71,29 @@ function ProfessionalInfo({ data, onStatus }) {
   //check if the data has changed in order to enable the save button
   useEffect(() => {
 
-    if (fullName !== data.fullName || firstName !== data.firstName || lastName !== data.lastName || phoneNumber !== data.phoneNumber || email !== data.email || address !== data.address || region !== data.region || city !== data.city || rg !== data.rg || rgInssuance !== data.rgInssuance || cpf !== data.cpf || councilNumber !== data.councilNumber) {
+    if (
+      fullName !== data.fullName ||
+      firstName !== data.firstName ||
+      lastName !== data.lastName ||
+      email !== data.email ||
+      phoneNumber !== data.phoneNumber ||
+      address !== data.address ||
+      region !== data.region ||
+      city !== data.city ||
+      data.state !== state.id ||
+      rg !== data.rg ||
+      cpf !== data.cpf ||
+      data.council !== council.id ||
+      data.specialty !== specialty.id ||
+      data.gender !== gender.id ||
+      rgInssuance !== data.rgInssuance ||
+      councilNumber !== data.councilNumber
+    ) {
       setIsDisabled(false);
     } else {
       setIsDisabled(true);
     }
-  }, [fullName, firstName, lastName, phoneNumber, email, address, region, city, state, rg, rgInssuance, cpf, councilNumber])
+  }, [fullName, firstName, lastName, phoneNumber, email, address, region, city, state, rg, rgInssuance, cpf, councilNumber, data.fullName, data.firstName, data.lastName, data.phoneNumber, data.email, data.address, data.region, data.city, data.rg, data.rgInssuance, data.cpf, data.councilNumber, data.council, council.id, data.state, data.specialty, data.gender, specialty.id, gender.id])
 
   //edit professional
   const handleEditProfessional = async (e) => {
@@ -153,6 +180,15 @@ function ProfessionalInfo({ data, onStatus }) {
     setIsConfirmationOpen(true);
     setLoading(true);
   }
+
+  const [query, setQuery] = useState('')
+
+  const bloodTypeFilter =
+    query === ''
+      ? sortsDatas.bloodTypeFilter
+      : sortsDatas.bloodTypeFilter.filter((person) => {
+        return person.name.toLowerCase().includes(query.toLowerCase())
+      })
 
   return (!isEdit ?
     //view mode
@@ -334,20 +370,16 @@ function ProfessionalInfo({ data, onStatus }) {
             className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
           />
           <div className="flex w-full flex-col gap-3">
-            <p className="text-black text-sm">Gênero</p>
-            <Select
+            <SelectListBox
+              label={'Gênero'}
+              color={true}
               selectedPerson={gender}
               setSelectedPerson={setGender}
               datas={genderDatas.gender}
-            >
-              <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                {gender.name ? gender.name : ""}<BiChevronDown className="text-xl" />
-              </div>
-            </Select>
+              iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+            />
           </div>
         </div>
-
-
         {/* address */}
         <Input
           label="Endereço"
@@ -382,30 +414,26 @@ function ProfessionalInfo({ data, onStatus }) {
 
         {/* specialty and council data*/}
         <div className="flex w-full flex-col gap-3">
-          <p className="text-black text-sm">Especialidade</p>
-          <Select
+          <SelectListBox
+            label={'Especialidades'}
+            color={true}
             selectedPerson={specialty}
             setSelectedPerson={setSpecialty}
             datas={specialties.specialty}
-          >
-            <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-              {specialty.name ? specialty.name : ""}<BiChevronDown className="text-xl" />
-            </div>
-          </Select>
+            iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+          />
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4 w-full">
           <div className="flex w-full flex-col gap-3">
-            <p className="text-black text-sm">Conselho</p>
-            <Select
+            <SelectListBox
+              label={'Conselho'}
+              color={true}
               selectedPerson={council}
               setSelectedPerson={setCouncil}
               datas={councilDatas.council}
-            >
-              <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                {council ? council.name : ""}<BiChevronDown className="text-xl" />
-              </div>
-            </Select>
+              iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+            />
           </div>
           <Input
             label="Nº Conselho"

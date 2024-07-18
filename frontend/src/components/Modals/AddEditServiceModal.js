@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
-import { Button, Input, Switchi, Select, CurrencyInputMask } from '../Form';
+import { Button, Input, Switchi, CurrencyInputMask, SelectListBox } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { getSpecialties } from '../../api/specialtiesAPI';
@@ -119,14 +119,16 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
     >
       <div className="flex-colo gap-6">
         <div className="grid sm:grid-cols-2 gap-4 w-full">
-
+          {/* <div className=''> */}
           <Input
             label="Nome do Serviço"
+            placeholder={'Serviço...'}
+            required={true}
             color={true}
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <div className="flex items-center pt-8 gap-2 w-full">
+          <div className="flex items-center my-4 gap-2 w-full">
             <Switchi
               label="Status"
               checked={check}
@@ -136,18 +138,16 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
               {check ? 'Ativado' : 'Desativado'}
             </p>
           </div>
-
-          <div className="flex w-full flex-col gap-3">
-            <p className="text-black text-sm">Especialidade relacionada</p>
-            <Select
+          {/* </div> */}
+          <div className="flex w-full flex-col">
+            <SelectListBox
+              label={'Especialidade relacionada'}
+              color={true}
               selectedPerson={specialty}
               setSelectedPerson={setSpecialty}
               datas={specialties}
-            >
-              <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                {specialty.name}  <BiChevronDown className="text-xl" />
-              </div>
-            </Select>
+              iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+            />
           </div>
           <div></div>
           <CurrencyInputMask
@@ -168,10 +168,9 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
             currency={'BRL'}
             locale={'pt-BR'}
             allowEmpty={true}
-            inputClassName={`transitions w-full bg-white text-sm mt-3 p-4 border 'border-border font-light' 'border-white text-white'
-        rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+            inputClassName={`transitions w-full bg-white text-sm p-4 border 'border-border font-light' 'border-white text-white'
+        rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
           />
-
           <CurrencyInputMask
             label={"Preço dos atendimentos recorrentes"}
             color={true}
@@ -190,8 +189,8 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
             currency={'BRL'}
             locale={'pt-BR'}
             allowEmpty={true}
-            inputClassName={`transitions w-full bg-white text-sm mt-3 p-4 border 'border-border font-light' 'border-white text-white'
-        rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+            inputClassName={`transitions w-full bg-white text-sm p-4 border 'border-border font-light' 'border-white text-white'
+        rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
           />
         </div>
 

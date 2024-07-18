@@ -1,20 +1,34 @@
+// dependencies - import
 import React, { useEffect, useState } from 'react';
-import { sortsDatas, bloodTypeFilter } from '../Datas';
-import { Button, DatePickerComp, Input, Select } from '../Form';
-import { BiChevronDown } from 'react-icons/bi';
-import { toast } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
-// import { HiOutlineCheckCircle, HiPencilAlt, HiArrowSmLeft } from 'react-icons/hi';
-import { HiOutlinePhone, HiOutlineCalendarDays, HiOutlineIdentification, HiOutlineMapPin, HiOutlineCheckCircle, HiMiniPencilSquare, HiArrowLeft, HiMap, HiCake, HiOutlineHome, HiMiniFingerPrint, HiOutlineCreditCard, HiOutlineHomeModern } from 'react-icons/hi2';
+
+// components - import 
+import { Button, DatePickerComp, Input, Select } from '../Form';
+import { toast } from 'react-hot-toast';
+import { InputMaskComp, SelectListBox, InputFilterSelect } from '../Form';
+
+// datas - import
+import { sortsDatas, bloodTypeFilter } from '../Datas';
+import { brStateDatas, genderDatas, maritalDatas, insuranceDatas } from '../Datas';
+
+// api - import
+import { updatePatient, getPatient } from '../../api/PatientsAPI';
+
+
+// icons - import
+import { BiChevronDown } from 'react-icons/bi';
 import { TbUserHeart } from "react-icons/tb";
 import { LiaGenderlessSolid } from "react-icons/lia";
 import { LiaTintSolid } from "react-icons/lia";
-import { brStateDatas, genderDatas, maritalDatas, insuranceDatas } from '../Datas';
-import { InputMaskComp } from '../Form';
-import { updatePatient, getPatient } from '../../api/PatientsAPI';
+import { HiOutlinePhone, HiOutlineCalendarDays, HiOutlineIdentification, HiOutlineMapPin, HiOutlineCheckCircle, HiMiniPencilSquare, HiArrowLeft, HiOutlineHome, HiMiniFingerPrint, HiOutlineCreditCard, HiOutlineHomeModern } from 'react-icons/hi2';
+
+// utils - import
 import { formatDate } from '../../utils/formatDate';
 import { formatCPF } from '../../utils/formatCPF';
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
+
+
+
 
 function PersonalInfo({ titles, data, status }) {
   const [isEdit, setIsEdit] = useState(false)
@@ -139,6 +153,15 @@ function PersonalInfo({ titles, data, status }) {
     // }
   }
 
+  const [query, setQuery] = useState('')
+
+  const bloodTypeFilter =
+    query === ''
+      ? sortsDatas.bloodTypeFilter
+      : sortsDatas.bloodTypeFilter.filter((person) => {
+        return person.name.toLowerCase().includes(query.toLowerCase())
+      })
+
   useEffect(() => {
     if (
       (fullName !== data.fullName && fullName !== '') ||
@@ -193,11 +216,8 @@ function PersonalInfo({ titles, data, status }) {
       return (
         <>
           <div className=''>
-            <p className='pl-1 mb-[-7px] text-sm text-black'>
-              Nº Cartão (Convênio)
-              {/* <span className='text-required'>*</span> */}
-            </p>
             <Input
+              label={'Nº Cartão (Convênio)'}
               color={true}
               required={false}
               placeholder={'9821498214949217'}
@@ -211,12 +231,9 @@ function PersonalInfo({ titles, data, status }) {
     } else {
       return (
         <>
-          <div className=''>
-            <p className='pl-1 mb-[-7px] text-sm text-black'>
-              Nº Cartão (Convênio) -
-              <span className='text-required'> Desabilitado</span>
-            </p>
+          <div className='!cursor-not-allowed'>
             <Input
+              label={'Nº Cartão (Convênio) - Indisponível'}
               color={true}
               required={false}
               placeholder={'Opção indisponível para este convênio.'}
@@ -480,9 +497,9 @@ function PersonalInfo({ titles, data, status }) {
         <div className="flex-colo gap-6">
           <div className="grid sm:grid-cols-3 gap-4 w-full">
             {/* Full Name */}
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Nome Completo<span className='text-required'>*</span></p>
+            <div className="flex w-full flex-col">
               <Input
+                label={'Nome Completo'}
                 color={true}
                 required={true}
                 value={fullName}
@@ -494,9 +511,9 @@ function PersonalInfo({ titles, data, status }) {
               />
             </div>
             {/* RG */}
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>RG<span className='text-required'></span></p>
+            <div className="flex w-full flex-col">
               <Input
+                label={'RG'}
                 color={true}
                 required={false}
                 placeholder="20054273292"
@@ -508,9 +525,9 @@ function PersonalInfo({ titles, data, status }) {
                 }}
               />
             </div>
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>CPF<span className='text-required'></span></p>
+            <div className="flex w-full flex-col">
               <InputMaskComp
+                label={'CPF'}
                 color={true}
                 mask="999.999.999-99"
                 autoClear={true}
@@ -522,88 +539,78 @@ function PersonalInfo({ titles, data, status }) {
                   setCpf(e.target.value);
                   // setIsDisabled(false) 
                 }}
-                className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+                className="w-full bg-transparent text-sm border border-border font-light rounded focus:border focus:border-subMain"
               />
             </div>
 
           </div>
           <div className="grid sm:grid-cols-2 gap-4 w-full">
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Data de Nascimento<span className='text-required'></span></p>
-              {/* DatePicker */}
-              <DatePickerComp
+            {/* DatePicker */}
+            <DatePickerComp
+              label={'Data de Nascimento'}
+              color={true}
+              showYearDropdown={true}
+              scrollableYearDropdown={true}
+              closeOnScroll={true}
+              popperPlacement="top-end"
+              yearDropdownItemNumber={80}
+              dateFormat="dd/MM/yyyy"
+              // placeholderText={'__/__/____'}
+              locale="pt"
+              startDate={dateBirth}
+              onChange={(dateBirth) => {
+                setDateBirth(dateBirth)
+                // setIsDisabled(false)
+              }}
+            />
+            <div className="flex w-full flex-col">
+              <SelectListBox
+                label={'Tipo Sanguíneo'}
                 color={true}
-                showYearDropdown={true}
-                scrollableYearDropdown={true}
-                closeOnScroll={true}
-                popperPlacement="top-end"
-                yearDropdownItemNumber={80}
-                dateFormat="dd/MM/yyyy"
-                // placeholderText={'__/__/____'}
-                locale="pt"
-                startDate={dateBirth}
-                onChange={(dateBirth) => {
-                  setDateBirth(dateBirth)
-                  // setIsDisabled(false)
-                }}
-              />
-            </div>
-            <div className="flex w-full flex-col gap-1">
-              <p className="text-black text-sm">Tipo Sanguíneo<span className='text-required'></span></p>
-              <Select
                 selectedPerson={bloodType}
                 setSelectedPerson={setBloodType}
-                datas={sortsDatas.bloodTypeFilter}
-              >
-                <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                  {bloodType.name} <BiChevronDown className="text-xl" />
-                </div>
-              </Select>
+                datas={bloodTypeFilter}
+                iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+              />
             </div>
-            <div className="flex w-full flex-col gap-1">
-              <p className="text-black text-sm">Estado Civil<span className='text-required'></span></p>
-              <Select
+            <div className="flex w-full flex-col">
+              <SelectListBox
+                label={'Estado Civil'}
+                color={true}
                 selectedPerson={marital}
                 setSelectedPerson={setMarital}
                 datas={maritalDatas.marital}
-              >
-                <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                  {marital.name} <BiChevronDown className="text-xl" />
-                </div>
-              </Select>
+                iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+              />
             </div>
-            <div className="flex w-full flex-col gap-1">
-              <p className='pl-1 text-sm text-black'>Gênero<span className='text-required'></span></p>
-              <Select
+            <div className="flex w-full flex-col">
+              <SelectListBox
+                label={'Gênero'}
+                color={true}
                 selectedPerson={gender}
                 setSelectedPerson={setGender}
                 datas={genderDatas.gender}
-              >
-                <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                  {gender.name}<BiChevronDown className="text-xl" />
-                </div>
-              </Select>
+                iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+              />
             </div>
-            <div className="flex w-full flex-col gap-1">
-              <p className='pl-1 text-sm text-black'>Convênio<span className='text-required'></span></p>
-              <Select
+            <div className="flex w-full flex-col">
+              <SelectListBox
+                label={'Convênio'}
+                color={true}
                 selectedPerson={insurance}
                 setSelectedPerson={setInsurance}
                 datas={insuranceDatas.insurance}
-              >
-                <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                  {insurance.name} <BiChevronDown className="text-xl" />
-                </div>
-              </Select>
+                iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+              />
             </div>
             {/* cardNumber (insurance) */}
             {handleInsurance()}
           </div>
           <div className="grid sm:grid-cols-2 gap-4 w-full">
             {/* Tel */}
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de Contato<span className='text-warn'></span></p>
+            <div className="flex w-full flex-col">
               <InputMaskComp
+                label={'Telefone de Contato'}
                 color={true}
                 mask="(99) 9 9999-9999"
                 placeholder={'(__) _ ____-____'}
@@ -615,13 +622,13 @@ function PersonalInfo({ titles, data, status }) {
                   setPhoneNumber(e.target.value)
                   // setIsDisabled(false)
                 }}
-                className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+                className="w-full bg-transparent text-sm border border-border font-light rounded focus:border focus:border-subMain"
               />
             </div>
             {/* Emergncy Contact */}
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Telefone de Emergência<span className='text-warn'></span></p>
+            <div className="flex w-full flex-col">
               <InputMaskComp
+                label={'Telefone de Emergência'}
                 color={true}
                 mask="(99) 9 9999-9999"
                 placeholder={'(__) _ ____-____'}
@@ -633,16 +640,16 @@ function PersonalInfo({ titles, data, status }) {
                   setEmergencyContact(e.target.value)
                   // setIsDisabled(false)
                 }}
-                className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+                className="w-full bg-transparent text-sm border border-border font-light rounded focus:border focus:border-subMain"
               />
             </div>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4 w-full">
             {/* Address */}
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Endereço<span className='text-required'></span></p>
+            <div className="flex w-full flex-col">
               <Input
+                label={'Endereço'}
                 color={true}
                 required={false}
                 value={address}
@@ -654,9 +661,9 @@ function PersonalInfo({ titles, data, status }) {
               />
             </div>
             {/* Region */}
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Bairro<span className='text-required'></span></p>
+            <div className="flex w-full flex-col">
               <Input
+                label={'Bairro'}
                 color={true}
                 required={false}
                 value={region}
@@ -668,9 +675,9 @@ function PersonalInfo({ titles, data, status }) {
               />
             </div>
             {/* City */}
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Cidade<span className='text-required'></span></p>
+            <div className="flex w-full flex-col">
               <Input
+                label={'Cidade'}
                 color={true}
                 required={false}
                 value={city}
@@ -682,23 +689,31 @@ function PersonalInfo({ titles, data, status }) {
               />
             </div>
             {/* State */}
-            <div className="flex w-full flex-col gap-1">
-              <p className='pl-1 text-sm text-black'>Estado<span className='text-required'></span></p>
-              <Select
+            <div className="flex w-full flex-col">
+              {/* <SelectListBox
+                label={'Estado'}
+                color={true}
                 selectedPerson={state}
                 setSelectedPerson={setState}
                 datas={brStateDatas.states}
+                iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+              /> */}
+              <InputFilterSelect
+                label={'Estado'}
+                color={true}
+                selectedPerson={state}
+                setSelectedPerson={setState}
+                query={query}
+                setQuery={setQuery}
+                datas={brStateDatas.states}
+                iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
               >
-                <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                  {/* {data.state ? brStateDatas.states[data.state - 1].UF : "-"} <BiChevronDown className="text-xl" /> */}
-                  {state.UF} <BiChevronDown className="text-xl" />
-                </div>
-              </Select>
+              </InputFilterSelect>
             </div>
             {/* paternalFiliation */}
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Filiação Paterna<span className='text-required'></span></p>
+            <div className="flex w-full flex-col">
               <Input
+                label={'Filiação Paterna'}
                 color={true}
                 required={false}
                 value={paternalFiliation}
@@ -710,9 +725,9 @@ function PersonalInfo({ titles, data, status }) {
               />
             </div>
             {/* maternalFiliation */}
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Filiação Materna<span className='text-required'></span></p>
+            <div className="flex w-full flex-col">
               <Input
+                label={'Filiação Materna'}
                 color={true}
                 required={false}
                 value={maternalFiliation}
@@ -724,9 +739,9 @@ function PersonalInfo({ titles, data, status }) {
               />
             </div>
             {/* paternalFiliationContact */}
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Contato do responsável 1<span className='text-required'></span></p>
+            <div className="flex w-full flex-col">
               <InputMaskComp
+                label={'Contato do responsável 1'}
                 color={true}
                 mask="(99) 9 9999-9999"
                 placeholder={'(__) _ ____-____'}
@@ -735,13 +750,13 @@ function PersonalInfo({ titles, data, status }) {
                 required={false}
                 value={paternalFiliationContact}
                 onChange={(e) => setPaternalFiliationContact(e.target.value)}
-                className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+                className="w-full bg-transparent text-sm border border-border font-light rounded focus:border focus:border-subMain"
               />
             </div>
             {/* maternalFiliationContact */}
-            <div className=''>
-              <p className='pl-1 mb-[-7px] text-sm text-black'>Contato do responsável 2<span className='text-required'></span></p>
+            <div className="flex w-full flex-col">
               <InputMaskComp
+                label={'Contato do responsável 2'}
                 color={true}
                 mask="(99) 9 9999-9999"
                 placeholder={'(__) _ ____-____'}
@@ -750,7 +765,7 @@ function PersonalInfo({ titles, data, status }) {
                 required={false}
                 value={maternalFiliationContact}
                 onChange={(e) => setMaternalFiliationContact(e.target.value)}
-                className="w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+                className="w-full bg-transparent text-sm border border-border font-light rounded focus:border focus:border-subMain"
               />
             </div>
           </div>

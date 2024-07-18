@@ -1,16 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
+// dependencies - import
 import React, { useState, useEffect } from 'react';
+
+// components - import 
 import Layout from '../../Layout';
-import { patientTab } from '../../components/Datas';
-import { Link, useParams } from 'react-router-dom';
-import { IoArrowBackOutline } from 'react-icons/io5';
 import MedicalRecord from './MedicalRecord';
-import AppointmentsUsed from '../../components/UsedComp/AppointmentsUsed';
+import { Link, useParams } from 'react-router-dom';
+import PatientInfo from '../../components/UsedComp/PatientInfo';
 import InvoiceUsed from '../../components/UsedComp/InvoiceUsed';
 import PaymentsUsed from '../../components/UsedComp/PaymentUsed';
-import PatientInfo from '../../components/UsedComp/PatientInfo';
-import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
+import AppointmentsUsed from '../../components/UsedComp/AppointmentsUsed';
+
+// datas - import
+import { patientTab } from '../../components/Datas';
+
+// api - import
 import { getPatient } from '../../api/PatientsAPI';
+
+// icons - import
+import { IoArrowBackOutline } from 'react-icons/io5';
+
+// utils - import
+import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
 
 function PatientProfile() {
   const [activeTab, setActiveTab] = useState(1);

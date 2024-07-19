@@ -67,11 +67,10 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
         closeModal={handleCloseSignatureModal}
         isOpen={isSignatureModalOpen}
         title={'Assinatura'}
-        width={'w-[90vw]'}
-        height={'h-[90vh]'}
+        width={'max-w-[90vw]'}
       >
         <>
-          <div className='relative h-[80%] border border-subMain rounded-lg'>
+          <div className='relative h-[40vh] sm:h-[60vh]  border border-subMain rounded-lg'>
             <SignatureCanvas
               ref={(ref) => setSignature(ref)}
               minWidth={1}
@@ -100,84 +99,90 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
       </Modal>
     )
     }
-    <Modal
-      closeModal={closeModal}
-      isOpen={isOpen}
-      title={'Check-In'}
-      width={'max-w-xl'}
-      height={'sm:h-[65%vh]'}
-    >
-      {!confirmationResponse && (
-        <div className="pb-4 text-left">
-          <p>
-            Voce deseja realizar o check-in para esse agendamento?
-          </p>
-          <div className='w-full flex justify-end items-end'>
+    {isOpen && !isSignatureModalOpen &&
 
-            <div className="w-[50%] grid grid-cols-2 gap-4 mt-8 justify-end">
-              <ButtonNegative
-                label={'Não'}
-                onClick={closeModal}
-              />
-              <Button
-                label={'Sim'}
-                onClick={() => {
-                  setConfirmationResponse(true);
-                }}
-              />
+      <Modal
+        closeModal={closeModal}
+        isOpen={isOpen}
+        title={'Check-In'}
+        width={'max-w-xl'}
+        height={'sm:h-[65%vh]'}
+      >
+        {!confirmationResponse && (
+          <div className="pb-4 text-left">
+            <p>
+              Voce deseja realizar o check-in para esse agendamento?
+            </p>
+            <div className='w-full flex justify-end items-end'>
+
+              <div className="w-[50%] grid grid-cols-2 gap-4 mt-8 justify-end">
+                <ButtonNegative
+                  label={'Não'}
+                  onClick={closeModal}
+                />
+                <Button
+                  label={'Sim'}
+                  onClick={() => {
+                    setConfirmationResponse(true);
+                  }}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      )}
-      {confirmationResponse && (
-        <div className="flex flex-col gap-4 text-left">
-          <Input
-            label="Nome do responsável pelo check-in"
-            value={checkInName}
-            placeholder={'Maria da Silva'}
-            color={true}
-            type="text"
-            onChange={(e) => {
-              setCheckInName(e.target.value);
-            }}
-          />
-          {finalSignature === "" ?
+        )}
+        {confirmationResponse && (
+          <div className="flex flex-col gap-4 text-left">
+            <Input
+              label="Nome do responsável pelo check-in"
+              value={checkInName}
+              placeholder={'Maria da Silva'}
+              color={true}
+              type="text"
+              onChange={(e) => {
+                setCheckInName(e.target.value);
+              }}
+            />
+            {finalSignature === "" ?
 
-            <div>
-              <Button
-                label={'Assinar'}
-                onClick={() => setIsSignatureModalOpen(true)}
-                disabled={checkInName === "" || loading || disabled}
-                className='w-full'
-              />
-            </div>
-            :
-            <div className='relative w-full flex justify-center items-center border border-subMain rounded-lg p-4'>
-              <img src={finalSignature} alt="assinatura" className='w-full h-full' />
-              <span className='absolute top-0 right-0 p-2 text-subMain cursor-pointer' onClick={() => setIsSignatureModalOpen(true)}>
-                <TbReload className='w-7 h-7' />
-              </span>
-            </div>
-          }
-          <div className='w-full flex justify-end items-end'>
-            <div className="w-full grid grid-cols-2 gap-4 justify-end">
-              <ButtonNegative
-                label={'Cancelar'}
-                onClick={closeModal}
-              />
-              <Button
-                label={'Check-In'}
-                loading={loading}
-                disabled={checkInName === "" || loading || disabled}
-                onClick={handleCheckIn}
-              />
+              <div>
+                <Button
+                  label={'Assinar'}
+                  onClick={() => {
+                    setIsSignatureModalOpen(true)
+                  }}
+                  disabled={checkInName === "" || loading || disabled}
+                  className='w-full'
+                />
+              </div>
+              :
+              <div className='relative w-full flex justify-center items-center border border-subMain rounded-lg p-4'>
+                <img src={finalSignature} alt="assinatura" className='w-full max-h-[40vh]' />
+                <span className='absolute top-0 right-0 p-2 text-subMain cursor-pointer' onClick={() => setIsSignatureModalOpen(true)}>
+                  <TbReload className='w-7 h-7' />
+                </span>
+              </div>
+            }
+            <div className='w-full flex justify-end items-end'>
+              <div className="w-full grid grid-cols-2 gap-4 justify-end">
+                <ButtonNegative
+                  label={'Cancelar'}
+                  onClick={closeModal}
+                />
+                <Button
+                  label={'Check-In'}
+                  loading={loading}
+                  disabled={checkInName === "" || loading || disabled}
+                  onClick={handleCheckIn}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-    </Modal >
-  </>);
+      </Modal >
+    }
+  </>
+  );
 }
 
 export default EventCheckInModal;

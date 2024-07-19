@@ -324,9 +324,9 @@ function Patients(superIndex) {
             // data-aos-duration="1000"
             // data-aos-delay="10"
             // data-aos-offset="200"
-            className="bg-white my-8 rounded-xl border-[1px] border-border p-5"
+            className="bg-white my-8 rounded-xl border-[1px] border-border px-5"
           >
-            <div className="grid lg:grid-cols-5 grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2">
+            <div className="grid lg:grid-cols-5 grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2 pt-5">
               <input
                 type="text"
                 placeholder='Pesquisar por paciente...'
@@ -343,7 +343,7 @@ function Patients(superIndex) {
                 }}
               /> */}
             </div>
-            <div className="mt-8 w-full">
+            <div className="w-full">
               {noResult ?
                 <>
                   <div className="bg-greyed pt-8 pb-8 flex items-center justify-center h-auto">
@@ -353,9 +353,9 @@ function Patients(superIndex) {
                 :
                 <>
                   {/* ini table main */}
-                  <div className="mt-6 bg-white rounded-xl border-[1px] border-border p-5">
+                  <div className="mt-6 bg-white rounded-xl border-[1px] border-border px-5">
                     {/* ini table child */}
-                    <div className="mt-4 overflow-x-scroll">
+                    <div className="mt-4 overflow-x-auto">
                       <PatientsTable
                         patientData={records}
                         noData={noResult}

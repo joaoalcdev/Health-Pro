@@ -84,7 +84,7 @@ function Login() {
             onChange={(e) => setEmail(e.target.value)}
           />
           <div className="">
-            <div className="relative">
+            <div className="h-full relative">
               <Input
                 label="Senha"
                 type={showPassword ? "text" : "password"}
@@ -102,15 +102,15 @@ function Login() {
                 aria-label={
                   showPassword ? "Senha visível" : "Senha Invisível"
                 }
-                className="flex text-black dark:text-white"
+                className="text-black dark:text-white my-auto absolute top-[50%] right-4"
                 onClick={() => {
                   setShowPassword((prev) => !prev);
                 }}
               >
                 {showPassword ? (
-                  <HiEye className="text-subMain select-none  cursor-pointer size-6 absolute top-[50%] right-4" />
+                  <HiEye className="text-subMain select-none cursor-pointer size-6 my-auto" />
                 ) : (
-                  <HiEyeSlash className="text-subMain select-none  cursor-pointer size-6 absolute top-[50%] right-4" />
+                  <HiEyeSlash className="text-subMain select-none cursor-pointer size-6 my-auto" />
                 )}
               </button>
             </div>

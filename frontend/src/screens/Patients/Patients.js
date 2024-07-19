@@ -373,7 +373,7 @@ function Patients(superIndex) {
                   {/* end table main */}
                 </>
               }
-              <div className='flex flex-row w-full'>
+              <div className='flex flex-row w-full items-center justify-center mx-auto'>
                 <Pagination
                   records={data}
                   setRecords={setRecords}

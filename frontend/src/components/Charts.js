@@ -339,7 +339,7 @@ export function DashboardBigChart() {
         height: 12,
         strokeWidth: 0,
         strokeColor: '#fff',
-        fillColors: true,
+        fillColors: false,
         radius: 12,
         customHTML: undefined,
         onClick: {

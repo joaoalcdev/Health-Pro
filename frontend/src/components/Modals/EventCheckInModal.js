@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Modal from './Modal';
 import SignatureCanvas from 'react-signature-canvas';
 import {
@@ -24,6 +24,17 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
   const [checkInName, setCheckInName] = useState("");
   const [finalSignature, setFinalSignature] = useState("");
   const [signature, setSignature] = useState('');
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  const container = useRef(null);
+
+  useEffect(() => {
+    console.log("ENTROU NO EFFE")
+    console.log(container.current)
+    setWidth(container.current ? container.current.offsetWidth : 0);
+    setHeight(container.current ? container.current.offsetHeight : 0);
+  }, [container.current]);
 
   const clearPad = () => {
     signature.clear();
@@ -70,13 +81,16 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
         width={'max-w-[90vw]'}
       >
         <>
-          <div className='relative h-[40vh] sm:h-[60vh]  border border-subMain rounded-lg'>
+          <div ref={container} className='relative h-[40vh] sm:h-[60vh]  border border-subMain rounded-lg'>
+
             <SignatureCanvas
               ref={(ref) => setSignature(ref)}
               minWidth={1}
               maxWidth={1}
-              canvasProps={{ className: 'sigCanvas w-full h-full rounded-lg' }}
+              clearOnResize={true}
+              canvasProps={{ className: 'sigCanvas w-full h-full rounded-lg', width: width, height: height }}
             />
+
             <span className='absolute bottom-0 right-0 p-2 text-subMain cursor-pointer' onClick={clearPad}>
               <TbReload className='w-7 h-7' />
             </span>

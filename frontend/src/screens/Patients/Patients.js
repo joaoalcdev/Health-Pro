@@ -15,9 +15,10 @@ import Tab from '../../components/Tab';
 import AddPatientModal from '../../components/Modals/AddPatientModal';
 import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import { useNavigate } from 'react-router-dom';
+import Pagination from '../../components/Pagination';
 import { PatientsTable } from '../../components/Tables/PatientTable';
 
-function Patients() {
+function Patients(superIndex) {
   const navigate = useNavigate();
 
   // data
@@ -214,10 +215,17 @@ function Patients() {
         setDynamicUsed(false);
       }
     };
-    window.addEventListener('resize', handleResize, {passive: true});
+    window.addEventListener('resize', handleResize, { passive: true });
     handleResize();
-    return () => window.removeEventListener('resize', handleResize, {passive: true});
+    return () => window.removeEventListener('resize', handleResize, { passive: true });
   }, []);
+
+  // pagination states
+  const [records, setRecords] = useState(data);
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 5;
+
+  superIndex = (currentPage * recordsPerPage) - recordsPerPage;
 
   return (
     <Layout>
@@ -316,9 +324,9 @@ function Patients() {
             // data-aos-duration="1000"
             // data-aos-delay="10"
             // data-aos-offset="200"
-            className="bg-white my-8 rounded-xl border-[1px] border-border p-5"
+            className="bg-white my-8 rounded-xl border-[1px] border-border px-5"
           >
-            <div className="grid lg:grid-cols-5 grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2">
+            <div className="grid lg:grid-cols-5 grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2 pt-5">
               <input
                 type="text"
                 placeholder='Pesquisar por paciente...'
@@ -335,7 +343,7 @@ function Patients() {
                 }}
               /> */}
             </div>
-            <div className="mt-8 w-full">
+            <div className="w-full">
               {noResult ?
                 <>
                   <div className="bg-greyed pt-8 pb-8 flex items-center justify-center h-auto">
@@ -345,12 +353,13 @@ function Patients() {
                 :
                 <>
                   {/* ini table main */}
-                  <div className="mt-6 bg-white rounded-xl border-[1px] border-border p-5">
+                  <div className="mt-6 bg-white rounded-xl border-[1px] border-border px-5">
                     {/* ini table child */}
-                    <div className="mt-4 overflow-x-scroll">
+                    <div className="mt-4 overflow-x-auto">
                       <PatientsTable
-                        patientData={data}
+                        patientData={records}
                         noData={noResult}
+                        superIndex={superIndex}
                         functions={{
                           preview: preview,
                           deletePatient: removePatient,
@@ -364,6 +373,15 @@ function Patients() {
                   {/* end table main */}
                 </>
               }
+              <div className='flex flex-row w-full items-center justify-center mx-auto'>
+                <Pagination
+                  records={data}
+                  setRecords={setRecords}
+                  recordsPerPage={recordsPerPage}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                />
+              </div>
             </div>
           </div>
         </>

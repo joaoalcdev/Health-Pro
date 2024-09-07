@@ -3,9 +3,10 @@ import { eventTypes } from "../../components/Datas";
 import { Select, Input, DatePickerComp, Button, OutLinedButton, ButtonNegative } from "../../components/Form";
 import { agreements } from "../../components/Datas";
 import { BiChevronDown, BiLoaderCircle, BiSave } from "react-icons/bi";
-import { GiConfirmed } from "react-icons/gi";
-import { updateEvent } from "../../api/EventsAPI";
+import { GiCancel, GiConfirmed } from "react-icons/gi";
+import { updateEvent, cancelEvent } from "../../api/EventsAPI";
 import EventCheckInModal from "../../components/Modals/EventCheckInModal";
+import EventCancelationModal from "../../components/Modals/EventCancelationModal";
 import toast from "react-hot-toast";
 import { formatDate, formatDateTime } from "../../utils/formatDate";
 
@@ -14,7 +15,8 @@ function EventDetailsInfo({ data, onStatus }) {
 
   const [disabled, setDisabled] = useState(true);
   const [viewCheckIn, setViewCheckIn] = useState(false);
-
+  const [viewCancelationModal, setViewCancelationModal] = useState(false);
+  const [cancelationType, setCancelationType] = useState(null);
 
   const [agreement, setAgreement] = useState({});
   const [authorizationCode, setAuthorizationCode] = useState('');
@@ -32,6 +34,7 @@ function EventDetailsInfo({ data, onStatus }) {
     data.agPreCode ? setPrePassword(data.agPreCode) : setPrePassword('');
     data.agPreCodeDate ? setPrePasswordDate(new Date(data.agPreCodeDate)) : setPrePasswordDate('');
     data.eventStatus ? setEventStatus(data.eventStatus) : setEventStatus('');
+    console.log(data)
   }, [data]);
 
   //Update Agreement data
@@ -60,6 +63,32 @@ function EventDetailsInfo({ data, onStatus }) {
     onStatus(true);
   }
 
+  //Cancel Event
+  const handleCancelEvent = async () => {
+    setLoading(true)
+    setDisabled(true)
+    const response = await cancelEvent(data.eventInstanceId,
+      {
+        eventInstanceId: data.eventInstanceId,
+        eventId: data.id,
+        cancelType: cancelationType,
+        eventStartTime: data.startTime
+      }
+    );
+    if (response.response && response.response.status >= 400) {
+      toast.error('Erro ao cancelar o agendamento!');
+      setLoading(false)
+      setDisabled(false)
+      return
+    }
+
+    toast.success('Agendamento cancelado com sucesso!');
+    setLoading(false);
+    setDisabled(true);
+    onStatus(true);
+    setViewCancelationModal(false)
+  }
+
   //Clear Authorization Date input
   const handleClearAuth = () => {
     setAuthorizationDate('')
@@ -75,7 +104,10 @@ function EventDetailsInfo({ data, onStatus }) {
     setViewCheckIn(true)
   }
 
-
+  //Open Cancelation Modal
+  const handleOpenCancelationModal = () => {
+    setViewCancelationModal(true)
+  }
 
   return (loading ?
     <div className="flex  items-center justify-center w-full h-1/2 ">
@@ -88,6 +120,19 @@ function EventDetailsInfo({ data, onStatus }) {
           isOpen={viewCheckIn}
           datas={data}
           status={onStatus}
+        />
+
+      }
+      {viewCancelationModal &&
+        <EventCancelationModal
+          closeModal={() => setViewCancelationModal(false)}
+          title={'Desmarcar'}
+          question={'Deseja desmarcar todos os agendamentos ou somente este?'}
+          isOpen={viewCancelationModal}
+          datas={data}
+          status={onStatus}
+          setCancelationType={setCancelationType}
+          onConfirm={handleCancelEvent}
         />
 
       }
@@ -235,7 +280,7 @@ function EventDetailsInfo({ data, onStatus }) {
                   label="Desmarcar"
                   className="flex-1"
                   //disabled={true}
-                  onClick={() => { toast.error('Desmarcar') }}
+                  onClick={() => { handleOpenCancelationModal() }}
                 />
                 <OutLinedButton
                   label="Reagendar"
@@ -260,6 +305,13 @@ function EventDetailsInfo({ data, onStatus }) {
               Check-in realizado por {data.checkInName}, {formatDate(data.checkInDate)} às {formatDateTime(data.checkInDate)}.
             </div>
           }
+          {eventStatus === 5 &&
+            <div className="flex p-2 text-red-600 justify-end items-center">
+              <span className="mr-2"><GiCancel /></span>
+              Agendamento cancelado.
+            </div>
+          }
+
         </footer>
       </div>
     </>

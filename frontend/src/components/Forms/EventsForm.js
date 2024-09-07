@@ -155,23 +155,28 @@ export default function EventsForm({ datas, onClose, status }) {
         <p className='text-black text-sm'>
           {`Data do Agendamento ${eventsPerWeek === 1 ? '' : i + 1}`}
         </p>
-        <div className='flex w-full px-4 space-x-1  bg-white text-md border items-center border-border font-light rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain'>
-          <MultiplesDatePickers
-            key={i}
-            startDate={arrayDates[i]}
-            showTimeSelect={true}
-            minDate={new Date()}
-            color={'red-600'}
-            dateFormat={'dd/MM/yyyy - hh:mm aa'}
-            placeholderText={"Selecionar data"}
-            locale={'pt-BR'}
-            onChange={(date) => {
-              handleAddArrayDates(date, i)
-            }}
-          />
-          <p className='w-full py-4 text-xl font-light capitalize'>
-            {arrayDates[i] ? arrayDates[i].toLocaleDateString('pt-BR', { weekday: 'long' }) : ''}
-          </p>
+        <div className='flex  w-full    bg-white text-sm border items-center border-border font-light rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain'>
+          <div className='px-4'>
+
+            <MultiplesDatePickers
+              key={i}
+              startDate={arrayDates[i]}
+              showTimeSelect={true}
+              minDate={new Date()}
+              color={'red-600'}
+              dateFormat={'dd/MM/yyyy - hh:mm aa'}
+              placeholderText={"Selecionar data"}
+              locale={'pt-BR'}
+              onChange={(date) => {
+                handleAddArrayDates(date, i)
+              }}
+            />
+          </div>
+          <div className='w-full h-full p-4 bg-gray-50 border-l cursor-default'>
+            <p className='text-md font-light capitalize text-gray-400 bg-gray-50 '>
+              {arrayDates[i] ? arrayDates[i].toLocaleDateString('pt-BR', { weekday: 'long' }) : ''}
+            </p>
+          </div>
         </div>
       </>
     );

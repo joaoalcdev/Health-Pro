@@ -594,7 +594,7 @@ export function DatePickerEvents({ label, startDate, onChange, color, locale, sh
         filterDate={date => date.getDay() !== 0 && date.getDay() !== 6}
         locale={locale}
         fixedHeight
-        className={`w-auto bg-white text-xl py-4 hover:cursor-pointer focus:cursor-text caret-subMain`}
+        className={`w-auto bg-white text-md py-4 hover:cursor-pointer focus:cursor-text caret-subMain`}
       />
     </div>
   );

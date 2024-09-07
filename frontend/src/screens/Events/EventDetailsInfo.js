@@ -127,12 +127,13 @@ function EventDetailsInfo({ data, onStatus }) {
         <EventCancelationModal
           closeModal={() => setViewCancelationModal(false)}
           title={'Desmarcar'}
-          question={'Deseja desmarcar todos os agendamentos ou somente este?'}
+          question={data.eventType <= 3 ? 'Deseja desmarcar todos os agendamentos ou somente este?' : 'Você tem certeza que deseja desmarcar este agendamento?'}
           isOpen={viewCancelationModal}
           datas={data}
           status={onStatus}
           setCancelationType={setCancelationType}
           onConfirm={handleCancelEvent}
+          eventType={data.eventType}
         />
 
       }

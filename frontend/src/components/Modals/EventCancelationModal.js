@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import Modal from './Modal';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import { ButtonNegative, Button } from '../Form';
+import { Button } from '../Form';
 import { RadioGroup, Radio } from '@headlessui/react';
 
 
-function EventCancelationModal({ title, closeModal, isOpen, onConfirm, question, user, loading, setCancelationType }) {
+function EventCancelationModal({ title, closeModal, isOpen, onConfirm, question, user, loading, setCancelationType, eventType }) {
   const options = [
     { id: 1, label: 'Somente este agendamento', value: 'cancelOne' },
     { id: 2, label: 'Desmarcar TODOS', value: 'cancelAll' }
@@ -30,33 +30,34 @@ function EventCancelationModal({ title, closeModal, isOpen, onConfirm, question,
             {question}
           </div>
         </div>
-        {/* checkboxes with two options */}
-        <div className="w-full ">
-          <RadioGroup
-            value={selected}
-            onChange={setSelected}
-            className="space-y-2 mr-2"
-          >
-            {options.map((item, key) => {
-              return (
-                <Radio
-                  key={item.id}
-                  value={item.id}
-                  checked={selected === item.id}
-                  className="group relative flex cursor-pointer rounded-lg bg-white py-4 px-5 text-black border border-border transition focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-subMain data-[checked]:text-white data-[checked]:shadow-none"
-                >
-                  <>
-                    <h1 className="text-sm">
-                      {item.label}
-                    </h1>
+        {eventType < 4 && (
+          <div className="w-full ">
+            <RadioGroup
+              value={selected}
+              onChange={setSelected}
+              className="space-y-2 mr-2"
+            >
+              {options.map((item, key) => {
+                return (
+                  <Radio
+                    key={item.id}
+                    value={item.id}
+                    checked={selected === item.id}
+                    className="group relative flex cursor-pointer rounded-lg bg-white py-4 px-5 text-black border border-border transition focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-subMain data-[checked]:text-white data-[checked]:shadow-none"
+                  >
+                    <>
+                      <h1 className="text-sm">
+                        {item.label}
+                      </h1>
 
-                  </>
-                </Radio>
-              )
-            })
-            }
-          </RadioGroup>
-        </div>
+                    </>
+                  </Radio>
+                )
+              })
+              }
+            </RadioGroup>
+          </div>
+        )}
         <div className="grid sm:grid-cols-2 gap-4 w-full">
           <button
             onClick={closeModal}
@@ -64,7 +65,7 @@ function EventCancelationModal({ title, closeModal, isOpen, onConfirm, question,
           >
             Cancelar
           </button>
-          <Button label="Continuar" disable={loading} loading={loading} Icon={RiDeleteBin6Line} onClick={onConfirm} />
+          <Button label={eventType < 4 ? "Continuar" : "Sim, Continuar"} disable={loading} loading={loading} Icon={RiDeleteBin6Line} onClick={onConfirm} />
 
         </div>
       </div>

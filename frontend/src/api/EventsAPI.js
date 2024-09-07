@@ -74,3 +74,12 @@ export const eventCheckIn = async (formData, eventInstanceId) => {
     return error
   }
 }
+
+export const cancelEvent = async (eventInstanceId, data) => {
+  try {
+    const response = await axios.put(apiBaseUrl(`cancelEvent/${eventInstanceId}`), data)
+    return response
+  } catch (error) {
+    return error
+  }
+}

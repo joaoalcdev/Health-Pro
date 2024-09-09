@@ -8,6 +8,7 @@ export const ListEvents = async (app: FastifyInstance) => {
       let { data, error } = await supabase
         .from("view_events")
         .select("*")
+        .is("canceledAt", null)
         .order("startTime", { ascending: true })
 
       

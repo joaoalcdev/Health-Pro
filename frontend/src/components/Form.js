@@ -20,9 +20,8 @@ import { Menu, Switch, Combobox, ComboboxInput, ComboboxOption, ComboboxOptions,
 import { specialties, sortsDatas } from './Datas';
 
 
-export function SelectListBox({ iconButton, children, label, color, selectedPerson, setSelectedPerson, datas }) {
+export function SelectListBox({ iconButton, children, label, color, selectedPerson, setSelectedPerson, datas, loading }) {
   const optionsListDatas = datas ? datas : datas.filter((person) => { return person.name.toLowerCase().includes(query.toLowerCase()) })
-
 
   return (
     <>
@@ -46,7 +45,8 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
                   'hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed'
                 )}
               >
-                {selectedPerson.name}
+                {loading ? 'Carregando...' : selectedPerson.name}
+
                 <span type='reset' className='group absolute -mt-0.5 right-0 mx-4 rotate-0 group-data-[open]:rotate-180 transition ease-in-out duration-150'>
                   {iconButton}
                 </span>
@@ -60,7 +60,7 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
                   modal={false}
                   transition
                   className={clsx(
-                    `origin-top rounded bg-white shadow-lg space-y-1 !max-h-[10.3rem] overflow-y-scroll w-[var(--button-width)] border border-white/5 p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none`,
+                    `z-50 origin-top rounded bg-white shadow-lg space-y-1 !max-h-[10.3rem] overflow-y-scroll w-[var(--button-width)] border border-white/5 p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none`,
                     'transition duration-100 ease-in data-[closed]:scale-100 data-[closed]:opacity-0'
                   )}
                 >

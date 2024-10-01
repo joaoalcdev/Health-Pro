@@ -10,13 +10,16 @@ import EventDetailsInfo from './EventDetailsInfo';
 import EventDetailsPatientInfo from './EventDetailsPatientInfo';
 import EventDetailsProfessionalInfo from './EventDetailsProfessionalInfo';
 import EventDetailsReminder from './EventDetailsReminder';
-import moment from 'moment';
+import Drawer from 'react-modern-drawer';
+import EventsForm from '../../components/Forms/EventsForm';
 
+import moment from 'moment';
 
 function EventDetails() {
 
   //controllers
   const [loading, setLoading] = useState(false);
+  const [viewEditDrawer, setViewEditDrawer] = useState(false);
 
   const [activeTab, setActiveTab] = useState(1);
   const [access, setAccess] = useState({});
@@ -34,6 +37,7 @@ function EventDetails() {
     }
     setEventData(response.data[0])
     setLoading(false)
+    console.log(response.data[0])
   }
 
   useEffect(() => {
@@ -45,10 +49,14 @@ function EventDetails() {
     setStatus(newStatus)
   }
 
+  const openEditDrawer = () => {
+    setViewEditDrawer(true)
+  }
+
   const tabPanel = () => {
     switch (activeTab) {
       case 1:
-        return <EventDetailsInfo data={eventData} onStatus={onStatus} />;
+        return <EventDetailsInfo data={eventData} onStatus={onStatus} openEdit={openEditDrawer} />;
       case 2:
         return <EventDetailsPatientInfo />;
       case 3:
@@ -67,6 +75,20 @@ function EventDetails() {
       </div>
       :
       <Layout>
+        {viewEditDrawer && (
+          <>
+            <Drawer
+              open={viewEditDrawer}
+              onClose={() => setViewEditDrawer(false)}
+              direction='right'
+              size={460}
+              zIndex={40}
+              enableOverlay={true}
+            >
+              <EventsForm datas={eventData} onClose={() => setViewEditDrawer(false)} status={onStatus} isEdit={true} />
+            </Drawer>
+          </>
+        )}
         <div className="flex items-center gap-4">
           <Link
             to="/schedule"

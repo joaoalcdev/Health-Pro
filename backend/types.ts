@@ -79,10 +79,11 @@ type Service = {
 
 type ScheduleEvent = {
   id?: number,
+  eventInstanceId?: number,
   patientId: number,
   professionalId: number,
-  serviceId: number,
-  startDate: string,
+  serviceId?: number,
+  startDate: object,
   agreementId: number,
   agAuthCode?: string,
   agAuthDate?: string,
@@ -95,5 +96,16 @@ type ScheduleEvent = {
   eventsPerWeek?: number,
   eventsQty?: number,
   checkInName?: string,
+  timecodes?: [{
+    day: number,
+    time: object
+  }]
+}
+
+interface SingleEvent {
+  eventId: number; 
+  startTime: string;
+  endTime: string;
+  agreementId: number;
 }
 

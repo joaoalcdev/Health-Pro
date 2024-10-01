@@ -617,8 +617,8 @@ export function TimePickerComp({ label, startDate, onChange, placeholderText }) 
         //maxTime={new Date().setHours(21, 0)}
         filterTime={date => date.getHours() > 5 && date.getHours() < 20}
         timeCaption="Time"
-        dateFormat="h:mm aa"
-        className="transitions w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
+        dateFormat="H:mm aa"
+        className="transitions flex w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
       />
     </div>
   );

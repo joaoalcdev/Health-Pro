@@ -4,24 +4,31 @@ import { FaTimes } from 'react-icons/fa';
 import PatientMedicineServiceModal from '../Modals/PatientMedicineServiceModal';
 import { specialties, agreements, eventTypes } from '../Datas';
 import { BiChevronDown } from 'react-icons/bi';
-import { Select, SelectProfessional, Input, Button, MultiplesDatePickers } from '../Form';
+import { Select, SelectProfessional, Input, Button, MultiplesDatePickers, TimePickerComp, DatePickerComp } from '../Form';
 import { getPatients } from '../../api/PatientsAPI';
 import { getProfessionals } from '../../api/ProfessionalsAPI';
 import { getServices } from '../../api/ServicesAPI';
-import { createEvents } from '../../api/EventsAPI';
+import { createEvents, rescheduleEvents } from '../../api/EventsAPI';
 import { toast } from 'react-hot-toast';
+import { weekDays, timeOptions } from '../Datas';
 import 'moment/locale/pt-br';
 
-export default function EventsForm({ datas, onClose, status }) {
+export default function EventsForm({ datas, onClose, status, isEdit }) {
+
+  const today = new Date();
+  today.setHours(6, 0, 0, 0);
+
 
   //controllers
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
+  const validWeekDays = weekDays.slice(1, 6);
+
 
   //form steps
-  const [step1, setStep1] = useState(true);
-  const [step2, setStep2] = useState(false);
+  const [step1, setStep1] = useState(isEdit ? false : true);
+  const [step2, setStep2] = useState(isEdit ? true : false);
 
   //data
   const [patientsData, setPatientsData] = useState([]);
@@ -30,16 +37,17 @@ export default function EventsForm({ datas, onClose, status }) {
 
   //input data
   const [service, setService] = useState({ id: 0, name: 'Selecione um Serviço...' });
-  const [startDate, setStartDate] = useState();
-  const [arrayDates, setArrayDates] = useState(['']);
+  const [startDate, setStartDate] = useState(isEdit ? new Date(datas.startTime) : today);
+  const [arrayDates, setArrayDates] = useState([{ day: 1, time: today }]);
+  const [arrayWeekDays, setArrayWeekDays] = useState([]);
+  const [arrayTimes, setArrayTimes] = useState([]);
   const [patient, setPatient] = useState({ id: 0, fullName: 'Selecione um Paciente...' });
   const [professional, setProfessional] = useState({ id: 0, firstName: 'Selecione um Profissional...' });
   const [agreement, setAgreement] = useState({ id: 0, name: 'Selecione alguma opção...' });
-  const [eventType, setEventType] = useState({ id: 0, name: 'Selecione uma opção...' },
+  const [eventType, setEventType] = useState(isEdit ? eventTypes[datas.eventType - 1] : { id: 0, name: 'Selecione uma opção...' },
   );
-  const [eventsQty, setEventsQty] = useState(1)
-  const [eventsPerWeek, setEventsPerWeek] = useState({ id: 1, name: '1x' })
-
+  const [eventsQty, setEventsQty] = useState(isEdit ? datas.eventsQty : 1)
+  const [eventsPerWeek, setEventsPerWeek] = useState(isEdit && datas.eventType <= 2 ? timeOptions[datas.timecodes.length - 1] : timeOptions[0]);
 
   //popuplate professionals and patients selectors
   const fetch = async () => {
@@ -50,6 +58,8 @@ export default function EventsForm({ datas, onClose, status }) {
   }
   useEffect(() => {
     fetch()
+    console.log("fetchData", datas)
+    console.log("fetch", eventsPerWeek)
   }, [])
 
   //Populate services selector based on professional specialty
@@ -64,24 +74,42 @@ export default function EventsForm({ datas, onClose, status }) {
   //Save event
   const handleSave = async () => {
     setLoading(true);
+    if (isEdit) {
+      console.log("edit", arrayDates)
+      const data = {
+        eventInstanceId: datas.eventInstanceId,
+        eventType: datas.eventType,
+        startDate: startDate,
+        agreementId: datas.agreementId,
+        eventsPerWeek: eventsPerWeek.id,
+        eventsQty: Number(eventsQty),
+        timecodes: arrayDates
+      };
+      const response = await rescheduleEvents(data, datas.id);
 
-    //ensure arrayDates has correct lenght
-    setArrayDates(arrayDates.filter((date, index) => {
-      if (index < eventsPerWeek.id) {
-        return date
+      if (response.code) {
+        toast.error('Erro ao criar agendamento');
+        setLoading(false);
+        return
       }
-    }))
+
+      toast.success('Agendamento realizado com sucesso!');
+      status(true);
+      setLoading(false);
+      onClose();
+      return
+    }
 
     const data = {
       patientId: patient.id,
       professionalId: professional.id,
-      startDate: arrayDates,
-      //endTime: moment(startDate).add(30, 'minutes').toDate(),
+      startDate: startDate,
       serviceId: (eventType === 4 || eventType === 5 || service.id === 0) ? null : service.id,
       agreementId: agreement.id,
       eventType: eventType.id,
       eventsPerWeek: eventsPerWeek.id,
       eventsQty: Number(eventsQty),
+      timecodes: arrayDates
     };
 
     const response = await createEvents(data);
@@ -100,6 +128,10 @@ export default function EventsForm({ datas, onClose, status }) {
 
   //Change drawer step
   const handleChangeStep = () => {
+    if (isEdit) {
+      onClose()
+      return
+    }
     //Prevent default
     if (professional.id === 0 || patient.id === 0 || eventType.id === 0) {
       toast.error('Preencha todos os campos');
@@ -120,25 +152,6 @@ export default function EventsForm({ datas, onClose, status }) {
     }
   }
 
-  //insert date in arrayDates
-  const handleAddArrayDates = (date, index) => {
-    setStartDate(date);
-    const newDate = [...arrayDates];
-    newDate[index] = date;
-    setArrayDates(newDate);
-  }
-
-  //Enable save button when all dates are filled
-  useEffect(() => {
-    for (let i = 0; i < eventsPerWeek.id; i++) {
-      if (arrayDates[i] === '' || arrayDates[i] === undefined) {
-        setDisabled(true)
-        return
-      }
-    }
-    setDisabled(false)
-  }, [arrayDates, eventsPerWeek])
-
   //ensure eventsQty minimum must be eventsPerWeek
   useEffect(() => {
     if (eventsQty < eventsPerWeek.id) {
@@ -146,39 +159,113 @@ export default function EventsForm({ datas, onClose, status }) {
     }
   }, [eventsPerWeek])
 
+  //Update number of events
+  const handleNumEventsChange = () => {
+    const num = parseInt(eventsPerWeek.id, 10);
+
+    // Reseta o array de eventos ao mudar o número de eventos
+    setArrayDates(Array(num).fill({ day: 1, time: today }));
+    setArrayWeekDays(Array(num).fill(1));
+    setArrayTimes(Array(num).fill(today));
+
+    if (isEdit && datas.eventType <= 2) {
+      updateArrays()
+      return
+    }
+    console.log("reset arrays", arrayDates)
+  };
+
+  useEffect(() => {
+    handleNumEventsChange();
+    console.log("darray", arrayDates)
+  }, [eventsPerWeek])
+
+  const updateArrays = () => {
+    let newArrayWeekDays = [];
+    let newArrayTimes = [];
+    for (let index = 0; index < eventsPerWeek.id; index++) {
+      newArrayWeekDays.push(datas.timecodes[index] ? datas.timecodes[index].day : 1);
+      newArrayTimes.push(datas.timecodes[index] ? datas.timecodes[index].time : today);
+    }
+    setArrayWeekDays(newArrayWeekDays);
+    setArrayTimes(newArrayTimes);
+  }
+
+  //update array of dates based on weekDays and times  
+  useEffect(() => {
+
+    let updatedDates = [...arrayDates];
+
+    for (let i = 0; i < eventsPerWeek.id; i++) {
+      updatedDates[i] = {
+        day: arrayWeekDays[i],
+        time: arrayTimes[i]
+      }
+    }
+    console.log("updatedDates", updatedDates)
+    setArrayDates(updatedDates)
+  }, [arrayWeekDays, arrayTimes])
+
+  const handleAddWeekDay = (weekDay, index) => {
+    const newArray = [...arrayWeekDays];
+    newArray[index] = weekDay.id;
+    setArrayWeekDays(newArray);
+  }
+
+  const handleAddTime = (time, index) => {
+    const newArray = [...arrayTimes];
+    newArray[index] = time;
+    setArrayTimes(newArray);
+  }
+
+  //Reset form step 2 when changing eventType
+  useEffect(() => {
+    if (!isEdit) {
+      console.log("reset")
+      setEventsPerWeek({ id: 1, name: '1x' });
+      setEventsQty(1);
+      setStartDate(today);
+    }
+  }, [eventType])
+
 
   //Create array of DatePickers based on eventsPerWeek
   const componentsArrayDatePickers = [];
   for (let i = 0; i < eventsPerWeek.id; i++) {
     componentsArrayDatePickers.push(
-      <>
-        <p className='text-black text-sm'>
-          {`Data do Agendamento ${eventsPerWeek === 1 ? '' : i + 1}`}
-        </p>
-        <div className='flex  w-full    bg-white text-sm border items-center border-border font-light rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain'>
-          <div className='px-4'>
-
-            <MultiplesDatePickers
-              key={i}
-              startDate={arrayDates[i]}
-              showTimeSelect={true}
-              minDate={new Date()}
-              color={'red-600'}
-              dateFormat={'dd/MM/yyyy - hh:mm aa'}
-              placeholderText={"Selecionar data"}
-              locale={'pt-BR'}
-              onChange={(date) => {
-                handleAddArrayDates(date, i)
-              }}
-            />
-          </div>
-          <div className='w-full h-full p-4 bg-gray-50 border-l cursor-default'>
-            <p className='text-md font-light capitalize text-gray-400 bg-gray-50 '>
-              {arrayDates[i] ? arrayDates[i].toLocaleDateString('pt-BR', { weekday: 'long' }) : ''}
-            </p>
-          </div>
+      <div className='flex flex-initial gap-3' key={i}>
+        <div className="flex w-full flex-col gap-3 ">
+          <Select
+            selectedPerson={arrayWeekDays[i]}
+            setSelectedPerson={
+              (weekDay) => {
+                console.log("weekDay", weekDay)
+                handleAddWeekDay(weekDay, i)
+              }
+            }
+            datas={validWeekDays}
+          >
+            <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
+              {arrayWeekDays[i] ? weekDays[arrayWeekDays[i]].name : ""} <BiChevronDown className="text-xl" />
+            </div>
+          </Select>
         </div>
-      </>
+        <div className="flex w-[30%]">
+          <TimePickerComp
+            key={i}
+            startDate={arrayTimes[i] ? new Date(arrayTimes[i]) : new Date(today)}
+            showTimeSelect={true}
+            minDate={new Date()}
+            color={'red-600'}
+            placeholderText={"Selecionar data"}
+            locale={'pt-BR'}
+            onChange={(time) => {
+              handleAddTime(time, i)
+            }}
+            value={arrayTimes[i] ? arrayDates[i].time : ''}
+          />
+        </div>
+      </div>
     );
   }
 
@@ -197,7 +284,7 @@ export default function EventsForm({ datas, onClose, status }) {
 
         {/* Header */}
         <div className="fixed w-full flex max-h-20 justify-between items-center inset-x-0 top-0 gap-2 px-4 py-4">
-          <h1 className="text-md font-semibold">Novo Agendamento</h1>
+          <h1 className="text-md font-semibold">{isEdit ? "Editar Agendamento" : "Novo Agendamento"}</h1>
           <button
             onClick={onClose}
             className="w-14 h-8 bg-dry text-red-600 rounded-md flex-colo"
@@ -211,7 +298,7 @@ export default function EventsForm({ datas, onClose, status }) {
           {step1 ?
             <>
               {/* Professional */}
-              <div className={`flex w-full flex-col gap-3 `}>
+              <div className={`flex w-full flex-col gap-2 `}>
                 <p className="text-black text-sm">Profissional</p>
                 {professionalsData ?
                   <SelectProfessional
@@ -229,7 +316,7 @@ export default function EventsForm({ datas, onClose, status }) {
 
               {/* Patient */}
               <div className="flex gap-4">
-                <div className='flex w-full flex-col gap-3 '>
+                <div className='flex w-full flex-col gap-2 '>
 
                   <p className="text-black text-sm">Pacientes</p>
                   <div className='flex gap-4'>
@@ -247,7 +334,7 @@ export default function EventsForm({ datas, onClose, status }) {
               </div>
 
               {/* Event Type */}
-              <div className="flex w-full flex-col gap-3 ">
+              <div className="flex w-full flex-col gap-1 ">
                 <p className="text-black text-sm">Tipo de Agendamento</p>
                 <Select
                   selectedPerson={eventType}
@@ -261,7 +348,7 @@ export default function EventsForm({ datas, onClose, status }) {
               </div>
 
               {/* Agreement */}
-              <div className={`flex w-full flex-col gap-3 ${(eventType.id === 0 || eventType.id === 5) ? 'invisible' : ''}`}>
+              <div className={`flex w-full flex-col gap-1 ${(eventType.id === 0 || eventType.id === 5) ? 'invisible' : ''}`}>
                 <p className="text-black text-sm">Convênio</p>
                 {professionalsData ?
                   <Select
@@ -279,7 +366,7 @@ export default function EventsForm({ datas, onClose, status }) {
               </div>
 
               {/* Service */}
-              <div className={`flex w-full flex-col gap-3 ${(professional.id === 0 || eventType.id === 0 || eventType.id === 4 || eventType.id === 5) ? 'invisible' : ''}`}>
+              <div className={`flex w-full flex-col gap-1 ${(professional.id === 0 || eventType.id === 0 || eventType.id === 4 || eventType.id === 5) ? 'invisible' : ''}`}>
                 <p className="text-black text-sm">Serviço</p>
 
                 <Select
@@ -298,24 +385,45 @@ export default function EventsForm({ datas, onClose, status }) {
             <>
               {/* Events Qty */}
               {eventType.id < 3 &&
-                <div div className="flex w-full flex-col gap-3 ">
-                  <p className="text-black text-sm">Quantos Agendamentos por Semana?</p>
-                  <Select
-                    selectedPerson={eventsPerWeek}
-                    setSelectedPerson={setEventsPerWeek}
-                    datas={[{ id: 1, name: '1x' }, { id: 2, name: '2x' }, { id: 3, name: '3x' }, { id: 4, name: '4x' }, { id: 5, name: '5x' }]}
-                  >
-                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
-                      {eventsPerWeek.name}
-                      <BiChevronDown className="text-xl" />
-                    </div>
-                  </Select>
-                </div>
+                <>
+                  <div div className="flex w-full flex-col gap-1 ">
+                    <p className="text-black text-sm">Data de início</p>
+                    <DatePickerComp
+                      color={true}
+                      scrollableYearDropdown={true}
+                      closeOnScroll={true}
+                      popperPlacement="top-end"
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText={'__/__/____'}
+                      locale="pt"
+                      startDate={startDate}
+                      onChange={(date) => {
+                        setStartDate(date)
+                        // setIsDisabled(false)
+                      }}
+                    />
+                  </div>
+
+                  <div div className="flex w-full flex-col gap-1 ">
+                    <p className="text-black text-sm">Quantos Agendamentos por Semana?</p>
+                    <Select
+                      selectedPerson={eventsPerWeek}
+                      setSelectedPerson={setEventsPerWeek}
+                      datas={timeOptions}
+                    >
+                      <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain">
+                        {eventsPerWeek.name}
+                        <BiChevronDown className="text-xl" />
+                      </div>
+                    </Select>
+                  </div>
+                </>
               }
               {eventType.id === 2 &&
                 <Input
                   label="Quantidade de Agendamentos Totais"
                   color={true}
+                  disabled={isEdit}
                   type='number'
                   max='50'
                   value={eventsQty}
@@ -326,7 +434,36 @@ export default function EventsForm({ datas, onClose, status }) {
                 />
               }
               {/* date */}
-              {componentsArrayDatePickers}
+              {eventType.id < 3 && componentsArrayDatePickers}
+
+              {
+                eventType.id >= 3 &&
+                <div className="flex w-full flex-col gap-1 ">
+                  <p className="text-black text-sm">Data do agendamento</p>
+                  <div className='flex  w-full    bg-white text-sm border items-center border-border font-light rounded-lg focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain'>
+                    <div className='px-4'>
+                      <MultiplesDatePickers
+                        showTimeSelect={true}
+                        minDate={today}
+                        color={'red-600'}
+                        dateFormat={'dd/MM/yyyy - hh:mm aa'}
+                        placeholderText={"Selecionar data"}
+                        locale={'pt-BR'}
+                        startDate={startDate}
+                        onChange={(date) => {
+                          setStartDate(date)
+                          // setIsDisabled(false)
+                        }}
+                      />
+                    </div>
+                    <div className='w-full h-full p-4 bg-gray-50 border-l cursor-default'>
+                      <p className='text-md font-light capitalize text-gray-400 bg-gray-50 '>
+                        {weekDays[startDate.getDay()].name}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              }
             </>
           }
         </div >
@@ -360,16 +497,15 @@ export default function EventsForm({ datas, onClose, status }) {
                   className="flex-1  bg-red-600 bg-opacity-5 border-red-600 text-red-600 text-sm px-2 py-4 rounded font-light"
                 >
                   <>
-                    {'Voltar'}
+                    {isEdit ? 'Cancelar' : 'Voltar'}
                   </>
                 </button>
 
                 <Button
-                  label="Salvar"
+                  label={isEdit ? "Editar" : "Salvar"}
                   Icon={HiOutlineCheckCircle}
                   onClick={() => handleSave()}
                   loading={loading}
-                  disabled={disabled}
                   className="flex-1"
                 />
               </div>}

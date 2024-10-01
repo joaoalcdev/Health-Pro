@@ -286,7 +286,7 @@ function Schedule() {
             zIndex={40}
             enableOverlay={true}
           >
-            <EventsForm onClose={handleClose} status={setStatus} />
+            <EventsForm onClose={handleClose} status={setStatus} isEdit={false} />
           </Drawer>
         </>
       )}

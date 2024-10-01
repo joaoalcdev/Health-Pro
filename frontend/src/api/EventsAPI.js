@@ -20,9 +20,9 @@ export const createEvents = async (newEvent) => {
   }
 }
 
-export const rescheduleEvents = async (appointmentData, appointmentId) => {
+export const rescheduleEvents = async (eventData, eventId) => {
   try {
-    const data = await axios.put(apiBaseUrl(`events/reschedule/${appointmentId}`), appointmentData)
+    const data = await axios.put(apiBaseUrl(`event/reschedule/${eventId}`), eventData)
     return data
   } catch (error) {
     return error

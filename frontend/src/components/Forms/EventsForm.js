@@ -135,9 +135,9 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
     }
 
     toast.success('Agendamento realizado com sucesso!');
-    // status(true);
-    // setLoading(false);
-    // onClose();
+    status(true);
+    setLoading(false);
+    onClose();
   }
 
   //Change drawer step

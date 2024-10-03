@@ -26,13 +26,13 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
   return (
     <>
       <div className="flex w-full flex-col">
-        <Field className={`flex w-full flex-col`}>
+        {label && <Field className={`flex w-full flex-col`}>
           <Label
             className={`${color ? 'text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'} `}
           >
             {label}
           </Label>
-        </Field>
+        </Field>}
         {/* fragment component */}
         {/* <div className="mx-auto w-full"> */}
         <Listbox value={selectedPerson} onChange={setSelectedPerson}>
@@ -45,8 +45,7 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
                   'hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed'
                 )}
               >
-                {loading ? 'Carregando...' : selectedPerson.name}
-
+                {selectedPerson.name}
                 <span type='reset' className='group absolute -mt-0.5 right-0 mx-4 rotate-0 group-data-[open]:rotate-180 transition ease-in-out duration-150'>
                   {iconButton}
                 </span>
@@ -64,20 +63,25 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
                     'transition duration-100 ease-in data-[closed]:scale-100 data-[closed]:opacity-0'
                   )}
                 >
-                  {optionsListDatas.map((person) => (
-                    <ListboxOption
-                      key={person.name}
-                      value={person}
-                      className={clsx(
-                        "group flex items-center gap-2 rounded-lg py-1.5 px-3 transitions",
-                        'bg-white hover:bg-greyed hover:cursor-pointer',
-                        'data-[selected]:bg-subMain '
-                      )}
-                    >
-                      <HiCheck className="invisible size-4 fill-white group-data-[selected]:visible" />
-                      <div className="text-sm/6 group-data-[selected]:text-white text-black">{person.name}</div>
-                    </ListboxOption>
-                  ))}
+                  {optionsListDatas.length === 0 ? (
+                    <div className="flex flex-row justify-center items-center text-center w-full py-2">
+                      <p className="text-sm text-black">Nenhum dado encontrado</p>
+                    </div>
+                  ) :
+                    optionsListDatas.map((person) => (
+                      <ListboxOption
+                        key={person.name}
+                        value={person}
+                        className={clsx(
+                          "group flex items-center gap-2 rounded-lg py-1.5 px-3 transitions",
+                          'bg-white hover:bg-greyed hover:cursor-pointer',
+                          'data-[selected]:bg-subMain '
+                        )}
+                      >
+                        <HiCheck className="invisible size-4 fill-white group-data-[selected]:visible" />
+                        <div className="text-sm/6 group-data-[selected]:text-white text-black">{person.name}</div>
+                      </ListboxOption>
+                    ))}
                 </ListboxOptions>
               )}
             </>
@@ -618,7 +622,7 @@ export function TimePickerComp({ label, startDate, onChange, placeholderText }) 
         filterTime={date => date.getHours() > 5 && date.getHours() < 20}
         timeCaption="Time"
         dateFormat="H:mm aa"
-        className="transitions flex w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
+        className="transitions flex w-full bg-transparent text-sm  p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
       />
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { eventTypes } from "../../components/Datas";
-import { Select, Input, DatePickerComp, Button, OutLinedButton, ButtonNegative } from "../../components/Form";
-import { agreements } from "../../components/Datas";
+import { Select, Input, DatePickerComp, Button, OutLinedButton, ButtonNegative, SelectListBox } from "../../components/Form";
+import { agreements, sortsDatas } from "../../components/Datas";
 import { BiChevronDown, BiLoaderCircle, BiSave } from "react-icons/bi";
 import { GiCancel, GiConfirmed } from "react-icons/gi";
 import { updateEvent, cancelEvent } from "../../api/EventsAPI";
@@ -109,6 +109,8 @@ function EventDetailsInfo({ data, onStatus }) {
     setViewCancelationModal(true)
   }
 
+
+
   return (loading ?
     <div className="flex  items-center justify-center w-full h-1/2 ">
       <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
@@ -178,15 +180,13 @@ function EventDetailsInfo({ data, onStatus }) {
               </div>
               <div className="grid sm:grid-cols-2 2xl:grid-cols-4 gap-4 w-full">
                 <div className="col-start-1 col-end-3">
-                  <Select
+                  <SelectListBox label={'Convênio'}
+                    color={true}
                     selectedPerson={agreement}
                     setSelectedPerson={setAgreement}
                     datas={agreements.agreement}
-                  >
-                    <div className="w-full flex-btn text-black text-sm p-4 border border-border font-light rounded-lg focus:border focus:border-subMain overflow-auto">
-                      {agreement.name ? agreement.name : ""}<BiChevronDown className="text-xl" />
-                    </div>
-                  </Select>
+                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+                  />
                 </div>
 
               </div>

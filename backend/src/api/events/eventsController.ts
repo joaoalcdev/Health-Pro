@@ -1,3 +1,4 @@
+import { create } from "domain";
 import { supabase } from "../../supabaseConnection";
 import moment from 'moment-timezone';
 
@@ -45,7 +46,6 @@ export const createInfinityEvents = ( eventId: number, startDate: moment.Moment,
     })
     currentDay.add(1, 'days');
   }
-  console.log(createdEvents)
   
   return supabase
     .from("eventInstances")
@@ -53,7 +53,7 @@ export const createInfinityEvents = ( eventId: number, startDate: moment.Moment,
     .select()
 }
 
-export const createRecurringEvents = ( eventId: number, startDate: moment.Moment, timecodes: { time: object, day: number }[], agreementId: number, eventQty: number) => {
+export const createRecurringEvents = ( eventId: number, startDate: moment.Moment, timecodes: { time: object, day: number }[], agreementId: number, eventQty: number, dischargedDate?: moment.Moment) => {
 
   const maxEventInstancesQty = eventQty; 
   let currentDay = moment(startDate);
@@ -67,6 +67,12 @@ export const createRecurringEvents = ( eventId: number, startDate: moment.Moment
       if (item.day === currentDay.day() && createdEventsQty < maxEventInstancesQty){
         
         currentDay.set('hour', moment(item.time).get('hour')).set('minute',moment(item.time).get('minute')).format()
+
+        if(dischargedDate?.isBefore(currentDay)) 
+          {
+            createdEventsQty = maxEventInstancesQty
+            return
+          }
         
         let instance = {
           eventId: eventId,
@@ -75,8 +81,12 @@ export const createRecurringEvents = ( eventId: number, startDate: moment.Moment
           agreementId,
           timecodes: currentDay.day()
         }
-        createdEventsQty++;
-        createdEvents.push(instance)
+        if(currentDay.isSame(startDate)){
+          return
+        }else{
+          createdEventsQty++;
+          createdEvents.push(instance)
+        }
       }
     })
     currentDay.add(1, 'days');
@@ -118,5 +128,29 @@ export const updateSingleEvent = ( eventId: number, startDate: moment.Moment) =>
     .update(updatedEvent)
     .eq("eventId", eventId)
     .select()
+}
+
+export const createOngoingEvents = async (eventId: number) => {
+  let { data: eventData, error: eventDataError } = await supabase
+    .from("events")
+    .select("*")
+    .eq("id", eventId);
+
+  if (eventDataError) {
+    console.error(eventDataError);
+    return;
+  }
+
+  let {data: eventInstances, error: eventInstancesError} = await supabase
+    .from("eventInstances")
+    .select("*")
+    .eq("eventId", eventId)
+    .eq("eventStatus", 1)
+    .order("startTime", {ascending: false});
+
+    
+    if(eventData && eventInstances && eventInstances.length > 0){
+      return createRecurringEvents(eventId, moment(eventInstances[0].startTime), eventData[0]?.timecodes, eventData[0].agreementId, 10-eventInstances.length, moment(eventData[0].dischargedDate ? eventData[0].dischargedDate : null));
+    }
 }
 

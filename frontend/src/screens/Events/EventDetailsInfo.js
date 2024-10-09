@@ -50,7 +50,6 @@ function EventDetailsInfo({ data, onStatus, openEdit }) {
       agPreCodeDate: agreement.id === 1 ? null : prePasswordDate
     }
     const response = await updateEvent(agreementData, data.eventInstanceId);
-    console.log(response)
     if (response.response && response.response.status >= 400) {
       toast.error('Erro ao atualizar o agendamento!');
       setLoading(false)

@@ -9,6 +9,7 @@ import { LiaUserNurseSolid } from "react-icons/lia";
 import { MdListAlt, MdOutlineInventory2, MdOutlineTextsms } from 'react-icons/md';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { BiCalendar, BiUserPlus } from 'react-icons/bi';
+import { IoIosRepeat } from "react-icons/io";
 
 
 export const MenuDatas = [
@@ -1303,6 +1304,11 @@ export const eventsTab = [
   },
   {
     id: 4,
+    title: 'Recorrência',
+    icon: IoIosRepeat,
+  },
+  {
+    id: 5,
     title: 'Lembrete',
     icon: AiOutlineNotification,
   },

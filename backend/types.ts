@@ -92,6 +92,7 @@ type ScheduleEvent = {
   endTime?: string,
   title?: string,
   eventType: number,
+  dischargedDate?: object,
   hasConflict?: boolean,
   eventsPerWeek?: number,
   eventsQty?: number,

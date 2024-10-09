@@ -10,6 +10,7 @@ import EventDetailsInfo from './EventDetailsInfo';
 import EventDetailsPatientInfo from './EventDetailsPatientInfo';
 import EventDetailsProfessionalInfo from './EventDetailsProfessionalInfo';
 import EventDetailsReminder from './EventDetailsReminder';
+import EventRecurringInfo from './EventRecurringInfo';
 import Drawer from 'react-modern-drawer';
 import EventsForm from '../../components/Forms/EventsForm';
 
@@ -22,7 +23,6 @@ function EventDetails() {
   const [viewEditDrawer, setViewEditDrawer] = useState(false);
 
   const [activeTab, setActiveTab] = useState(1);
-  const [access, setAccess] = useState({});
   const [eventData, setEventData] = useState({});
   const [status, setStatus] = useState(false);
 
@@ -37,7 +37,7 @@ function EventDetails() {
     }
     setEventData(response.data[0])
     setLoading(false)
-    console.log(response.data[0])
+    //console.log(response.data[0])
   }
 
   useEffect(() => {
@@ -62,6 +62,8 @@ function EventDetails() {
       case 3:
         return <EventDetailsProfessionalInfo doctor={true} />;
       case 4:
+        return <EventRecurringInfo data={eventData} onStatus={onStatus} openEdit={openEditDrawer} />;
+      case 5:
         return <EventDetailsReminder doctor={true} />;
       default:
         return;
@@ -146,9 +148,9 @@ function EventDetails() {
                       ? 'bg-text text-subMain text-left text-balance '
                       : 'bg-dry text-main hover:bg-text hover:text-subMain text-left text-balance'
                     }
-                text-xs gap-4 flex items-center w-full p-4 rounded`}
+                text-xs gap-4 flex items-center w-full p-4 rounded ${eventData.eventType !== 1 && tab.id === 4 ? 'hidden' : 'block'}`}
                 >
-                  <tab.icon className="text-lg" /> {tab.id === 2 ? eventData.patientFullName : tab.id === 3 ? eventData.professionalFirstName + ' ' + eventData.professionalLastName : tab.title}
+                  <tab.icon className={`text-lg `} /> {tab.id === 2 ? eventData.patientFullName : tab.id === 3 ? eventData.professionalFirstName + ' ' + eventData.professionalLastName : tab.title}
                 </button>
               ))}
             </div>

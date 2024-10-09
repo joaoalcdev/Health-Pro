@@ -83,3 +83,12 @@ export const cancelEvent = async (eventInstanceId, data) => {
     return error
   }
 }
+
+export const dischargeEvent = async (data, eventId) => {
+  try {
+    const response = await axios.put(apiBaseUrl(`discharge/${eventId}`), data)
+    return response
+  } catch (error) {
+    return error
+  }
+}

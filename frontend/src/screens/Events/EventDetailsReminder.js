@@ -5,7 +5,8 @@ function EventDetailsReminder({ data, onStatus }) {
 
   return (
     <>
-      <p>Reminder
+      <p>
+        Reminder
       </p>
     </>
   );

@@ -10,7 +10,7 @@ function EventDetailsProfessionalInfo({ data, onStatus }) {
       <p>
         Dados do professional aqui
       </p>
-      <UsedView
+      {/* <UsedView
         title="Dados do paciente"
         color={true}
         icon={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
@@ -20,7 +20,7 @@ function EventDetailsProfessionalInfo({ data, onStatus }) {
           color={true}></SubComponent>
         }
       >
-      </UsedView>
+      </UsedView> */}
     </>
   );
 }

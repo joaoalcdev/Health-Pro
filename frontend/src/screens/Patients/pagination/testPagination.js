@@ -33,9 +33,12 @@ const TestPagination = () => {
       if (page !== totalPage) {
         setPage(page + 1)
       }
-    } else if (value === '&raquo;' || value === ' ...') {
+    } else if (value === '&raquo;') {
+      setPage(totalPage)
+    } else if (value === ' ...') {
       setPage(totalPage - 1)
-    } else {
+    }
+    else {
       setPage(value)
     }
   }

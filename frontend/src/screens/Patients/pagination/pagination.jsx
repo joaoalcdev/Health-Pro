@@ -28,11 +28,11 @@ function Pagination(props) {
     <div className='flex flex-row justify-center items-center text-center py-3 select-none'>
       <nav>
         <ul className="pagination flex flex-row justify-center items-center text-center text-black space-x-1.5">
-          <li className={`${props.page === 1 ? disabledButton : enabledButton} ${buttonStylesDefault}`}>
+          {/* <li className={`${props.page === 1 ? disabledButton : enabledButton} ${buttonStylesDefault}`}>
             <span onClick={() => props.onPageChange("&laquo;")} className=''>
               <HiChevronDoubleLeft />
             </span>
-          </li>
+          </li> */}
           <li className={`${props.page === 1 ? disabledButton : enabledButton} ${buttonStylesDefault}`}>
             <span onClick={() => props.onPageChange("&lsaquo;")} className={``}>
               <HiChevronLeft />
@@ -62,11 +62,11 @@ function Pagination(props) {
               <HiChevronRight />
             </span>
           </li>
-          <li className={`${props.page === props.totalPage ? disabledButton : enabledButton} ${buttonStylesDefault}`}>
+          {/* <li className={`${props.page === props.totalPage ? disabledButton : enabledButton} ${buttonStylesDefault}`}>
             <span onClick={() => props.onPageChange("&raquo;")} className=''>
               <HiChevronDoubleRight />
             </span>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </div>

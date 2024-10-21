@@ -20,9 +20,9 @@ export const createEvents = async (newEvent) => {
   }
 }
 
-export const rescheduleEvents = async (appointmentData, appointmentId) => {
+export const rescheduleEvents = async (eventData, eventId) => {
   try {
-    const data = await axios.put(apiBaseUrl(`events/reschedule/${appointmentId}`), appointmentData)
+    const data = await axios.put(apiBaseUrl(`event/reschedule/${eventId}`), eventData)
     return data
   } catch (error) {
     return error
@@ -78,6 +78,15 @@ export const eventCheckIn = async (formData, eventInstanceId) => {
 export const cancelEvent = async (eventInstanceId, data) => {
   try {
     const response = await axios.put(apiBaseUrl(`cancelEvent/${eventInstanceId}`), data)
+    return response
+  } catch (error) {
+    return error
+  }
+}
+
+export const dischargeEvent = async (data, eventId) => {
+  try {
+    const response = await axios.put(apiBaseUrl(`discharge/${eventId}`), data)
     return response
   } catch (error) {
     return error

@@ -2,6 +2,7 @@ import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
 import moment from 'moment-timezone';
 import Jimp from 'jimp';
+import { createOngoingEvents } from '../events/eventsController';
 
 import 'moment/locale/pt-br';
 
@@ -9,9 +10,11 @@ export const EventCheckIn = async (app: FastifyInstance) => {
   app.post("/checkIn/:id", async (req: FastifyRequest, res: FastifyReply) => {
     const { id } = req.params as { id: string };  
     let {
+      eventId,
+      eventType,
       checkInName,
       checkInSignature,
-    } = req.body as {checkInName: string, checkInSignature: string};
+    } = req.body as {eventId: number, eventType: number, checkInName: string, checkInSignature: string};
 
     //Convert base64 to buffer
     const buffer = Buffer.from(checkInSignature, "base64");
@@ -21,7 +24,7 @@ export const EventCheckIn = async (app: FastifyInstance) => {
     });
     
     try {
-      //Upload signature to storage
+      // Upload signature to storage
       const { data: fileData, error } = await supabase
       .storage
       .from('cedejom')
@@ -35,7 +38,7 @@ export const EventCheckIn = async (app: FastifyInstance) => {
         return res.status(500).send({ error });
       }
 
-      //Update event instance
+      // Update event instance
       const { data, error: insertError } = await supabase
       .from('eventInstances')
       .update({
@@ -46,6 +49,11 @@ export const EventCheckIn = async (app: FastifyInstance) => {
       })
       .eq('id', id)
       .select()
+
+      //Verificar o envent type antes de criar ongoing events
+      if(eventType === 1){
+          await createOngoingEvents(eventId);
+      }
 
       if (insertError) {
         return res.status(500).send({ error: insertError });

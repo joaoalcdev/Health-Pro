@@ -20,20 +20,19 @@ import { Menu, Switch, Combobox, ComboboxInput, ComboboxOption, ComboboxOptions,
 import { specialties, sortsDatas } from './Datas';
 
 
-export function SelectListBox({ iconButton, children, label, color, selectedPerson, setSelectedPerson, datas }) {
+export function SelectListBox({ iconButton, children, label, color, selectedPerson, setSelectedPerson, datas, loading }) {
   const optionsListDatas = datas ? datas : datas.filter((person) => { return person.name.toLowerCase().includes(query.toLowerCase()) })
-
 
   return (
     <>
       <div className="flex w-full flex-col">
-        <Field className={`flex w-full flex-col`}>
+        {label && <Field className={`flex w-full flex-col`}>
           <Label
             className={`${color ? 'text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'} `}
           >
             {label}
           </Label>
-        </Field>
+        </Field>}
         {/* fragment component */}
         {/* <div className="mx-auto w-full"> */}
         <Listbox value={selectedPerson} onChange={setSelectedPerson}>
@@ -60,24 +59,29 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
                   modal={false}
                   transition
                   className={clsx(
-                    `origin-top rounded bg-white shadow-lg space-y-1 !max-h-[10.3rem] overflow-y-scroll w-[var(--button-width)] border border-white/5 p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none`,
+                    `z-50 origin-top rounded bg-white shadow-lg space-y-1 !max-h-[10.3rem] overflow-y-scroll w-[var(--button-width)] border border-white/5 p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none`,
                     'transition duration-100 ease-in data-[closed]:scale-100 data-[closed]:opacity-0'
                   )}
                 >
-                  {optionsListDatas.map((person) => (
-                    <ListboxOption
-                      key={person.name}
-                      value={person}
-                      className={clsx(
-                        "group flex items-center gap-2 rounded-lg py-1.5 px-3 transitions",
-                        'bg-white hover:bg-greyed hover:cursor-pointer',
-                        'data-[selected]:bg-subMain '
-                      )}
-                    >
-                      <HiCheck className="invisible size-4 fill-white group-data-[selected]:visible" />
-                      <div className="text-sm/6 group-data-[selected]:text-white text-black">{person.name}</div>
-                    </ListboxOption>
-                  ))}
+                  {optionsListDatas.length === 0 ? (
+                    <div className="flex flex-row justify-center items-center text-center w-full py-2">
+                      <p className="text-sm text-black">Nenhum dado encontrado</p>
+                    </div>
+                  ) :
+                    optionsListDatas.map((person) => (
+                      <ListboxOption
+                        key={person.name}
+                        value={person}
+                        className={clsx(
+                          "group flex items-center gap-2 rounded-lg py-1.5 px-3 transitions",
+                          'bg-white hover:bg-greyed hover:cursor-pointer',
+                          'data-[selected]:bg-subMain '
+                        )}
+                      >
+                        <HiCheck className="invisible size-4 fill-white group-data-[selected]:visible" />
+                        <div className="text-sm/6 group-data-[selected]:text-white text-black">{person.name}</div>
+                      </ListboxOption>
+                    ))}
                 </ListboxOptions>
               )}
             </>
@@ -511,7 +515,7 @@ export function Textarea({ label, name, register, placeholder, rows }) {
 
 // date picker
 
-export function DatePickerComp({ label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll, isClearable, children, maxDate }) {
+export function DatePickerComp({ label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll, isClearable, children, maxDate, minDate }) {
   return (
     <div className="flex flex-col text-sm w-full">
       <Field className={`flex w-full flex-col`}>
@@ -535,6 +539,7 @@ export function DatePickerComp({ label, startDate, onChange, color, locale, show
         isClearable={isClearable}
         locale={locale}
         maxDate={maxDate}
+        minDate={minDate}
         className={`transitions w-full bg-white text-sm p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
           } rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
       >
@@ -617,8 +622,8 @@ export function TimePickerComp({ label, startDate, onChange, placeholderText }) 
         //maxTime={new Date().setHours(21, 0)}
         filterTime={date => date.getHours() > 5 && date.getHours() < 20}
         timeCaption="Time"
-        dateFormat="h:mm aa"
-        className="transitions w-full bg-transparent text-sm mt-3 p-4 border border-border font-light rounded focus:border focus:border-subMain"
+        dateFormat="H:mm aa"
+        className="transitions flex w-full bg-transparent text-sm  p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
       />
     </div>
   );

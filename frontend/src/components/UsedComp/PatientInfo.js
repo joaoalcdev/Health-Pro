@@ -562,7 +562,7 @@ function PersonalInfo({ titles, data, status }) {
             />
             <div className="flex w-full flex-col">
               <SelectListBox
-                label={'Tipo Sanguíneo'}
+                label={'Tipo Sanguíneos'}
                 color={true}
                 selectedPerson={bloodType}
                 setSelectedPerson={setBloodType}

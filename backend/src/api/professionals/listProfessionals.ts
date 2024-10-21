@@ -31,6 +31,17 @@ export const ListProfessionals = async (app: FastifyInstance) => {
         } else {
           //test NoData
           //return res.status(200).send([])
+          let {data: specialties, error: specialtiesError} = await supabase
+          .from("specialties")
+          .select("*")
+
+          data = data? data.map((item: any) => {
+            return {
+              ...item,
+              summary: `${item.firstName} ${item.lastName} (${specialties?.find(specialty => specialty.id === item.specialty).name})`
+            }
+          
+          }) : []
           return res.status(200).send(data ? data : null)
         }
       }

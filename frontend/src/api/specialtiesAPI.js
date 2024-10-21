@@ -5,10 +5,7 @@ import { apiBaseUrl } from "./apiConfig"
 //Specialties
 export const getSpecialties = async (status, specialtyId) => {
   try {
-    const res = await axios.get(apiBaseUrl(`specialties
-      ${status || specialtyId ? '?' : ''}
-      ${status ? 'status=true' : ''}
-      ${specialtyId ? `specialtyId=${specialtyId}` : ''}`
+    const res = await axios.get(apiBaseUrl(`specialties${status || specialtyId ? '?' : ''}${status ? 'status=true' : ''}${specialtyId ? `specialtyId=${specialtyId}` : ''}`
     ))
     const data = res.data
     return data

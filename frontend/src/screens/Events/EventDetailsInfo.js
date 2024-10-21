@@ -10,12 +10,13 @@ import EventCancelationModal from "../../components/Modals/EventCancelationModal
 import toast from "react-hot-toast";
 import { formatDate, formatDateTime } from "../../utils/formatDate";
 
-function EventDetailsInfo({ data, onStatus }) {
+function EventDetailsInfo({ data, onStatus, openEdit }) {
   const [loading, setLoading] = useState(true);
 
   const [disabled, setDisabled] = useState(true);
   const [viewCheckIn, setViewCheckIn] = useState(false);
   const [viewCancelationModal, setViewCancelationModal] = useState(false);
+
   const [cancelationType, setCancelationType] = useState(null);
 
   const [agreement, setAgreement] = useState({});
@@ -49,7 +50,6 @@ function EventDetailsInfo({ data, onStatus }) {
       agPreCodeDate: agreement.id === 1 ? null : prePasswordDate
     }
     const response = await updateEvent(agreementData, data.eventInstanceId);
-    console.log(response)
     if (response.response && response.response.status >= 400) {
       toast.error('Erro ao atualizar o agendamento!');
       setLoading(false)
@@ -139,6 +139,7 @@ function EventDetailsInfo({ data, onStatus }) {
         />
 
       }
+
 
       <div className="flex flex-col gap-6 ">
         <header className="">
@@ -287,7 +288,7 @@ function EventDetailsInfo({ data, onStatus }) {
                   label="Reagendar"
                   className="flex-1"
                   //disabled={true}
-                  onClick={() => { toast.error('Reagendar') }}
+                  onClick={openEdit}
                 />
               </div>
               <div className="grid sm:grid-cols-1 gap-4">

@@ -6,9 +6,10 @@ import { AiOutlineNotification } from "react-icons/ai";
 import { FaRegCalendarAlt, FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
 import { RiFileList3Line, RiMoneyDollarCircleLine, RiUserHeartLine, RiUserLine } from 'react-icons/ri';
 import { LiaUserNurseSolid } from "react-icons/lia";
-import { MdListAlt, MdOutlineInventory2, MdOutlineTextsms} from 'react-icons/md';
+import { MdListAlt, MdOutlineInventory2, MdOutlineTextsms } from 'react-icons/md';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { BiCalendar, BiUserPlus } from 'react-icons/bi';
+import { IoIosRepeat } from "react-icons/io";
 
 
 export const MenuDatas = [
@@ -103,6 +104,8 @@ export const weekDays = [
   { id: 5, name: 'Sexta-feira' },
   { id: 6, name: 'Sábado' },
 ];
+
+export const timeOptions = [{ id: 1, name: '1x' }, { id: 2, name: '2x' }, { id: 3, name: '3x' }, { id: 4, name: '4x' }, { id: 5, name: '5x' }];
 
 export const eventStatus = [
   { id: 1, name: 'Agendado', color: '#F7DC6F' },
@@ -1301,6 +1304,11 @@ export const eventsTab = [
   },
   {
     id: 4,
+    title: 'Recorrência',
+    icon: IoIosRepeat,
+  },
+  {
+    id: 5,
     title: 'Lembrete',
     icon: AiOutlineNotification,
   },

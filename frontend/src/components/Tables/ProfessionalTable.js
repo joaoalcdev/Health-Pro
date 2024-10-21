@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FiEye } from 'react-icons/fi';
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
-import { specialties, councilDatas } from '../Datas';
+import { councilDatas } from '../Datas';
 import getAvatar from '../../utils/getAvatar';
 import Pagination from '../Pagination';
 
@@ -9,9 +9,10 @@ import Pagination from '../Pagination';
 const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
 const tdclass = 'text-start text-sm py-4 px-2 whitespace-nowrap';
 
-export default function ProfessionalTable({ data, functions, professional, noData }) {
+export default function ProfessionalTable({ data, functions, professional, noData, specialties }) {
 
   const [records, setRecords] = useState(data)
+  const [specialtyData, setSpecialtyData] = useState(specialties)
   const [currentPage, setCurrentPage] = useState(1); // current page
   const recordsPerPage = 5
 
@@ -45,7 +46,7 @@ export default function ProfessionalTable({ data, functions, professional, noDat
                   <h4 className="text-sm font-medium">{item.fullName}</h4>
                 </div>
               </td>
-              <td className={tdclass}>{item.specialty ? specialties.specialty[item.specialty - 1].name : "-"}</td>
+              <td className={tdclass}>{item.specialty && specialties ? specialties.find(spec => spec.id === item.specialty).name : '-'}</td>
               <td className={tdclass}>
                 <p className="text-textGray">{formatPhoneNumber(item.phoneNumber)}</p>
               </td>

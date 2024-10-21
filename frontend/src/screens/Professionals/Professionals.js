@@ -33,6 +33,7 @@ function Professionals() {
   const fetch = async () => {
     setLoading(true);
     const response = await getProfessionals(tab === 1 ? '' : 'true')
+    console.log(response)
     if (response.length === 0) {
       setNoData(true);
       setNoResult(true);
@@ -53,6 +54,7 @@ function Professionals() {
   useEffect(() => {
     fetch()
     fetchSpecialties()
+    console.log('fetch', data)
   }, [status, tab])
 
   const onCloseModal = () => {
@@ -188,6 +190,7 @@ function Professionals() {
                         doctor={true}
                         data={data}
                         noData={noResult}
+                        specialties={specialties}
                         functions={{
                           preview: preview,
                         }}

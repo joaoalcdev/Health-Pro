@@ -30,8 +30,6 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
   const container = useRef(null);
 
   useEffect(() => {
-    console.log("ENTROU NO EFFE")
-    console.log(container.current)
     setWidth(container.current ? container.current.offsetWidth : 0);
     setHeight(container.current ? container.current.offsetHeight : 0);
   }, [container.current]);
@@ -45,6 +43,8 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
     setDisabled(true);
 
     const response = await eventCheckIn({
+      eventId: datas.id,
+      eventType: datas.eventType,
       checkInName: checkInName,
       checkInSignature: finalSignature.split(';base64,')[1],
     }, datas.eventInstanceId);

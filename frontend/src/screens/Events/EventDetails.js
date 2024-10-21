@@ -10,16 +10,19 @@ import EventDetailsInfo from './EventDetailsInfo';
 import EventDetailsPatientInfo from './EventDetailsPatientInfo';
 import EventDetailsProfessionalInfo from './EventDetailsProfessionalInfo';
 import EventDetailsReminder from './EventDetailsReminder';
-import moment from 'moment';
+import EventRecurringInfo from './EventRecurringInfo';
+import Drawer from 'react-modern-drawer';
+import EventsForm from '../../components/Forms/EventsForm';
 
+import moment from 'moment';
 
 function EventDetails() {
 
   //controllers
   const [loading, setLoading] = useState(false);
+  const [viewEditDrawer, setViewEditDrawer] = useState(false);
 
   const [activeTab, setActiveTab] = useState(1);
-  const [access, setAccess] = useState({});
   const [eventData, setEventData] = useState({});
   const [status, setStatus] = useState(false);
 
@@ -34,6 +37,7 @@ function EventDetails() {
     }
     setEventData(response.data[0])
     setLoading(false)
+    //console.log(response.data[0])
   }
 
   useEffect(() => {
@@ -45,15 +49,21 @@ function EventDetails() {
     setStatus(newStatus)
   }
 
+  const openEditDrawer = () => {
+    setViewEditDrawer(true)
+  }
+
   const tabPanel = () => {
     switch (activeTab) {
       case 1:
-        return <EventDetailsInfo data={eventData} onStatus={onStatus} />;
+        return <EventDetailsInfo data={eventData} onStatus={onStatus} openEdit={openEditDrawer} />;
       case 2:
         return <EventDetailsPatientInfo data={eventData} onStatus={onStatus} />;
       case 3:
         return <EventDetailsProfessionalInfo data={eventData} doctor={true} onStatus={onStatus} />;
       case 4:
+        return <EventRecurringInfo data={eventData} onStatus={onStatus} openEdit={openEditDrawer} />;
+      case 5:
         return <EventDetailsReminder doctor={true} />;
       default:
         return;
@@ -80,6 +90,21 @@ function EventDetails() {
                 eventData.serviceName}
         </h1>
       </div>
+      :
+      {viewEditDrawer && (
+        <>
+          <Drawer
+            open={viewEditDrawer}
+            onClose={() => setViewEditDrawer(false)}
+            direction='right'
+            size={460}
+            zIndex={40}
+            enableOverlay={true}
+          >
+            <EventsForm datas={eventData} onClose={() => setViewEditDrawer(false)} status={onStatus} isEdit={true} />
+          </Drawer>
+        </>
+      )}
       <div className=" grid grid-cols-12 gap-6 my-8 items-start">
         <div
           data-aos="fade-right"
@@ -123,9 +148,9 @@ function EventDetails() {
                     ? 'bg-text text-subMain text-left text-balance '
                     : 'bg-dry text-main hover:bg-text hover:text-subMain text-left text-balance'
                   }
-                text-xs gap-4 flex items-center w-full p-4 rounded`}
+                text-xs gap-4 flex items-center w-full p-4 rounded ${eventData.eventType !== 1 && tab.id === 4 ? 'hidden' : 'block'}`}
               >
-                <tab.icon className="text-lg" /> {tab.id === 2 ? eventData.patientFullName : tab.id === 3 ? eventData.professionalFirstName + ' ' + eventData.professionalLastName : tab.title}
+                <tab.icon className={`text-lg `} /> {tab.id === 2 ? eventData.patientFullName : tab.id === 3 ? eventData.professionalFirstName + ' ' + eventData.professionalLastName : tab.title}
               </button>
             ))}
           </div>
@@ -143,6 +168,8 @@ function EventDetails() {
         </div>
       </div>
     </Layout>
+
+
   );
 }
 

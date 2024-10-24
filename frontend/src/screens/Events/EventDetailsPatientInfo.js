@@ -1,54 +1,72 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 
 // components - import
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
+import EventHistoryShimmer from '../../components/Loadings/EventHistoryShimmer';
+import { UsedEventPatientInfo } from './UsedEventPatientInfo';
+import { EventDetailsPatientDivider } from '../../components/Dividers/EventDetailsPatientDivider';
+import { EventDetailPatientShimmer } from '../../components/Loadings/EventDetailPatientShimmer';
 
+// utils - import
+import { formatDate } from '../../utils/formatDate';
 
 // datas - import
-import { sortsDatas, bloodTypeFilter } from '../../components/Datas';
-import { brStateDatas, genderDatas, maritalDatas, insuranceDatas } from '../../components/Datas';
+import { genderDatas, insuranceDatas, sortsDatas } from '../../components/Datas';
 
 // api - import
 import { getPatient } from '../../api/PatientsAPI';
+import { getSpecialties } from '../../api/specialtiesAPI';
+
 
 // icons - import
-import { BiChevronDown } from 'react-icons/bi';
-import { TbUserHeart } from "react-icons/tb";
 import { LiaGenderlessSolid } from "react-icons/lia";
 import { LiaTintSolid } from "react-icons/lia";
 import { HiEllipsisVertical, HiMiniCalendarDays } from "react-icons/hi2";
-
-import { HiOutlinePhone, HiOutlineCalendarDays, HiOutlineIdentification, HiOutlineMapPin, HiOutlineCheckCircle, HiMiniPencilSquare, HiArrowLeft, HiOutlineHome, HiMiniFingerPrint, HiOutlineCreditCard, HiOutlineHomeModern } from 'react-icons/hi2';
+import { HiOutlineCalendarDays, HiOutlineIdentification, HiMiniPencilSquare, HiArrowLeft, HiOutlineHome, HiMiniFingerPrint, HiOutlineCreditCard, HiOutlineHomeModern } from 'react-icons/hi2';
 
 
 function EventDetailsPatientInfo({ data, onStatus }) {
   const nav = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const [gender, setGender] = useState(genderDatas.gender[data.patientGender - 1]);
-  const { id } = useParams();
+  const [patientHistory, setPatientHistory] = useState([]);
 
   const [patientData, setPatientData] = useState([]);
 
+  const [specialties, setSpecialties] = useState([]);
+
   const fetch = async () => {
-    const response = await getPatient(id)
-    setPatientData(response.data[0])
-    // setStatus(false)
+    setLoading(true)
+    if (data) {
+      const response = await getPatient(data.patientId)
+      const specialtiesData = await getSpecialties()
+      setLoading(false)
+      console.log(response.data[0])
+      if (response.lenght === 0) {
+        setLoading(false)
+        return
+      }
+      setLoading(false)
+      setSpecialties(specialtiesData)
+      console.log(specialtiesData)
+      setPatientData(response.data[0])
+      setPatientHistory(response.data[0].history)
+    }
   }
 
   useEffect(() => {
+    console.log("Effect", data)
     fetch()
-    console.log("Effect")
   }, [])
 
   const handleViewPatientsDetails = () => {
     nav(`/patients/preview/${data.patientId}`);
   }
-  const thclass = 'text-start text-xs font-medium py-3 px-2 whitespace-nowrap';
-  const tdclass = 'text-start text-sm py-4 px-2 whitespace-nowrap';
 
   return (
     <>
@@ -56,7 +74,7 @@ function EventDetailsPatientInfo({ data, onStatus }) {
         <div className="flex justify-end w-full">
           <div className="md:col-span-1 flex sm:justify-start justify-center items-center">
             <button
-              className="flex items-center gap-2 px-6 py-2 border border-subMain hover:border-main rounded-md text-subMain hover:text-main transitionss"
+              className="flex items-center gap-2 px-6 py-2 border border-subMain hover:border-main rounded-md text-subMain hover:text-main transitions"
               onClick={handleViewPatientsDetails}
             >
               <HiMiniPencilSquare className="text-xl" />
@@ -65,91 +83,47 @@ function EventDetailsPatientInfo({ data, onStatus }) {
           </div>
         </div>
         <div className="grid sm:grid-cols-2 gap-4 w-full">
-          {/* Full Name */}
-          <div className=''>
-            <p className='pl-0 mb-[-7px] text-xs font-normal text-black'>Nome Completo<span className='text-required'></span></p>
-            <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
-              <p className='flex text-2xl font-light pr-1'>
-                <HiOutlineIdentification />
-              </p>
-              <p className='flex text-sm font-medium'>
-                {data.patientFullName}
-              </p>
-            </div>
-          </div>
-          {/* Gender */}
-          <div className=''>
-            <p className='pl-0 mb-[-7px] text-xs font-normal text-black'>Gênero<span className='text-required'></span></p>
-            <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
-              <p className='flex text-2xl font-light pr-1'>
-                <LiaGenderlessSolid />
-              </p>
-              <p className='flex text-sm font-medium'>
-                {data.patientGender ? genderDatas.gender[data.patientGender - 1].name : "Não informado"}
-              </p>
-            </div>
-          </div>
+          {loading ?
+            <>
+              <EventDetailPatientShimmer TitleInfo="Paciente" Label={''} Icon={HiOutlineIdentification} /> {/* loading Full Name */}
+              <EventDetailPatientShimmer TitleInfo="Gênero" Label={''} Icon={LiaGenderlessSolid} /> {/* loading Gender */}
+            </>
+            :
+            <>
+              <UsedEventPatientInfo TitleInfo="Paciente" Icon={HiOutlineIdentification} DataInfo={data.patientFullName} Label={''} /> {/* Full Name */}
+              <UsedEventPatientInfo TitleInfo="Gênero" Icon={LiaGenderlessSolid} DataInfo={data.patientGender ? genderDatas.gender[data.patientGender - 1].name : "Não informado"} Label={''} /> {/* Gender */}
+            </>
+          }
         </div>
         <div className="grid sm:grid-cols-2 gap-4 w-full">
-          {/* dateBirth */}
-          <div className=''>
-            <p className='pl-0 mb-[-7px] text-xs font-normal text-black'>Data de Nascimento<span className='text-required'></span></p>
-            <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
-              <p className='flex text-2xl font-light pr-1'>
-                <HiOutlineCalendarDays />
-                {/* <HiCake /> */}
-              </p>
-              <p className='flex text-sm font-medium'>
-                {data.dateBirth ? data.dateBirth : "-"}
-              </p>
-            </div>
-          </div>
-          {/* Blood Type */}
-          <div className=''>
-            <p className='pl-0 mb-[-7px] text-xs font-normal text-black'>Tipo Sanguíneo<span className='text-required'></span></p>
-            <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
-              <p className='flex text-2xl font-light pr-1'>
-                <LiaTintSolid />
-              </p>
-              <p className='flex text-sm font-medium'>
-                Lorem ipsum
-              </p>
-            </div>
-          </div>
+          {loading ?
+            <>
+              <EventDetailPatientShimmer TitleInfo="CPF" Label={''} Icon={HiOutlineCalendarDays} /> {/* loading CPF */}
+              <EventDetailPatientShimmer TitleInfo="Tipo Sanguíneo" Label={''} Icon={LiaTintSolid} /> {/* loading Blood Type */}
+            </>
+            :
+            <>
+              <UsedEventPatientInfo TitleInfo="Data de nascimento" Icon={HiOutlineCalendarDays} DataInfo={formatDate(patientData.dateBirth ? patientData.dateBirth : "-")} Label={''} /> {/* dateBirth */}
+              <UsedEventPatientInfo TitleInfo="Tipo Sanguíneo" Icon={LiaTintSolid} DataInfo={patientData.bloodType ? sortsDatas.bloodTypeFilter[patientData.bloodType - 1].name : "-"} Label={''} /> {/* Blood Type */}
+            </>
+          }
         </div>
         <div className="grid sm:grid-cols-2 gap-4 w-full">
-          {/* insurance */}
-          <div className=''>
-            <p className='pl-0 mb-[-7px] text-xs font-normal text-black'>Convênio<span className='text-required'></span></p>
-            <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
-              <p className='flex text-2xl font-light pr-1'>
-                <HiOutlineHomeModern />
-              </p>
-              <p className='flex text-sm font-medium'>
-                {data.insurance ? insuranceDatas.insurance[data.insurance - 1].name : "-"}
-              </p>
-            </div>
-          </div>
-          {/* cardNumber insurance */}
-          <div className=''>
-            <p className='pl-0 mb-[-7px] text-xs font-normal text-black'>Nº Cartão (Convênio)<span className='text-required'></span></p>
-            <div className='flex flex-row w-full pt-4 pr-4 pb-4 justify-start text-center items-center'>
-              <p className='flex text-2xl font-light pr-1'>
-                <HiOutlineCreditCard />
-              </p>
-              <p className='flex text-sm font-medium'>
-                {data.cardNumber ? data.cardNumber : "-"}
-              </p>
-            </div>
-          </div>
+          {loading ?
+            <>
+              <EventDetailPatientShimmer TitleInfo="Convênio" Label={''} Icon={HiOutlineHomeModern} /> {/* loading insurance */}
+              <EventDetailPatientShimmer TitleInfo="Nº Cartão (Convênio)" Label={''} Icon={HiOutlineCreditCard} /> {/* loading cardNumber insurance */}
+            </>
+            :
+            <>
+              <UsedEventPatientInfo TitleInfo="Convênio" Icon={HiOutlineHomeModern} DataInfo={patientData.insurance ? insuranceDatas.insurance[patientData.insurance - 1].name : "-"} Label={''} /> {/* insurance */}
+              <UsedEventPatientInfo TitleInfo="Nº Cartão (Convênio)" Icon={HiOutlineCreditCard} DataInfo={patientData.cardNumber ? patientData.cardNumber : "-"} Label={''} />  {/* cardNumber insurance */}
+            </>
+          }
         </div>
       </div>
       {/* divider */}
-      <div class="flex w-full items-center rounded-full">
-        <div class="flex-1 border-b border-gray-300"></div>
-        <span class="text-gray-500 text-md font-medium leading-8 px-8 py-6">agenda</span>
-        <div class="flex-1 border-b border-gray-300"></div>
-      </div>
+      <EventDetailsPatientDivider Label="agenda" />
       {/* table */}
       <TabGroup
         selectedIndex={selectedIndex} onChange={setSelectedIndex}
@@ -181,127 +155,61 @@ function EventDetailsPatientInfo({ data, onStatus }) {
             </Tab>
           </div>
         </TabList>
-        <TabPanels>
-          {data.lenght > 0 && data.map((item, index) => (
-            <TabPanel className={`flex flex-col w-full justify-center items-center space-y-2`}>
-              {/* <div className="flex flex-col w-full justify-center items-center space-y-2"> */}
-              <div key={item} className="flex w-full justify-center items-center bg-gray-200 hover:bg-gray-100 hover:translate-y-[-0.5rem] rounded-lg p-4 group transitions">
-                <div className="w-full flex justify-center items-center">
-                  {/* N */}
-                  <span className="flex flex-col justify-center items-center ">
-                    <p className='flex justify-center items-center text-center bg-subMain size-9 group-hover:bg-opacity-85 text-white rounded-lg'>{(index + 1)}</p>
-                  </span>
-                  {/* Paciente / Nome */}
-                  <div className="grid grid-cols-3 sm:grid-cols-3 gap-4 w-full justify-items-center">
-                    {/* <div className="flex text-center flex-col justify-center items-center sm:items-start">
-                      <p className='flex text-sm text-black'>Paciente</p>
-                      <p className='flex text-xs text-gray-500'>João Alcântara</p>
-                    </div> */}
-                    {/* Serviço / Profissional */}
-                    <div className="flex text-center flex-col justify-center items-center sm:items-start">
-                      <p className='flex text-sm text-black'>Serviço</p>
-                      <p className='flex text-xs text-gray-500'>Profissional</p>
+        {loading ?
+          <>
+            <EventHistoryShimmer />
+            <EventHistoryShimmer />
+            <EventHistoryShimmer />
+          </>
+          :
+          <>
+            <TabPanels>
+              <TabPanel className={`flex flex-col w-full justify-center items-center space-y-2`}>
+                {patientHistory.length > 0 && patientHistory.map((item, index) => (
+                  <div key={index} className="flex w-full justify-center items-center bg-greyed hover:bg-gray-200 rounded-lg p-4 group transitions" >
+                    <div className="w-full flex justify-center items-center">
+                      <div className="flex flex-col sm:flex-col justify-center items-center ">
+                        <p className='flex justify-center items-center text-center bg-subMain size-9 group-hover:bg-opacity-85 text-white rounded-lg'>{(index + 1)}</p>
+                      </div>
+                      <div className="grid grid-cols-3 sm:grid-cols-3 gap-4 w-full justify-items-center">
+                        <div className="flex text-center flex-col justify-start items-center sm:items-start">
+                          <p className='flex text-sm text-black'>
+                            {specialties.find((specialty) => {
+                              if (specialty.id === item.specialtyId) {
+                                return specialty
+                              }
+                            }).name}</p>
+                          <p className='flex text-xs text-gray-500'>{item.professionalFirstName} {item.professionalLastName}</p>
+                        </div>
+                        {/* Tipo de evento */}
+                        <div className="flex text-center flex-col justify-center items-center sm:items-start">
+                          <p className='flex text-sm text-gray-500'>{item.serviceName}</p>
+                        </div>
+                        {/* Data */}
+                        <div className="flex text-center flex-col justify-center items-center sm:items-start">
+                          <p className='flex text-sm text-gray-500'>{formatDate(item.startTime)}</p>
+                        </div>
+                      </div>
+                      <div className="flex flex-col justify-center items-center">
+                        <button className="flex size-9 justify-center items-center rounded-lg">
+                          <h3><HiEllipsisVertical className="text-2xl text-black" /></h3>
+                        </button>
+                      </div>
                     </div>
-                    {/* Tipo de evento */}
-                    <div className="flex text-center flex-col justify-center items-center sm:items-start">
-                      {/* <p className='flex text-sm text-black'>Tipo de evento</p> */}
-                      <p className='flex text-sm text-gray-500'>Evento x</p>
-                    </div>
-                    {/* Data */}
-                    <div className="flex text-center flex-col justify-center items-center sm:items-start">
-                      {/* <p className='flex text-sm text-black'>Data</p> */}
-                      <p className='flex text-sm text-gray-500'>__/__/____</p>
-                    </div>
-                    {/* Config */}
                   </div>
-                  <div className="flex flex-col justify-center items-center">
-                    <button className="flex size-9 justify-center items-center rounded-lg">
-                      <h3><HiEllipsisVertical className="text-2xl text-black" /></h3>
-                    </button>
-                  </div>
+                ))}
+              </TabPanel>
+              <TabPanel className={`flex flex-col w-full justify-center items-center space-y-2`}>
+                <div className="flex">
+                  <p className="text-black">Proximas consultas</p>
                 </div>
-              </div>
-              {/* </div> */}
-            </TabPanel>
-          ))}
-          <TabPanel>
-            <div className="flex flex-col w-full justify-center items-center space-y-2">
-              <div className="flex w-full justify-center items-center bg-gray-200 rounded-lg p-4 group">
-                <div className="w-full flex justify-center items-center">
-                  {/* N */}
-                  <span className="flex flex-col justify-center items-center ">
-                    <p className='flex justify-center items-center text-center bg-subMain size-9 group-hover:bg-opacity-85 text-white rounded-lg'>01</p>
-                  </span>
-                  {/* Paciente / Nome */}
-                  <div className="grid grid-cols-3 sm:grid-cols-3 gap-4 w-full justify-items-center">
-                    {/* <div className="flex text-center flex-col justify-center items-center sm:items-start">
-                      <p className='flex text-sm text-black'>Paciente</p>
-                      <p className='flex text-xs text-gray-500'>João Alcântara</p>
-                    </div> */}
-                    {/* Serviço / Profissional */}
-                    <div className="flex text-center flex-col justify-center items-center sm:items-start order-first">
-                      <p className='flex text-sm text-black'>Serviço</p>
-                      <p className='flex text-xs text-gray-500'>Profissional</p>
-                    </div>
-                    {/* Tipo de evento */}
-                    <div className="flex text-center flex-col justify-center items-center sm:items-start order-last sm:order-3">
-                      {/* <p className='flex text-sm text-black'>Tipo de evento</p> */}
-                      <p className='flex text-sm text-gray-500'>Evento x</p>
-                    </div>
-                    {/* Data */}
-                    <div className="flex text-center flex-col justify-center items-center sm:items-start order-2 sm:order-2">
-                      {/* <p className='flex text-sm text-black'>Data</p> */}
-                      <p className='flex text-sm text-gray-500'>__/__/____</p>
-                    </div>
-                    {/* Config */}
-                  </div>
-                  <div className="flex flex-col justify-center items-center">
-                    <button className="flex size-9 justify-center items-center rounded-lg">
-                      <h3><HiEllipsisVertical className="text-2xl text-black" /></h3>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="flex w-full justify-center items-center bg-gray-200 rounded-lg p-4 group">
-                <div className="w-full flex justify-center items-center">
-                  {/* N */}
-                  <span className="flex flex-col justify-center items-center ">
-                    <p className='flex justify-center items-center text-center bg-subMain size-9 group-hover:bg-opacity-85 text-white rounded-lg'>01</p>
-                  </span>
-                  {/* Paciente / Nome */}
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 w-full justify-items-center">
-                    {/* <div className="flex text-center flex-col justify-center items-center sm:items-start">
-                      <p className='flex text-sm text-black'>Paciente</p>
-                      <p className='flex text-xs text-gray-500'>João Alcântara</p>
-                    </div> */}
-                    {/* Serviço / Profissional */}
-                    <div className="flex text-center flex-col justify-center items-center sm:items-start">
-                      <p className='flex text-sm text-black'>Serviço</p>
-                      <p className='flex text-xs text-gray-500'>Profissional</p>
-                    </div>
-                    {/* Tipo de evento */}
-                    <div className="flex text-center flex-col justify-center items-center sm:items-start">
-                      {/* <p className='flex text-sm text-black'>Tipo de evento</p> */}
-                      <p className='flex text-sm text-gray-500'>Evento x</p>
-                    </div>
-                    {/* Data */}
-                    <div className="flex text-center flex-col justify-center items-center sm:items-start">
-                      {/* <p className='flex text-sm text-black'>Data</p> */}
-                      <p className='flex text-sm text-gray-500'>__/__/____</p>
-                    </div>
-                    {/* Config */}
-                  </div>
-                  <div className="flex flex-col justify-center items-center">
-                    <button className="flex size-9 justify-center items-center rounded-lg">
-                      <h3><HiEllipsisVertical className="text-2xl text-black" /></h3>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </TabPanel>
-        </TabPanels>
+              </TabPanel>
+            </TabPanels>
+          </>
+        }
       </TabGroup>
+      <>
+      </>
     </>
   );
 }

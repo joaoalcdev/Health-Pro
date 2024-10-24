@@ -53,8 +53,6 @@ function Specialties() {
 
   useEffect(() => {
     fetch()
-    console.log(datas)
-    console.log(agreements)
   }, [status]);
 
   //search

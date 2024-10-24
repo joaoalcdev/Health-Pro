@@ -188,12 +188,12 @@ export function InputFilterSelect({ iconButton, children, label, name, placehold
 
 
 export function CurrencyInputMask({ label, name, color, placeholder, register, value, required, maxLength, unmask, inputId, onValueChange, onChange, mode, currency, locale, inputStyle, unstyled, maxFractionDigits, allowEmpty, inputClassName }) {
-  const isRequired = required ? <span className="text-red-500">*</span> : null;
+  const isRequired = required ? <span className="text-red-500">*</span> : '';
   return (
     <div className="text-sm w-full">
       <Field className={`flex w-full flex-col`}>
         <Label
-          className={`${color ? 'text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'} `}
+          className={`${color ? 'text-black text-sm pl-1 pb-1' : 'text-white font-semibold'} `}
         >
           {label}{isRequired}
         </Label>

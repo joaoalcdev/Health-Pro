@@ -21,9 +21,6 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    console.log('datas', datas)
-    console.log('specialties', specialties)
-
     setSpecialty(specialties[1])
 
     //If isAdd so pricesData is filled with default prices

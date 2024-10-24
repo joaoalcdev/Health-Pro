@@ -88,7 +88,7 @@ export function ServiceDisclosureSubTitle({ data }) {
         {data.map((item, index) => {
           if (item.agreementId <= 2) {
             return (
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center" key={index}>
                 <span className="text-sm text-subMain">{item.agreementName}</span>
                 <span className="text-subMain">R$ {item.price}</span>
               </div>
@@ -105,7 +105,7 @@ export function ServiceDisclosureChildren({ data }) {
       <div className="flex felx-col gap-10">
         {data.map((item, index) => {
           return (
-            <div className="flex flex-col p-2 items-center">
+            <div className="flex flex-col p-2 items-center" key={index}>
               <span className="text-sm text-subMain">{item.agreementName}</span>
               <span className="text-subMain">R$ {item.price}</span>
             </div>

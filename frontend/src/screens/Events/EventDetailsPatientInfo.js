@@ -10,6 +10,7 @@ import EventHistoryShimmer from '../../components/Loadings/EventHistoryShimmer';
 import { UsedEventPatientInfo } from './UsedEventPatientInfo';
 import { EventDetailsPatientDivider } from '../../components/Dividers/EventDetailsPatientDivider';
 import { EventDetailPatientShimmer } from '../../components/Loadings/EventDetailPatientShimmer';
+import { Tooltip } from 'react-tooltip';
 
 // utils - import
 import { formatDate } from '../../utils/formatDate';
@@ -26,7 +27,7 @@ import { getSpecialties } from '../../api/specialtiesAPI';
 import { LiaGenderlessSolid } from "react-icons/lia";
 import { LiaTintSolid } from "react-icons/lia";
 import { HiEllipsisVertical, HiMiniCalendarDays } from "react-icons/hi2";
-import { HiOutlineCalendarDays, HiOutlineIdentification, HiMiniPencilSquare, HiArrowLeft, HiOutlineHome, HiMiniFingerPrint, HiOutlineCreditCard, HiOutlineHomeModern } from 'react-icons/hi2';
+import { HiOutlineCalendarDays, HiOutlineIdentification, HiMiniPencilSquare, HiOutlineCreditCard, HiOutlineHomeModern, HiArrowRightOnRectangle } from 'react-icons/hi2';
 
 
 function EventDetailsPatientInfo({ data, onStatus }) {
@@ -191,9 +192,15 @@ function EventDetailsPatientInfo({ data, onStatus }) {
                         </div>
                       </div>
                       <div className="flex flex-col justify-center items-center">
-                        <button className="flex size-9 justify-center items-center rounded-lg">
-                          <h3><HiEllipsisVertical className="text-2xl text-black" /></h3>
-                        </button>
+                        <div className="w-6 h-6 cursor-pointer">
+                          {/* button save */}
+                          <span data-tooltip-id="my-tooltip" data-tooltip-content="Ver detalhes" className="text-subMain">
+                            <button className="flex justify-center items-center rounded-lg">
+                              <h3><HiArrowRightOnRectangle className="text-2xl text-black" /></h3>
+                            </button>
+                          </span>
+                          <Tooltip id="my-tooltip" className="!bg-subMain border-2 border-subMain" arrowColor="text-gray-300" />
+                        </div>
                       </div>
                     </div>
                   </div>

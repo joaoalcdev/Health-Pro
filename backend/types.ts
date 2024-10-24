@@ -65,6 +65,14 @@ type Specialty = {
   id?: number,
   name: string,
   status: boolean,
+  prices: Object,
+}
+
+type Price = {
+  id?: number,
+  specialtyId: number,
+  serviceId?: number,
+  agreementId: number,
   price: number,
 }
 

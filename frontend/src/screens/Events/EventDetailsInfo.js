@@ -1,14 +1,27 @@
+// react - imports
 import React, { useEffect, useState } from "react";
-import { eventTypes } from "../../components/Datas";
-import { Select, Input, DatePickerComp, Button, OutLinedButton, ButtonNegative, SelectListBox } from "../../components/Form";
-import { agreements, sortsDatas } from "../../components/Datas";
+
+// icons - imports  
 import { BiChevronDown, BiLoaderCircle, BiSave } from "react-icons/bi";
 import { GiCancel, GiConfirmed } from "react-icons/gi";
-import { updateEvent, cancelEvent } from "../../api/EventsAPI";
+
+// components - imports
+import { Tooltip } from 'react-tooltip';
+import { Input, DatePickerComp, Button, OutLinedButton, ButtonNegative, SelectListBox } from "../../components/Form";
+import toast from "react-hot-toast";
 import EventCheckInModal from "../../components/Modals/EventCheckInModal";
 import EventCancelationModal from "../../components/Modals/EventCancelationModal";
-import toast from "react-hot-toast";
+
+// api - imports
+import { updateEvent, cancelEvent } from "../../api/EventsAPI";
+
+// datas - imports
+import { agreements, sortsDatas } from "../../components/Datas";
+import { eventTypes } from "../../components/Datas";
+
+// utils - imports
 import { formatDate, formatDateTime } from "../../utils/formatDate";
+
 
 function EventDetailsInfo({ data, onStatus, openEdit }) {
   const [loading, setLoading] = useState(true);
@@ -109,8 +122,6 @@ function EventDetailsInfo({ data, onStatus, openEdit }) {
     setViewCancelationModal(true)
   }
 
-
-
   return (loading ?
     <div className="flex  items-center justify-center w-full h-1/2 ">
       <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
@@ -137,9 +148,7 @@ function EventDetailsInfo({ data, onStatus, openEdit }) {
           onConfirm={handleCancelEvent}
           eventType={data.eventType}
         />
-
       }
-
 
       <div className="flex flex-col gap-6 ">
         <header className="">
@@ -176,7 +185,9 @@ function EventDetailsInfo({ data, onStatus, openEdit }) {
               <div className="flex justify-between">
                 <h1 className=" text-black text-md">Convênio?</h1>
                 <div className="w-6 h-6 cursor-pointer" onClick={handleUpdateAgreement}>
-                  <span className="text-subMain"><BiSave className="w-full h-full" /></span>
+                  {/* button save */}
+                  <span data-tooltip-id="my-tooltip" data-tooltip-content="Salvar" className="text-subMain"><BiSave className="w-full h-full" /></span>
+                  <Tooltip id="my-tooltip" className="!bg-subMain border-2 border-subMain" arrowColor="text-gray-300" />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 2xl:grid-cols-4 gap-4 w-full">
@@ -189,7 +200,6 @@ function EventDetailsInfo({ data, onStatus, openEdit }) {
                     iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
                   />
                 </div>
-
               </div>
               {
                 agreement.id > 1 &&

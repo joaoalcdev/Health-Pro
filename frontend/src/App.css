@@ -218,3 +218,37 @@ button:focus {
 ::-webkit-scrollbar-thumb:active {
   background-color: #43776b;
 }
+
+
+.is-loading {
+  .image,
+  h2,
+  p {
+    background: #eee;
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    border-radius: 5px;
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+  }
+  
+  h4 {
+    background: #66B5A3;
+    background: linear-gradient(110deg, #B1F0E2 8%, #A9E9DA 18%, #B1F0E2 33%);
+    border-radius: 5px;
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+  }
+
+  .image {
+    height: 200px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}

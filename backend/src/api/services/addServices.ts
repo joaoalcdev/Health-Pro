@@ -8,26 +8,40 @@ export const AddService = async (app: FastifyInstance) => {
         name,
         status,
         specialtyId,
-        initialPrice,
-        recurringPrice,
-      } = req.body as Service
+        prices,
+      } = req.body as Service & { prices: Price[] }
 
       const { data, error } = await supabase
       .from("services")
       .insert([{
         name,
         specialtyId,
-        initialPrice,
-        recurringPrice,
         deletedAt: status === true ? null : new Date(), 
       }]).select()
 
       if (error) {
         throw error
       } 
-        else {
+      
+      if(data){
+        const  pricesArray = prices.map((price: Price) => {
+          return {
+            serviceId: data[0].id,
+            specialtyId: specialtyId,
+            price: price.price,
+            agreementId: price.agreementId, 
+          }
+        })
+        const { data: servicePrices, error: servicePricesError } = await supabase
+        .from("servicePrices")
+        .insert(pricesArray).select()
+
+        if (servicePricesError) {
+          throw servicePricesError
+        } else {
           return res.status(200).send(data ? data : null)
         }
+      }
     } catch (error) {
       return res.status(400).send(error)
     }

@@ -198,28 +198,28 @@ function ScheduleUsed() {
   }, [id, status])
 
 
-  const fetchProfessionals = async () => {
-    setLoading(true);
-    const response = await getProfessionals();
-    if (response.length === 0) {
-      setLoading(false);
-      return;
-    };
+  // const fetchProfessionals = async () => {
+  //   setLoading(true);
+  //   const response = await getProfessionals();
+  //   if (response.length === 0) {
+  //     setLoading(false);
+  //     return;
+  //   };
 
-    var rebaseProfessionalsList = response.map((item) => {
-      return {
-        id: item.id,
-        name: item.firstName + ' ' + item.lastName,
-      }
-    })
+  //   var rebaseProfessionalsList = response.map((item) => {
+  //     return {
+  //       id: item.id,
+  //       name: item.firstName + ' ' + item.lastName,
+  //     }
+  //   })
 
-    setProfessionalsList(rebaseProfessionalsList);
-    setLoading(false);
-  }
+  //   setProfessionalsList(rebaseProfessionalsList);
+  //   setLoading(false);
+  // }
 
-  useEffect(() => {
-    fetchProfessionals()
-  }, [])
+  // useEffect(() => {
+  //   fetchProfessionals()
+  // }, [])
 
   const fetch = async () => {
     setLoading(true);

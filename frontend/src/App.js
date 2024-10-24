@@ -20,7 +20,6 @@ import Payments from './screens/Payments/Payments';
 import Schedule from './screens/Schedule';
 import Patients from './screens/Patients/Patients';
 import Campaings from './screens/Campaings';
-import Services from './screens/Services';
 import Invoices from './screens/Invoices/Invoices';
 import Settings from './screens/Settings';
 import CreateInvoice from './screens/Invoices/CreateInvoice';
@@ -98,7 +97,6 @@ function App() {
               <Route path="/schedule" element={<ProtectedRoute roleId={3}><Schedule /></ProtectedRoute>} />
               <Route path="/campaigns" element={<ProtectedRoute roleId={1}><Campaings /></ProtectedRoute>} />
               <Route path="/medicine" element={<ProtectedRoute roleId={1}><Medicine /></ProtectedRoute>} />
-              <Route path="/services" element={<ProtectedRoute roleId={1}><Services /></ProtectedRoute>} />
               <Route path="/specialties" element={<ProtectedRoute roleId={1}><Specialties /></ProtectedRoute>} />
               <Route path="/settings" element={<ProtectedRoute roleId={3}><Settings /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />

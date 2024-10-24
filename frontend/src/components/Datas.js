@@ -67,12 +67,12 @@ export const MenuDatas = [
     icon: MdOutlineInventory2,
     roleAllowed: 1
   },
-  {
-    title: 'Serviços',
-    path: '/services',
-    icon: MdOutlineInventory2,
-    roleAllowed: 1
-  },
+  // {
+  //   title: 'Serviços',
+  //   path: '/services',
+  //   icon: MdOutlineInventory2,
+  //   roleAllowed: 1
+  // },
   // {
   //   title: 'Campaigns',
   //   path: '/campaigns',

@@ -243,11 +243,6 @@ function Schedule() {
     fetch()
   }, [status, filterTerm])
 
-  // useEffect(() => {
-  //   console.log(eventsData)
-  // }, [data])
-
-
   // handle modal close
   const handleClose = () => {
     setOpen(!open);

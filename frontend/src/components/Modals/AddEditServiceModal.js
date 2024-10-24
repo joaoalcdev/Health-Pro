@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
-import { Button, Input, Switchi, CurrencyInputMask, SelectListBox } from '../Form';
+import { Button, Input, Toggle, CurrencyInputMask, SelectListBox } from '../Form';
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { getSpecialties } from '../../api/specialtiesAPI';
@@ -129,7 +129,7 @@ function AddEditServiceModal({ closeModal, isOpen, datas, setStatus }) {
             onChange={(e) => setName(e.target.value)}
           />
           <div className="flex items-center my-4 gap-2 w-full">
-            <Switchi
+            <Toggle
               label="Status"
               checked={check}
               onChange={() => setCheck(!check)}

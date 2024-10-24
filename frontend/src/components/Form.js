@@ -20,13 +20,13 @@ import { Menu, Switch, Combobox, ComboboxInput, ComboboxOption, ComboboxOptions,
 import { specialties, sortsDatas } from './Datas';
 
 
-export function SelectListBox({ iconButton, children, label, color, selectedPerson, setSelectedPerson, datas, loading }) {
+export function SelectListBox({ iconButton, children, label, color, selectedPerson, setSelectedPerson, datas, loading, disabled }) {
   const optionsListDatas = datas ? datas : datas.filter((person) => { return person.name.toLowerCase().includes(query.toLowerCase()) })
 
   return (
     <>
       <div className="flex w-full flex-col">
-        {label && <Field className={`flex w-full flex-col`}>
+        {label && <Field className={`flex w-full flex-col ${disabled && 'bg-grayed'}`} disabled={disabled}>
           <Label
             className={`${color ? 'text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'} `}
           >
@@ -40,10 +40,11 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
             <>
               <ListboxButton
                 className={clsx(
-                  'group relative block w-full bg-white text-sm p-4 font-light text-left rounded',
+                  `group relative block w-full ${disabled ? 'bg-gray-100 text-gray-500 hover:cursor-default' : 'bg-white'} text-sm p-4 font-light text-left rounded`,
                   // 'flex w-full z-50 bg-white transitions text-sm p-4 font-light rounded hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed',
                   'hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed'
                 )}
+                disabled={disabled}
               >
                 {selectedPerson.name}
                 <span type='reset' className='group absolute -mt-0.5 right-0 mx-4 rotate-0 group-data-[open]:rotate-180 transition ease-in-out duration-150'>
@@ -186,7 +187,7 @@ export function InputFilterSelect({ iconButton, children, label, name, placehold
 }
 
 
-export function CurrencyInputMask({ label, name, color, placeholder, register, value, required, maxLength, unmask, inputId, onValueChange, mode, currency, locale, inputStyle, unstyled, maxFractionDigits, allowEmpty, inputClassName }) {
+export function CurrencyInputMask({ label, name, color, placeholder, register, value, required, maxLength, unmask, inputId, onValueChange, onChange, mode, currency, locale, inputStyle, unstyled, maxFractionDigits, allowEmpty, inputClassName }) {
   const isRequired = required ? <span className="text-red-500">*</span> : null;
   return (
     <div className="text-sm w-full">
@@ -205,6 +206,7 @@ export function CurrencyInputMask({ label, name, color, placeholder, register, v
         {...register}
         value={value}
         onValueChange={onValueChange}
+        onChange={onChange}
         required={required}
         maxLength={maxLength}
         inputId={inputId}
@@ -299,9 +301,9 @@ export function Button({ label, onClick, loading, Icon, type, disabled, children
         <BiLoaderCircle className="animate-spin text-white text-xl" />
       ) : (
         <>
-          <div className='flex flex-row justify-center items-center text-center'>
+          <div className='flex flex-row justify-center gap-2 items-center text-center'>
+            {Icon && <Icon className="text-white text-xl" />}
             {label}
-            {/* {Icon && <Icon className="text-white text-xl" />} */}
           </div>
         </>
       )}
@@ -478,7 +480,7 @@ export function SelectProfessional({ children, selectedPerson, setSelectedPerson
 
 // switch
 
-export function Switchi({ checked, onChange }) {
+export function Toggle({ checked, onChange }) {
   return (
     <Switch
       checked={checked}

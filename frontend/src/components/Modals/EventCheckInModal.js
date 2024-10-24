@@ -79,7 +79,6 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
         isOpen={isSignatureModalOpen}
         title={'Assinatura'}
         width={'max-w-[90vw]'}
-        width={'max-w-[90vw]'}
       >
         <>
           <div ref={container} className='relative h-[40vh] sm:h-[60vh]  border border-subMain rounded-lg'>

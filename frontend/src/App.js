@@ -49,6 +49,7 @@ import { AuthProvider } from './hooks/Auth';
 import ProtectedRoute from "./components/ProtectedRoute";
 import RootLayout from './components/RootLayout';
 import EventDetails from './screens/Events/EventDetails';
+import TestPagination from './screens/Patients/pagination/testPagination';
 
 function App() {
   Aos.init();
@@ -63,6 +64,7 @@ function App() {
           <RootLayout>
             <Routes>
               <Route path="/login" element={<Login />} />
+              <Route path="/testpagination" element={<TestPagination />} />
               <Route path="/" element={<ProtectedRoute roleId={3}><Dashboard /></ProtectedRoute>} />
               <Route path="/home" element={<ProtectedRoute roleId={3}><Dashboard /></ProtectedRoute>} />
               <Route path="/imageuploader" element={<ProtectedRoute roleId={3}><ImageUploader /></ProtectedRoute>} />

@@ -88,6 +88,17 @@ function Specialties() {
     setEnableServiceDrawer(false);
   };
 
+  const hideOtherDisclosuresHandle = (_id) => {
+
+    const buttons = document.querySelectorAll('button[data-headlessui-state="open"]');
+    buttons.forEach(button => {
+      if (button?.id !== _id) {
+        //@ts-ignore: Unreachable code error
+        button?.click();
+      }
+    });
+  };
+
   return (
     <Layout>
       {isOpen && (
@@ -152,8 +163,9 @@ function Specialties() {
                     <SpecialtyDisclosure
                       key={index}
                       data={data}
-                      subTitle={`${data.services.length > 0 ? data.services.length : ''} ${data.services.length > 1 ? 'serviços' : data.services.length === 1 ? 'serviço' : ''}`}
+                      subTitle={`${data.services.length > 0 ? data.services.length : ''} ${data.services.length > 1 ? 'serviços' : data.services.length === 1 ? 'serviço' : ''} `}
                       className=""
+                      hideOtherDisclosuresHandle={hideOtherDisclosuresHandle}
                     >
                       <div className="flex w-full flex-col gap-4 relative">
                         <div className="flex flex-col gap-6 ">

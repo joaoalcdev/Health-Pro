@@ -3,12 +3,16 @@ import { BiChevronDown } from 'react-icons/bi'
 import { AnimatePresence, easeOut, motion } from 'framer-motion'
 import { Fragment } from 'react'
 
-export function SpecialtyDisclosure({ data, subTitle, children }) {
+export function SpecialtyDisclosure({ data, subTitle, children, hideOtherDisclosuresHandle, key }) {
   return (
     <Disclosure as='div'>
       {({ open }) => (
-        <>
-          <DisclosureButton className={`w-full group grid grid-cols-2 gap-2 justify-start p-4 border border-subMain ${open ? 'bg-subMain text-white rounded-t-lg' : 'bg-white text-subMain rounded-lg hover:bg-greyed'}`}>
+        <div>
+          <DisclosureButton className={`w-full group grid grid-cols-2 gap-2 justify-start p-4 border border-subMain ${open ? 'bg-subMain text-white rounded-t-lg' : 'bg-white text-subMain rounded-lg hover:bg-greyed'}`}
+            id={key}
+            onClick={() => hideOtherDisclosuresHandle(key)}
+
+          >
             <div className='text-start'>
               {data.name}
             </div>
@@ -36,7 +40,7 @@ export function SpecialtyDisclosure({ data, subTitle, children }) {
               )}
             </AnimatePresence>
           </div>
-        </>
+        </div>
       )}
     </Disclosure>
   )

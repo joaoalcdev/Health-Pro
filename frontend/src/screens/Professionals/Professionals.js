@@ -33,7 +33,7 @@ function Professionals() {
   const fetch = async () => {
     setLoading(true);
     const response = await getProfessionals(tab === 1 ? '' : 'true')
-    console.log(response)
+    const specialtiesData = await getSpecialties()
     if (response.length === 0) {
       setNoData(true);
       setNoResult(true);
@@ -42,19 +42,13 @@ function Professionals() {
     }
     setData(response)
     setAllData(response)
+    setSpecialties(specialtiesData)
     setLoading(false)
     setStatus(false)
   }
 
-  const fetchSpecialties = async () => {
-    const response = await getSpecialties()
-    setSpecialties(response)
-  }
-
   useEffect(() => {
     fetch()
-    fetchSpecialties()
-    console.log('fetch', data)
   }, [status, tab])
 
   const onCloseModal = () => {
@@ -186,15 +180,17 @@ function Professionals() {
                   <div className="mt-6 bg-white rounded-xl border-[1px] border-border p-5">
                     {/* ini table child */}
                     <div className="mt-4 overflow-x-scroll">
-                      <ProfessionalTable
-                        doctor={true}
-                        data={data}
-                        noData={noResult}
-                        specialties={specialties}
-                        functions={{
-                          preview: preview,
-                        }}
-                      />
+                      {data && data.length > 0 &&
+                        <ProfessionalTable
+                          doctor={true}
+                          data={data}
+                          noData={noResult}
+                          specialties={specialties}
+                          functions={{
+                            preview: preview,
+                          }}
+                        />
+                      }
                     </div>
                     {/* end table child */}
                   </div>

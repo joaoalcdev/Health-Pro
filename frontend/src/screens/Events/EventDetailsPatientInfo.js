@@ -4,12 +4,12 @@ import React, { useState, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 
 // components - import
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, redirect } from 'react-router-dom';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import EventHistoryShimmer from '../../components/Loadings/EventHistoryShimmer';
 import { UsedEventPatientInfo } from './UsedEventPatientInfo';
 import { EventDetailsPatientDivider } from '../../components/Dividers/EventDetailsPatientDivider';
-import { EventDetailPatientShimmer } from '../../components/Loadings/EventDetailPatientShimmer';
+import { EventDetailShimmerLoading } from '../../components/Loadings/EventDetailShimmerLoading';
 import { Tooltip } from 'react-tooltip';
 
 // utils - import
@@ -26,12 +26,12 @@ import { getSpecialties } from '../../api/specialtiesAPI';
 // icons - import
 import { LiaGenderlessSolid } from "react-icons/lia";
 import { LiaTintSolid } from "react-icons/lia";
-import { HiEllipsisVertical, HiMiniCalendarDays } from "react-icons/hi2";
+import { HiMiniCalendarDays } from "react-icons/hi2";
 import { HiOutlineCalendarDays, HiOutlineIdentification, HiMiniPencilSquare, HiOutlineCreditCard, HiOutlineHomeModern, HiArrowRightOnRectangle } from 'react-icons/hi2';
 
 
 function EventDetailsPatientInfo({ data, onStatus }) {
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -66,28 +66,33 @@ function EventDetailsPatientInfo({ data, onStatus }) {
   }, [])
 
   const handleViewPatientsDetails = () => {
-    nav(`/patients/preview/${data.patientId}`);
+    navigate(`/patients/preview/${data.patientId}`);
   }
 
   return (
     <>
       <div className="flex-colo gap-6">
         <div className="flex justify-end w-full">
-          <div className="md:col-span-1 flex sm:justify-start justify-center items-center">
-            <button
-              className="flex items-center gap-2 px-6 py-2 border border-subMain hover:border-main rounded-md text-subMain hover:text-main transitions"
-              onClick={handleViewPatientsDetails}
-            >
-              <HiMiniPencilSquare className="text-xl" />
-              <p className="font-normal">Ver detalhes</p>
-            </button>
+          <div className="w-full md:col-span-1 flex sm:justify-between items-center">
+            <div className="flex">
+              <h1 className='flex flex-col font-semibold text-2xl text-black text-center md:text-left w-full text-wrap'>Dados do paciente</h1>
+            </div>
+            <div className="flex">
+              <button
+                className="flex items-center gap-2 px-6 py-2 border border-subMain hover:border-main rounded-md text-subMain hover:text-main transitions"
+                onClick={handleViewPatientsDetails}
+              >
+                <HiMiniPencilSquare className="text-xl" />
+                <p className="font-normal">Ver detalhes</p>
+              </button>
+            </div>
           </div>
         </div>
         <div className="grid sm:grid-cols-2 gap-4 w-full">
           {loading ?
             <>
-              <EventDetailPatientShimmer TitleInfo="Paciente" Label={''} Icon={HiOutlineIdentification} /> {/* loading Full Name */}
-              <EventDetailPatientShimmer TitleInfo="Gênero" Label={''} Icon={LiaGenderlessSolid} /> {/* loading Gender */}
+              <EventDetailShimmerLoading TitleInfo="Paciente" Label={''} Icon={HiOutlineIdentification} /> {/* loading Full Name */}
+              <EventDetailShimmerLoading TitleInfo="Gênero" Label={''} Icon={LiaGenderlessSolid} /> {/* loading Gender */}
             </>
             :
             <>
@@ -99,8 +104,8 @@ function EventDetailsPatientInfo({ data, onStatus }) {
         <div className="grid sm:grid-cols-2 gap-4 w-full">
           {loading ?
             <>
-              <EventDetailPatientShimmer TitleInfo="CPF" Label={''} Icon={HiOutlineCalendarDays} /> {/* loading CPF */}
-              <EventDetailPatientShimmer TitleInfo="Tipo Sanguíneo" Label={''} Icon={LiaTintSolid} /> {/* loading Blood Type */}
+              <EventDetailShimmerLoading TitleInfo="CPF" Label={''} Icon={HiOutlineCalendarDays} /> {/* loading CPF */}
+              <EventDetailShimmerLoading TitleInfo="Tipo Sanguíneo" Label={''} Icon={LiaTintSolid} /> {/* loading Blood Type */}
             </>
             :
             <>
@@ -112,8 +117,8 @@ function EventDetailsPatientInfo({ data, onStatus }) {
         <div className="grid sm:grid-cols-2 gap-4 w-full">
           {loading ?
             <>
-              <EventDetailPatientShimmer TitleInfo="Convênio" Label={''} Icon={HiOutlineHomeModern} /> {/* loading insurance */}
-              <EventDetailPatientShimmer TitleInfo="Nº Cartão (Convênio)" Label={''} Icon={HiOutlineCreditCard} /> {/* loading cardNumber insurance */}
+              <EventDetailShimmerLoading TitleInfo="Convênio" Label={''} Icon={HiOutlineHomeModern} /> {/* loading insurance */}
+              <EventDetailShimmerLoading TitleInfo="Nº Cartão (Convênio)" Label={''} Icon={HiOutlineCreditCard} /> {/* loading cardNumber insurance */}
             </>
             :
             <>
@@ -193,10 +198,12 @@ function EventDetailsPatientInfo({ data, onStatus }) {
                       </div>
                       <div className="flex flex-col justify-center items-center">
                         <div className="w-6 h-6 cursor-pointer">
-                          {/* button save */}
+                          {/* button redirect event */}
                           <span data-tooltip-id="my-tooltip" data-tooltip-content="Ver detalhes" className="text-subMain">
                             <button className="flex justify-center items-center rounded-lg">
-                              <h3><HiArrowRightOnRectangle className="text-2xl text-black" /></h3>
+                              <Link replace to={`/events/details/${item.eventInstanceId}`} target='_blank'>
+                                <h3><HiArrowRightOnRectangle className="text-2xl text-black" /></h3>
+                              </Link>
                             </button>
                           </span>
                           <Tooltip id="my-tooltip" className="!bg-subMain border-2 border-subMain" arrowColor="text-gray-300" />

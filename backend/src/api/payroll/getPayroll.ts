@@ -1,7 +1,6 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
 import moment from 'moment-timezone';
-import { getFee } from '../../utils/getFee';
 
 export const getPayroll = async (app: FastifyInstance) => {
   app.get("/payroll/:monthRange", async (req: FastifyRequest, res: FastifyReply) => {

@@ -74,6 +74,7 @@ type Price = {
   serviceId?: number,
   agreementId: number,
   price: number,
+  professionalPayment: number | null,
 }
 
 type Service = {
@@ -109,6 +110,64 @@ type ScheduleEvent = {
     day: number,
     time: object
   }]
+  payRate: number,
+}
+
+type EventInstance = {
+  id?: number,
+  eventId: number,
+  startDate: string,
+  endDate: string,
+  status: number,
+  agreementId: number,
+  professionalId: number,
+  patientId: number,
+  serviceId: number,
+  eventType: number,
+  dischargedDate: string,
+  hasConflict: boolean,
+  eventsPerWeek: number,
+  eventsQty: number,
+  checkInName: string,
+  timecodes: [{
+    day: number,
+    time: string
+  }]
+  grossValue: number,
+  professionalRate: number,
+  tax: number,
+  profit: number,
+}
+
+type Fee = {
+  id?: number,
+  agreementId: number,
+  professionalId: number,
+  fee: number,
+}
+
+type ServicePrice = {
+  id?: number,
+  specialtyId: number,
+  agreementId: number,
+  serviceId: number,
+  price: number,
+  professionalPayment: number,
+}
+
+type RegularPrice = {
+  id?: number,
+  specialtyId: number,
+  agreementId: number,
+  price: number,
+  professionalPayment: number,
+}
+
+type fee = {
+  id?: number,
+  agreementId: number,
+  professionalId: number,
+  fee: number,
 }
 
 interface SingleEvent {
@@ -117,4 +176,5 @@ interface SingleEvent {
   endTime: string;
   agreementId: number;
 }
+
 

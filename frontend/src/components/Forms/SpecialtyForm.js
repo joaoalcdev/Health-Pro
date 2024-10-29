@@ -5,6 +5,7 @@ import { Input, Button, Toggle, CurrencyInputMask } from '../Form';
 import { toast } from 'react-hot-toast';
 import { addSpecialties, updateSpecialties } from '../../api/specialtiesAPI';
 import 'moment/locale/pt-br';
+import { set } from 'react-hook-form';
 
 export default function SpecialtyForm({ onClose, datas, agreements, status, isEdit }) {
 
@@ -24,7 +25,8 @@ export default function SpecialtyForm({ onClose, datas, agreements, status, isEd
       return {
         agreementId: price.id,
         name: price.name,
-        price: price.defaultPrice
+        price: price.defaultPrice,
+        professionalPayment: 0
       }
     })
 
@@ -36,6 +38,8 @@ export default function SpecialtyForm({ onClose, datas, agreements, status, isEd
         datas.regularPrices.forEach((price, index) => {
           if (agreement.id === price.agreementId) {
             pricesData[price.agreementId - 1].price = price.price
+            pricesData[price.agreementId - 1].professionalPayment = price.professionalPayment ? price.professionalPayment : 0
+
           }
         })
       })
@@ -46,6 +50,7 @@ export default function SpecialtyForm({ onClose, datas, agreements, status, isEd
   const handleSave = async () => {
     setLoading(true);
     if (name === '') {
+      setLoading(false);
       return toast.error('Especialidade é obrigatória');
     }
 
@@ -68,11 +73,18 @@ export default function SpecialtyForm({ onClose, datas, agreements, status, isEd
     setLoading(false);
   };
 
-  const onPriceChange = (e, index) => {
-    let newPrices = [...prices]
-    newPrices[index].price = e.value
-    setPrices(newPrices)
-    setDisabled(false)
+  const CHANGE_PRICE = 1;
+  const CHANGE_REPASSE = 2;
+
+  const onPriceChange = (e, index, type) => {
+    let newPrices = [...prices];
+    if (type === CHANGE_PRICE)
+      newPrices[index].price = e.value < 0 ? 0 : e.value;
+    if (type === CHANGE_REPASSE)
+      newPrices[index].professionalPayment = e.value < 0 ? 0 : e.value;
+    setPrices(newPrices);
+    setDisabled(false);
+
   }
 
   return (
@@ -121,7 +133,7 @@ export default function SpecialtyForm({ onClose, datas, agreements, status, isEd
               Defina os preços para Consultas/Avaliações:
             </h1>
             {prices.length > 0 && prices.map((item, index) => (
-              <div key={index} className=''>
+              <div key={index} className='grid grid-cols-2 gap-4'>
                 <CurrencyInputMask
                   label={item?.name}
                   color={true}
@@ -134,12 +146,31 @@ export default function SpecialtyForm({ onClose, datas, agreements, status, isEd
                   required={false}
                   inputId={'currency-brazil'}
                   value={item.price}
-                  onChange={(e) => { onPriceChange(e, index) }}
+                  onChange={(e) => { onPriceChange(e, index, CHANGE_PRICE) }}
                   mode={'currency'}
                   currency={'BRL'}
                   locale={'pt-BR'}
                   allowEmpty={true}
-                  inputClassName={`w-[50%] bg-white transitions text-sm p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+                  inputClassName={`w-full bg-white transitions text-sm p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+                />
+                <CurrencyInputMask
+                  label={'Repasse'}
+                  color={true}
+                  inputStyle={{ color: 'black' }}
+                  unstyled={true}
+                  autoClear={false}
+                  maxFractionDigits={2}
+                  maxLength={12}
+                  unmask={true}
+                  required={false}
+                  inputId={'currency-brazil'}
+                  value={item.professionalPayment}
+                  onChange={(e) => { onPriceChange(e, index, CHANGE_REPASSE) }}
+                  mode={'currency'}
+                  currency={'BRL'}
+                  locale={'pt-BR'}
+                  allowEmpty={true}
+                  inputClassName={`w-full bg-white transitions text-sm p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
                 />
               </div>
             ))}

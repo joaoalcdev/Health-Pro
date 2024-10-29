@@ -188,14 +188,15 @@ export function InputFilterSelect({ iconButton, children, label, name, placehold
 
 
 export function CurrencyInputMask({ label, name, color, placeholder, register, value, required, maxLength, unmask, inputId, onValueChange, onChange, mode, currency, locale, inputStyle, unstyled, maxFractionDigits, allowEmpty, inputClassName }) {
-  const isRequired = required ? <span className="text-red-500">*</span> : '';
   return (
     <div className="text-sm w-full">
       <Field className={`flex w-full flex-col`}>
         <Label
           className={`${color ? 'text-black text-sm pl-1 pb-1' : 'text-white font-semibold'} `}
         >
-          {label}{isRequired}
+          <>
+            {label} {required ? <span className="text-red-500">*</span> : ''}
+          </>
         </Label>
       </Field>
       <InputNumber
@@ -210,7 +211,7 @@ export function CurrencyInputMask({ label, name, color, placeholder, register, v
         required={required}
         maxLength={maxLength}
         inputId={inputId}
-        unmask={unmask}
+        //unmask={unmask}
         mode={mode}
         currency={currency}
         locale={locale}
@@ -673,6 +674,26 @@ export function FromToDate({ label, startDate, onChange, endDate, bg }) {
         onChange={onChange}
         className={`transitions w-full ${bg ? bg : 'bg-transparent'
           }  text-xs px-4 h-14 border border-border text-main font-normal rounded focus:border focus:border-subMain`}
+      />
+    </div>
+  );
+}
+
+export function MonthlyPicker({ label, startDate, onChange, endDate, bg, value }) {
+  return (
+    <div className="text-sm w-full flex flex-col gap-2">
+      {label && <label className={'text-black text-sm'}>{label}</label>}
+      <DatePicker
+        selected={value}
+        startDate={startDate}
+        endDate={endDate}
+        onChange={onChange}
+        maxDate={new Date()}
+        dateFormat="MMMM/yyyy"
+        showMonthYearPicker
+        showFullMonthYearPicker
+        className={`transitions w-full ${bg ? bg : 'bg-transparent'
+          }  text-xs px-4 h-14 border border-border uppercase text-main font-normal rounded focus:border focus:border-subMain`}
       />
     </div>
   );

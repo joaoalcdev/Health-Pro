@@ -1,26 +1,130 @@
-import UsedView from "../../screens/UsedView";
-import SubComponent from "../../screens/UsedView";
-import { BiChevronDown } from 'react-icons/bi';
+/* eslint-disable array-callback-return */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useState, useEffect, Fragment } from 'react';
+
+// components - import
+import { useNavigate } from 'react-router-dom';
+import { UsedEventProfessionalInfo } from './UsedEventProfessionalInfo';
+import { EventDetailShimmerLoading } from '../../components/Loadings/EventDetailShimmerLoading';
+
+
+// datas - import
+import { brStateDatas, councilDatas, specialties } from '../../components/Datas';
+
+// api - import
+import { getProfessionalById } from '../../api/ProfessionalsAPI';
+import { getSpecialties } from '../../api/specialtiesAPI';
+
+
+// icons - import
+import { HiOutlineIdentification, HiMiniPencilSquare } from 'react-icons/hi2';
 
 function EventDetailsProfessionalInfo({ data, onStatus }) {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [specialties, setSpecialties] = useState([]);
+  const [professionalData, setProfessionalData] = useState({});
+
+  const fetch = async () => {
+    setLoading(true)
+
+    if (data) {
+      const response = await getProfessionalById(data.professionalId)
+      const specialtiesData = await getSpecialties()
+      setLoading(false)
+      if (response.lenght === 0) {
+        setLoading(false)
+        return
+      }
+      setLoading(false)
+      setSpecialties(specialtiesData)
+      setProfessionalData(response[0])
+    }
+  }
+
+  useEffect(() => {
+    fetch()
+  }, [])
+
+  const handleViewProfessionalDetails = () => {
+    navigate(`/professionals/preview/${data.professionalId}`);
+  }
 
 
-  return (
+  return (professionalData && specialties &&
     <>
-      <p>
-        Dados do professional aqui
-      </p>
-      {/* <UsedView
-        title="Dados do paciente"
-        color={true}
-        icon={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
-        component2={
-          <SubComponent 
-          subTitle={`Nome: ${data.professionalFirstName} ${data.professionalLastName}`} 
-          color={true}></SubComponent>
-        }
-      >
-      </UsedView> */}
+      <div className="flex-colo gap-6">
+        <div className="flex justify-end w-full">
+          <div className="w-full md:col-span-1 flex sm:justify-between items-center">
+            <div className="flex">
+              <h1 className='flex flex-col font-semibold text-2xl text-black text-center md:text-left w-full text-wrap'>Dados do profissional</h1>
+            </div>
+            <div className="flex">
+              <button
+                className="flex items-center gap-2 px-6 py-2 border border-subMain hover:border-main rounded-md text-subMain hover:text-main transitions"
+                onClick={handleViewProfessionalDetails}
+              >
+                <HiMiniPencilSquare className="text-xl" />
+                <p className="font-normal !text-red-500">Ver detalhes</p>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-4 w-full">
+          {loading ?
+            <>
+              <EventDetailShimmerLoading TitleInfo="Profissional" Label={''} Icon={HiOutlineIdentification} /> {/* loading Full Name */}
+              <EventDetailShimmerLoading TitleInfo="RG" Label={''} Icon={HiOutlineIdentification} /> {/* loading RG */}
+            </>
+            :
+            <>
+              <UsedEventProfessionalInfo TitleInfo="Profissional" Icon={HiOutlineIdentification} DataInfo={professionalData.fullName} Label={''} /> {/* Full Name */}
+              <UsedEventProfessionalInfo TitleInfo="RG | Órgão Expedidor" Icon={HiOutlineIdentification} DataInfo={(professionalData.rg) + ' | ' + ((professionalData.rgInssuance))} Label={''} /> {/* RG */}
+            </>
+          }
+        </div>
+        <div className="grid sm:grid-cols-2 gap-4 w-full">
+          {loading ?
+            <>
+              <EventDetailShimmerLoading TitleInfo="Conselho" Label={''} Icon={HiOutlineIdentification} /> {/* loading Council */}
+              <EventDetailShimmerLoading TitleInfo="Especialidade" Label={''} Icon={HiOutlineIdentification} /> {/* loading Specialty */}
+            </>
+            :
+            <>
+              <UsedEventProfessionalInfo TitleInfo="Conselho | Nº Conselho" Icon={HiOutlineIdentification}
+                DataInfo={
+                  (professionalData.council ? councilDatas.council[professionalData.council - 1].name : "Não informado") + '-' +
+                  (professionalData.councilInssuance ? brStateDatas.states[professionalData.councilInssuance - 1].UF : "Não informado") + ' | ' +
+                  (professionalData.councilNumber ? professionalData.councilNumber : "Não informado")
+                }
+                Label={''}
+              /> {/* Council */}
+              {specialties.find((specialty) => {
+                if (specialty.id === data.specialtyId) {
+                  return specialty
+                }
+              }) ?
+                <UsedEventProfessionalInfo TitleInfo="Especialidade" Icon={HiOutlineIdentification}
+                  DataInfo={specialties.find((specialty) => {
+                    if (specialty.id === data.specialtyId) {
+                      return specialty
+                    }
+                  }).name}
+                  Label={''}
+                />
+                :
+                <UsedEventProfessionalInfo TitleInfo="Especialidade" Icon={HiOutlineIdentification}
+                  DataInfo={"Não informado"}
+                  Label={''}
+                />
+              }
+            </>
+          }
+        </div>
+        <div className="grid sm:grid-cols-2 gap-4 w-full">
+
+        </div>
+      </div >
     </>
   );
 }

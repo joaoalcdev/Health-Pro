@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const EventDetailPatientShimmer = ({ TitleInfo, Label, Icon }) => {
+export const EventDetailShimmerLoading = ({ TitleInfo, Label, Icon }) => {
   return (
     <>
       <div className='is-loading'>
@@ -11,7 +11,7 @@ export const EventDetailPatientShimmer = ({ TitleInfo, Label, Icon }) => {
               <Icon />
             </h5>
             <h2 className='flex text-sm font-medium text-transparent'>
-              asdasdasd
+              loadingtext...
             </h2>
           </div>
         </div>

@@ -47,7 +47,8 @@ export const UpdateSpecialty = async (app: FastifyInstance) => {
             addPrices.push({ 
               specialtyId: Number(id),
               price: price.price,
-              agreementId: price.agreementId, 
+              agreementId: price.agreementId,
+              professionalPayment: price.professionalPayment ? price.professionalPayment : 0, 
             })
           }
         }
@@ -58,6 +59,7 @@ export const UpdateSpecialty = async (app: FastifyInstance) => {
               specialtyId: Number(id),
               price: price.price,
               agreementId: price.agreementId, 
+              professionalPayment: price.professionalPayment ? price.professionalPayment : 0,
             })
           })
         }

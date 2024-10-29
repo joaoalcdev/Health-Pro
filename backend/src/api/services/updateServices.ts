@@ -32,7 +32,6 @@ export const UpdateService = async (app: FastifyInstance) => {
       }
 
       let addPrices = [] as Price[]
-      let updatedPrices = [] as Price[]
 
       if(servicePrices && servicePrices.length > 0) {
         prices.forEach(async (price: Price) => {
@@ -41,7 +40,8 @@ export const UpdateService = async (app: FastifyInstance) => {
             await supabase
             .from("servicePrices")
             .update({
-              price: price.price, 
+              price: price.price,
+              professionalPayment: price.professionalPayment ? price.professionalPayment : 0,
             })
             .eq("id", servicePrices[priceIndex].id)
           }else {
@@ -49,6 +49,7 @@ export const UpdateService = async (app: FastifyInstance) => {
               specialtyId: specialtyId,
               serviceId: Number(id),
               price: price.price,
+              professionalPayment: price.professionalPayment ? price.professionalPayment : 0,
               agreementId: price.agreementId, 
             })
           }
@@ -59,6 +60,7 @@ export const UpdateService = async (app: FastifyInstance) => {
             specialtyId: specialtyId,
             serviceId: Number(id),
             price: price.price,
+            professionalPayment: price.professionalPayment ? price.professionalPayment : 0,
             agreementId: price.agreementId, 
           })
         })

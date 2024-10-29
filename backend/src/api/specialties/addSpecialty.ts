@@ -1,6 +1,5 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
-import { spec } from 'node:test/reporters';
 
 export const AddSpecialty = async (app: FastifyInstance) => {
   app.post("/specialties", async (req: FastifyRequest, res: FastifyReply) => {
@@ -23,12 +22,12 @@ export const AddSpecialty = async (app: FastifyInstance) => {
       }
       
       if(data) {
-        console.log(data)
         const  pricesArray = prices.map((price: Price) => {
           return {
             specialtyId: data[0].id,
             price: price.price,
-            agreementId: price.agreementId, 
+            agreementId: price.agreementId,
+            professionalPayment: price.professionalPayment ? price.professionalPayment : 0, 
           }
         })
         const { data: regularPrices, error: regularPricesError } = await supabase

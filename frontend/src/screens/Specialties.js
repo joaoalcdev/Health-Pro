@@ -162,6 +162,7 @@ function Specialties() {
                   {datas.map((data, index) => (
                     <SpecialtyDisclosure
                       key={index}
+                      keyIndex={index}
                       data={data}
                       subTitle={`${data.services.length > 0 ? data.services.length : ''} ${data.services.length > 1 ? 'serviços' : data.services.length === 1 ? 'serviço' : ''} `}
                       className=""

@@ -29,6 +29,7 @@ export const AddService = async (app: FastifyInstance) => {
             serviceId: data[0].id,
             specialtyId: specialtyId,
             price: price.price,
+            professionalPayment: price.professionalPayment ? price.professionalPayment : 0,
             agreementId: price.agreementId, 
           }
         })

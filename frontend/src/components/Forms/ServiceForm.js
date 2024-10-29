@@ -23,12 +23,15 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
   useEffect(() => {
     setSpecialty(specialties[1])
 
+    console.log(datas)
+
     //If isAdd so pricesData is filled with default prices
     let pricesData = agreements.map((price) => {
       return {
         agreementId: price.id,
         name: price.name,
-        price: price.defaultPrice
+        price: price.defaultPrice,
+        professionalPayment: 0
       }
     })
 
@@ -41,6 +44,7 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
         datas.prices.forEach((price, index) => {
           if (agreement.id === price.agreementId) {
             pricesData[price.agreementId - 1].price = price.price
+            pricesData[price.agreementId - 1].professionalPayment = price.professionalPayment ? price.professionalPayment : 0
           }
         })
       })
@@ -54,9 +58,10 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
   const handleSave = async () => {
     setLoading(true);
     if (name === '') {
+      setLoading(false);
       return toast.error('Nome do Serviço é obrigatória');
     }
-    const response = isEdit ? await updateServices(datas.id, { name, status: check, prices })
+    const response = isEdit ? await updateServices(datas.id, { name, status: check, specialtyId: specialty.id, prices })
       : await addServices({ name, status: check, specialtyId: specialty.id, prices });
     if (response.code) {
       if (response.response.data.code === "23505") {
@@ -74,11 +79,17 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
     setLoading(false);
   };
 
-  const onPriceChange = (e, index) => {
-    let newPrices = [...prices]
-    newPrices[index].price = e.value
-    setPrices(newPrices)
-    setDisabled(false)
+  const CHANGE_PRICE = 1;
+  const CHANGE_REPASSE = 2;
+
+  const onPriceChange = (e, index, type) => {
+    let newPrices = [...prices];
+    if (type === CHANGE_PRICE)
+      newPrices[index].price = e.value < 0 ? 0 : e.value;
+    if (type === CHANGE_REPASSE)
+      newPrices[index].professionalPayment = e.value < 0 ? 0 : e.value;
+    setPrices(newPrices);
+    setDisabled(false);
   }
 
   return (
@@ -137,7 +148,7 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
               Defina os preços para Consultas/Avaliações:
             </h1>
             {prices.length > 0 && prices.map((item, index) => (
-              <div key={index} className=''>
+              <div key={index} className='grid grid-cols-2 gap-4'>
                 <CurrencyInputMask
                   label={item?.name}
                   color={true}
@@ -147,15 +158,34 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
                   maxFractionDigits={2}
                   maxLength={12}
                   unmask={true}
-                  required={false}
+                  required={true}
                   inputId={'currency-brazil'}
                   value={item.price}
-                  onChange={(e) => { onPriceChange(e, index) }}
+                  onChange={(e) => { onPriceChange(e, index, CHANGE_PRICE) }}
                   mode={'currency'}
                   currency={'BRL'}
                   locale={'pt-BR'}
                   allowEmpty={true}
-                  inputClassName={`w-[50%] bg-white transitions text-sm p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+                  inputClassName={`w-full bg-white transitions text-sm p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+                />
+                <CurrencyInputMask
+                  label={'Repasse'}
+                  color={true}
+                  inputStyle={{ color: 'black' }}
+                  unstyled={true}
+                  autoClear={false}
+                  maxFractionDigits={2}
+                  maxLength={12}
+                  unmask={true}
+                  required={false}
+                  inputId={'currency-brazil'}
+                  value={item.professionalPayment}
+                  onChange={(e) => { onPriceChange(e, index, CHANGE_REPASSE) }}
+                  mode={'currency'}
+                  currency={'BRL'}
+                  locale={'pt-BR'}
+                  allowEmpty={true}
+                  inputClassName={`w-full bg-white transitions text-sm p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
                 />
               </div>
             ))}

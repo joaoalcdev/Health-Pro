@@ -2,15 +2,16 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react
 import { BiChevronDown } from 'react-icons/bi'
 import { AnimatePresence, easeOut, motion } from 'framer-motion'
 import { Fragment } from 'react'
+import { moneyFormat2BR } from '../utils/moneyFormatBR'
 
-export function SpecialtyDisclosure({ data, subTitle, children, hideOtherDisclosuresHandle, key }) {
+export function SpecialtyDisclosure({ data, subTitle, children, hideOtherDisclosuresHandle, keyIndex }) {
   return (
     <Disclosure as='div'>
       {({ open }) => (
         <div>
           <DisclosureButton className={`w-full group grid grid-cols-2 gap-2 justify-start p-4 border border-subMain ${open ? 'bg-subMain text-white rounded-t-lg' : 'bg-white text-subMain rounded-lg hover:bg-greyed'}`}
-            id={key}
-            onClick={() => hideOtherDisclosuresHandle(key)}
+            id={keyIndex}
+            onClick={() => hideOtherDisclosuresHandle(keyIndex)}
 
           >
             <div className='text-start'>
@@ -113,6 +114,65 @@ export function ServiceDisclosureChildren({ data }) {
               <span className="text-sm text-subMain">{item.agreementName}</span>
               <span className="text-subMain">R$ {item.price}</span>
             </div>
+          )
+        })}
+      </div>) : ''
+  )
+}
+
+export function PaymentsProfessionalsDisclosure({ data, subTitle, children, hideOtherDisclosuresHandle, keyIndex }) {
+  return (
+    <Disclosure as='div'>
+      {({ open }) => (
+        <div>
+          <DisclosureButton className={`w-full items-center group grid grid-cols-2 gap-1 justify-start p-4 border border-subMain ${open ? 'bg-subMain text-white rounded-t-lg' : 'bg-white text-subMain rounded-lg hover:bg-greyed'}`}
+            id={keyIndex}
+            onClick={() => hideOtherDisclosuresHandle(keyIndex)}
+          >
+            <div className='text-start'>
+              {data.professionalName}
+            </div>
+            <div className='flex justify-between items-center'>
+              <div className=''>
+                {!open && subTitle}
+              </div>
+              <BiChevronDown className="w-5 group-data-[open]:rotate-180 text-xl" />
+            </div>
+          </DisclosureButton>
+          <div className="overflow-hidden ">
+            <AnimatePresence>
+              {open && (
+                <DisclosurePanel static as={Fragment} className={"flex p-4 rounded-b-lg border border-subMain"}>
+                  <motion.div
+                    initial={{ opacity: 0, y: -24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -24 }}
+                    transition={{ duration: 0.2, ease: easeOut }}
+                    className="origin-top"
+                  >
+                    {children}
+                  </motion.div>
+                </DisclosurePanel>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      )}
+    </Disclosure>
+  )
+}
+
+export function PaymentsProfessionalsDisclosureSubTitle({ data }) {
+  return (
+    data && data.length > 0 ? (
+      <div className="flex items-center gap-20">
+        {data.map((item, index) => {
+
+          return (item.agreementId <= 2 ?
+            <div className="flex flex-col items-center" key={index}>
+              <span className="text-sm text-gray-600">{item.agreementName}</span>
+              <span className="text-gray-600">{moneyFormat2BR(item.total)}</span>
+            </div> : ''
           )
         })}
       </div>) : ''

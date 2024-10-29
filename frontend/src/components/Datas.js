@@ -50,7 +50,7 @@ export const MenuDatas = [
     roleAllowed: 3
   },
   {
-    title: 'Payments',
+    title: 'Pagamentos',
     path: '/payments',
     icon: MdListAlt,
     roleAllowed: 1

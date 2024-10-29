@@ -8,6 +8,7 @@ import { SpecialtiesRoutes } from './api/specialties/@specialtiesRoutes';
 import { ServicesRoutes } from './api/services/@servicesRoutes';
 import { EventsRoutes } from './api/events/@eventsRoutes';
 import { AgreementsRoutes } from './api/agreements/@agreementsRoutes';
+import { PayrollRoutes } from './api/payroll/@payrollRoutes';
 import { FileUploaderRoutes } from './api/fileupload/@fileuploaderRoutes';
 
 
@@ -21,5 +22,6 @@ export const routes = async (app: FastifyInstance) => {
   app.register(ServicesRoutes);
   app.register(EventsRoutes);
   app.register(AgreementsRoutes);
+  app.register(PayrollRoutes);
   // app.register(FileUploaderRoutes);
 } 

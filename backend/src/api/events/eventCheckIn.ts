@@ -35,6 +35,7 @@ export const EventCheckIn = async (app: FastifyInstance) => {
       });
 
       if (error) {
+        console.log('ERROR', error);
         throw error;
       }
 
@@ -45,6 +46,7 @@ export const EventCheckIn = async (app: FastifyInstance) => {
       .eq('eventInstanceId', id)
 
       if(eventInstanceError){
+        console.log('ERROR', eventInstanceError);
         throw eventInstanceError;
       }
 

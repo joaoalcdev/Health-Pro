@@ -1,6 +1,7 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
 import moment from 'moment-timezone';
+import { group } from 'console';
 
 export const getPayroll = async (app: FastifyInstance) => {
   app.get("/payroll/:monthRange", async (req: FastifyRequest, res: FastifyReply) => {
@@ -38,6 +39,7 @@ export const getPayroll = async (app: FastifyInstance) => {
         var totalGrossValue = 0 as number; // Valor da receita bruta total do mês
         var totalTax = 0 as number; // Valor total de impostos
         var totalProfit = 0 as number; // Valor total de lucro
+        var totalEvents = 0 as number; // Quantidade total de eventos
         
         //Resume a lista em um objeto apenas com os dados dos profissionais que posuem eventos no mês
         var rebaseData = data.map((event) => {
@@ -50,6 +52,7 @@ export const getPayroll = async (app: FastifyInstance) => {
         
         //Remove os profissionais duplicados
         rebaseData = rebaseData.filter((v,i,a)=>a.findIndex(t=>(t.professionalId === v.professionalId))===i)
+
         
         //Percorre cada profissional e coloca os eventos dentro de um array events
         rebaseData = rebaseData.map((professional) => {
@@ -58,15 +61,17 @@ export const getPayroll = async (app: FastifyInstance) => {
           var professionalAmountDue = 0 as number;
           var professionalTax = 0 as number;
           var professionalProfit = 0 as number;
-
+          var professionalEvents = 0 as number;
+          
+          //Recebe todos os eventos do profissional
           const eventsByProfessionals = data.filter((event) => event.professionalId === professional.professionalId)
-
+          
+          
           //separa os event
           var eventsByAgreement = eventsByProfessionals.filter((v,i,a)=>a.findIndex(t=>(t.agreementId === v.agreementId))===i).sort((a,b) => a.agreementId - b.agreementId)
-
+          
           eventsByAgreement = eventsByAgreement.map((event): any => {
-            console.log(event)
-
+            
             //Calcula o valor bruto de cada Agreement
             const sumGrossValue = eventsByProfessionals.reduce((acc, e) => {
               if(e.agreementId === event.agreementId){
@@ -107,24 +112,83 @@ export const getPayroll = async (app: FastifyInstance) => {
 
             professionalProfit += sumProfit; // Incrementa o valor total de lucro do profissional
             totalProfit += sumProfit;       // Incrementa o valor total de lucro
+            professionalEvents += eventsByProfessionals.filter((e) => e.agreementId === event.agreementId).length;
+            totalEvents += eventsByProfessionals.filter((e) => e.agreementId === event.agreementId).length;
 
+            var groupByService = eventsByProfessionals.filter((e) => e.agreementId === event.agreementId)
+
+            groupByService = groupByService.map((event) => {
+              return{
+                serviceId: event.serviceId ? event.serviceId : 0,
+                serviceName: event.serviceName ? event.serviceName : 'Consulta/Avaliação',
+                professional: event.professionalFirstName,
+                agreementId: event.agreementId,
+              }
+            })
+
+            groupByService = groupByService.filter((v,i,a)=>a.findIndex(t=>(t.serviceId === v.serviceId))===i).sort((a,b) => a.serviceId - b.serviceId)
+
+            //console.log(eventsByProfessionals)
+            var qtyEvents = 0;
+            groupByService = groupByService.map((event) => {
+
+              const eventsList = eventsByProfessionals.filter((e) => {
+                return e.eventType === 4 && event.serviceId === 0 || e.serviceId === event.serviceId && e.agreementId === event.agreementId })
+
+                qtyEvents += eventsList.length;
+
+              return {
+                serviceId: event.serviceId,
+                serviceName: event.serviceName,
+                total: eventsByProfessionals.reduce((acc, e) => {
+                  if(e.eventType === 4 && event.serviceId === 0 || e.serviceId === event.serviceId && e.agreementId === event.agreementId){
+                    return acc + e.grossValue
+                  }
+                  return acc
+                } , 0),
+                amountDue: eventsByProfessionals.reduce((acc, e) => {
+                  if(e.eventType === 4 && event.serviceId === 0 || e.serviceId === event.serviceId && e.agreementId === event.agreementId){
+                    return acc + e.professionalRate
+                  }
+                  return acc
+                } , 0),
+                tax: eventsByProfessionals.reduce((acc, e) => {
+                  if(e.eventType === 4 && event.serviceId === 0 || e.serviceId === event.serviceId && e.agreementId === event.agreementId){
+                    return acc + e.tax
+                  }
+                  return acc
+                } , 0),
+                profit: eventsByProfessionals.reduce((acc, e) => {
+                  if(e.eventType === 4 && event.serviceId === 0 || e.serviceId === event.serviceId && e.agreementId === event.agreementId){
+                    return acc + e.profit
+                  }
+                  return acc
+                } , 0),
+                events: eventsList,
+                qty: eventsList.length
+              }
+            })
+            
             return {
                 agreementId: event.agreementId,
                 agreementName: agreements.find((agreement) => agreement.id === event.agreementId)?.name,
                 amountDue: sumProfessionalRate,
                 total: sumGrossValue,
-                tax: sumTax.toFixed(2),
-                profit: sumProfit.toFixed(2),
-                events: eventsByProfessionals.filter((e) => e.agreementId === event.agreementId),
+                tax: Number(sumTax.toFixed(2)),
+                profit: Number(sumProfit.toFixed(2)),
+                events: groupByService,
+                qty: qtyEvents,
+                //events: eventsByProfessionals.filter((e) => e.agreementId === event.agreementId),
               }
           }) 
           return {
             ...professional,
             events: eventsByAgreement,
+            qty: professionalEvents,
             professionalGrossValue,
             professionalAmountDue,
-            professionalTax: professionalTax.toFixed(2),
-            professionalProfit: professionalProfit.toFixed(2),
+            professionalTax: Number(professionalTax.toFixed(2)),
+            professionalProfit: Number(professionalProfit.toFixed(2)),
           }
         })
 
@@ -161,7 +225,8 @@ export const getPayroll = async (app: FastifyInstance) => {
           }
         })
 
-      
+        
+        console.log('==============  FIM ==============')
         return res.status(200).send(
           { 
             professionals: rebaseData,
@@ -169,13 +234,13 @@ export const getPayroll = async (app: FastifyInstance) => {
               summaryPerAgreement: summaryPerAgreement,
               totalGrossValue,
               totalAmountDue,
-              totalTax: totalTax.toFixed(2),
-              totalProfit: totalProfit.toFixed(2),
+              totalTax: Number(totalTax.toFixed(2)),
+              totalProfit: Number(totalProfit.toFixed(2)),
+              totalEvents,
             }
           })
-       
       }else{
-      
+        return res.status(400).send({error: 'Unable to get data'})
       }
       
     } catch (error) {

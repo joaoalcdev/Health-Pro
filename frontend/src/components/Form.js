@@ -693,7 +693,7 @@ export function MonthlyPicker({ label, startDate, onChange, endDate, bg, value }
         showMonthYearPicker
         showFullMonthYearPicker
         className={`transitions w-full ${bg ? bg : 'bg-transparent'
-          }  text-xs px-4 h-14 border border-border uppercase text-main font-normal rounded focus:border focus:border-subMain`}
+          }  text-lg px-4 h-14 border border-border uppercase text-main font-normal rounded focus:border focus:border-subMain`}
       />
     </div>
   );

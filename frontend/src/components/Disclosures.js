@@ -3,9 +3,9 @@ import { BiChevronDown } from 'react-icons/bi'
 import { AnimatePresence, easeOut, motion } from 'framer-motion'
 import { Fragment } from 'react'
 import { moneyFormat2BR } from '../utils/moneyFormatBR'
-import { IoIosArrowForward } from "react-icons/io";
-import Toast from './Notifications/Toast'
-import toast from 'react-hot-toast'
+import { formatDate, formatDateTime } from '../utils/formatDate'
+import { TbEdit } from 'react-icons/tb'
+import { on } from 'rsuite/esm/DOMHelper'
 
 export function SpecialtyDisclosure({ data, subTitle, children, hideOtherDisclosuresHandle, keyIndex }) {
   return (
@@ -262,7 +262,7 @@ export function PaymentsAgreementsDisclosureSubTitle({ data }) {
   )
 }
 
-export function PaymentsAgreementsDisclosureChildren({ data, handleClick }) {
+export function PaymentsAgreementsDisclosureChildren({ data, children }) {
   const services = data.events
   return (
     <div className="flex felx-col gap-4 p-4">
@@ -290,12 +290,12 @@ export function PaymentsAgreementsDisclosureChildren({ data, handleClick }) {
           </div>
         </div>
         <div className="col-span-2 flex flex-col p-2 items-center gap-2" >
-
-          {services.map((item, index) => {
+          {children}
+          {/* {services.map((item, index) => {
             return (
               <button className="flex w-full bg-white border border-subMain rounded-lg items-center cursor-pointer"
                 key={index}
-                onClick={() => { toast.success('Abrir drawer com a lista de shifts') }}
+                onClick={handleClick(item)}
               >
                 <div className='grid grid-cols-5 px-4  py-2 w-full gap-2 items-center'>
 
@@ -315,7 +315,7 @@ export function PaymentsAgreementsDisclosureChildren({ data, handleClick }) {
                 </div>
               </button>
             )
-          })}
+          })} */}
         </div>
       </div >
     </div >
@@ -358,5 +358,77 @@ export function PaymentsServicesDisclosure({ data, subTitle, children }) {
         </>
       )}
     </Disclosure>
+  )
+}
+
+export function SingleEventDisclosure({ data, subTitle, children, onEdit, onClick, hideOtherDisclosuresHandle, keyIndex }) {
+
+
+  return (
+    <Disclosure as='div'>
+      {({ open }) => {
+        return (
+          <div>
+            <DisclosureButton className={`drawer w-full group grid grid-cols-3 gap-2 px-4 py-2 border border-subMain items-center ${open ? 'bg-subMain text-white rounded-t-lg' : 'bg-white text-subMain rounded-lg hover:bg-greyed'}`}
+              onClick={() => {
+                hideOtherDisclosuresHandle(keyIndex)
+              }}
+            >
+              <div className={`flex flex-col text-start ${open ? 'col-span-2' : ''}`}>
+                <span className="text-md ">{formatDate(data.startTime)} - {formatDateTime(data.startTime)}</span>
+                <span className={`text-md ${open ? 'text-white' : 'text-black'} truncate`}>{data.patientFullName}</span>
+              </div>
+              <div className={`flex justify-end items-center gap-4 ${open ? 'col-span-1' : 'col-span-2'}`}>
+                <div className={`${open ? 'hidden' : ''}`}>
+                  <SingleEventDisclosureSubTitle
+                    data={data}
+                    color={open ? 'text-white' : ''}
+                  />
+                </div>
+                <span className=' flex items-center rounded-full bg-subMain p-2'>
+                  <TbEdit className=" text-white text-2xl" />
+                </span>
+              </div>
+            </DisclosureButton>
+            <div className=" ">
+              <AnimatePresence>
+                {open && (
+                  <DisclosurePanel static as={Fragment} className={"w-full flex p-4 rounded-b-lg border border-subMain"}>
+                    <motion.div
+                      initial={{ opacity: 0, y: -24 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -24 }}
+                      transition={{ duration: 0.2, ease: easeOut }}
+                      className="origin-top"
+                    >
+                      {children}
+                    </motion.div>
+                  </DisclosurePanel>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        )
+      }}
+    </Disclosure>
+  )
+}
+
+export function SingleEventDisclosureSubTitle({ data, color }) {
+  return (
+    <div className="grid grid-cols-3 items-center gap-8">
+      <div className="flex flex-col items-center" >
+        <span className={`text-md ${color ? color : 'text-subMain'}`}>{moneyFormat2BR(data.grossValue)}</span>
+        <span className={`text-sm ${color ? color : 'text-black'}`}>Valor</span>
+      </div>
+      <div className="flex flex-col items-center" >
+        <span className={`text-md ${color ? color : 'text-subMain'}`}>{moneyFormat2BR(data.professionalRate)}</span>
+        <span className={`text-sm ${color ? color : 'text-black'}`}>Profissional</span>
+      </div>
+      <div className="flex flex-col items-center" >
+        <span className={`text-md ${color ? color : 'text-subMain'}`}>{moneyFormat2BR(data.profit)}</span>
+        <span className={`text-sm ${color ? color : 'text-black'}`}>Clínica</span>
+      </div>
+    </div>
   )
 }

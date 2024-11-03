@@ -17,3 +17,12 @@ export const getPayroll = async (monthRange) => {
     return error
   }
 }
+
+export const editPayroll = async (eventId, data) => {
+  try {
+    const res = await axios.put(apiBaseUrl(`editPayroll/${eventId}`), data)
+    return res.data
+  } catch (error) {
+    return error
+  }
+}

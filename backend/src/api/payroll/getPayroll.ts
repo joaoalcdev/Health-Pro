@@ -227,6 +227,8 @@ export const getPayroll = async (app: FastifyInstance) => {
 
         
         console.log('==============  FIM ==============')
+
+        console.log(rebaseData)
         return res.status(200).send(
           { 
             professionals: rebaseData,

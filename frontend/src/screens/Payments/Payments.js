@@ -12,17 +12,27 @@ import { PaymentsAgreementsDisclosure, PaymentsProfessionalsDisclosure, Payments
 import { getPayroll } from '../../api/PaymentsAPI'
 import { GiPayMoney, GiReceiveMoney, GiTakeMyMoney } from 'react-icons/gi';
 import { TbUserDollar } from 'react-icons/tb';
+import Drawer from 'react-modern-drawer';
+import DrawerContent from '../../components/DrawerContent';
+import { IoIosArrowForward } from "react-icons/io";
+import { set } from 'react-hook-form';
+
+
 
 function Payments() {
   const today = new Date();
   const [monthRange, setMonthRange] = useState(new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0));
   const [monthFilter, setMonthFilter] = useState(new Date());
   const navigate = useNavigate();
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [status, setStatus] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [payroll, setPayroll] = useState([]);
   const [summary, setSummary] = useState({});
 
   const fetchPayroll = async () => {
+    setLoading(true);
     const response = await getPayroll(`01-${monthRange.getMonth() + 1}-${monthRange.getFullYear()}`);
     console.log('Response', response);
     if (response.error || response.length === 0) {
@@ -33,11 +43,13 @@ function Payments() {
       setPayroll(response.professionals);
       setSummary(response.summary);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchPayroll();
-  }, []);
+    setOpenDrawer(false);
+  }, [status]);
 
   // boxes
   const boxes = [
@@ -90,22 +102,46 @@ function Payments() {
     });
   };
 
-  const handleClick = () => {
-    toast.success('Cliquei');
+  const [drawerData, setDrawerData] = useState({});
+  const [drawerAgreementName, setDrawerAgreementName] = useState('');
+  const [drawerProfessionalName, setDrawerProfessionalName] = useState('');
+
+  const handleClickService = (serviceData, agreementName, professionalName) => {
+    console.log('Service Data', serviceData);
+    setDrawerData(serviceData);
+    setDrawerAgreementName(agreementName);
+    setDrawerProfessionalName(professionalName);
+    setOpenDrawer(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setDrawerData({});
+    setOpenDrawer(false);
   };
   return (
     <Layout>
-      {/* add button */}
-      {/* <button
-        onClick={() => {
-          console.log('Data', payroll);
-          toast.error('Exporting is not available yet');
-        }}
-        className="w-16 hover:w-44 group transitions hover:h-14 h-16 border border-border z-50 bg-subMain text-white rounded-full flex-rows gap-4 fixed bottom-8 right-12 button-fb"
-      >
-        <p className="hidden text-sm group-hover:block">Export</p>
-        <MdOutlineCloudDownload className="text-2xl" />
-      </button> */}
+      {openDrawer && (
+        <>
+          <Drawer
+            open={openDrawer}
+            onClose={handleCloseDrawer}
+            direction='right'
+            size={700}
+            zIndex={40}
+            enableOverlay={true}
+          >
+            <DrawerContent
+              datas={drawerData}
+              professionalName={drawerProfessionalName}
+              agreementName={drawerAgreementName}
+              onClose={handleCloseDrawer}
+              onStatus={() => setStatus(!status)}
+            />
+          </Drawer>
+        </>
+      )}
+
+
       <h1 className="text-xl font-semibold">Pagamentos</h1>
       {/* boxes */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
@@ -152,7 +188,7 @@ function Payments() {
             bg="bg-dry"
             onChange={(update) => setMonthRange(update)}
           />
-          {/* export */}
+          {/* filter */}
           <Button
             label="Filtrar"
             Icon={MdFilterList}
@@ -163,94 +199,108 @@ function Payments() {
           />
         </div>
         <div className="mt-8 w-full flex flex-col gap-2">
-          {payroll && payroll.length > 0 &&
-            payroll.map((data, index) => {
-              return (
-                <PaymentsProfessionalsDisclosure
-                  key={index}
-                  data={data}
-                  //subTitle={`Produção: ${moneyFormat2BR(data.totalGrossPay)}`} // R$ 1.000,00
-                  subTitle={<PaymentsProfessionalsDisclosureSubTitle data={data} />} // R$ 1.000,00
-                  hideOtherDisclosuresHandle={hideOtherDisclosuresHandle}
-                  keyIndex={index}
-                >
-                  <div className="flex flex-col w-full">
-                    <div className='p-4 flex flex-col gap-4 w-full'>
+          {
+            loading ? (
+              <div className=" flex justify-center items-center">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-subMain"></div>
+              </div>
+            ) : (
 
-                      {data.events &&
-                        data.events.map((item, index) => {
-                          return (
-                            <PaymentsAgreementsDisclosure
-                              key={index}
-                              data={item}
-                              subTitle={<PaymentsAgreementsDisclosureSubTitle data={item} />}
-                              keyIndex={index}
-                            >
-                              <div className='flex flex-col gap-4 w-full pb-4'>
-                                <PaymentsAgreementsDisclosureChildren
+
+              payroll && payroll.length > 0 ? (
+                payroll.map((data, index) => {
+                  return (
+                    <PaymentsProfessionalsDisclosure
+                      key={index}
+                      data={data}
+                      //subTitle={`Produção: ${moneyFormat2BR(data.totalGrossPay)}`} // R$ 1.000,00
+                      subTitle={<PaymentsProfessionalsDisclosureSubTitle data={data} />} // R$ 1.000,00
+                      hideOtherDisclosuresHandle={hideOtherDisclosuresHandle}
+                      keyIndex={index}
+                    >
+                      <div className="flex flex-col w-full">
+                        <div className='p-4 flex flex-col gap-4 w-full'>
+
+                          {data.events &&
+                            data.events.map((item, index) => {
+                              return (
+                                <PaymentsAgreementsDisclosure
+                                  key={index}
                                   data={item}
+                                  subTitle={<PaymentsAgreementsDisclosureSubTitle data={item} />}
                                   keyIndex={index}
-                                  handleClick={() => toast('Cliquei')}
-                                />
-                                {/* <div className='bg-greyed p-4 rounded-b-lg grid grid-cols-2'>
-                                  <div className="flex items-center" >
-                                    <span className="text-md text-subMain">Totais</span>
+                                >
+                                  <div className='flex flex-col gap-4 w-full pb-4'>
+                                    <PaymentsAgreementsDisclosureChildren
+                                      data={item}
+                                      keyIndex={index}
+
+                                    >
+                                      {item.events.map((serviceItem, index) => {
+                                        return (
+                                          <button className="flex w-full bg-white border border-subMain rounded-lg items-center cursor-pointer"
+                                            key={index}
+                                            onClick={() => handleClickService(serviceItem, item.agreementName, data.professionalName)}
+                                          >
+                                            <div className='grid grid-cols-5 px-4  py-2 w-full gap-2 items-center'>
+
+                                              <div className="text-sm text-black col-span-2 text-left">{serviceItem.serviceName}</div>
+                                              <div className="text-sm text-black text-center">{serviceItem.qty}</div>
+                                              <div className="flex flex-col items-center" >
+                                                <span className="text-sm text-black">{moneyFormat2BR(serviceItem.total)}</span>
+                                                <span className="text-sm text-gray-400">Produção</span>
+                                              </div>
+                                              <div className="flex flex-col items-center" >
+                                                <span className="text-sm text-black">{moneyFormat2BR(serviceItem.amountDue)}</span>
+                                                <span className="text-sm text-gray-400">Repasse</span>
+                                              </div>
+                                            </div>
+                                            <div className=" items-center p-2" >
+                                              <span className="text-md text-subMain"><IoIosArrowForward /></span>
+                                            </div>
+                                          </button>
+                                        )
+                                      })}
+                                    </PaymentsAgreementsDisclosureChildren>
                                   </div>
-                                  <div className='grid grid-cols-4 items-center gap-4 '>
-                                    <div className="flex flex-col items-center" >
-                                      <span className="text-md text-subMain">{item.qty}</span>
-                                    </div>
-                                    <div className="flex flex-col items-center" >
-                                      <span className="text-md text-subMain">{moneyFormat2BR(item.total)}</span>
-                                      <span className="text-sm text-gray-600">Produção</span>
-                                    </div>
-                                    <div className="flex flex-col items-center" >
-                                      <span className="text-md text-subMain">{moneyFormat2BR(item.amountDue)}</span>
-                                      <span className="text-sm text-gray-600">Repasse</span>
-                                    </div>
-                                    <div className="flex flex-col items-center" >
-                                      <span className="text-md text-subMain">{moneyFormat2BR(item.tax)}</span>
-                                      <span className="text-sm text-gray-600">Imposto</span>
-                                    </div>
-                                  </div>
+                                </PaymentsAgreementsDisclosure>
+                              );
+                            })
+                          }
+                        </div>
 
-                                </div> */}
-                              </div>
-                            </PaymentsAgreementsDisclosure>
-                          );
-                        })
-                      }
-                    </div>
+                        <div className='bg-subMain p-4 rounded-b-lg grid grid-cols-5'>
 
-                    <div className='bg-subMain p-4 rounded-b-lg grid grid-cols-5'>
-
-                      <div className="flex items-center justify-center" >
-                        <span className="text-md font-semibold text-white">{data.qty}</span>
+                          <div className="flex items-center justify-center" >
+                            <span className="text-md font-semibold text-white">{data.qty}</span>
+                          </div>
+                          <div className="flex flex-col items-center" >
+                            <span className="text-xl font-semibold text-white">{moneyFormat2BR(data.professionalGrossValue)}</span>
+                            <span className="text-sm text-black">Produção</span>
+                          </div>
+                          <div className="flex flex-col items-center" >
+                            <span className="text-xl font-semibold text-white">{moneyFormat2BR(data.professionalAmountDue)}</span>
+                            <span className="text-sm text-black">Repasse</span>
+                          </div>
+                          <div className="flex flex-col items-center" >
+                            <span className="text-xl font-semibold text-white">{moneyFormat2BR(data.professionalTax)}</span>
+                            <span className="text-sm text-black">Imposto</span>
+                          </div>
+                          <div className="flex flex-col items-center" >
+                            <span className="text-xl font-semibold text-white">{moneyFormat2BR(data.professionalProfit)}</span>
+                            <span className="text-sm text-black">Saldo Clínica</span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex flex-col items-center" >
-                        <span className="text-xl font-semibold text-white">{moneyFormat2BR(data.professionalGrossValue)}</span>
-                        <span className="text-sm text-black">Produção</span>
-                      </div>
-                      <div className="flex flex-col items-center" >
-                        <span className="text-xl font-semibold text-white">{moneyFormat2BR(data.professionalAmountDue)}</span>
-                        <span className="text-sm text-black">Repasse</span>
-                      </div>
-                      <div className="flex flex-col items-center" >
-                        <span className="text-xl font-semibold text-white">{moneyFormat2BR(data.professionalTax)}</span>
-                        <span className="text-sm text-black">Imposto</span>
-                      </div>
-                      <div className="flex flex-col items-center" >
-                        <span className="text-xl font-semibold text-white">{moneyFormat2BR(data.professionalProfit)}</span>
-                        <span className="text-sm text-black">Saldo Clínica</span>
-                      </div>
-                    </div>
-                  </div>
-                </PaymentsProfessionalsDisclosure>
-              );
-            })
-
-          }
-
+                    </PaymentsProfessionalsDisclosure>
+                  );
+                })
+              ) : (
+                <div className="flex justify-center items-center">
+                  <h1 className="text-lg p-14">Nenhum pagamento encontrado</h1>
+                </div>
+              )
+            )}
         </div>
       </div>
     </Layout >

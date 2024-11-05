@@ -189,14 +189,16 @@ function Payments() {
             onChange={(update) => setMonthRange(update)}
           />
           {/* filter */}
-          <Button
-            label="Filtrar"
-            Icon={MdFilterList}
-            onClick={() => {
-              toast.loading('Carregando...');
-              fetchPayroll();
-            }}
-          />
+          <div className='h-full'>
+            <Button
+              label="Filtrar"
+              Icon={MdFilterList}
+              onClick={() => {
+                toast.loading('Carregando...');
+                fetchPayroll();
+              }}
+            />
+          </div>
         </div>
         <div className="mt-8 w-full flex flex-col gap-2">
           {

@@ -5,7 +5,6 @@
 
 @layer tailwind-base, primereact, tailwind-utilities;
 
-
 @layer tailwind-base {
   @tailwind base;
 }
@@ -132,8 +131,13 @@ button:focus {
   font-size: 14px !important;
   color: #183253;
   text-transform: capitalize !important;
-  border: 1px solid #e8ebee !important;
+  border: 1px solid #66b5a3 !important;
 }
+
+.react-datepicker__triangle {
+  color: #66b5a3 !important;
+}
+
 .react-datepicker__day,
 .react-datepicker__day-name {
   border-radius: 100% !important;
@@ -189,6 +193,29 @@ button:focus {
   color: #fff !important;
 }
 
+.react-datepicker-year-header {
+  background-color: #f3f5f7 !important;
+  font-size: 14px !important;
+  color: #183253 !important;
+  font-weight: 600 !important;
+}
+
+.react-datepicker__month-container {
+  border-radius: 5px !important;
+  background-color: #ffffff !important;
+  width: 100% !important;
+}
+
+.react-datepicker__month-container .react-datepicker__month-text--today {
+  background-color: #a2d2c8 !important;
+  color: #fff !important;
+}
+
+.react-datepicker__month-container .react-datepicker__month-text--selected {
+  background-color: #66b5a3 !important;
+  color: #fff !important;
+}
+
 ::-webkit-scrollbar {
   height: 8px;
   width: 8px;
@@ -219,7 +246,6 @@ button:focus {
   background-color: #43776b;
 }
 
-
 .is-loading {
   .image,
   h2,
@@ -230,10 +256,10 @@ button:focus {
     background-size: 200% 100%;
     animation: 1.5s shine linear infinite;
   }
-  
+
   h4 {
-    background: #66B5A3;
-    background: linear-gradient(110deg, #B1F0E2 8%, #A9E9DA 18%, #B1F0E2 33%);
+    background: #66b5a3;
+    background: linear-gradient(110deg, #b1f0e2 8%, #a9e9da 18%, #b1f0e2 33%);
     border-radius: 5px;
     background-size: 200% 100%;
     animation: 1.5s shine linear infinite;
@@ -244,7 +270,6 @@ button:focus {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
   }
-
 }
 
 @keyframes shine {

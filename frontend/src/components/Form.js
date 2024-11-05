@@ -296,7 +296,7 @@ export function Button({ label, onClick, loading, Icon, type, disabled, children
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className={`select-none w-full flex-rows transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} bg-subMain text-white text-sm font-medium px-2 py-4 rounded`}
+      className={`select-none w-full h-full flex-rows transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} bg-subMain text-white text-sm font-medium px-2 py-4 rounded`}
     >
       {loading ? (
         <BiLoaderCircle className="animate-spin text-white text-xl" />
@@ -681,7 +681,7 @@ export function FromToDate({ label, startDate, onChange, endDate, bg }) {
 
 export function MonthlyPicker({ label, startDate, onChange, endDate, bg, value }) {
   return (
-    <div className="text-sm w-full flex flex-col gap-2">
+    <div className="text-sm w-full flex flex-col">
       {label && <label className={'text-black text-sm'}>{label}</label>}
       <DatePicker
         selected={value}
@@ -691,7 +691,7 @@ export function MonthlyPicker({ label, startDate, onChange, endDate, bg, value }
         maxDate={new Date()}
         dateFormat="MMMM/yyyy"
         showMonthYearPicker
-        showFullMonthYearPicker
+        //showFullMonthYearPicker
         className={`transitions w-full ${bg ? bg : 'bg-transparent'
           }  text-md px-4 h-14 border border-border uppercase text-main font-normal rounded focus:border focus:border-subMain`}
       />

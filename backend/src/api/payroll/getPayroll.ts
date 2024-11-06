@@ -1,7 +1,6 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
 import moment from 'moment-timezone';
-import { group } from 'console';
 
 export const getPayroll = async (app: FastifyInstance) => {
   app.get("/payroll/:monthRange", async (req: FastifyRequest, res: FastifyReply) => {
@@ -226,9 +225,9 @@ export const getPayroll = async (app: FastifyInstance) => {
         })
 
         
-        console.log('==============  FIM ==============')
+        //console.log('==============  FIM ==============')
 
-        console.log(rebaseData)
+        //console.log(rebaseData)
         return res.status(200).send(
           { 
             professionals: rebaseData,

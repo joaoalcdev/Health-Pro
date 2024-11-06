@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CurrencyInputMask, Button } from "../Form";
+import { CurrencyInputMask, Button, CurrencyInputField } from "../Form";
 import { editPayroll } from "../../api/PaymentsAPI";
 import toast from "react-hot-toast";
 
@@ -18,7 +18,6 @@ export default function EditEventForm({ event, onStatus }) {
   const handleSave = async () => {
     setLoading(true);
     setDisabled(true);
-    console.log(event.eventInstanceId, grossValue, professionalRate, tax, profit);
     const response = await editPayroll(event.eventInstanceId, {
       grossValue,
       professionalRate,
@@ -43,78 +42,70 @@ export default function EditEventForm({ event, onStatus }) {
   return (
     <div className='flex flex-col gap-4'>
       <div className='grid grid-cols-4 gap-2'>
-        <CurrencyInputMask
-          label={'Valor'}
+        <CurrencyInputField
+          label={'Valor Bruto'}
           color={true}
-          type='number'
-          maxFractionDigits={2}
-          maxLength={12}
+          allowEmpty={true}
+          autoFocus={false}
+          selectAllOnFocus={false}
+          prefix={'R$ '}
+          suffix={''}
+          decimalSeparator={','}
+          thousandSeparator={'.'}
           value={grossValue}
-          mode={'currency'}
-          inputId={'currency-brazil'}
-          currency={'BRL'}
-          locale={'pt-BR'}
-          allowEmpty={false}
           onChange={(e) => {
-            setGrossValue(e.value)
+            setGrossValue(Number(e.target.value.split('R$ ').join('').split('.').join('').split(',').join('.')))
             setDisabled(false);
           }}
-          inputClassName={`w-full bg-white transitions text-lg p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
         />
-        <CurrencyInputMask
+        <CurrencyInputField
           label={'Profissional'}
           color={true}
-          type='number'
-          maxFractionDigits={2}
-          maxLength={12}
+          allowEmpty={true}
+          autoFocus={false}
+          selectAllOnFocus={false}
+          prefix={'R$ '}
+          suffix={''}
+          decimalSeparator={','}
+          thousandSeparator={'.'}
           value={professionalRate}
-          mode={'currency'}
-          inputId={'currency-brazil'}
-          currency={'BRL'}
-          locale={'pt-BR'}
-          allowEmpty={false}
           onChange={(e) => {
-            setProfessionalRate(e.value)
+            setProfessionalRate(Number(e.target.value.split('R$ ').join('').split('.').join('').split(',').join('.')))
             setDisabled(false);
-          }
-          }
-          inputClassName={`w-full bg-white transitions text-lg p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+          }}
         />
-        <CurrencyInputMask
+        <CurrencyInputField
           label={'Imposto'}
           color={true}
-          type='number'
-          maxFractionDigits={2}
-          maxLength={12}
+          allowEmpty={true}
+          autoFocus={false}
+          selectAllOnFocus={false}
+          prefix={'R$ '}
+          suffix={''}
+          decimalSeparator={','}
+          thousandSeparator={'.'}
           value={tax}
-          mode={'currency'}
-          inputId={'currency-brazil'}
-          currency={'BRL'}
-          locale={'pt-BR'}
-          allowEmpty={false}
           onChange={(e) => {
-            setTax(e.value)
+            setTax(Number(e.target.value.split('R$ ').join('').split('.').join('').split(',').join('.')))
             setDisabled(false);
           }}
-          inputClassName={`w-full bg-white transitions text-lg p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
         />
-        <CurrencyInputMask
+        <CurrencyInputField
           label={'Clínica'}
           color={true}
-          type='number'
-          maxFractionDigits={2}
-          maxLength={12}
+          allowEmpty={true}
+          autoFocus={false}
+          selectAllOnFocus={false}
+          prefix={'R$ '}
+          suffix={''}
+          decimalSeparator={','}
+          thousandSeparator={'.'}
           value={profit}
-          mode={'currency'}
-          inputId={'currency-brazil'}
-          currency={'BRL'}
-          locale={'pt-BR'}
-          allowEmpty={false}
           onChange={(e) => {
-            setProfit(e.value)
+            console.log(e.target.value)
+            setProfit(Number(e.target.value.split('R$ ').join('').split('.').join('').split(',').join('.')))
             setDisabled(false);
           }}
-          inputClassName={`w-full bg-white transitions text-lg p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
         />
       </div>
       <div className='grid grid-cols-2 gap-2'>

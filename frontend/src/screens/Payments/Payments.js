@@ -15,20 +15,22 @@ import { TbUserDollar } from 'react-icons/tb';
 import Drawer from 'react-modern-drawer';
 import DrawerContent from '../../components/DrawerContent';
 import { IoIosArrowForward } from "react-icons/io";
-import { set } from 'react-hook-form';
-
 
 
 function Payments() {
   const today = new Date();
-  const [monthRange, setMonthRange] = useState(new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0));
-  const [monthFilter, setMonthFilter] = useState(new Date());
   const navigate = useNavigate();
+
+  //states
+  const [monthRange, setMonthRange] = useState(new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0));
   const [openDrawer, setOpenDrawer] = useState(false);
   const [status, setStatus] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
+  //data
   const [payroll, setPayroll] = useState([]);
+  const [filteredPayroll, setFilteredPayroll] = useState([]);
   const [summary, setSummary] = useState({});
 
   const fetchPayroll = async () => {
@@ -41,6 +43,7 @@ function Payments() {
     }
     if (response) {
       setPayroll(response.professionals);
+      setFilteredPayroll(response.professionals);
       setSummary(response.summary);
     }
     setLoading(false);
@@ -50,6 +53,18 @@ function Payments() {
     fetchPayroll();
     setOpenDrawer(false);
   }, [status]);
+
+  useEffect(() => {
+    setPayroll(filteredPayroll.filter((item) => {
+      if (item.professionalName.toLowerCase().includes(searchTerm.toLowerCase())) {
+        return item
+      }
+      else {
+        return null
+      }
+    })
+    )
+  }, [searchTerm])
 
   // boxes
   const boxes = [
@@ -148,9 +163,9 @@ function Payments() {
         {boxes.map((box) => (
           <div
             key={box.id}
-            className="bg-white flex-btn gap-4 rounded-xl border-[1px] border-border p-5"
+            className="bg-white flex-btn gap-4 rounded-xl border-[1px] border-border p-5 hover:-translate-y-2 hover:shadow-md transition-all duration-300 ease-in-out"
           >
-            <div className="w-3/4">
+            <div className="w-3/4  ">
               <h2 className="text-sm font-medium">{box.title}</h2>
               <h2 className="text-xl my-6 font-medium">{box.value}</h2>
               <p className="text-xs text-textGray">
@@ -177,14 +192,15 @@ function Payments() {
           <input
             type="text"
             placeholder='Busque por Profissional'
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="h-14 text-sm text-main rounded-md bg-dry border border-border px-4"
           />
 
           {/* date */}
           <MonthlyPicker
             value={monthRange}
-            startDate={monthFilter}
-            endDate={monthFilter}
+            startDate={monthRange}
+            endDate={monthRange}
             bg="bg-dry"
             onChange={(update) => setMonthRange(update)}
           />

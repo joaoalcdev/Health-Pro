@@ -1,24 +1,11 @@
 import { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { Button, ButtonNegative, } from '../components/Form';
-import { formatDate, formatDateTime } from '../utils/formatDate';
-import { moneyFormat2BR } from '../utils/moneyFormatBR';
 import { SingleEventDisclosure } from './Disclosures';
-import { CurrencyInputMask } from '../components/Form';
 import EditEventForm from './Forms/EditEventForm';
 
 import 'moment/locale/pt-br';
 
 export default function DrawerContent({ onClose, datas, agreementName, professionalName, onStatus }) {
-
-  //datas
-
-  //controllers
-  const [loading, setLoading] = useState(false);
-  const [disabled, setDisabled] = useState(true);
-  const [status, setStatus] = useState(false);
-
-
 
   const hideOtherDisclosuresHandle = (_id) => {
     const buttons = document.querySelectorAll('button.drawer[data-headlessui-state="open"]');

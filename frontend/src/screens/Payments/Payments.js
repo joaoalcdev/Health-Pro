@@ -36,7 +36,6 @@ function Payments() {
   const fetchPayroll = async () => {
     setLoading(true);
     const response = await getPayroll(`01-${monthRange.getMonth() + 1}-${monthRange.getFullYear()}`);
-    console.log('Response', response);
     if (response.error || response.length === 0) {
       toast.error('Nenhum pagamento encontrado');
       return;
@@ -122,7 +121,6 @@ function Payments() {
   const [drawerProfessionalName, setDrawerProfessionalName] = useState('');
 
   const handleClickService = (serviceData, agreementName, professionalName) => {
-    console.log('Service Data', serviceData);
     setDrawerData(serviceData);
     setDrawerAgreementName(agreementName);
     setDrawerProfessionalName(professionalName);

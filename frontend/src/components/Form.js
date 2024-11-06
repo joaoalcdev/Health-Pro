@@ -189,6 +189,7 @@ export function InputFilterSelect({ iconButton, children, label, name, placehold
 
 
 export function CurrencyInputField({ label, name, color, placeholder, decimalSeparator, thousandSeparator, prefix, value, required, suffix, precision, autoFocus, selectAllOnFocus, onChange, inputType, allowEmpty, locale, inputStyle, unstyled, maxFractionDigits, inputClassName }) {
+
   return (
     <div className="text-sm w-full">
       <Field className={`flex w-full flex-col`}>
@@ -213,6 +214,7 @@ export function CurrencyInputField({ label, name, color, placeholder, decimalSep
         value={value}
         onChangeEvent={onChange}
         style={{ none: 'none' }}
+        logValues={false}
         className={`text-black w-full bg-white transitions text-lg p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
       />
     </div>

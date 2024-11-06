@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CurrencyInputMask, Button } from "../Form";
+import { CurrencyInputMask, Button, CurrencyInputField } from "../Form";
 import { editPayroll } from "../../api/PaymentsAPI";
 import toast from "react-hot-toast";
 
@@ -40,39 +40,55 @@ export default function EditEventForm({ event, onStatus }) {
     }
   }
 
+
+
   return (
     <div className='flex flex-col gap-4'>
       <div className='grid grid-cols-4 gap-2'>
-        <CurrencyInputMask
+        <CurrencyInputField
+          label={'Valor Bruto'}
+          color={true}
+          allowEmpty={true}
+          autoFocus={false}
+          selectAllOnFocus={false}
+          prefix={'R$ '}
+          suffix={''}
+          decimalSeparator={','}
+          thousandSeparator={'.'}
+          value={grossValue}
+          onChange={(e) => {
+            setGrossValue(e.target.value)
+            setDisabled(false);
+          }}
+        />
+        {/* <CurrencyInputMask
           label={'Valor'}
           color={true}
-          type='number'
           maxFractionDigits={2}
-          maxLength={12}
+          maxLength={15}
           value={grossValue}
           mode={'currency'}
           inputId={'currency-brazil'}
           currency={'BRL'}
           locale={'pt-BR'}
-          allowEmpty={false}
+          allowEmpty={true}
           onChange={(e) => {
             setGrossValue(e.value)
             setDisabled(false);
           }}
           inputClassName={`w-full bg-white transitions text-lg p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
-        />
+        /> */}
         <CurrencyInputMask
           label={'Profissional'}
           color={true}
-          type='number'
           maxFractionDigits={2}
-          maxLength={12}
+          maxLength={15}
           value={professionalRate}
           mode={'currency'}
           inputId={'currency-brazil'}
           currency={'BRL'}
           locale={'pt-BR'}
-          allowEmpty={false}
+          allowEmpty={true}
           onChange={(e) => {
             setProfessionalRate(e.value)
             setDisabled(false);
@@ -83,15 +99,14 @@ export default function EditEventForm({ event, onStatus }) {
         <CurrencyInputMask
           label={'Imposto'}
           color={true}
-          type='number'
           maxFractionDigits={2}
-          maxLength={12}
+          maxLength={15}
           value={tax}
           mode={'currency'}
           inputId={'currency-brazil'}
           currency={'BRL'}
           locale={'pt-BR'}
-          allowEmpty={false}
+          allowEmpty={true}
           onChange={(e) => {
             setTax(e.value)
             setDisabled(false);
@@ -101,15 +116,14 @@ export default function EditEventForm({ event, onStatus }) {
         <CurrencyInputMask
           label={'Clínica'}
           color={true}
-          type='number'
           maxFractionDigits={2}
-          maxLength={12}
+          maxLength={15}
           value={profit}
           mode={'currency'}
           inputId={'currency-brazil'}
           currency={'BRL'}
           locale={'pt-BR'}
-          allowEmpty={false}
+          allowEmpty={true}
           onChange={(e) => {
             setProfit(e.value)
             setDisabled(false);

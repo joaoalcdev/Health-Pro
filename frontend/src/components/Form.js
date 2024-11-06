@@ -14,6 +14,7 @@ import { HiCheck } from 'react-icons/hi2';
 import DatePicker from 'react-datepicker';
 import { InputMask } from 'primereact/inputmask';
 import { InputNumber } from 'primereact/inputnumber';
+import CurrencyInput from '@ericblade/react-currency-input';
 import { Menu, Switch, Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Label, Field, ComboboxButton, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 
 // datas - import
@@ -28,7 +29,7 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
       <div className="flex w-full flex-col">
         {label && <Field className={`flex w-full flex-col ${disabled && 'bg-grayed'}`} disabled={disabled}>
           <Label
-            className={`${color ? 'text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'} `}
+            className={`${color ? 'pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'} `}
           >
             {label}
           </Label>
@@ -186,6 +187,37 @@ export function InputFilterSelect({ iconButton, children, label, name, placehold
   )
 }
 
+
+export function CurrencyInputField({ label, name, color, placeholder, decimalSeparator, thousandSeparator, prefix, value, required, suffix, precision, autoFocus, selectAllOnFocus, onChange, inputType, allowEmpty, locale, inputStyle, unstyled, maxFractionDigits, inputClassName }) {
+  return (
+    <div className="text-sm w-full">
+      <Field className={`flex w-full flex-col`}>
+        <Label
+          className={`${color ? 'text-black text-sm pl-1 pb-1' : 'text-white font-semibold'} `}
+        >
+          <>
+            {label} {required ? <span className="text-red-500">*</span> : ''}
+          </>
+        </Label>
+      </Field>
+      <CurrencyInput
+        prefix={prefix}
+        suffix={suffix}
+        precision={precision}
+        autoFocus={autoFocus}
+        selectAllOnFocus={selectAllOnFocus}
+        inputType={inputType}
+        allowEmpty={allowEmpty}
+        decimalSeparator={decimalSeparator}
+        thousandSeparator={thousandSeparator}
+        value={value}
+        onChangeEvent={onChange}
+        style={{ none: 'none' }}
+        className={`text-black w-full bg-white transitions text-lg p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+      />
+    </div>
+  );
+}
 
 export function CurrencyInputMask({ label, name, color, placeholder, register, value, required, maxLength, unmask, inputId, onValueChange, onChange, mode, currency, locale, inputStyle, unstyled, maxFractionDigits, allowEmpty, inputClassName }) {
   return (

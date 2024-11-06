@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ericblade/react-currency-input": "^1.4.4",
     "@headlessui/react": "^2.0.4",
     "@hookform/resolvers": "^3.0.1",
     "@reduxjs/toolkit": "^1.9.3",

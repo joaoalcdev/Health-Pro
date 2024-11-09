@@ -9,7 +9,7 @@ import {
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { PaymentsAgreementsDisclosure, PaymentsProfessionalsDisclosure, PaymentsProfessionalsDisclosureSubTitle, PaymentsAgreementsDisclosureSubTitle, PaymentsServicesDisclosure, PaymentsAgreementsDisclosureChildren } from '../../components/Disclosures';
-import { getPayroll } from '../../api/PaymentsAPI'
+import { getPayroll, exportPayroll } from '../../api/PaymentsAPI'
 import { GiPayMoney, GiReceiveMoney, GiTakeMyMoney } from 'react-icons/gi';
 import { TbUserDollar } from 'react-icons/tb';
 import Drawer from 'react-modern-drawer';
@@ -97,14 +97,6 @@ function Payments() {
     },
   ];
 
-  const editPayment = (id) => {
-    navigate(`/payments/edit/${id}`);
-  };
-  // preview
-  const previewPayment = (id) => {
-    navigate(`/payments/preview/${id}`);
-  };
-
   const hideOtherDisclosuresHandle = (_id) => {
 
     const buttons = document.querySelectorAll('button[data-headlessui-state="open"]');
@@ -130,6 +122,21 @@ function Payments() {
   const handleCloseDrawer = () => {
     setDrawerData({});
     setOpenDrawer(false);
+  };
+
+  const handleExport = async (data) => {
+    setLoading(true);
+    const pdf = await exportPayroll(data, monthRange);
+    // if (pdf.error) {
+    //   toast.error('Erro ao exportar o arquivo');
+    //   setLoading(false);
+    //   return;
+    // }
+    // if (pdf.status === 204) {
+    //   window.open(pdf.data.url, '_blank');
+    //   setLoading(false);
+    // }
+    setLoading(false);
   };
   return (
     <Layout>
@@ -284,6 +291,17 @@ function Payments() {
                             })
                           }
                         </div>
+                        <div className='p-4 rounded-b-lg grid grid-cols-5'>
+                          <div className="flex items-center justify-center col-start-5" >
+                            <Button
+                              label="Exportar"
+                              Icon={MdOutlineCloudDownload}
+                              onClick={() => handleExport(data)}
+                            />
+                          </div>
+
+                        </div>
+
 
                         <div className='bg-subMain p-4 rounded-b-lg grid grid-cols-5'>
 

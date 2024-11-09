@@ -170,6 +170,48 @@ type fee = {
   fee: number,
 }
 
+type PayrollByService = {
+  amountDue: number,
+  events: Array<EventInstance>,
+  profit: number,
+  qty: number,
+  serviceId: number,
+  serviceName: string,
+  tax: number,
+  total: number,
+}
+
+type PayrollByAgreement = {
+  agreementId: number,
+  agreementName: string,
+  amountDue: number,
+  qty: number,
+  tax: number,
+  total: number,
+  profit: number, 
+  events: Array<PayrollByService>,
+}
+
+
+
+type PayrollData = {
+  professionalAmountDue: number,
+  professionalGrossValue: number,
+  professionalId: number,
+  professionalName: string,
+  professionalProfit: number,
+  professionalTax: number,
+  qty: number,
+  specialtyId: number,
+  events: Array<PayrollByAgreement>,
+}
+
+type Payroll = {
+  payrollData: PayrollData
+}
+
+
+
 interface SingleEvent {
   eventId: number; 
   startTime: string;

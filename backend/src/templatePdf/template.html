@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relatório</title>
+
+    <link
+      href="https://unpkg.com/tailwindcss/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      table {
+        width: 100%;
+        background-color: gray-200;
+        border: 1px solid black;
+      }
+
+      th {
+        text-align: left;
+        padding: 4px;
+      }
+      td {
+        line-height: 1.5;
+        padding: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1 style="font-size: larger">Pagador: Clínica CEDEJOM</h1>
+      <br />
+      <h1 style="font-size: medium">Recebedor:</h1>
+      <p>
+        {{professionalData.fullName}}<br />
+        {{professionalData.specialtyName}}<br />
+        {{professionalData.email}} <br />{{professionalData.address}},
+        {{professionalData.region}}, {{professionalData.city}}
+      </p>
+      <p></p>
+      <p></p>
+      <p></p>
+      <table>
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+            <th style="text-align: center">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each servicesData}}
+          <tr>
+            <td>{{ this.agreementName }} - {{this.serviceName}}</td>
+            <td>{{ this.qty }}</td>
+            <td style="text-align: right">R$ {{ this.amountDue }}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+
+        <tfoot>
+          <tr style="background-color: #bad8d1; font-weight: bold">
+            <td>Total</td>
+            <td>{{ payrollData.qty }}</td>
+            <td style="text-align: right">
+              R$ {{ payrollData.professionalAmountDue }}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      <br /><br /><br />
+      <div>
+        Assinatura do Recebedor: _____________________________________________
+        <br /><br />
+        Data: ___ / ___ / ______
+      </div>
+    </div>
+  </body>
+</html>

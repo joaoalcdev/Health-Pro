@@ -65,7 +65,7 @@ function EventDetailsProfessionalInfo({ data, onStatus }) {
                 onClick={handleViewProfessionalDetails}
               >
                 <HiMiniPencilSquare className="text-xl" />
-                <p className="font-normal !text-red-500">Ver detalhes</p>
+                <p className="font-normal">Ver detalhes</p>
               </button>
             </div>
           </div>

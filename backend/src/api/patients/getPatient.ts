@@ -10,7 +10,6 @@ export const getPatient = async (app: FastifyInstance) => {
         .from("patients")
         .select("*")
         .eq("id", id)
-      console.log('data', data)
 
       const { data: patientHistory, error: errorPatientHistory } = await supabase
         .from('view_events')
@@ -18,7 +17,6 @@ export const getPatient = async (app: FastifyInstance) => {
         .eq('patientId', id)
         .eq('eventStatus', 3)
         .order('startTime', { ascending: false })
-      console.log('patientHistory', patientHistory)
 
       if (error || errorPatientHistory) {
         throw error
@@ -32,7 +30,11 @@ export const getPatient = async (app: FastifyInstance) => {
           arrayHistory = patientHistory
         }
         data[0].history = arrayHistory
-        return res.status(200).send(data)
+        return res.send({
+          status: 200,
+          message: 'Patient found',
+          data: data[0]
+        })
       }
     } catch (error) {
       return res.status(400).send(error)

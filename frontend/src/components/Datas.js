@@ -1246,44 +1246,24 @@ export const medicineData = [
 export const patientTab = [
   {
     id: 1,
-    title: 'Histórico',
-    icon: TbChartHistogram,
-  },
-  {
-    id: 2,
     title: 'Informações do Paciente',
     icon: RiUserLine,
   },
   {
+    id: 2,
+    title: 'Histórico/Frequência',
+    icon: TbChartHistogram,
+  },
+  {
     id: 3,
-    title: 'Consultas',
+    title: 'Próximos Agendamentos',
     icon: BiCalendar,
   },
   {
     id: 4,
-    title: 'Invoices',
+    title: 'Controle de Autorizações',
     icon: RiFileList3Line,
-  },
-  {
-    id: 5,
-    title: 'Pagamentos',
-    icon: RiMoneyDollarCircleLine,
-  },
-  // {
-  //   id: 5,
-  //   title: 'Images',
-  //   icon: RiImageLine,
-  // },
-  // {
-  //   id: 6,
-  //   title: 'Dental Chart',
-  //   icon: RiStethoscopeLine,
-  // },
-  // {
-  //   id: 8,
-  //   title: 'Health Information',
-  //   icon: RiHeartLine,
-  // },
+  }
 ];
 
 export const eventsTab = [

@@ -47,21 +47,18 @@ function EventDetailsPatientInfo({ data, onStatus }) {
       const response = await getPatient(data.patientId)
       const specialtiesData = await getSpecialties()
       setLoading(false)
-      console.log(response.data[0])
       if (response.lenght === 0) {
         setLoading(false)
         return
       }
       setLoading(false)
       setSpecialties(specialtiesData)
-      console.log(specialtiesData)
-      setPatientData(response.data[0])
-      setPatientHistory(response.data[0].history)
+      setPatientData(response.data)
+      setPatientHistory(response.data.history)
     }
   }
 
   useEffect(() => {
-    console.log("Effect", data)
     fetch()
   }, [])
 

@@ -48,7 +48,6 @@ function EventDetailsInfo({ data, onStatus, openEdit }) {
     data.agPreCode ? setPrePassword(data.agPreCode) : setPrePassword('');
     data.agPreCodeDate ? setPrePasswordDate(new Date(data.agPreCodeDate)) : setPrePasswordDate('');
     data.eventStatus ? setEventStatus(data.eventStatus) : setEventStatus('');
-    console.log(data)
   }, [data]);
 
   //Update Agreement data
@@ -197,6 +196,7 @@ function EventDetailsInfo({ data, onStatus, openEdit }) {
                     selectedPerson={agreement}
                     setSelectedPerson={setAgreement}
                     datas={agreements.agreement}
+                    disabled={data.eventStatus !== 1}
                     iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
                   />
                 </div>

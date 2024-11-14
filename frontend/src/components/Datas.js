@@ -10,6 +10,7 @@ import { MdListAlt, MdOutlineInventory2, MdOutlineTextsms } from 'react-icons/md
 import { AiOutlineSetting } from 'react-icons/ai';
 import { BiCalendar, BiUserPlus } from 'react-icons/bi';
 import { IoIosRepeat } from "react-icons/io";
+import { LuListStart } from "react-icons/lu";
 
 
 export const MenuDatas = [
@@ -31,12 +32,6 @@ export const MenuDatas = [
     icon: TbUsers,
     roleAllowed: 2
   },
-  // {
-  //   title: 'Receptions',
-  //   path: '/receptions',
-  //   icon: HiOutlineUsers,
-  //   roleAllowed: 2
-  // },
   {
     title: 'Profissionais',
     path: '/professionals',
@@ -55,30 +50,18 @@ export const MenuDatas = [
     icon: MdListAlt,
     roleAllowed: 1
   },
-  // {
-  //   title: 'Invoices',
-  //   path: '/invoices',
-  //   icon: TbFileInvoice,
-  //   roleAllowed: 1
-  // },
   {
     title: 'Especialidades',
     path: '/specialties',
     icon: MdOutlineInventory2,
     roleAllowed: 1
   },
-  // {
-  //   title: 'Serviços',
-  //   path: '/services',
-  //   icon: MdOutlineInventory2,
-  //   roleAllowed: 1
-  // },
-  // {
-  //   title: 'Campaigns',
-  //   path: '/campaigns',
-  //   icon: MdOutlineCampaign,
-  //   roleAllowed: 1
-  // },
+  {
+    title: 'Lista de Espera',
+    path: '/waitlist',
+    icon: LuListStart,
+    roleAllowed: 1
+  },
   {
     title: 'Settings',
     path: '/settings',

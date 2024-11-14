@@ -26,6 +26,7 @@ function Payments() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [status, setStatus] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingExportButton, setLoadingExportButton] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
   //data
@@ -125,9 +126,9 @@ function Payments() {
   };
 
   const handleExport = async (data) => {
-    setLoading(true);
+    setLoadingExportButton(true);
     await exportPayroll(data, monthRange);
-    setLoading(false);
+    setLoadingExportButton(false);
   };
   return (
     <Layout>
@@ -288,6 +289,7 @@ function Payments() {
                               label="Exportar"
                               Icon={MdOutlineCloudDownload}
                               onClick={() => handleExport(data)}
+                              loading={loadingExportButton}
                             />
                           </div>
 

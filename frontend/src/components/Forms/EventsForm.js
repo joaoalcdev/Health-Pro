@@ -13,7 +13,6 @@ import { toast } from 'react-hot-toast';
 import { weekDays, timeOptions } from '../Datas';
 import 'moment/locale/pt-br';
 import { waitlist } from '../../api/specialtiesAPI';
-import { set } from 'react-hook-form';
 
 export default function EventsForm({ datas, onClose, status, isEdit }) {
 
@@ -75,7 +74,6 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
 
     setLoading(true)
     const patientsResponse = await waitlist(specialtyId)
-    console.log(patientsResponse)
     if (patientsResponse.status !== 200) {
       setLoading(false);
       return
@@ -144,8 +142,6 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
       eventsQty: Number(eventsQty),
       timecodes: arrayDates
     };
-
-    console.log(data)
 
     const response = await createEvents(data);
 

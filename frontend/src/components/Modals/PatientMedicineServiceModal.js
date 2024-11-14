@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Modal from './Modal';
 import { BiSearch } from 'react-icons/bi';
 import { RadioGroup, Radio } from '@headlessui/react';
@@ -7,7 +7,6 @@ import { Button } from '../Form';
 
 function PatientMedicineServiceModal({ closeModal, isOpen, patient, data, setPatient }) {
   const [selected, setSelected] = useState(patient);
-  const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
 

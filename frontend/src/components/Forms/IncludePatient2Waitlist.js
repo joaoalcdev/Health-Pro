@@ -6,19 +6,14 @@ import { BiLoaderCircle } from 'react-icons/bi';
 import toast from 'react-hot-toast';
 
 export default function IncludePatient2Waitlist({ onClose, datas, agreements, status, isEdit }) {
-
   const [data, setData] = useState({});
-  let selectedPatients = [];
-
 
   //controllers
   const [loading, setLoading] = useState(false);
-  const [disabled, setDisabled] = useState(true);
 
   const fetch = async () => {
     setLoading(true);
     const response = await getPatientListBySpecialty(datas.id)
-    console.log(response)
     if (response.status !== 200) {
       setLoading(false);
       return

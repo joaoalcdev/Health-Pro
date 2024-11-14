@@ -15,8 +15,6 @@ export const IncludePatientToWaitlist = async (app: FastifyInstance) => {
         listType: 1
       }
     })
-
-    console.log(arrayPatients)
    
     try {
       const { data, error } = await supabase

@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { BiLoaderCircle } from 'react-icons/bi';
-import { SpecialtyDisclosure } from '../../components/Disclosures';
 import Drawer from 'react-modern-drawer';
 import Layout from '../../Layout';
 import { waitlist } from '../../api/specialtiesAPI';
-import { Button } from '../../components/Form';
 import IncludePatient2Waitlist from '../../components/Forms/IncludePatient2Waitlist';
-import { WaitlistDetailsContent, WaitlistDetail } from './WaitlistDetails';
+import { WaitlistDetail } from './WaitlistDetails';
 
 function Waitlist() {
   //datas
@@ -16,12 +14,9 @@ function Waitlist() {
 
   //controllers
   const [isOpen, setIsOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
   const [status, setStatus] = useState(false);
-  const [noData, setNoData] = useState(false);
   const [noResult, setNoResult] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [enableServiceDrawer, setEnableServiceDrawer] = useState(false);
 
   //search controllers
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,9 +25,7 @@ function Waitlist() {
   const fetch = async () => {
     setLoading(true);
     const response = await waitlist()
-    console.log(response)
     if (response.status !== 200) {
-      setNoData(true);
       setNoResult(true);
       setLoading(false);
       return
@@ -76,11 +69,9 @@ function Waitlist() {
   };
 
   const handleClose = () => {
-    setIsEdit(false);
     setIsOpen(!isOpen);
     setData({});
     fetch();
-    setEnableServiceDrawer(false);
   };
 
   const hideOtherDisclosuresHandle = (_id) => {
@@ -93,13 +84,6 @@ function Waitlist() {
       }
     });
   };
-
-  const onStatus = () => {
-    console.log('status')
-    fetch();
-    setStatus(!status);
-  }
-
 
   return (
     <Layout>

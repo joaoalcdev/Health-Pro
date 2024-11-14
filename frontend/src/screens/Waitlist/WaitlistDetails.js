@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { Checkbox } from '../../components/Form';
 import { formatDate } from '../../utils/formatDate';
@@ -13,14 +13,12 @@ import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 export function WaitlistDetail({ data, onStatus, hideOtherDisclosuresHandle, includePatient }) {
 
   const [loading, setLoading] = useState(false);
-  const [disabled, setDisabled] = useState(true);
 
   const [patients, setPatients] = useState([{}]);
 
   const fetch = async () => {
     setLoading(true);
     const response = await waitlist(data.id)
-    console.log(response)
     if (response.status !== 200) {
       setLoading(false)
       return
@@ -165,7 +163,6 @@ export function WaitlistDetailsContent({ specialtyId, data }) {
       setDisabled(false)
     }
   }
-
 
   return (
     <>

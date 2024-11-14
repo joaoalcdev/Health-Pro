@@ -277,7 +277,7 @@ function Schedule() {
             open={open}
             onClose={handleClose}
             direction='right'
-            size={460}
+            size={480}
             zIndex={40}
             enableOverlay={true}
           >

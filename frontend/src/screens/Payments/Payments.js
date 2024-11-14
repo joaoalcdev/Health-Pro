@@ -126,16 +126,7 @@ function Payments() {
 
   const handleExport = async (data) => {
     setLoading(true);
-    const pdf = await exportPayroll(data, monthRange);
-    // if (pdf.error) {
-    //   toast.error('Erro ao exportar o arquivo');
-    //   setLoading(false);
-    //   return;
-    // }
-    // if (pdf.status === 204) {
-    //   window.open(pdf.data.url, '_blank');
-    //   setLoading(false);
-    // }
+    await exportPayroll(data, monthRange);
     setLoading(false);
   };
   return (

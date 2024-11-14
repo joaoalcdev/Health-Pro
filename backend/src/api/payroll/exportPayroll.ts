@@ -32,11 +32,11 @@ export const exportPayroll = async (app: FastifyInstance) => {
         orientation: "portrait",
         border: "10mm",
         header: {
-            height: "45mm",
-            contents: `<h1 style="text-align: center; text-transform: uppercase;">RELATÓRIO ${monthRange}</h1>`
+            height: "20mm",
+            contents: `<h1 style="font-size: medium; text-align: center; text-transform: uppercase;">RELATÓRIO ${monthRange}</h1>`
         },
         footer: {
-            height: "28mm",
+            height: "10mm",
             contents: {
                 first: '',
                 2: 'Second page', // Any page number is working. 1-based index

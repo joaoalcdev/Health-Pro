@@ -203,7 +203,7 @@ button:focus {
 .react-datepicker__month-container {
   border-radius: 5px !important;
   background-color: #ffffff !important;
-  width: 100% !important;
+  width: auto !important;
 }
 
 .react-datepicker__month-container .react-datepicker__month-text--today {

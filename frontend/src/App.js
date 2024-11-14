@@ -41,6 +41,7 @@ import NotFound from './screens/NotFound';
 import Users from './screens/Users';
 import Specialties from './screens/Specialties';
 import ImageUploader from './components/ImageUploader';
+import Waitlist from './screens/Waitlist/Waitlist';
 
 // AuthProvider
 // import Login from './screens/Login';
@@ -75,6 +76,9 @@ function App() {
               <Route path="/invoices/create" element={<ProtectedRoute roleId={1}><CreateInvoice /></ProtectedRoute>} />
               <Route path="/invoices/edit/:id" element={<ProtectedRoute roleId={1}><EditInvoice /></ProtectedRoute>} />
               <Route path="/invoices/preview/:id" element={<ProtectedRoute roleId={1}><PreviewInvoice /></ProtectedRoute>} />
+              {/* waitlist */}
+              <Route path="/waitlist" element={<ProtectedRoute roleId={1}><Waitlist /></ProtectedRoute>} />
+
               {/* payments */}
               <Route path="/payments" element={<ProtectedRoute roleId={1}><Payments /></ProtectedRoute>} />
               <Route path="/payments/edit/:id" element={<ProtectedRoute roleId={1}><EditPayment /></ProtectedRoute>} />

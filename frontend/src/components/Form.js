@@ -373,10 +373,10 @@ export function ButtonNegative({ label, onClick, loading, Icon, type, disabled }
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className={`w-full flex-rows gap-4 transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} bg-red-500 bg-opacity-5 text-red-500 border border-red-300 text-sm font-medium px-2 py-4 rounded`}
+      className={`w-full flex-rows gap-4 transitions ${disabled || loading ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} bg-red-500 bg-opacity-5 text-red-500 border border-red-300 text-sm font-medium px-2 py-4 rounded`}
     >
       {loading ? (
-        <BiLoaderCircle className="animate-spin text-red-500 text-2xl" />
+        <BiLoaderCircle className={`animate-spin text-red-500 text-2xl `} />
       ) : (
         <>
           {label}
@@ -668,29 +668,32 @@ export function TimePickerComp({ label, startDate, onChange, placeholderText }) 
 
 // checkbox
 
-export function Checkbox({ label, name, onChange, checked }) {
+export function Checkbox({ label, name, value, onChange, checked }) {
   return (
-    <div className="text-sm w-full flex flex-row items-center">
+    <div className={`text-sm w-full flex flex-row items-center ${checked ? 'bg-subMain text-white' : 'bg-white text-main hover:bg-gray-200'} rounded-lg`}>
       {/* design checkbox */}
-      <label className="flex-colo cursor-pointer relative">
+      <label className={`flex flex-row w-full cursor-pointer relative p-2`}>
         <input
           type="checkbox"
           name={name}
+          value={value}
           checked={checked}
           onChange={onChange}
           className="absolute opacity-0 w-0 h-0"
         />
-        <span
-          className={` border rounded  w-5 h-5 flex flex-shrink-0 justify-center items-center mr-2 ${checked ? 'border-subMain bg-subMain' : 'border-gray-300 bg-white'
+        <div
+          className={`flex flex-row w-full  rounded justify-start items-center   ${checked ? 'border border-subMain bg-subMain' : ''
             }`}
         >
-          <FaCheck
-            className={`text-[10px] ${checked ? 'block text-white' : 'hidden'}`}
-          />
-        </span>
+          <span>
+            <FaCheck
+              className={`text-[8px] w-3 h-3 text-white`}
+            />
+          </span>
+          {label && <p className={` text-md ml-2 ${checked ? 'text-white' : 'text-main'}`}>{label}</p>}
+        </div>
       </label>
 
-      {label && <p className={'text-black text-xs ml-2'}>{label}</p>}
     </div>
   );
 }

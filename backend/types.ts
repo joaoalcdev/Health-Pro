@@ -210,6 +210,15 @@ type Payroll = {
   payrollData: PayrollData
 }
 
+type WaitlistItem = {
+  id: number,
+  patientId: number,
+  specialtyId: number,
+  listType: number,
+  createdAt: string,
+  deletedAt: string,
+}
+
 
 
 interface SingleEvent {

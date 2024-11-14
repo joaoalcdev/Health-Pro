@@ -12,6 +12,7 @@ import { createEvents, rescheduleEvents } from '../../api/EventsAPI';
 import { toast } from 'react-hot-toast';
 import { weekDays, timeOptions } from '../Datas';
 import 'moment/locale/pt-br';
+import { waitlist } from '../../api/specialtiesAPI';
 
 export default function EventsForm({ datas, onClose, status, isEdit }) {
 
@@ -69,6 +70,24 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
     fetch()
   }, [])
 
+  const fetchPatients = async (specialtyId) => {
+
+    setLoading(true)
+    const patientsResponse = await waitlist(specialtyId)
+    if (patientsResponse.status !== 200) {
+      setLoading(false);
+      return
+    }
+    if (patientsResponse.status === 200) {
+      setPatientsData(patientsResponse.data.filter((patient) => patient.listType === 2))
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchPatients(professional.specialtyId)
+  }, [professional])
+
   //rebuild array of professionals to be accepted by SelectListBox
   const arrayProfessionals = professionalsData.map((professional) => {
     return { id: professional.id, name: professional.summary, specialtyId: professional.specialty }
@@ -113,7 +132,7 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
     }
 
     const data = {
-      patientId: patient.id,
+      patientId: patient.patientId,
       professionalId: professional.id,
       startDate: startDate,
       serviceId: (eventType === 4 || eventType === 5 || service.id === 0) ? null : service.id,
@@ -334,13 +353,13 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
                 </div>
 
                 {/* Patient */}
-                <div className="flex gap-4">
+                <div className={`flex w-full gap-4 ${professional.id === 0 ? 'hidden' : 'block'}`}>
                   <div className='flex w-full flex-col gap-2 '>
 
                     <p className="text-black text-sm">Pacientes</p>
                     <div className='flex gap-4'>
                       <div className="flex w-full p-4 text-black text-sm border border-border font-light rounded-lg cursor-pointer" onClick={() => setOpenModal(!openModal)}>
-                        {patient.fullName ? patient.fullName : 'Selecione o paciente...'}
+                        {patient.patientFullName ? patient.patientFullName : 'Selecione o paciente...'}
                       </div>
                       <div >
                         <Button
@@ -353,7 +372,7 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
                 </div>
 
                 {/* Event Type */}
-                <div className="flex w-full flex-col gap-1 ">
+                <div className={`flex w-full flex-col gap-1 ${professional.id === 0 ? 'hidden' : 'block'}`}>
                   <SelectListBox
                     label={'Tipo de Agendamento'}
                     color={true}

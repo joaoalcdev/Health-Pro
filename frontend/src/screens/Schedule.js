@@ -6,7 +6,7 @@ import { BiChevronLeft, BiChevronRight, BiPlus, BiTime, BiChevronDown, BiLoaderC
 import { HiOutlineViewGrid } from 'react-icons/hi';
 import { HiOutlineCalendarDays, HiOutlineBookOpen } from 'react-icons/hi2';
 import { getProfessionals } from '../api/ProfessionalsAPI';
-import { eventTypes, eventStatus } from '../components/Datas';
+import { eventStatus } from '../components/Datas';
 import { FilterSelect } from '../components/Form';
 import Drawer from 'react-modern-drawer';
 import EventsForm from '../components/Forms/EventsForm';
@@ -277,7 +277,7 @@ function Schedule() {
             open={open}
             onClose={handleClose}
             direction='right'
-            size={460}
+            size={480}
             zIndex={40}
             enableOverlay={true}
           >

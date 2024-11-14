@@ -5,47 +5,52 @@ import { Fragment } from 'react'
 import { moneyFormat2BR } from '../utils/moneyFormatBR'
 import { formatDate, formatDateTime } from '../utils/formatDate'
 import { TbEdit } from 'react-icons/tb'
-import { on } from 'rsuite/esm/DOMHelper'
 
-export function SpecialtyDisclosure({ data, subTitle, children, hideOtherDisclosuresHandle, keyIndex }) {
+export function SpecialtyDisclosure({ data, subTitle, children, hideOtherDisclosuresHandle, keyIndex, onStatus, fetchData }) {
   return (
     <Disclosure as='div'>
-      {({ open }) => (
-        <div>
-          <DisclosureButton className={`w-full group grid grid-cols-2 gap-2 justify-start p-4 border border-subMain ${open ? 'bg-subMain text-white rounded-t-lg' : 'bg-white text-subMain rounded-lg hover:bg-greyed'}`}
-            id={keyIndex}
-            onClick={() => hideOtherDisclosuresHandle(keyIndex)}
-
-          >
-            <div className='text-start'>
-              {data.name}
-            </div>
-            <div className='flex justify-between items-center'>
-              <div className=''>
-                {subTitle}
+      {({ open }) => {
+        return (
+          <div>
+            <DisclosureButton className={`w-full group grid grid-cols-2 gap-2 justify-start p-4 border-2 border-subMain ${open ? 'bg-subMain text-white rounded-t-lg' : 'bg-white text-subMain rounded-lg hover:bg-greyed'}`}
+              id={keyIndex}
+              onClick={() => {
+                hideOtherDisclosuresHandle(keyIndex)
+                if (fetchData && !open) {
+                  fetchData()
+                }
+              }}
+            >
+              <div className='text-start'>
+                {data.name}
               </div>
-              <BiChevronDown className="w-5 group-data-[open]:rotate-180 text-xl" />
+              <div className='flex justify-between items-center'>
+                <div className=''>
+                  {subTitle}
+                </div>
+                <BiChevronDown className="w-5 group-data-[open]:rotate-180 text-xl" />
+              </div>
+            </DisclosureButton>
+            <div className="overflow-hidden ">
+              <AnimatePresence>
+                {open && (
+                  <DisclosurePanel static as={Fragment} className={"flex p-4 rounded-b-lg border-2 border-subMain"}>
+                    <motion.div
+                      initial={{ opacity: 0, y: -24 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -24 }}
+                      transition={{ duration: 0.2, ease: easeOut }}
+                      className="origin-top"
+                    >
+                      {children}
+                    </motion.div>
+                  </DisclosurePanel>
+                )}
+              </AnimatePresence>
             </div>
-          </DisclosureButton>
-          <div className="overflow-hidden ">
-            <AnimatePresence>
-              {open && (
-                <DisclosurePanel static as={Fragment} className={"flex p-4 rounded-b-lg border border-subMain"}>
-                  <motion.div
-                    initial={{ opacity: 0, y: -24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -24 }}
-                    transition={{ duration: 0.2, ease: easeOut }}
-                    className="origin-top"
-                  >
-                    {children}
-                  </motion.div>
-                </DisclosurePanel>
-              )}
-            </AnimatePresence>
           </div>
-        </div>
-      )}
+        )
+      }}
     </Disclosure>
   )
 }

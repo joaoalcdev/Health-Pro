@@ -5,18 +5,42 @@ import moment from 'moment-timezone';
 export const GetEventsFiltering = async (app: FastifyInstance) => {
   app.get("/events/get",async (req: FastifyRequest, res: FastifyReply) => {
     
-    var { professional } = req.query as { professional: string };
-    var {patient} = req.query as {patient: string};
-    professional = professional ? professional : "0"; 
-    patient = patient ? patient : "0";  
+    var { 
+      professionalId,
+      patientId,
+      start,
+      end
+     } = req.query as { 
+      professionalId: number,
+      patientId: number,
+      start: string,
+      end: string  
+    };
+
 
 
     try {
-      let { data, error } = await supabase
+      let query = supabase
         .from("view_events")
         .select("*")
-        .or(`professionalId.eq.${professional},patientId.eq.${patient}`) 
         .order("startTime", { ascending: true })
+
+      if (professionalId) {
+        query = query.eq("professionalId", professionalId)
+      }
+      if (patientId) {
+        query = query.eq("patientId", patientId)
+      }
+      if (start && end) {
+        start = moment(start,"DD/MM/YYYY").format()
+        end = moment(end,"DD/MM/YYYY").endOf('day').format()
+        query = query.gte("startTime", start).lte("startTime", end)
+      }
+      start = moment(start,"DD/MM/YYYY").format()
+      end = moment(end,"DD/MM/YYYY").format()
+      query = query.in("eventStatus", [1,3])
+
+      const { data, error } = await query
       
       if (error) {
         throw error
@@ -33,7 +57,11 @@ export const GetEventsFiltering = async (app: FastifyInstance) => {
             ...item
           }
         })
-        return res.status(200).send(events ? events : null)
+        return res.send({
+          status: 200,
+          message: "Events retrieved successfully",
+          data: events
+        })
       }
     } catch (error) {
       return res.status(400).send(error)

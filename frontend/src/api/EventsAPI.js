@@ -38,10 +38,17 @@ export const deleteEvents = async (appointmentId) => {
   }
 }
 
-export const getEventsFiltering = async (professionalId, patientId) => {
+export const getEventsFiltering = async (professionalId, patientId, start, end) => {
   try {
-    const data = await axios.get(apiBaseUrl(`events/get?${professionalId !== 0 ? `professional=${professionalId}` : ''}${professionalId && patientId ? '&' : ''}${patientId !== 0 ? `patient=${patientId}` : ''}`))
-    return data
+    const res = await axios.get(apiBaseUrl(
+      'events/get' +
+      `${professionalId || patientId || start || end ? '?' : ''}` +
+      `${professionalId ? `professionalId=${professionalId}&` : ''}` +
+      `${patientId ? `patientId=${patientId}&` : ''}` +
+      `${start ? `start=${start}&` : ''}` +
+      `${end ? `end=${end}` : ''}`
+    ))
+    return res.data
   } catch (error) {
     return error
   }

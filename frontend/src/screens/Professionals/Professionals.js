@@ -34,17 +34,19 @@ function Professionals() {
     setLoading(true);
     const response = await getProfessionals(tab === 1 ? '' : 'true')
     const specialtiesData = await getSpecialties()
-    if (response.length === 0) {
+    if (response.status !== 200) {
       setNoData(true);
       setNoResult(true);
       setLoading(false);
       return
     }
-    setData(response)
-    setAllData(response)
-    setSpecialties(specialtiesData)
-    setLoading(false)
-    setStatus(false)
+    if (response.status === 200) {
+      setData(response.data)
+      setAllData(response.data)
+      setSpecialties(specialtiesData)
+      setLoading(false)
+      setStatus(false)
+    }
   }
 
   useEffect(() => {

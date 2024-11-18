@@ -18,7 +18,11 @@ export const ListProfessionals = async (app: FastifyInstance) => {
         } else {
           //test NoData
           //return res.status(200).send([])
-          return res.status(200).send(data ? data : null)
+          return res.send({
+            status: 200,
+            data: data,
+            message: "Professionals listed successfully"
+          })  
         }
       }else{
         let { data, error } = await supabase

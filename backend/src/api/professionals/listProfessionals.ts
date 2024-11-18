@@ -46,13 +46,22 @@ export const ListProfessionals = async (app: FastifyInstance) => {
               }
               
             })
+
+            return res.send({
+              status: 200,
+              data: data,
+              message: "Professionals listed successfully"
+            })
           }
 
-          return res.status(200).send(data ? data : null)
+          
         }
       }
     } catch (error) {
-      return res.status(400).send(error)
+      return res.send({
+        status: 400,
+        message: error
+      })
     }
   })
 }

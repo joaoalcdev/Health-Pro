@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Layout from '../Layout';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
@@ -163,80 +163,63 @@ function Schedule() {
   const [eventsData, setEventsData] = useState([]);
   const [professionalsList, setProfessionalsList] = useState([]);
 
+  const [currentRange, setCurrentRange] = useState(new Date());
+  const [currentView, setCurrentView] = useState('week');
+  const [start, setStart] = useState(moment().startOf('week').format('DD/MM/YYYY'));
+  const [end, setEnd] = useState(moment().endOf('week').format('DD/MM/YYYY'));
+
   //filter controllers
   const [filterTerm, setFilterTerm] = useState({ id: 0, name: "Todos" });
 
-  // const fetchProfessionals = async () => {
-  //   setLoading(true);
-  //   const response = await getProfessionals();
-  //   if (response.length === 0) {
-  //     setLoading(false);
-  //     return;
-  //   };
+  const fetchProfessionals = async () => {
+    setLoading(true);
+    const response = await getProfessionals();
+    if (response.status !== 200) {
+      setLoading(false);
+      return;
+    }
+    if (response.status === 200) {
+      const professionals = response.data;
+      const rebaseProfessionalsList = professionals.map((item) => {
+        return {
+          id: item.id,
+          name: item.fullName,
+        }
+      });
+      setProfessionalsList([{ id: 0, name: "Todos" }, ...rebaseProfessionalsList]);
 
-  //   var rebaseProfessionalsList = response.map((item) => {
-  //     return {
-  //       id: item.id,
-  //       name: item.firstName + ' ' + item.lastName,
-  //     }
-  //   })
+      setLoading(false);
+    }
+  }
 
-  //   setProfessionalsList(rebaseProfessionalsList);
-  //   setLoading(false);
-  // }
+  useEffect(() => {
+    fetchProfessionals()
+  }, [])
 
-  // useEffect(() => {
-  //   fetchProfessionals()
-  // }, [])
+
 
   const fetch = async () => {
     setLoading(true);
-    if (filterTerm.id !== 0) {
-      const response = await getEventsFiltering(filterTerm.id, 0);
-      if (response.length === 0) {
-        setStatus(false);
-        setLoading(false);
-        return;
-      };
-      let rebaseData = response.data.map((item) => {
-        return {
-          id: item.id,
-          start: moment(item.startTime).toDate(),
-          end: moment(item.endTime).toDate(),
-          title: item.title,
-          color: item.eventStatus === 1 ? eventStatus[0].color : eventStatus[1].color,
-          ...item
-        }
-      })
+    const response = await getEventsFiltering(filterTerm.id, 0, start, end);
 
-      setEventsData(rebaseData);
+    if (response.length === 0) {
       setStatus(false);
       setLoading(false);
-      return
-    }
-
-    if (filterTerm.id === 0) {
-      const response = await listEvents();
-      if (response && response.length === 0) {
-        setStatus(false);
-        return;
-      };
-
-
-      let rebaseData = response.data.map((item) => {
-        return {
-          id: item.id,
-          start: moment(item.startTime).toDate(),
-          end: moment(item.endTime).toDate(),
-          title: item.title,
-          color: item.eventStatus === 1 ? eventStatus[0].color : eventStatus[1].color,
-          ...item
-        }
+      return;
+    };
+    let rebaseData = response.data.map((item) => {
+      return ({
+        id: item.id,
+        start: moment(item.startTime).toDate(),
+        end: moment(item.endTime).toDate(),
+        title: item.title,
+        color: item.eventStatus === 1 ? eventStatus[0].color : eventStatus[1].color,
+        ...item
       })
-      setEventsData(rebaseData);
-      setStatus(false);
-      setLoading(false);
-    }
+    });
+
+    setEventsData(rebaseData);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -260,13 +243,33 @@ function Schedule() {
     setStatus(status);
   }
 
-  const DrawerBody = () => {
-    return (
-      <div style={{ padding: 20 }}>
-        <h1 style={{ fontWeight: 'bold' }}>Hello World! 🚀🥳</h1>
-      </div>
-    )
+  const onNavigate = useCallback((newDate) => setCurrentRange(newDate), [setCurrentRange]);
+
+  const handleRangeChange = (range, toolbar) => {
+    //month view
+    if (range.start && range.end) {
+      setStart(moment(range.start).format('DD/MM/YYYY'));
+      setEnd(moment(range.end).format('DD/MM/YYYY'));
+      return;
+    }
+    //week view
+    if (range[0] && range[6]) {
+      setStart(moment(range[0]).format('DD/MM/YYYY'));
+      setEnd(moment(range[6]).format('DD/MM/YYYY'));
+      return
+    } else {
+      //day view
+      setStart(moment(range[0]).format('DD/MM/YYYY'));
+      setEnd(moment(range[0]).format('DD/MM/YYYY'));
+
+    }
   }
+
+  useEffect(() => {
+    fetch()
+  }, [onNavigate, start])
+
+
 
   return (
     <Layout>
@@ -314,7 +317,7 @@ function Schedule() {
               setSelectedPerson={setFilterTerm}
               datas={professionalsList}
             >
-              <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
+              <div className="h-14 w-full text-sm text-main rounded-md bg-white border border-border px-4 flex items-center justify-between">
                 <p>{filterTerm.name}</p>
                 <BiChevronDown className="text-xl" />
               </div>
@@ -343,77 +346,79 @@ function Schedule() {
         </div>
         :
 
-        <>
-          <Calendar
-            localizer={localizer}
-            events={eventsData ? eventsData : {}}
-            startAccessor="start"
-            endAccessor="end"
-            messages={{
-              next: 'Próximo',
-              previous: 'Anterior',
-              today: 'Hoje',
-              month: 'Mês',
-              week: 'Semana',
-              day: 'Dia',
-              agenda: 'Agenda',
-              date: 'Data',
-              time: 'Hora',
-              noEventsInRange: `${eventsData.length === 0 ? 'Não há atendimentos nesta faixa.' : `Só existem atendimentos cadastrados na seguinte faixa: ${moment(eventsData[0].start).format(`DD [de] MMMM, YYYY`)} - ${moment(eventsData[eventsData.length - 1].end).format(`DD [de] MMMM, YYYY`)}`}`,
-              event: 'Paciente | Serviço | Profissional',
-              allDay: 'Dia todo',
-              showMore: (total) => `+ ${total} mais`,
-            }}
-            style={{
-              // height fix screen
-              height: '85vh',
-              marginBottom: 20,
-            }}
-            onSelectEvent={(event) => handleEventClick(event)}
-            defaultDate={new Date()}
-            timeslots={1}
-            resizable
-            step={15}
-            selectable={false}
-            min={new Date(2024, 0, 1, 6, 0)}
-            max={new Date(2040, 0, 1, 22, 0)}
-            filterTime={date => (date.getHours() > 5 && date.getHours() < 11) || (date.getHours() > 13 && date.getHours() < 20)}
-            // custom event style
-            eventLayout="overlap"
-            eventPropGetter={(event) => {
-              const style = {
-                backgroundColor: event.color, // color of event
-                borderRadius: '4px',
-                color: event.eventStatus === 1 ? 'black' : 'white',
-                border: '1px solid',
-                borderColor: 'white',
-                shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
-                fontSize: '12px',
-                padding: '5px 5px',
-              };
-              return {
-                style,
-              };
-            }}
-            // custom date style
-            dayLayout="overlap"
-            dayPropGetter={(date) => {
-              const style = {
-                backgroundColor: 'white',
-              };
-              return {
-                style,
-              };
-            }}
-            // custom toolbar
-            toolbar={true}
-            components={{ toolbar: CustomToolbar }}
-            // custom view
-            views={['month', 'day', 'week', 'agenda']}
-            // default view
-            defaultView="week"
-          />
-        </>
+        <Calendar
+          localizer={localizer}
+          events={eventsData}
+          startAccessor="start"
+          endAccessor="end"
+          messages={{
+            next: 'Próximo',
+            previous: 'Anterior',
+            today: 'Hoje',
+            month: 'Mês',
+            week: 'Semana',
+            day: 'Dia',
+            agenda: 'Agenda',
+            date: 'Data',
+            time: 'Hora',
+            noEventsInRange: `${eventsData.length === 0 ? 'Não há atendimentos nesta faixa.' : `Só existem atendimentos cadastrados na seguinte faixa: ${moment(eventsData[0].start).format(`DD [de] MMMM, YYYY`)} - ${moment(eventsData[eventsData.length - 1].end).format(`DD [de] MMMM, YYYY`)}`}`,
+            event: 'Paciente | Serviço | Profissional',
+            allDay: 'Dia todo',
+            showMore: (total) => `+ ${total} mais`,
+          }}
+          style={{
+            // height fix screen
+            height: '85vh',
+            marginBottom: 20,
+          }}
+          onSelectEvent={(event) => handleEventClick(event)}
+          //defaultDate={new Date(currentRange)}
+          date={currentRange}
+          onNavigate={onNavigate}
+          timeslots={1}
+          resizable
+          step={15}
+          selectable={false}
+          min={new Date(2024, 0, 1, 6, 0)}
+          max={new Date(2040, 0, 1, 22, 0)}
+          filterTime={date => (date.getHours() > 5 && date.getHours() < 11) || (date.getHours() > 13 && date.getHours() < 20)}
+          // custom event style
+          eventLayout="overlap"
+          eventPropGetter={(event) => {
+            const style = {
+              backgroundColor: event.color, // color of event
+              borderRadius: '4px',
+              color: event.eventStatus === 1 ? 'black' : 'white',
+              border: '1px solid',
+              borderColor: 'white',
+              shadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
+              fontSize: '12px',
+              padding: '5px 5px',
+            };
+            return {
+              style,
+            };
+          }}
+          // custom date style
+          dayLayout="overlap"
+          dayPropGetter={(date) => {
+            const style = {
+              backgroundColor: 'white',
+            };
+            return {
+              style,
+            };
+          }}
+          // custom toolbar
+          toolbar={true}
+          components={{ toolbar: CustomToolbar }}
+          onRangeChange={(range) => handleRangeChange(range)}
+          // custom view
+          views={['month', 'day', 'week', 'agenda']}
+          onView={(view) => setCurrentView(view)}
+          // default view
+          defaultView={currentView}
+        />
       }
     </Layout>
   );

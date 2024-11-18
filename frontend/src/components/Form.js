@@ -464,13 +464,6 @@ export function FilterSelect({ children, selectedPerson, setSelectedPerson, data
         <Listbox value={selectedPerson} onChange={setSelectedPerson}>
           <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
           <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none">
-            <Listbox.Option
-              className={`cursor-pointer text-sm hover:text-subMain hover:bg-black rounded hover:bg-opacity-5 py-2 px-2`}
-              key={0}
-              value={{ id: 0, name: "Todos" }}
-            >
-              Todos
-            </Listbox.Option>
             {datas.map((person) => (
               <Listbox.Option
                 className={`cursor-pointer text-xs hover:text-subMain hover:bg-black hover:bg-opacity-5 py-2 px-1`}

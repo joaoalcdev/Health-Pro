@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MenuSelect, Button } from './Form';
 import { BiDotsHorizontalRounded, BiUndo } from 'react-icons/bi';
-import { FiEdit, FiEye } from 'react-icons/fi';
+import { FiDelete, FiEdit, FiEye } from 'react-icons/fi';
 import { RiDeleteBin6Line, RiDeleteBinLine } from 'react-icons/ri';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -9,11 +9,103 @@ import { formatPhoneNumber } from '../utils/formatPhoneNumber';
 import { formatDate } from '../utils/formatDate';
 import { calculateDate } from '../utils/calculateDate';
 import { brStateDatas, specialties, councilDatas, roleOptions } from './Datas';
-import AddPatientModal from './Modals/AddPatientModal';
 import getAvatar from '../utils/getAvatar';
+import { moneyFormat2BR } from '../utils/moneyFormatBR';
+import moment from 'moment';
+import { MdOutlineDeleteForever } from 'react-icons/md';
 
 const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
 const tdclass = 'text-start text-sm py-4 px-2 whitespace-nowrap';
+
+export function ExternalCompaniesTable({ data, action, edit }) {
+
+  return (
+    <table className="table-auto w-full">
+      <thead className="bg-dry rounded-md overflow-hidden">
+        <tr>
+          <th className={thclass}>#</th>
+          <th className={thclass}>Empresa</th>
+          <th className={thclass}>Status</th>
+
+          <th className="text-center text-sm font-medium py-3 px-2 whitespace-nowrap">Ações</th>
+          {action && <th className={thclass}>Actions</th>}
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((item, index) => (
+          <tr
+            key={item.id}
+            className="border-b border-border hover:bg-greyed transitions"
+          >
+            <td className={tdclass}>{index + 1}</td>
+            <td className={tdclass}>{item.name}</td>
+            <td className={tdclass}>
+              {item.status ? 'Ativado' : 'Desativado'}
+            </td>
+            <td className="justify-items-center text-sm font-medium py-3 px-2 ">
+              <span className="flex text-md text-subMain cursor-pointer justify-center" onClick={() => edit(item)}>
+                <FiEdit />
+              </span>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+export function ExternalServicesTable({ data, action, remove }) {
+
+  return (
+    <table className="table-auto w-full">
+      <thead className="bg-dry rounded-md overflow-hidden">
+        <tr>
+          <th className={thclass}>#</th>
+          <th className={thclass}>Empresa</th>
+          <th className={thclass}>Serviço</th>
+          <th className={thclass}>Data do Serviço</th>
+          <th className={thclass}>Valor</th>
+          <th className="text-center text-sm font-medium py-3 px-2 whitespace-nowrap">Ações</th>
+          {action && <th className={thclass}>Actions</th>}
+        </tr>
+      </thead>
+      <tbody>
+        {data && data.map((item, index) => (
+          <tr
+            key={item.id}
+            className="border-b border-border hover:bg-greyed transitions items-center"
+          >
+            <td className={tdclass}>{index + 1}</td>
+            <td className={`flex flex-col text-start text-sm font-medium py-3 px-2 whitespace-nowrap `}>
+              <span>
+                {item.companyName}
+              </span>
+              <span className='text-xs text-gray-500'>
+                {item.professionalName}
+              </span>
+            </td>
+            <td className={tdclass}>{item.service}</td>
+            <td className={tdclass}>{moment(item.date).format('DD/MM/YYYY - HH:mm')}</td>
+            <td className={tdclass}>{moneyFormat2BR(item.value)}</td>
+
+            <td className="text-sm font-medium justify-items-center ">
+              <span className="flex text-lg text-red-500 cursor-pointer justify-center" onClick={() => remove(item.id)}>
+                <MdOutlineDeleteForever />
+              </span>
+            </td>
+          </tr>
+        ))}
+        {
+          data.length === 0 &&
+          <tr>
+            <td colSpan="6" className="text-center py-8">Nenhum registro encontrado</td>
+          </tr>
+
+        }
+      </tbody>
+    </table>
+  );
+}
 
 export function Transactiontable({ data, action, functions }) {
   const DropDown1 = [

@@ -219,6 +219,21 @@ type WaitlistItem = {
   deletedAt: string,
 }
 
+type Company = {
+  id?: number,
+  name: string,
+  status: boolean,
+}
+
+type ExternalService = {
+  id?: number,
+  companyId: string,
+  professionalName: string,
+  date: string,
+  value: number,
+  service: string,
+}
+
 
 
 interface SingleEvent {

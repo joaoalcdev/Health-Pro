@@ -42,6 +42,7 @@ import Users from './screens/Users';
 import Specialties from './screens/Specialties';
 import ImageUploader from './components/ImageUploader';
 import Waitlist from './screens/Waitlist/Waitlist';
+import ExternalServices from './screens/External Services/ExternalServices';
 
 // AuthProvider
 // import Login from './screens/Login';
@@ -78,6 +79,8 @@ function App() {
               <Route path="/invoices/preview/:id" element={<ProtectedRoute roleId={1}><PreviewInvoice /></ProtectedRoute>} />
               {/* waitlist */}
               <Route path="/waitlist" element={<ProtectedRoute roleId={1}><Waitlist /></ProtectedRoute>} />
+              {/* external services */}
+              <Route path="/external-services" element={<ProtectedRoute roleId={1}><ExternalServices /></ProtectedRoute>} />
 
               {/* payments */}
               <Route path="/payments" element={<ProtectedRoute roleId={1}><Payments /></ProtectedRoute>} />
@@ -104,6 +107,7 @@ function App() {
               <Route path="/campaigns" element={<ProtectedRoute roleId={1}><Campaings /></ProtectedRoute>} />
               <Route path="/medicine" element={<ProtectedRoute roleId={1}><Medicine /></ProtectedRoute>} />
               <Route path="/specialties" element={<ProtectedRoute roleId={1}><Specialties /></ProtectedRoute>} />
+
               <Route path="/settings" element={<ProtectedRoute roleId={3}><Settings /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>

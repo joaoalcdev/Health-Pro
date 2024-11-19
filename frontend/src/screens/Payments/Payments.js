@@ -19,7 +19,6 @@ import { IoIosArrowForward } from "react-icons/io";
 
 function Payments() {
   const today = new Date();
-  const navigate = useNavigate();
 
   //states
   const [monthRange, setMonthRange] = useState(new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0));

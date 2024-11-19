@@ -231,6 +231,7 @@ type ExternalService = {
   professionalName: string,
   date: string,
   value: number,
+  service: string,
 }
 
 

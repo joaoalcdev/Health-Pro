@@ -8,10 +8,9 @@ export const AddExternalService = async (app: FastifyInstance) => {
         companyId,
         professionalName,
         date,
+        service,
         value
       } = req.body as ExternalService 
-
-      console.log(companyId, professionalName, date, value)
 
       const { data, error } = await supabase
       .from("externalServices")
@@ -19,6 +18,7 @@ export const AddExternalService = async (app: FastifyInstance) => {
         companyId,
         professionalName,
         date,
+        service,
         value
       }]).select()
 

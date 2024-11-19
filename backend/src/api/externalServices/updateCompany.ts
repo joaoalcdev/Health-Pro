@@ -5,7 +5,7 @@ export const UpdateCompany = async (app: FastifyInstance) => {
   app.put("/company/:id", async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const {
-        companyName,
+        name,
         status,
       } = req.body as Company 
 
@@ -14,7 +14,7 @@ export const UpdateCompany = async (app: FastifyInstance) => {
       const { data, error } = await supabase
       .from("externalCompanies")
       .update({
-        companyName,
+        name,
         status,
       })
       .eq("id", id)

@@ -15,6 +15,43 @@ import getAvatar from '../utils/getAvatar';
 const thclass = 'text-start text-sm font-medium py-3 px-2 whitespace-nowrap';
 const tdclass = 'text-start text-sm py-4 px-2 whitespace-nowrap';
 
+export function ExternalCompaniesTable({ data, action, edit }) {
+
+  return (
+    <table className="table-auto w-full">
+      <thead className="bg-dry rounded-md overflow-hidden">
+        <tr>
+          <th className={thclass}>#</th>
+          <th className={thclass}>Empresa</th>
+          <th className={thclass}>Status</th>
+
+          <th className="text-center text-sm font-medium py-3 px-2 whitespace-nowrap">Ações</th>
+          {action && <th className={thclass}>Actions</th>}
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((item, index) => (
+          <tr
+            key={item.id}
+            className="border-b border-border hover:bg-greyed transitions"
+          >
+            <td className={tdclass}>{index + 1}</td>
+            <td className={tdclass}>{item.companyName}</td>
+            <td className={tdclass}>
+              {item.status ? 'Ativado' : 'Desativado'}
+            </td>
+            <td className="flex justify-center text-sm font-medium py-3 px-2 ">
+              <span className="text-md text-subMain cursor-pointer" onClick={() => edit(item)}>
+                <FiEdit />
+              </span>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
 export function Transactiontable({ data, action, functions }) {
   const DropDown1 = [
     {

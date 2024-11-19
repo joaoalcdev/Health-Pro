@@ -4,13 +4,14 @@ import { TbChartHistogram, TbUsers } from 'react-icons/tb';
 import { getPatients } from '../api/PatientsAPI';
 import { AiOutlineNotification } from "react-icons/ai";
 import { FaRegCalendarAlt, FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
-import { RiFileList3Line, RiMoneyDollarCircleLine, RiUserHeartLine, RiUserLine } from 'react-icons/ri';
+import { RiFileList3Line, RiMoneyDollarCircleLine, RiServiceLine, RiUserHeartLine, RiUserLine } from 'react-icons/ri';
 import { LiaUserNurseSolid } from "react-icons/lia";
 import { MdListAlt, MdOutlineInventory2, MdOutlineTextsms } from 'react-icons/md';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { BiCalendar, BiUserPlus } from 'react-icons/bi';
 import { IoIosRepeat } from "react-icons/io";
 import { LuListStart } from "react-icons/lu";
+import { GiThreeFriends } from 'react-icons/gi';
 
 
 export const MenuDatas = [
@@ -62,6 +63,13 @@ export const MenuDatas = [
     icon: LuListStart,
     roleAllowed: 1
   },
+  {
+    title: 'Serviços Externos',
+    path: '/external-services',
+    icon: RiServiceLine,
+    roleAllowed: 1
+  },
+
   {
     title: 'Settings',
     path: '/settings',
@@ -1247,6 +1255,20 @@ export const patientTab = [
     title: 'Controle de Autorizações',
     icon: RiFileList3Line,
   }
+];
+
+export const externalServicesTabs = [
+  {
+    id: 1,
+    title: 'Serviços Externos',
+    icon: RiServiceLine,
+  },
+  {
+    id: 2,
+    title: 'Empresas Parceiras',
+    icon: GiThreeFriends,
+  },
+
 ];
 
 export const eventsTab = [

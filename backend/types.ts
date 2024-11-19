@@ -219,6 +219,12 @@ type WaitlistItem = {
   deletedAt: string,
 }
 
+type Company = {
+  id?: number,
+  companyName: string,
+  status: boolean,
+}
+
 
 
 interface SingleEvent {

@@ -221,8 +221,16 @@ type WaitlistItem = {
 
 type Company = {
   id?: number,
-  companyName: string,
+  name: string,
   status: boolean,
+}
+
+type ExternalService = {
+  id?: number,
+  companyId: string,
+  professionalName: string,
+  date: string,
+  value: number,
 }
 
 

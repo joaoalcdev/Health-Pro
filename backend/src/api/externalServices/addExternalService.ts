@@ -1,19 +1,25 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
 
-export const AddCompany = async (app: FastifyInstance) => {
-  app.post("/company", async (req: FastifyRequest, res: FastifyReply) => {
+export const AddExternalService = async (app: FastifyInstance) => {
+  app.post("/external-service", async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const {
-        name,
-        status,
-      } = req.body as Company 
+        companyId,
+        professionalName,
+        date,
+        value
+      } = req.body as ExternalService 
+
+      console.log(companyId, professionalName, date, value)
 
       const { data, error } = await supabase
-      .from("externalCompanies")
+      .from("externalServices")
       .insert([{
-        name,
-        status,
+        companyId,
+        professionalName,
+        date,
+        value
       }]).select()
 
       if (error) {

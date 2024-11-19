@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '../../Layout';
-import { Button, MonthlyPicker, Select } from '../../components/Form';
+import { Button, MonthlyPicker } from '../../components/Form';
 import { moneyFormat2BR } from '../../utils/moneyFormatBR';
 import {
   MdFilterList,
   MdOutlineCloudDownload,
 } from 'react-icons/md';
 import { toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
-import { PaymentsAgreementsDisclosure, PaymentsProfessionalsDisclosure, PaymentsProfessionalsDisclosureSubTitle, PaymentsAgreementsDisclosureSubTitle, PaymentsServicesDisclosure, PaymentsAgreementsDisclosureChildren } from '../../components/Disclosures';
+import { PaymentsAgreementsDisclosure, PaymentsProfessionalsDisclosure, PaymentsProfessionalsDisclosureSubTitle, PaymentsAgreementsDisclosureSubTitle, PaymentsAgreementsDisclosureChildren } from '../../components/Disclosures';
 import { getPayroll, exportPayroll } from '../../api/PaymentsAPI'
 import { GiPayMoney, GiReceiveMoney, GiTakeMyMoney } from 'react-icons/gi';
 import { TbUserDollar } from 'react-icons/tb';

@@ -214,7 +214,6 @@ export function CurrencyInputField({ label, name, color, placeholder, decimalSep
         value={value}
         onChangeEvent={onChange}
         style={{ none: 'none' }}
-        logValues={false}
         className={`text-black w-full bg-white transitions text-lg p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
       />
     </div>

@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 // dependencies - import
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 import Drawer from 'react-modern-drawer';
 
@@ -111,14 +110,12 @@ function ExternalServices() {
 
   const refreshData = () => {
     fetchCompanies();
+    fetchExternalServices();
   }
 
   useEffect(() => {
     fetchExternalServices();
   }, [monthRange]);
-
-
-
 
   return (
     loading ?

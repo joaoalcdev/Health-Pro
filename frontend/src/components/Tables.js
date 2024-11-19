@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { MenuSelect, Button } from './Form';
+import { MenuSelect, } from './Form';
 import { BiDotsHorizontalRounded, BiUndo } from 'react-icons/bi';
-import { FiDelete, FiEdit, FiEye } from 'react-icons/fi';
+import { FiEdit, FiEye } from 'react-icons/fi';
 import { RiDeleteBin6Line, RiDeleteBinLine } from 'react-icons/ri';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { formatPhoneNumber } from '../utils/formatPhoneNumber';
 import { formatDate } from '../utils/formatDate';
-import { calculateDate } from '../utils/calculateDate';
-import { brStateDatas, specialties, councilDatas, roleOptions } from './Datas';
+import { specialties, councilDatas, roleOptions } from './Datas';
 import getAvatar from '../utils/getAvatar';
 import { moneyFormat2BR } from '../utils/moneyFormatBR';
 import moment from 'moment';

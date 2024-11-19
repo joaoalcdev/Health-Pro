@@ -13,13 +13,10 @@ import Companies from './Companies';
 
 import { externalServicesTabs } from '../../components/Datas';
 import CompaniesForm from '../../components/Forms/CompaniesForm';
-
-// icons - import
-import { IoArrowBackOutline } from 'react-icons/io5';
+import ExternalServiceForm from '../../components/Forms/ExternalServiceForm';
 
 // utils - import
-import { getCompanies } from '../../api/ExternalServices';
-import { set } from 'react-hook-form';
+import { getCompanies, getExternalServices } from '../../api/ExternalServicesAPI';
 
 function ExternalServices() {
   const [activeTab, setActiveTab] = useState(1);
@@ -32,6 +29,7 @@ function ExternalServices() {
   const [drawerData, setDrawerData] = useState({});
 
   const [companies, setCompanies] = useState([]);
+  const [externalServices, setExternalServices] = useState([]);
 
   const fetchCompanies = async () => {
     setLoading(true);
@@ -48,7 +46,23 @@ function ExternalServices() {
     }
   }
 
+  const fetchExternalServices = async () => {
+    setLoading(true);
+    const res = await getExternalServices();
+    if (res.status !== 200) {
+      setLoading(false);
+      setDrawerData({});
+      return;
+    }
+    if (res.status === 200) {
+      setExternalServices(res.data);
+      setLoading(false);
+      setDrawerData({});
+    }
+  }
+
   useEffect(() => {
+    fetchExternalServices();
     fetchCompanies();
   }, []);
 
@@ -60,13 +74,10 @@ function ExternalServices() {
     setIsDrawerOpen(!isDrawerOpen);
   }
 
-
-
-
   const tabPanel = () => {
     switch (activeTab) {
       case 1:
-        return <ExternalServicesSummary />;
+        return <ExternalServicesSummary data={externalServices} companies={companies} setIsDrawerOpen={onClose} />;
       case 2:
         return <Companies companies={companies} setIsDrawerOpen={onClose} setDrawerData={setDrawerData} status={() => setStatus(!status)} setIsEdit={setIsEdit} />;
       default:
@@ -94,13 +105,15 @@ function ExternalServices() {
               direction="right"
               className="bg-white"
               zIndex={40}
-              size={400}
+              size={480}
               enableOverlay={true}
             >
-              {isEdit ?
-                <CompaniesForm onClose={onClose} data={drawerData} status={refreshData} isEdit={isEdit} />
-                :
-                <CompaniesForm onClose={onClose} status={refreshData} />}
+              {activeTab === 1 ? <ExternalServiceForm onClose={onClose} data={drawerData} status={refreshData} isEdit={isEdit} companies={companies} /> :
+
+                isEdit ?
+                  <CompaniesForm onClose={onClose} data={drawerData} status={refreshData} isEdit={isEdit} />
+                  :
+                  <CompaniesForm onClose={onClose} status={refreshData} />}
             </Drawer>
           )
         }

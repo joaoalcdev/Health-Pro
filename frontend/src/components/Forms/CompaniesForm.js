@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { Input, Button, Toggle } from '../Form';
 import { toast } from 'react-hot-toast';
-import { addCompany, editCompany } from '../../api/ExternalServices';
+import { addCompany, editCompany } from '../../api/ExternalServicesAPI';
 
 export default function CompaniesForm({ onClose, data, status, isEdit }) {
 
   const [check, setCheck] = useState(data?.status || true);
-  const [companyName, setCompanyName] = useState(data?.companyName || '');
+  const [name, setName] = useState(data?.name || '');
 
   //controllers
   const [loading, setLoading] = useState(false);
@@ -15,11 +15,11 @@ export default function CompaniesForm({ onClose, data, status, isEdit }) {
 
   const handleSave = async () => {
     setLoading(true);
-    if (companyName === '') {
+    if (name === '') {
       setLoading(false);
       return toast.error('Nome da Empresa é obrigatório');
     }
-    const response = isEdit ? await editCompany(data.id, { companyName, status: check }) : await addCompany({ companyName, status: check });
+    const response = isEdit ? await editCompany(data.id, { name, status: check }) : await addCompany({ name, status: check });
 
     if (response.code) {
       setLoading(false);
@@ -50,10 +50,10 @@ export default function CompaniesForm({ onClose, data, status, isEdit }) {
           <Input
             label="Nome da Empresa"
             color={true}
-            value={companyName}
+            value={name}
             placeholder={'Digite o nome da Empresa'}
             onChange={(e) => {
-              setCompanyName(e.target.value)
+              setName(e.target.value)
               setDisabled(false)
             }}
           />

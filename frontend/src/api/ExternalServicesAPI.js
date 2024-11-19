@@ -30,3 +30,30 @@ export const getCompanies = async () => {
     return error
   }
 }
+
+export const addExternalService = async (data) => {
+  try {
+    const res = await axios.post(apiBaseUrl('external-service'), data)
+    return res
+  } catch (error) {
+    return error
+  }
+}
+
+export const editExternalService = async (externalServiceId, data) => {
+  try {
+    const res = await axios.put(apiBaseUrl(`external-service/${externalServiceId}`), data)
+    return res
+  } catch (error) {
+    return error
+  }
+}
+
+export const getExternalServices = async () => {
+  try {
+    const res = await axios.get(apiBaseUrl('external-services'))
+    return res.data
+  } catch (error) {
+    return error
+  }
+}

@@ -545,7 +545,7 @@ export function Textarea({ label, name, register, placeholder, rows }) {
 
 // date picker
 
-export function DatePickerComp({ label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll, isClearable, children, maxDate, minDate }) {
+export function DatePickerComp({ label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll, isClearable, children, maxDate, minDate, showTimeSelect }) {
   return (
     <div className="flex flex-col text-sm w-full">
       <Field className={`flex w-full flex-col`}>
@@ -570,6 +570,7 @@ export function DatePickerComp({ label, startDate, onChange, color, locale, show
         locale={locale}
         maxDate={maxDate}
         minDate={minDate}
+        showTimeSelect={showTimeSelect}
         className={`transitions w-full bg-white text-sm p-4 border ${color ? 'border-border font-light' : 'border-white text-white'
           } rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
       >

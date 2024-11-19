@@ -9,7 +9,8 @@ export default function ExternalServiceForm({ onClose, data, status, isEdit, com
 
   const [company, setCompany] = useState(data?.company || { id: 0, name: 'Selecionar Empresa' });
   const [professionalName, setProfessionalName] = useState(data?.professionalName || '');
-  const [value, setValue] = useState(data?.value || 40);
+  const [service, setService] = useState(data?.service || '');
+  const [value, setValue] = useState(data?.value || 'R$ 40,00');
   const [date, setDate] = useState(data?.date || '');
 
   //controllers
@@ -18,7 +19,7 @@ export default function ExternalServiceForm({ onClose, data, status, isEdit, com
 
   const handleSave = async () => {
     setLoading(true);
-    if (company.id === 0 || professionalName === '' || value === '' || date === '') {
+    if (company.id === 0 || professionalName === '' || value === '' || date === '' || service === '') {
       setLoading(false);
       return toast.error('Todos os campos são obrigatórios');
     }
@@ -29,12 +30,14 @@ export default function ExternalServiceForm({ onClose, data, status, isEdit, com
         company: company.id,
         professionalName,
         value,
+        service,
         date: date.toISOString(),
       }) :
       await addExternalService({
         companyId: company.id,
         professionalName,
         value: Number(value.replace('R$ ', '').replace(',', '.')),
+        service,
         date: date.toISOString(),
       });
 
@@ -103,6 +106,17 @@ export default function ExternalServiceForm({ onClose, data, status, isEdit, com
             }}
           />
 
+          <Input
+            label="Serviço"
+            color={true}
+            value={service}
+            placeholder={'Digite o nome do Serviço'}
+            onChange={(e) => {
+              setService(e.target.value)
+              setDisabled(false)
+            }}
+          />
+
           <CurrencyInputField
             label="Valor"
             color={true}
@@ -116,11 +130,7 @@ export default function ExternalServiceForm({ onClose, data, status, isEdit, com
             decimalSeparator={','}
             prefix={'R$ '}
           />
-
-
-
         </div>
-
       </div >
 
       {/* Footer */}

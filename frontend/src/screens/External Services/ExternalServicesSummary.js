@@ -1,16 +1,15 @@
-import { set } from 'react-hook-form';
 import { Button } from '../../components/Form';
 import { ExternalServicesTable } from '../../components/Tables';
 
 
-export default function ExternalServicesSummary({ data, setIsDrawerOpen, setDrawerData, setIsEdit, status }) {
+export default function ExternalServicesSummary({ data, setIsDrawerOpen, setDrawerData, status, remove }) {
 
   return (
     <>
       <div className="flex flex-col gap-4">
         <div className='flex justify-between items-center'>
 
-          <h1 className="text-md font-medium ">Empresas Parceiras</h1>
+          <h1 className="text-md font-medium ">Serviços Externos</h1>
           <div>
             <Button
               onClick={setIsDrawerOpen}
@@ -22,8 +21,7 @@ export default function ExternalServicesSummary({ data, setIsDrawerOpen, setDraw
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <ExternalServicesTable data={data} setDrawerData={setDrawerData} setIsEdit={setIsEdit} status={status} />
-
+          <ExternalServicesTable data={data} setDrawerData={setDrawerData} status={status} remove={remove} />
         </div>
       </div>
     </>

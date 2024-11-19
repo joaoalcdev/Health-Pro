@@ -16,20 +16,28 @@ import CompaniesForm from '../../components/Forms/CompaniesForm';
 import ExternalServiceForm from '../../components/Forms/ExternalServiceForm';
 
 // utils - import
-import { getCompanies, getExternalServices } from '../../api/ExternalServicesAPI';
+import { getCompanies, getExternalServices, removeExternalService } from '../../api/ExternalServicesAPI';
+import toast from 'react-hot-toast';
+import { MonthlyPicker } from '../../components/Form';
+import { moneyFormat2BR } from '../../utils/moneyFormatBR';
 
 function ExternalServices() {
+  const today = new Date();
+
   const [activeTab, setActiveTab] = useState(1);
   const [status, setStatus] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const navigate = useNavigate();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [drawerData, setDrawerData] = useState({});
 
+  const [monthRange, setMonthRange] = useState(new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0));
+
+
   const [companies, setCompanies] = useState([]);
   const [externalServices, setExternalServices] = useState([]);
+  const [totalValue, setTotalValue] = useState(0);
 
   const fetchCompanies = async () => {
     setLoading(true);
@@ -48,14 +56,15 @@ function ExternalServices() {
 
   const fetchExternalServices = async () => {
     setLoading(true);
-    const res = await getExternalServices();
+    const res = await getExternalServices(`01-${monthRange.getMonth() + 1}-${monthRange.getFullYear()}`);
     if (res.status !== 200) {
       setLoading(false);
       setDrawerData({});
       return;
     }
     if (res.status === 200) {
-      setExternalServices(res.data);
+      setExternalServices(res.data.externalServices);
+      setTotalValue(res.data.totalValue);
       setLoading(false);
       setDrawerData({});
     }
@@ -74,10 +83,25 @@ function ExternalServices() {
     setIsDrawerOpen(!isDrawerOpen);
   }
 
+  const handleRemove = async (id) => {
+    setLoading(true);
+    const res = await removeExternalService(id);
+    if (res.status === 200) {
+      fetchExternalServices();
+      toast.success('Serviço Externo removido com sucesso');
+      return;
+    }
+    if (res.status !== 200) {
+      setLoading(false);
+      toast.error('Erro ao remover Serviço Externo');
+      return;
+    }
+  }
+
   const tabPanel = () => {
     switch (activeTab) {
       case 1:
-        return <ExternalServicesSummary data={externalServices} companies={companies} setIsDrawerOpen={onClose} />;
+        return <ExternalServicesSummary data={externalServices} companies={companies} setIsDrawerOpen={onClose} remove={handleRemove} />;
       case 2:
         return <Companies companies={companies} setIsDrawerOpen={onClose} setDrawerData={setDrawerData} status={() => setStatus(!status)} setIsEdit={setIsEdit} />;
       default:
@@ -88,6 +112,12 @@ function ExternalServices() {
   const refreshData = () => {
     fetchCompanies();
   }
+
+  useEffect(() => {
+    fetchExternalServices();
+  }, [monthRange]);
+
+
 
 
   return (
@@ -126,15 +156,22 @@ function ExternalServices() {
             className="col-span-12 flex-colo gap-6 lg:col-span-3 bg-white rounded-xl border-[1px] border-border p-6 lg:sticky top-28"
           >
 
-            {/* <div className="gap-2 flex-colo">
-              <h2 className="text-sm font-semibold">{patientData.fullName}</h2>
-              <p className="text-xs">
-              {formatPhoneNumber(patientData.phoneNumber)} <br />
-              {formatPhoneNumber(patientData.emergencyContact)}
-              </p>
-              </div> */}
+            <div className='w-full cursor-pointer'>
+              {/* date */}
+              <MonthlyPicker
+                value={monthRange}
+                startDate={monthRange}
+                endDate={monthRange}
+                bg="bg-dry"
+                onChange={(update) => setMonthRange(update)}
+              />
+            </div>
+            <div className=' bg-text w-full rounded p-2 justify-items-center'>
+              <p className="text-lg text-main font-semibold">{moneyFormat2BR(totalValue)}</p>
+              <p className="text-sm text-gray-500 font-light">Valor total</p>
+            </div>
             {/* tabs */}
-            <div className="flex-colo gap-3 px-2  w-full">
+            <div className="flex-colo gap-3  w-full">
               {externalServicesTabs.map((tab, index) => (
                 <button
                   onClick={() => setActiveTab(tab.id)}
@@ -149,6 +186,7 @@ function ExternalServices() {
                   <tab.icon className="text-lg" /> {tab.title}
                 </button>
               ))}
+
             </div>
           </div>
           {/* tab panel */}

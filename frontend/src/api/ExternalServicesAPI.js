@@ -49,10 +49,19 @@ export const editExternalService = async (externalServiceId, data) => {
   }
 }
 
-export const getExternalServices = async () => {
+export const getExternalServices = async (monthRange) => {
   try {
-    const res = await axios.get(apiBaseUrl('external-services'))
+    const res = await axios.get(apiBaseUrl(`external-services/${monthRange}`))
     return res.data
+  } catch (error) {
+    return error
+  }
+}
+
+export const removeExternalService = async (externalServiceId) => {
+  try {
+    const res = await axios.delete(apiBaseUrl(`external-service/${externalServiceId}`))
+    return res
   } catch (error) {
     return error
   }

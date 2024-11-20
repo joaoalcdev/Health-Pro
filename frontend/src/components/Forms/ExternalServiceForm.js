@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { Input, Button, Toggle, InputFilterSelect, SelectListBox, CurrencyInputField, DatePickerComp } from '../Form';
+import { Input, Button, SelectListBox, CurrencyInputField, DatePickerComp } from '../Form';
 import { toast } from 'react-hot-toast';
-import { addCompany, addExternalService, editCompany, editExternalService } from '../../api/ExternalServicesAPI';
+import { addExternalService } from '../../api/ExternalServicesAPI';
 import { BiChevronDown } from 'react-icons/bi';
 
-export default function ExternalServiceForm({ onClose, data, status, isEdit, companies }) {
+export default function ExternalServiceForm({ onClose, status, companies }) {
 
-  const [company, setCompany] = useState(data?.company || { id: 0, name: 'Selecionar Empresa' });
-  const [professionalName, setProfessionalName] = useState(data?.professionalName || '');
-  const [service, setService] = useState(data?.service || '');
-  const [value, setValue] = useState(data?.value || 'R$ 40,00');
-  const [date, setDate] = useState(data?.date || '');
+  const [company, setCompany] = useState({ id: 0, name: 'Selecionar Empresa' });
+  const [professionalName, setProfessionalName] = useState('');
+  const [service, setService] = useState('');
+  const [value, setValue] = useState('40');
+  const [date, setDate] = useState('');
 
   //controllers
   const [loading, setLoading] = useState(false);
@@ -23,23 +23,14 @@ export default function ExternalServiceForm({ onClose, data, status, isEdit, com
       setLoading(false);
       return toast.error('Todos os campos são obrigatórios');
     }
-    console.log(company.id, professionalName, value, date.toDateString())
 
-    const response = isEdit ? await editExternalService(data.id,
-      {
-        company: company.id,
-        professionalName,
-        value,
-        service,
-        date: date.toISOString(),
-      }) :
-      await addExternalService({
-        companyId: company.id,
-        professionalName,
-        value: Number(value.replace('R$ ', '').replace(',', '.')),
-        service,
-        date: date.toISOString(),
-      });
+    const response = await addExternalService({
+      companyId: company.id,
+      professionalName,
+      value: Number(value.replace('R$ ', '').replace(',', '.')),
+      service,
+      date: date.toISOString(),
+    });
 
     if (response.code) {
       setLoading(false);
@@ -55,7 +46,7 @@ export default function ExternalServiceForm({ onClose, data, status, isEdit, com
     <div className='relative h-full z-50 grid grid-cols-1'>
       {/* Header */}
       <div className="fixed w-full flex max-h-20 justify-between items-center inset-x-0 top-0 gap-2 px-4 py-4">
-        <h1 className="text-md font-semibold">{isEdit ? "Editar registro" : "Registrar serviço"}</h1>
+        <h1 className="text-md font-semibold">{"Registrar serviço"}</h1>
         <button
           onClick={onClose}
           className="w-14 h-8 bg-dry text-red-600 rounded-md flex-colo"
@@ -146,7 +137,7 @@ export default function ExternalServiceForm({ onClose, data, status, isEdit, com
               </>
             </button>
             <Button
-              label={isEdit ? "Salvar" : "Adicionar"}
+              label={"Adicionar"}
               onClick={() => handleSave()}
               loading={loading}
               disabled={loading || disabled}

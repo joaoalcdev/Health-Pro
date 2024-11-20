@@ -1,11 +1,7 @@
 import { Button } from '../../components/Form';
 import { ExternalCompaniesTable } from '../../components/Tables';
 
-
-
 export default function Companies({ companies, setIsDrawerOpen, setDrawerData, setIsEdit, status }) {
-
-
   const editCompany = (data) => {
     setIsEdit(true)
     setDrawerData(data)

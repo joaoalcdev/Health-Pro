@@ -135,7 +135,7 @@ function ExternalServices() {
               size={480}
               enableOverlay={true}
             >
-              {activeTab === 1 ? <ExternalServiceForm onClose={onClose} data={drawerData} status={refreshData} isEdit={isEdit} companies={companies} /> :
+              {activeTab === 1 ? <ExternalServiceForm onClose={onClose} status={refreshData} companies={companies} /> :
 
                 isEdit ?
                   <CompaniesForm onClose={onClose} data={drawerData} status={refreshData} isEdit={isEdit} />

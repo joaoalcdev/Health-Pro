@@ -5,13 +5,13 @@ import { toast } from 'react-hot-toast';
 import { addExternalService } from '../../api/ExternalServicesAPI';
 import { BiChevronDown } from 'react-icons/bi';
 
-export default function ExternalServiceForm({ onClose, data, status, companies }) {
+export default function ExternalServiceForm({ onClose, status, companies }) {
 
-  const [company, setCompany] = useState(data?.company || { id: 0, name: 'Selecionar Empresa' });
-  const [professionalName, setProfessionalName] = useState(data?.professionalName || '');
-  const [service, setService] = useState(data?.service || '');
-  const [value, setValue] = useState(data?.value || '40');
-  const [date, setDate] = useState(data?.date || '');
+  const [company, setCompany] = useState({ id: 0, name: 'Selecionar Empresa' });
+  const [professionalName, setProfessionalName] = useState('');
+  const [service, setService] = useState('');
+  const [value, setValue] = useState('40');
+  const [date, setDate] = useState('');
 
   //controllers
   const [loading, setLoading] = useState(false);

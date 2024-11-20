@@ -17,12 +17,12 @@ function Sidebar() {
   };
 
   return (
-    <div className="bg-white xl:shadow-lg py-6 px-4 xl:h-screen w-full border-r border-border overflow-y-auto">
+    <div className="bg-white text-subMain xl:shadow-lg py-6 px-4 xl:h-screen w-full border-r border-border overflow-y-auto">
       <Link to="/">
         <img
-          src="/images/logo.png"
+          src="/images/logo_cedejom.svg"
           alt="logo"
-          className="w-full h-12  object-contain"
+          className=" w-full h-21  object-contain "
         />
       </Link>
 

@@ -17,15 +17,16 @@ function Sidebar() {
   };
 
   return (
-    <div className="bg-white xl:shadow-lg py-6 px-4 xl:h-screen w-full border-r border-border">
+    <div className="bg-white text-subMain xl:shadow-lg py-6 px-4 xl:h-screen w-full border-r border-border overflow-y-auto">
       <Link to="/">
         <img
-          src="/images/logo.png"
+          src="/images/logo_cedejom.svg"
           alt="logo"
-          className="w-2/4 h-12 ml-4 object-contain"
+          className=" w-full h-21  object-contain "
         />
       </Link>
-      <div className="flex-colo gap-2 mt-12">
+
+      <div className="flex-colo gap-1 mt-8">
         {MenuDatas.map((item, index) => {
           if (item.roleAllowed === 3 | item.roleAllowed >= user.roleId) {
             return (<Link

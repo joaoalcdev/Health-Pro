@@ -28,44 +28,44 @@ function ProfessionalInfo({ data, onStatus }) {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
   //User data
-  const [firstName, setFirstName] = useState(data.firstName);
-  const [lastName, setLastName] = useState(data.lastName);
-  const [phoneNumber, setPhoneNumber] = useState(data.phoneNumber);
-  const [email, setEmail] = useState(data.email);
-  const [address, setAddress] = useState(data.address);
-  const [region, setRegion] = useState(data.region);
-  const [city, setCity] = useState(data.city);
-  const [state, setState] = useState(brStateDatas.states[data.state - 1]);
-  const [gender, setGender] = useState(genderDatas.gender[data.gender - 1]);
+  const [firstName, setFirstName] = useState(data.firstName || '');
+  const [lastName, setLastName] = useState(data.lastName || '');
+  const [phoneNumber, setPhoneNumber] = useState(data.phoneNumber || '');
+  const [email, setEmail] = useState(data.email || '');
+  const [address, setAddress] = useState(data.address || '');
+  const [region, setRegion] = useState(data.region || '');
+  const [city, setCity] = useState(data.city || '');
+  const [state, setState] = useState(brStateDatas.states[data.state - 1] || '');
+  const [gender, setGender] = useState(genderDatas.gender[data.gender - 1] || '');
 
   //Professional data
-  const [fullName, setFullName] = useState(data.fullName);
-  const [rg, setRg] = useState(data.rg);
-  const [rgInssuance, setRgInssuance] = useState(data.rgInssuance);
-  const [cpf, setCpf] = useState(data.cpf);
-  const [specialty, setSpecialty] = useState(specialties.specialty[data.specialty - 1]);
-  const [council, setCouncil] = useState(councilDatas.council[data.council - 1]);
-  const [councilNumber, setCouncilNumber] = useState(data.councilNumber);
+  const [fullName, setFullName] = useState(data.fullName || '');
+  const [rg, setRg] = useState(data.rg || '');
+  const [rgInssuance, setRgInssuance] = useState(data.rgInssuance || '');
+  const [cpf, setCpf] = useState(data.cpf || '');
+  const [specialty, setSpecialty] = useState(data.specialtyName || '');
+  const [council, setCouncil] = useState(data.council ? councilDatas.council[data.council - 1] : '');
+  const [councilNumber, setCouncilNumber] = useState(data.councilNumber || '');
 
   //set data on edit mode
-  useEffect(() => {
-    setFullName(data.fullName);
-    setFirstName(data.firstName);
-    setLastName(data.lastName);
-    setPhoneNumber(data.phoneNumber);
-    setEmail(data.email);
-    setAddress(data.address);
-    setRegion(data.region);
-    setCity(data.city);
-    setState(brStateDatas.states[data.state - 1]);
-    setRg(data.rg);
-    setRgInssuance(data.rgInssuance);
-    setCpf(data.cpf);
-    setGender(genderDatas.gender[data.gender - 1]);
-    setSpecialty(specialties.specialty[data.specialty - 1]);
-    setCouncil(councilDatas.council[data.council - 1]);
-    setCouncilNumber(data.councilNumber);
-  }, [data]);
+  // useEffect(() => {
+  //   setFullName(data.fullName);
+  //   setFirstName(data.firstName);
+  //   setLastName(data.lastName);
+  //   setPhoneNumber(data.phoneNumber);
+  //   setEmail(data.email);
+  //   setAddress(data.address);
+  //   setRegion(data.region);
+  //   setCity(data.city);
+  //   setState(brStateDatas.states[data.state - 1]);
+  //   setRg(data.rg);
+  //   setRgInssuance(data.rgInssuance);
+  //   setCpf(data.cpf);
+  //   setGender(genderDatas.gender[data.gender - 1]);
+  //   setSpecialty(specialties.specialty[data.specialty - 1]);
+  //   setCouncil(councilDatas.council[data.council - 1]);
+  //   setCouncilNumber(data.councilNumber);
+  // }, [data]);
 
   //check if the data has changed in order to enable the save button
   useEffect(() => {
@@ -256,7 +256,7 @@ function ProfessionalInfo({ data, onStatus }) {
         </div>
         <div className="flex w-full flex-col gap-3">
           <h1 className="text-black text-sm">Especialidade</h1>
-          <p className="text-black text-md font-semibold">{data.specialty ? specialties.specialty[data.specialty - 1].name : ""}</p>
+          {/* <p className="text-black text-md font-semibold">{data.specialty ? specialties.specialty[data.specialty - 1].name : ""}</p> */}
         </div>
         <div className="flex w-full flex-col gap-3">
           <h1 className="text-black text-sm">Conselho</h1>

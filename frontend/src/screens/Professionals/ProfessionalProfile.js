@@ -39,6 +39,7 @@ function ProfessionalProfile() {
 
   const fetch = async () => {
     const response = await getProfessionalById(id)
+    console.log(response)
     setProfessional(response[0])
   }
 
@@ -67,7 +68,7 @@ function ProfessionalProfile() {
         return <Access setAccess={setAccess} />;
       case 7:
         return <ChangePassword />;
-      case 8: 
+      case 8:
         return <PatientsUsed />;
       default:
         return;

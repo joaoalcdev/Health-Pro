@@ -67,13 +67,13 @@ function Login() {
 
   return (
     <div className="w-full h-screen flex-colo bg-dry">
-      <form onSubmit={handleLogin} className="w-4/5 sm:w-2/5 md:w-8/12 lg:w-3/5 xl:w-2/5 max-w-[600px] p-8 rounded-2xl mx-auto bg-white flex-colo">
+      <form onSubmit={handleLogin} className="w-4/5 sm:w-2/5 md:w-8/12 lg:w-3/5 xl:w-2/5 max-w-[600px] p-8 rounded-2xl mx-auto bg-white flex-colo gap-6">
         <img
-          src="/images/logo.png"
+          src="/images/logo_cedejom.svg"
           alt="logo"
-          className="w-48 h-16 object-contain"
+          className="w-48 h-22 object-contain"
         />
-        <div className="flex flex-col gap-4 w-full mb-6">
+        <div className="flex flex-col gap-4 w-full ">
           <Input
             label="Email"
             type="email"
@@ -117,7 +117,7 @@ function Login() {
           </div>
         </div>
         <Button
-          label="Login"
+          label="Entrar"
           Icon={BiLogInCircle}
           type="submit"
           //onClick={handleLogin}

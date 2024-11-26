@@ -59,24 +59,27 @@ export const getPatientRecordsExport = async (app: FastifyInstance) => {
         orientation: "portrait",
         border: "10mm",
         header: {
-            height: "25mm",
-            contents: `<h1 style="text-align: center; text-transform: uppercase;">Cabeçalho CEDEJOM</h1>`
+            height: "1mm",
+            contents: ``
         },
         footer: {
             height: "10mm",
             contents: {
                 first: '',
-                2: 'Second page', // Any page number is working. 1-based index
-                default: '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>', // fallback value
+                default: '', // fallback value
                 last: ''
             }
           }  
       };
 
+      const bitmap = fs.readFileSync("public/images/logo_cedejom.png");
+      const logo = bitmap.toString('base64');
+
        //create pdf document 
        var doocument = {
         html: html,
         data: {
+          logo,
           patient,
           records: rebaseData,
           month

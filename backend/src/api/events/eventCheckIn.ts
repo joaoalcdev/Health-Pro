@@ -35,7 +35,6 @@ export const EventCheckIn = async (app: FastifyInstance) => {
       });
 
       if (error) {
-        console.log('ERROR', error);
         throw error;
       }
 
@@ -46,7 +45,6 @@ export const EventCheckIn = async (app: FastifyInstance) => {
       .eq('eventInstanceId', id)
 
       if(eventInstanceError){
-        console.log('ERROR', eventInstanceError);
         throw eventInstanceError;
       }
 
@@ -57,7 +55,6 @@ export const EventCheckIn = async (app: FastifyInstance) => {
         var tax = 0 as number;
         var profit = 0 as number;
 
-        console.log(eventInstance);
 
         if(eventInstance[0].eventType in [1,2,3]){
            // Check event type is 1,2 or 3
@@ -66,18 +63,15 @@ export const EventCheckIn = async (app: FastifyInstance) => {
           });  
           if (servicePrice) {
             grossValue = servicePrice.price;
-            console.log('GROSS', grossValue);
             
             if(servicePrice.professionalPayment > 0){
               professionalRate = servicePrice.professionalPayment;
-              console.log('PROF', professionalRate);
             }else{
               const fee = await getFee(eventInstance[0].agreementId, eventInstance[0].professionalId).then((fee) => {
                 return fee;
               });
               if(fee){
                 professionalRate = Math.round(grossValue - grossValue * (fee.fee/100));
-                console.log('PROF', professionalRate);
               }
             }
           }
@@ -86,12 +80,8 @@ export const EventCheckIn = async (app: FastifyInstance) => {
           });
           if(taxData){
             tax = grossValue * (taxData.tax/100);
-            console.log('TAX', tax);
-            
           }
           profit = grossValue - professionalRate - tax;
-          console.log('PROFIT', profit);
-
         }
 
         // Check event type is 4
@@ -101,11 +91,9 @@ export const EventCheckIn = async (app: FastifyInstance) => {
           });
           if(regularPrice){
             grossValue = regularPrice.price;
-            console.log('GROSS', grossValue);
 
             if(regularPrice.professionalPayment > 0){
               professionalRate = regularPrice.professionalPayment;
-              console.log('PROF', professionalRate);
 
             }else{
               const fee = await getFee(eventInstance[0].agreementId, eventInstance[0].professionalId).then((fee) => {
@@ -113,8 +101,6 @@ export const EventCheckIn = async (app: FastifyInstance) => {
               });
               if(fee){
                 professionalRate = Math.round(grossValue - grossValue * (fee.fee/100));
-                console.log('PROF', professionalRate);
-
               }
             }
           }
@@ -123,12 +109,8 @@ export const EventCheckIn = async (app: FastifyInstance) => {
           });
           if(taxData){
             tax =  grossValue * (taxData.tax/100);
-            console.log('TAX', tax);
-
           }
           profit = grossValue - professionalRate - tax;
-          console.log('PROFIT', profit);
-
         }
 
         // Check event type is 5 CONTINUE
@@ -158,10 +140,16 @@ export const EventCheckIn = async (app: FastifyInstance) => {
           return res.status(500).send({ error: insertError });
         }
 
-        return res.status(200).send({data});
+        return res.send({ 
+          status: 200,
+          data,
+          message: "Check-in realizado com sucesso!"
+        });
       }
     } catch (error) {
-      res.send({ error });
+      res.send({ 
+        status: 400,
+        message: error });
     }
   })
 

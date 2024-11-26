@@ -31,14 +31,15 @@ function EventDetailsProfessionalInfo({ data, onStatus }) {
     if (data) {
       const response = await getProfessionalById(data.professionalId)
       const specialtiesData = await getSpecialties()
-      setLoading(false)
-      if (response.lenght === 0) {
+      if (response.status === 400) {
         setLoading(false)
         return
       }
-      setLoading(false)
-      setSpecialties(specialtiesData)
-      setProfessionalData(response[0])
+      if (response.status === 200) {
+        setLoading(false)
+        setSpecialties(specialtiesData)
+        setProfessionalData(response.data)
+      }
     }
   }
 

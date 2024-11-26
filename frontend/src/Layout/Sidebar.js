@@ -22,7 +22,7 @@ function Sidebar() {
         <img
           src="/images/logo_cedejom.svg"
           alt="logo"
-          className=" w-full h-21  object-contain "
+          className=" w-full h-20  object-contain "
         />
       </Link>
 

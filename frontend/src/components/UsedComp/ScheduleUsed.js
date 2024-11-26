@@ -197,30 +197,6 @@ function ScheduleUsed() {
     setStatus(false)
   }, [id, status])
 
-
-  // const fetchProfessionals = async () => {
-  //   setLoading(true);
-  //   const response = await getProfessionals();
-  //   if (response.length === 0) {
-  //     setLoading(false);
-  //     return;
-  //   };
-
-  //   var rebaseProfessionalsList = response.map((item) => {
-  //     return {
-  //       id: item.id,
-  //       name: item.firstName + ' ' + item.lastName,
-  //     }
-  //   })
-
-  //   setProfessionalsList(rebaseProfessionalsList);
-  //   setLoading(false);
-  // }
-
-  // useEffect(() => {
-  //   fetchProfessionals()
-  // }, [])
-
   const fetch = async () => {
     setLoading(true);
     if (filterTerm.id !== 0) {
@@ -444,7 +420,7 @@ function ScheduleUsed() {
             timeslots={1}
             step={30}
             selectable={false}
-            min={new Date(2024, 0, 1, 7, 0)}
+            min={new Date(2024, 0, 1, 6, 0)}
             max={new Date(2040, 0, 1, 20, 1)}
             filterTime={date => (date.getHours() > 5 && date.getHours() < 11) || (date.getHours() > 13 && date.getHours() < 20)}
             // custom event style

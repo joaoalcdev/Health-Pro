@@ -256,7 +256,7 @@ function ProfessionalInfo({ data, onStatus }) {
         </div>
         <div className="flex w-full flex-col gap-3">
           <h1 className="text-black text-sm">Especialidade</h1>
-          {/* <p className="text-black text-md font-semibold">{data.specialty ? specialties.specialty[data.specialty - 1].name : ""}</p> */}
+          <p className="text-black text-md font-semibold">{data.specialtyName ? data.specialtyName : ''}</p>
         </div>
         <div className="flex w-full flex-col gap-3">
           <h1 className="text-black text-sm">Conselho</h1>

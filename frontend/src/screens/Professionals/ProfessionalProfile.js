@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 // icons - imports
 import { IoArrowBackOutline } from 'react-icons/io5';
@@ -14,33 +15,38 @@ import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
 import { getProfessionalById } from '../../api/ProfessionalsAPI';
 
 // datas - imports
-import { doctorTab } from '../../components/Datas';
+import { professionalTab } from '../../components/Datas';
 
 // components - imports
 import Layout from '../../Layout';
-import Access from '../../components/Access';
-import InvoiceUsed from '../../components/UsedComp/InvoiceUsed';
-import PaymentsUsed from '../../components/UsedComp/PaymentUsed';
 import ScheduleUsed from '../../components/UsedComp/ScheduleUsed';
-import PatientsUsed from '../../components/UsedComp/PatientsUsed';
-import ChangePassword from '../../components/UsedComp/ChangePassword';
 import AppointmentsUsed from '../../components/UsedComp/AppointmentsUsed';
 import ProfessionalInfo from '../../components/UsedComp/ProfessionalInfo';
+import ProfessionalRecord from './ProfessionalRecord';
+
 
 
 
 function ProfessionalProfile() {
   const [activeTab, setActiveTab] = useState(1);
-  const [access, setAccess] = useState({});
   const [professional, setProfessional] = useState({});
   const [status, setStatus] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { id } = useParams()
 
   const fetch = async () => {
     const response = await getProfessionalById(id)
+    if (response.status === 400) {
+      toast.error('Nenhum registro encontrado');
+      setLoading(false);
+      return;
+    }
+    if (response.status === 200) {
+      setProfessional(response.data);
+      setLoading(false);
+    }
     console.log(response)
-    setProfessional(response[0])
   }
 
   useEffect(() => {
@@ -61,15 +67,7 @@ function ProfessionalProfile() {
       case 3:
         return <AppointmentsUsed doctor={true} />;
       case 4:
-        return <PaymentsUsed doctor={true} />;
-      case 5:
-        return <InvoiceUsed />;
-      case 6:
-        return <Access setAccess={setAccess} />;
-      case 7:
-        return <ChangePassword />;
-      case 8:
-        return <PatientsUsed />;
+        return <ProfessionalRecord data={professional} />;
       default:
         return;
     }
@@ -106,7 +104,7 @@ function ProfessionalProfile() {
           </div>
           {/* tabs */}
           <div className="flex-colo gap-3 w-full">
-            {doctorTab.map((tab, index) => (
+            {professionalTab.map((tab, index) => (
               <button
                 onClick={() => setActiveTab(tab.id)}
                 key={index}

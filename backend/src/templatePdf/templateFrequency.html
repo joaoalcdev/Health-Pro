@@ -20,25 +20,84 @@
         border-collapse: collapse;
         border: 1px solid black;
       }
+      #header {
+        width: 100%;
+        margin: 0 auto;
+        border: none;
+        margin-bottom: 30px;
+      }
 
       th {
         border: 1px solid black;
         text-align: left;
-        padding: 8px;
+        padding-left: 8px;
+        padding-right: 8px;
       }
       td {
         border: 1px solid black;
-
         line-height: 1;
-        padding: 8px;
+        padding: 4px 8px;
       }
       tr:nth-child(even) {
         border: 1px solid black;
+      }
+
+      #header-row {
+        border: none;
+        margin-left: 20px;
+      }
+
+      #header-column {
+        border: none;
+        margin-left: 20px;
       }
     </style>
   </head>
   <body>
     <div>
+      <table id="header">
+        <tr id="header-row">
+          <th id="header-column" style="text-align: right; padding-right: 25px">
+            <img
+              width="150px"
+              src="data:image/png;base64,{{logo}}"
+              alt="Logo"
+            />
+          </th>
+          <th id="header-column">
+            <p
+              style="
+                font-size: medium;
+                font-weight: 600;
+                text-align: left;
+                line-height: 12px;
+              "
+            >
+              CENTRO DE EDUCAÇÃO ESPECIALIZADA JOÃO MARTINS
+            </p>
+            <p
+              style="
+                font-size: medium;
+                font-weight: 600;
+                text-align: left;
+                line-height: 12px;
+              "
+            >
+              Av. Cel. Araújo Lima, 321 - Centro, Russas - CE, 62900-000
+            </p>
+            <p
+              style="
+                font-size: medium;
+                font-weight: 600;
+                text-align: left;
+                line-height: 12px;
+              "
+            >
+              Telefone: (88) 3411-3610
+            </p>
+          </th>
+        </tr>
+      </table>
       <div style="text-align: center">
         <p style="font-size: larger">
           CONTROLE DE FREQUÊNCIA
@@ -63,7 +122,7 @@
       <table>
         <thead>
           <tr>
-            <th>QUANT</th>
+            <th>#</th>
             <th>DATA ATENDIMENTO</th>
             <th style="text-align: left">RESPONSÁVEL</th>
             <th style="text-align: center">ASSINATURA</th>

@@ -65,7 +65,6 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
   }
 
   const handleCloseSignatureModal = () => {
-    console.log(signature.toDataURL());
     setIsSignatureModalOpen(false);
   }
 

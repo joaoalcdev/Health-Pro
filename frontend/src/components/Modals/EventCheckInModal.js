@@ -49,17 +49,21 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
       checkInSignature: finalSignature.split(';base64,')[1],
     }, datas.eventInstanceId);
 
-    if (response.response && response.response.status >= 400) {
+    console.log(response);
+
+    if (response.status !== 200) {
       toast.error('Check-In não realizado, tente novamente!');
       setLoading(false)
       setDisabled(false)
       return
     }
-    status(true);
-    toast.success('Check-In realizado com sucesso!');
-    setLoading(false);
-    setDisabled(true);
-    closeModal();
+    if (response.status === 200) {
+      status(true);
+      toast.success('Check-In realizado com sucesso!');
+      setLoading(false);
+      setDisabled(true);
+      closeModal();
+    }
   }
 
   const handleCloseSignatureModal = () => {

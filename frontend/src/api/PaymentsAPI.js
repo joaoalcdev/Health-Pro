@@ -26,11 +26,11 @@ export const getPayroll = async (monthRange) => {
 
 export const editPayroll = async (eventId, data) => {
   try {
-    const res = await axios.put(apiBaseUrl(`editPayroll/${eventId}`), {
+    const res = await axios.put(apiBaseUrl(`editPayroll/${eventId}`), data, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, data)
+    })
     return res.data
   } catch (error) {
     return error

@@ -21,11 +21,11 @@ export const getServices = async (status, specialtyId) => {
 
 export const addServices = async (data) => {
   try {
-    const res = await axios.post(apiBaseUrl('services'), {
+    const res = await axios.post(apiBaseUrl('services'), data, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, data)
+    })
     return res
   } catch (error) {
     return error
@@ -34,11 +34,11 @@ export const addServices = async (data) => {
 
 export const updateServices = async (id, data) => {
   try {
-    const res = await axios.put(apiBaseUrl(`services/${id}`), {
+    const res = await axios.put(apiBaseUrl(`services/${id}`), data, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, data)
+    })
     return res
   } catch (error) {
     return error

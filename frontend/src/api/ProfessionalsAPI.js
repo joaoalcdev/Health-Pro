@@ -36,11 +36,11 @@ export const getProfessionalById = async (professional) => {
 
 export const createProfessional = async (newProfessional) => {
   try {
-    const { data, error } = await axios.post(apiBaseUrl('professionals'), {
+    const { data, error } = await axios.post(apiBaseUrl('professionals'), newProfessional, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, newProfessional)
+    })
     if (error) {
       throw error
     }
@@ -52,11 +52,11 @@ export const createProfessional = async (newProfessional) => {
 
 export const updateProfessional = async (professional, updatedProfessional) => {
   try {
-    const data = await axios.put(apiBaseUrl(`professional/${professional}`), {
+    const data = await axios.put(apiBaseUrl(`professional/${professional}`), updatedProfessional, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, updatedProfessional)
+    })
     return data
   } catch (error) {
     return error

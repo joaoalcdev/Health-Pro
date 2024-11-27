@@ -18,11 +18,11 @@ export const listAppointments = async (newAppointment) => {
 
 export const createAppointment = async (newAppointment) => {
   try {
-    const data = await axios.post(apiBaseUrl('appointments'), {
+    const data = await axios.post(apiBaseUrl('appointments'), newAppointment, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, newAppointment)
+    })
     return data
   } catch (error) {
     return error
@@ -31,11 +31,11 @@ export const createAppointment = async (newAppointment) => {
 
 export const rescheduleAppointment = async (appointmentData, appointmentId) => {
   try {
-    const data = await axios.put(apiBaseUrl(`appointment/reschedule/${appointmentId}`), {
+    const data = await axios.put(apiBaseUrl(`appointment/reschedule/${appointmentId}`), appointmentData, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, appointmentData)
+    })
     return data
   } catch (error) {
     return error

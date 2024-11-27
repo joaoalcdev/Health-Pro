@@ -22,11 +22,11 @@ export const getUsers = async (showDeleted) => {
 
 export const createUser = async (newUser) => {
   try {
-    const { data, error } = await axios.post(apiBaseUrl('users'), {
+    const { data, error } = await axios.post(apiBaseUrl('users'), newUser, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, newUser)
+    })
     if (error) {
       throw error
     }
@@ -38,11 +38,11 @@ export const createUser = async (newUser) => {
 
 export const updateUser = async (user) => {
   try {
-    const data = await axios.put(apiBaseUrl('users'), {
+    const data = await axios.put(apiBaseUrl('users'), user, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, user)
+    })
     return data
   } catch (error) {
     return error
@@ -52,11 +52,11 @@ export const updateUser = async (user) => {
 export const deleteUser = async (user) => {
 
   try {
-    const data = await axios.delete(apiBaseUrl(`user/${user.id}`), {
+    const data = await axios.delete(apiBaseUrl(`user/${user.id}`), user, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, user)
+    })
     if (data) {
       return data
     } else {

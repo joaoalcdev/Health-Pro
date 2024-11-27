@@ -21,11 +21,11 @@ export const getPatients = async (showDeleted) => {
 
 export const createPatient = async (newPatient) => {
   try {
-    const data = await axios.post(apiBaseUrl('patients'), {
+    const data = await axios.post(apiBaseUrl('patients'), newPatient, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, newPatient)
+    })
     return data
   } catch (error) {
     return error
@@ -34,11 +34,11 @@ export const createPatient = async (newPatient) => {
 
 export const updatePatient = async (patientId, patient) => {
   try {
-    const data = await axios.put(apiBaseUrl(`patients/${patientId}`), {
+    const data = await axios.put(apiBaseUrl(`patients/${patientId}`), patient, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, patient)
+    })
     return data
   } catch (error) {
     return error
@@ -61,11 +61,11 @@ export const getPatient = async (patientId) => {
 
 export const deletePatient = async (patientId, patient) => {
   try {
-    const data = await axios.delete(apiBaseUrl(`patients/${patientId}`, {
+    const data = await axios.delete(apiBaseUrl(`patients/${patientId}`), patient, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, patient))
+    })
     if (data) {
       return data
     } else {

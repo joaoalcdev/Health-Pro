@@ -22,11 +22,11 @@ export const getSpecialties = async (status, specialtyId) => {
 
 export const addSpecialties = async (data) => {
   try {
-    const res = await axios.post(apiBaseUrl('specialties'), {
+    const res = await axios.post(apiBaseUrl('specialties'), data, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, data)
+    })
     return res
   } catch (error) {
     return error
@@ -35,11 +35,11 @@ export const addSpecialties = async (data) => {
 
 export const updateSpecialties = async (id, data) => {
   try {
-    const res = await axios.put(apiBaseUrl(`specialties/${id}`), {
+    const res = await axios.put(apiBaseUrl(`specialties/${id}`), data, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, data)
+    })
     return res
   } catch (error) {
     return error
@@ -74,11 +74,11 @@ export const getPatientListBySpecialty = async (specialtyId) => {
 
 export const includePatientToWaitlist = async (specialtyId, data) => {
   try {
-    const res = await axios.post(apiBaseUrl(`waitlist/${specialtyId}`), {
+    const res = await axios.post(apiBaseUrl(`waitlist/${specialtyId}`), { patients: data }, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, { patients: data })
+    })
     return res.data
   } catch (error) {
     return error
@@ -87,11 +87,11 @@ export const includePatientToWaitlist = async (specialtyId, data) => {
 
 export const updateWaitlist = async (specialtyId, data) => {
   try {
-    const res = await axios.put(apiBaseUrl(`waitlist/${specialtyId}`), {
+    const res = await axios.put(apiBaseUrl(`waitlist/${specialtyId}`), { waitlistItems: data }, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, { waitlistItems: data })
+    })
     return res.data
   } catch (error) {
     return error

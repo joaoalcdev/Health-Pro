@@ -7,11 +7,11 @@ import { getTokenFromLocalStorage } from "../hooks/getTokenFromLocalStorage"
 
 export const addCompany = async (data) => {
   try {
-    const res = await axios.post(apiBaseUrl('company'), {
+    const res = await axios.post(apiBaseUrl('company'), data, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, data)
+    })
     return res
   } catch (error) {
     return error
@@ -20,11 +20,11 @@ export const addCompany = async (data) => {
 
 export const editCompany = async (companyId, data) => {
   try {
-    const res = await axios.put(apiBaseUrl(`company/${companyId}`), {
+    const res = await axios.put(apiBaseUrl(`company/${companyId}`), data, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, data)
+    })
     return res
   } catch (error) {
     return error
@@ -46,11 +46,11 @@ export const getCompanies = async () => {
 
 export const addExternalService = async (data) => {
   try {
-    const res = await axios.post(apiBaseUrl('external-service'), {
+    const res = await axios.post(apiBaseUrl('external-service'), data, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, data)
+    })
     return res
   } catch (error) {
     return error
@@ -59,11 +59,11 @@ export const addExternalService = async (data) => {
 
 export const editExternalService = async (externalServiceId, data) => {
   try {
-    const res = await axios.put(apiBaseUrl(`external-service/${externalServiceId}`), {
+    const res = await axios.put(apiBaseUrl(`external-service/${externalServiceId}`), data, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
-    }, data)
+    })
     return res
   } catch (error) {
     return error

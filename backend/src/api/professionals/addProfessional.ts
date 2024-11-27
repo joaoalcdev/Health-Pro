@@ -1,8 +1,11 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 export const AddProfessional = async (app: FastifyInstance) => {
-  app.post("/professionals", async (req: FastifyRequest, res: FastifyReply) => {
+  app.post("/professionals", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const {
         firstName,

@@ -2,11 +2,13 @@ import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
 import { createRecurringEvents, updateSingleEvent } from './eventsController';
 import moment from 'moment-timezone';
-
+import auth from "../../middlewares/auth";
 import 'moment/locale/pt-br';
 
 export const RescheduleEvents = async (app: FastifyInstance) => {
-  app.put("/event/reschedule/:id", async (req: FastifyRequest, res: FastifyReply) => {
+  app.put("/event/reschedule/:id", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try{
       const {id} = req.params as {id: string}
       var {

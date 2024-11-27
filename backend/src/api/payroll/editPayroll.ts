@@ -1,11 +1,12 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
-
+import auth from "../../middlewares/auth";
 import 'moment/locale/pt-br';
-import { MessagePort } from 'worker_threads';
 
 export const EditPayroll = async (app: FastifyInstance) => {
-  app.put("/editPayroll/:id", async (req: FastifyRequest, res: FastifyReply) => {
+  app.put("/editPayroll/:id", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try{
       const {id} = req.params as {id: string}
       const {

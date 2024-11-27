@@ -1,10 +1,12 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
 import moment from 'moment-timezone';
-
+import auth from "../../middlewares/auth";
 
 export const getExternalServices = async (app: FastifyInstance) => {
-  app.get("/external-services/:monthRange", async (req: FastifyRequest, res: FastifyReply) => {
+  app.get("/external-services/:monthRange", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
 
       var {monthRange } = req.params as {monthRange: string};

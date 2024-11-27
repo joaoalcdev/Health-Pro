@@ -1,11 +1,14 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
-import { supabase } from "../../supabaseConnection";
 import moment from 'moment-timezone';
 import { createInfinityEvents, createEvent, createRecurringEvents, createSingleEvent } from './eventsController';
 import 'moment/locale/pt-br';
+import auth from "../../middlewares/auth";
+
 
 export const AddEvents = async (app: FastifyInstance) => {
-  app.post("/events", async (req: FastifyRequest, res: FastifyReply) => {
+  app.post("/events", 
+    {preHandler: auth}, 
+    async (req: FastifyRequest, res: FastifyReply) => {
     try {
       var {
         patientId,

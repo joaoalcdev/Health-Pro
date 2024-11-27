@@ -1,8 +1,11 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 export const getPatient = async (app: FastifyInstance) => {
-  app.get("/patient/:id", async (req: FastifyRequest, res: FastifyReply) => {
+  app.get("/patient/:id", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       var arrayHistory = []
       const { id } = req.params as { id: string }

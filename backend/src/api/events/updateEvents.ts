@@ -1,11 +1,13 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
 import moment from 'moment-timezone';
-
+import auth from "../../middlewares/auth";
 import 'moment/locale/pt-br';
 
 export const UpdateEvents = async (app: FastifyInstance) => {
-  app.put("/eventInstance/:id", async (req: FastifyRequest, res: FastifyReply) => {
+  app.put("/eventInstance/:id", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try{
       const {id} = req.params as {id: string}
       const {

@@ -1,8 +1,11 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 export const UpdateProfessional = async (app: FastifyInstance) => {
-  app.put("/professional/:id", async (req: FastifyRequest, res: FastifyReply) => {
+  app.put("/professional/:id", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const {
         firstName,

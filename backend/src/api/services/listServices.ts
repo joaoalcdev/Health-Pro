@@ -1,8 +1,10 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 export const ListServices = async (app: FastifyInstance) => {
   app.get("/services",
+  {preHandler: auth}, 
   async (req: FastifyRequest, res: FastifyReply) => {
 
     var {specialtyId} = req.query as {specialtyId: string};

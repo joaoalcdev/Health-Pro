@@ -1,12 +1,15 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { supabase } from "../../supabaseConnection";
 import moment from 'moment';
+import auth from "../../middlewares/auth";
 
 const fs = require('fs');
 var pdf = require("pdf-creator-node");
 
 export const getPatientRecordsExport = async (app: FastifyInstance) => {
-  app.get("/patient/:id/records/:monthRange/export", async (req: FastifyRequest, res: FastifyReply) => {
+  app.get("/patient/:id/records/:monthRange/export", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       var { id, monthRange } = req.params as { id: string, monthRange: string }
       const month = moment(monthRange,"dd-MM-YYYY").format("MM/YYYY");

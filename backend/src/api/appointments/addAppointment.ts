@@ -1,9 +1,13 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
 import checkAvailability from '../../utils/checkAvailability';
+import auth from "../../middlewares/auth";
+
 
 export const AddAppointment = async (app: FastifyInstance) => {
-  app.post("/appointments", async (req: FastifyRequest, res: FastifyReply) => {
+  app.post("/appointments", 
+  {preHandler: auth}, 
+    async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const {
         patientId,

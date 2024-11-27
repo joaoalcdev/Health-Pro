@@ -1,8 +1,10 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 export const IncludePatientToWaitlist = async (app: FastifyInstance) => {
   app.post("/waitlist/:id",
+  {preHandler: auth}, 
   async (req: FastifyRequest, res: FastifyReply) => {
 
     const { patients } = req.body as { patients: number[] }

@@ -1,8 +1,11 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 export const AddExternalService = async (app: FastifyInstance) => {
-  app.post("/external-service", async (req: FastifyRequest, res: FastifyReply) => {
+  app.post("/external-service", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const {
         companyId,

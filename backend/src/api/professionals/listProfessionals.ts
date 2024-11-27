@@ -1,8 +1,10 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 export const ListProfessionals = async (app: FastifyInstance) => {
   app.get("/professionals/:deleted",
+  {preHandler: auth}, 
   async (req: FastifyRequest, res: FastifyReply) => {
    
     let { deleted } = req.params as { deleted: string }

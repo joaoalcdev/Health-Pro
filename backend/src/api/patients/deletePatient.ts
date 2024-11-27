@@ -1,12 +1,15 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase, supabaseAdmin } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 interface RequestParams {
   id: string;
 }
 
 export const DeletePatient = async (app: FastifyInstance) => {
-  app.delete("/patients/:id", async (req: FastifyRequest, res: FastifyReply) => {
+  app.delete("/patients/:id", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const { id } = req.params as { id: string }
 

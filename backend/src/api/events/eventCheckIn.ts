@@ -3,11 +3,13 @@ import { supabase } from "../../supabaseConnection";
 import moment from 'moment-timezone';
 import Jimp from 'jimp';
 import { createOngoingEvents } from '../events/eventsController';
-
+import auth from "../../middlewares/auth";
 import 'moment/locale/pt-br';
 
 export const EventCheckIn = async (app: FastifyInstance) => {
-  app.post("/checkIn/:id", async (req: FastifyRequest, res: FastifyReply) => {
+  app.post("/checkIn/:id", 
+    {preHandler: auth}, 
+    async (req: FastifyRequest, res: FastifyReply) => {
     const { id } = req.params as { id: string };  
     let {
       eventId,

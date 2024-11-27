@@ -2,6 +2,8 @@ import axios from "axios"
 import moment from "moment"
 
 import { apiBaseUrl } from "./apiConfig"
+import { getTokenFromLocalStorage } from "../hooks/getTokenFromLocalStorage"
+
 
 export const getPayroll = async (monthRange) => {
   try {
@@ -9,6 +11,9 @@ export const getPayroll = async (monthRange) => {
       {
         body: {
           monthRange: monthRange
+        },
+        headers: {
+          Authorization: `${getTokenFromLocalStorage()}`
         }
       }
     )
@@ -21,7 +26,11 @@ export const getPayroll = async (monthRange) => {
 
 export const editPayroll = async (eventId, data) => {
   try {
-    const res = await axios.put(apiBaseUrl(`editPayroll/${eventId}`), data)
+    const res = await axios.put(apiBaseUrl(`editPayroll/${eventId}`), {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    }, data)
     return res.data
   } catch (error) {
     return error
@@ -37,7 +46,10 @@ export const exportPayroll = async (data, monthRange) => {
       monthRange: monthRange
     },
       {
-        responseType: 'blob'
+        responseType: 'blob',
+        headers: {
+          Authorization: `${getTokenFromLocalStorage()}`
+        }
       }
     ).then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]))

@@ -1,9 +1,11 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
-import moment from 'moment-timezone';
+import auth from "../../middlewares/auth";
 
 export const ListEvents = async (app: FastifyInstance) => {
-  app.get("/events", async (req: FastifyRequest, res: FastifyReply) => {
+  app.get("/events", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       let { data, error } = await supabase
         .from("view_events")

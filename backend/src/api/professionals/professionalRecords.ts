@@ -1,9 +1,12 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { supabase } from "../../supabaseConnection";
 import moment from 'moment';
+import auth from "../../middlewares/auth";
 
 export const getProfessionalRecords = async (app: FastifyInstance) => {
-  app.get("/professional/:id/records/:monthRange", async (req: FastifyRequest, res: FastifyReply) => {
+  app.get("/professional/:id/records/:monthRange",
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       var { id, monthRange } = req.params as { id: string, monthRange: string }
       monthRange = moment(monthRange,"dd-MM-YYYY").format()

@@ -7,10 +7,8 @@ async function auth (req: FastifyRequest, res: FastifyReply){
     const {data, error} = await supabase.auth.getUser(token)
 
     if(!token || !data || error || data.user.role !== "authenticated") {
-      console.log("Unauthorized")
       return res.status(401).send({error: "Unauthorized"}) 
     }
-    console.log("Authorized")
 }
 
 export default auth

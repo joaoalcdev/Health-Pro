@@ -1,12 +1,15 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
 import moment from 'moment';
+import auth from "../../middlewares/auth";
 
 const fs = require('fs');
 var pdf = require("pdf-creator-node");
 
 export const exportPayroll = async (app: FastifyInstance) => {
-  app.post("/payroll/export", async (req: FastifyRequest, res: FastifyReply) => {
+  app.post("/payroll/export", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const {payrollData} = req.body as {payrollData: PayrollData}
       var { monthRange} = req.body as {monthRange: string} 

@@ -15,8 +15,10 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
 
 const supabaseAdmin = createClient(supabaseUrl, supabaseAdminKey, {
     auth: {
+        storageKey: supabaseAdminKey,
         persistSession: false,
     }
+
 })
 
 export { supabase, supabaseAdmin }

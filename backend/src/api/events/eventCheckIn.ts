@@ -1,5 +1,5 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
-import { supabase } from "../../supabaseConnection";
+import { supabase, supabaseAdmin } from "../../supabaseConnection";
 import moment from 'moment-timezone';
 import Jimp from 'jimp';
 import { createOngoingEvents } from '../events/eventsController';
@@ -26,8 +26,10 @@ export const EventCheckIn = async (app: FastifyInstance) => {
     });
     
     try {
+
+      
       //Upload signature to storage
-      const { data: fileData, error } = await supabase
+      const { data: fileData, error } = await supabaseAdmin
       .storage
       .from('cedejom')
       .upload(`signatures/sign${id}.png`, buffer as Buffer , { 

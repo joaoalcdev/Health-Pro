@@ -5,27 +5,27 @@ import moment from 'moment';
 const fs = require('fs');
 var pdf = require("pdf-creator-node");
 
-export const getPatientRecordsExport = async (app: FastifyInstance) => {
-  app.get("/patient/:id/records/:monthRange/export", async (req: FastifyRequest, res: FastifyReply) => {
+export const getProfessionalRecordsExport = async (app: FastifyInstance) => {
+  app.get("/professional/:id/records/:monthRange/export", async (req: FastifyRequest, res: FastifyReply) => {
     try {
       var { id, monthRange } = req.params as { id: string, monthRange: string }
       const month = moment(monthRange,"dd-MM-YYYY").format("MM/YYYY");
       monthRange = moment(monthRange,"dd-MM-YYYY").format();
 
-      //Get patient data
-      const { data: patientData, error:patientDataError } = await supabase
-        .from('patients')
+      //Get professional data
+      const { data: professionalData, error:professionalDataError } = await supabase
+        .from('view_professionals')
         .select()
         .eq('id', id)
       
-      if(patientDataError){
-        throw patientDataError;
+      if(professionalDataError){
+        throw professionalDataError;
       }
 
       const { data, error } = await supabase
         .from('view_events')
         .select('*')
-        .eq('patientId', id)
+        .eq('professionalId', id)
         .eq('eventStatus', 3)
         .gte('startTime', monthRange)
         .lte('startTime', moment(monthRange).endOf('month').format())
@@ -35,23 +35,23 @@ export const getPatientRecordsExport = async (app: FastifyInstance) => {
         throw error
       }
 
-      if (data && patientData) {
+      if (data && professionalData) {
         const url = 'https://mquovyisjfoocfacuxum.supabase.co/storage/v1/object/public/cedejom/';      
         const rebaseData = data.map((record: any, index) => {
           return {
             ...record,
             checkInSignature: `${url}${record.checkInSignature}`,
-            startTime: moment(record.startTime).format('DD/MM/YYYY - HH:mm'),
+            checkInDate: moment(record.checkInDate).format('DD/MM/YYYY - HH:mm a'),
+            startTime: moment(record.startTime).format('DD/MM/YYYY - HH:mm a'),
             index: index + 1	
           }
         })
-        const patient = {
-          ...patientData[0],
-          dateBirth: moment(patientData[0].birthDate).format('DD/MM/YYYY')
+        const professional = {
+          ...professionalData[0],
         }
 
        //get template html
-       var html = fs.readFileSync("src/templatePdf/templateFrequency.html", "utf8");
+       var html = fs.readFileSync("src/templatePdf/templateProfessionalFrequency.html", "utf8");
 
        //create pdf options
       var options = {
@@ -80,7 +80,7 @@ export const getPatientRecordsExport = async (app: FastifyInstance) => {
         html: html,
         data: {
           logo,
-          patient,
+          professional,
           records: rebaseData,
           month
         },

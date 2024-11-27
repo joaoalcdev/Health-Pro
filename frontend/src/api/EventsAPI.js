@@ -76,7 +76,7 @@ export const eventCheckIn = async (formData, eventInstanceId) => {
   try {
     const response = await axios.post(apiBaseUrl(`checkIn/${eventInstanceId}`), formData,
     )
-    return response
+    return response.data
   } catch (error) {
     return error
   }

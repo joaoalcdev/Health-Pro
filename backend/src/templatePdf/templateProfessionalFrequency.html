@@ -99,32 +99,30 @@
         </tr>
       </table>
       <div style="text-align: center">
-        <p style="font-size: larger">
+        <p style="font-size: larger; font-weight: 600">
           CONTROLE DE FREQUÊNCIA
           <span style="padding: 40px"> Período: {{ month }}</span>
         </p>
       </div>
       <p>
-        NOME: {{patient.fullName}}<br />
-        DATA NASC: {{patient.dateBirth}}
-        <span style="padding-left: 100px">
-          FONE:{{#ifCond patient.phoneNumber '&&' true }}
-          {{patient.phoneNumber}} {{/ifCond}}</span
+        NOME: {{professional.fullName}}<br />
+        ESPECIALIDADE: {{professional.specialtyName}}<br />
+
+        <span style="">
+          FONE:{{#ifCond professional.phoneNumber '&&' true }}
+          {{professional.phoneNumber}} {{/ifCond}}</span
         ><br />
-        RESPONSÁVEIS:{{#ifCond patient.maternalFiliation '&&' true }}
-        {{patient.maternalFiliation }} - {{patient.maternalFiliationContact}}
-        <br />{{/ifCond }} {{#ifCond patient.paternalFiliation '&&' true }}
-        {{patient.paternalFiliation}} - {{patient.paternalFiliationContact}}<br />
-        {{/ifCond }}<br />ENDEREÇO: {{patient.address}}, {{patient.region}} -
-        {{patient.city}}<br />
-        CONVÊNIO:
+        <span style="">
+          E-MAIL:{{#ifCond professional.email '&&' true }}
+          {{professional.email}} {{/ifCond}}</span
+        >
       </p>
       <table>
         <thead>
           <tr>
             <th>#</th>
-            <th>DATA ATENDIMENTO</th>
-            <th style="text-align: left">RESPONSÁVEL</th>
+            <th>ATENDIMENTO</th>
+            <th style="text-align: left">PACIENTE</th>
             <th style="text-align: center">ASSINATURA</th>
           </tr>
         </thead>
@@ -134,16 +132,17 @@
             <td style="text-align: center">{{ this.index }}</td>
             <td>
               {{ this.startTime }}<br />
-              {{ this.serviceName }}<br />
-              {{ this.professionalFirstName }} {{ this.professionalLastName }}
+              {{ this.serviceName }}
             </td>
-            <td style="text-align: left">{{ this.checkInName }}</td>
+            <td style="text-align: left">{{ this.patientFullName }}</td>
             <td style="text-align: center">
               <img
                 src="{{ this.checkInSignature }}"
                 alt="assinatura"
-                style="width: 200px; height: 30px"
+                style="width: 150px; height: 20px"
               />
+              <!-- <br /><br />
+              {{ this.checkInName }} - {{ this.checkInDate }} -->
             </td>
           </tr>
           {{/each}}

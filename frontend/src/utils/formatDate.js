@@ -8,5 +8,5 @@ export function formatDate(date) {
 
 export function formatDateTime(date) {
   date = new Date(date);
-  return moment(date).format('h:mm:ss a');
+  return moment(date).format('h:mm a');
 }

@@ -54,3 +54,30 @@ export const deleteProfessional = async (professional) => {
   }
 }
 
+export const getProfessionalRecords = async (professionalId, monthRange) => {
+  try {
+    const res = await axios.get(apiBaseUrl(`professional/${professionalId}/records/${monthRange}`))
+    return res.data
+  } catch (error) {
+    return error
+  }
+}
+
+export const getProfessionalRecordsExport = async (professionalId, monthRange, professionalFullName) => {
+
+  try {
+    const res = await axios.get(apiBaseUrl(`professional/${professionalId}/records/${monthRange}/export`), {
+      responseType: 'blob'
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `frequencia-${professionalFullName}-${monthRange}.pdf`)
+      document.body.appendChild(link)
+      link.click()
+    })
+    return res.data
+  } catch (error) {
+    return error
+  }
+}

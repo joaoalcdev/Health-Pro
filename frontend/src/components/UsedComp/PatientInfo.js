@@ -195,7 +195,7 @@ function PatientInfo({ titles, data, status }) {
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-main"></div>
       </div>
       :
-      !isEdit
+      isEdit === false
         ?
         <>
           <div className="grid grid-cols-1 gap-4" id='editPatient'>
@@ -216,7 +216,6 @@ function PatientInfo({ titles, data, status }) {
                     </div>
                   </div>
                 </div>
-
                 {(data.rg || data.cpf || data.dateBirth || data.bloodType || data.marital || data.gender) &&
                   <div className="grid sm:grid-cols-2 gap-4 w-full">
                     {/* RG */}
@@ -450,7 +449,7 @@ function PatientInfo({ titles, data, status }) {
                       </div>}
                   </div>}
               </div>
-            </form >
+            </form>
             {/* submit */}
             <div className="grid grid-cols-1 sm:grid-cols-1 gap-4 w-full" >
               <Button
@@ -459,7 +458,7 @@ function PatientInfo({ titles, data, status }) {
                 onClick={handleChange2Edit}
               />
             </div>
-          </div >
+          </div>
         </>
         :
 

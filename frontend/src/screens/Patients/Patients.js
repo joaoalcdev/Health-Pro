@@ -40,17 +40,19 @@ function Patients(superIndex) {
   const fetch = async () => {
     setLoading(true)
     const response = await getPatients(tab === 1 ? '' : 'true')
-    if (response.length === 0) {
+    if (response.status !== 200) {
       setNoData(true)
       setNoResult(true)
       setLoading(false)
       return
     }
-    setData(response)
-    setAllData(response)
-    setNoResult(false)
-    setLoading(false)
-    setStatus(false)
+    if (response.status === 200) {
+      setData(response.data)
+      setAllData(response.data)
+      setNoResult(false)
+      setLoading(false)
+      setStatus(false)
+    }
   }
 
   // dependencies

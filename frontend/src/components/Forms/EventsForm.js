@@ -59,11 +59,17 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
     const professionalsResponse = await getProfessionals()
     const servicesResponse = await getServices()
 
-    setPatientsData(patientsResponse)
-    setProfessionalsData(professionalsResponse)
-    setServicesData(servicesResponse)
-    setFilteredServices(servicesResponse)
-    setLoading(false)
+    if (patientsResponse.status !== 200 || professionalsResponse.status !== 200 || servicesResponse.status !== 200) {
+      setLoading(false);
+      return
+    }
+    if (patientsResponse.status === 200 && professionalsResponse.status === 200 && servicesResponse.status === 200) {
+      setPatientsData(patientsResponse.data)
+      setProfessionalsData(professionalsResponse.data)
+      setServicesData(servicesResponse.data)
+      setFilteredServices(servicesResponse.data)
+      setLoading(false)
+    }
 
   }
   useEffect(() => {

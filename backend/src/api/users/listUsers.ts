@@ -20,7 +20,11 @@ export const ListUsers = async (app: FastifyInstance) => {
         if (error) {
           throw error
         } else {
-          return res.status(200).send(data ? data : null)
+          return res.send({
+            status: 200,
+            data: data,
+            message: "Users listed successfully"
+          })
         }
       } else {
 
@@ -34,11 +38,19 @@ export const ListUsers = async (app: FastifyInstance) => {
       if (error) {
         throw error
       } else {
-        return res.status(200).send(data ? data : null)
+        return res.send({
+          status: 200,
+          data: data,
+          message: "Users listed successfully"
+        })
       }
     }
     } catch (error) {
-      return res.status(400).send(error)
+      return res.send
+      ({
+        status: 400,
+        message: error
+      })
     }
   })
 

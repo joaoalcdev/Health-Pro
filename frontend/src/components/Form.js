@@ -69,21 +69,26 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
                     <div className="flex flex-row justify-center items-center text-center w-full py-2">
                       <p className="text-sm text-black">Nenhum dado encontrado</p>
                     </div>
-                  ) :
-                    optionsListDatas.map((person) => (
-                      <ListboxOption
-                        key={person.name}
-                        value={person}
-                        className={clsx(
-                          "group flex items-center gap-2 rounded-lg py-1.5 px-3 transitions",
-                          'bg-white hover:bg-greyed hover:cursor-pointer',
-                          'data-[selected]:bg-subMain '
-                        )}
-                      >
-                        <HiCheck className="invisible size-4 fill-white group-data-[selected]:visible" />
-                        <div className="text-sm/6 group-data-[selected]:text-white text-black">{person.name}</div>
-                      </ListboxOption>
-                    ))}
+                  ) : (
+                    <>
+                      {
+                        optionsListDatas.map((person) => (
+                          <ListboxOption
+                            key={person.name}
+                            value={person}
+                            className={clsx(
+                              "group flex items-center gap-2 rounded-lg py-1.5 px-3 transitions",
+                              'bg-white hover:bg-greyed hover:cursor-pointer',
+                              'data-[selected]:bg-subMain '
+                            )}
+                          >
+                            <HiCheck className="invisible size-4 fill-white group-data-[selected]:visible" />
+                            <div className="text-sm/6 group-data-[selected]:text-white text-black">{person.name}</div>
+                          </ListboxOption>
+                        ))}
+                    </>
+                  )
+                  }
                 </ListboxOptions>
               )}
             </>

@@ -263,17 +263,6 @@ function AddPatientModal({ closeModal, isOpen, patient, datas, status }) {
                   />
                 </div>
                 <div className="flex w-full flex-col">
-                  {/* <InputFilterSelect
-                    label={'Tipo Sanguíneo'}
-                    color={true}
-                    selectedPerson={bloodType}
-                    setSelectedPerson={setBloodType}
-                    query={query}
-                    setQuery={setQuery}
-                    datas={bloodTypeFilter}
-                    iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
-                  >
-                  </InputFilterSelect> */}
                   <SelectListBox
                     label={'Tipo Sanguíneo'}
                     color={true}

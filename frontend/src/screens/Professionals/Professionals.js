@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BiPlus, BiChevronDown } from 'react-icons/bi';
 import Layout from '../../Layout';
-import { FilterSelect } from '../../components/Form';
+import { SelectListBox, InputFilterSelect } from '../../components/Form';
 import { useNavigate } from 'react-router-dom';
 import AddProfessionalModal from '../../components/Modals/AddProfessionalModal';
 import { getProfessionals } from '../../api/ProfessionalsAPI';
@@ -159,17 +159,14 @@ function Professionals() {
                 }}
                 className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
               />
-
-              <FilterSelect
+              <SelectListBox
+                label={''}
+                color={true}
                 selectedPerson={filterTerm}
                 setSelectedPerson={setFilterTerm}
                 datas={specialties}
-              >
-                <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
-                  <p>{filterTerm.name}</p>
-                  <BiChevronDown className="text-xl" />
-                </div>
-              </FilterSelect>
+                iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+              />
             </div>
             <div className="mt-8 w-full">
               {noResult ?

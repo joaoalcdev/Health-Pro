@@ -18,7 +18,7 @@ import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
 import { PatientsTable } from '../../components/Tables/PatientTable';
-import { FilterSelect } from '../../components/Form';
+import { SelectListBox, InputFilterSelect } from '../../components/Form';
 
 function Patients(superIndex) {
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ function Patients(superIndex) {
   const [status, setStatus] = useState(false);
 
   //filter and search controllers
-  const [filterTerm, setFilterTerm] = useState({ id: 0, fullName: "Todos profissionais" });
+  const [filterTerm, setFilterTerm] = useState({ id: 0, name: "Todos profissionais" });
 
 
   // api - get patients
@@ -375,16 +375,14 @@ function Patients(superIndex) {
                 }}
                 className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
               />
-              <FilterSelect
+              <SelectListBox
+                label={''}
+                color={true}
                 selectedPerson={filterTerm}
                 setSelectedPerson={setFilterTerm}
                 datas={professionals}
-              >
-                <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
-                  <p>{filterTerm.fullName}</p>
-                  <BiChevronDown className="text-xl" />
-                </div>
-              </FilterSelect>
+                iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
+              />
             </div>
             <div className="w-full">
               {noResult ?

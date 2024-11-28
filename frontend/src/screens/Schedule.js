@@ -7,7 +7,7 @@ import { HiOutlineViewGrid } from 'react-icons/hi';
 import { HiOutlineCalendarDays, HiOutlineBookOpen } from 'react-icons/hi2';
 import { getProfessionals } from '../api/ProfessionalsAPI';
 import { eventStatus } from '../components/Datas';
-import { FilterSelect, SelectListBox, InputFilterSelect } from '../components/Form';
+import { SelectListBox } from '../components/Form';
 import Drawer from 'react-modern-drawer';
 import EventsForm from '../components/Forms/EventsForm';
 import { getEventsFiltering, listEvents } from '../api/EventsAPI';
@@ -320,16 +320,6 @@ function Schedule() {
               datas={professionalsList}
               iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
             />
-            {/* <FilterSelect
-              selectedPerson={filterTerm}
-              setSelectedPerson={setFilterTerm}
-              datas={professionalsList}
-            >
-              <div className="h-14 w-full text-sm text-main rounded-md bg-white border border-border px-4 flex items-center justify-between">
-                <p>{filterTerm.name}</p>
-                <BiChevronDown className="text-xl" />
-              </div>
-            </FilterSelect> */}
           </div>
           <div className="flex gap-2 items-center">
 

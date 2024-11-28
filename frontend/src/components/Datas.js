@@ -1,7 +1,6 @@
 import { HiOutlineHome, HiOutlineMail, HiOutlineUsers } from 'react-icons/hi';
 
 import { TbChartHistogram, TbUsers } from 'react-icons/tb';
-import { getPatients } from '../api/PatientsAPI';
 import { AiOutlineNotification } from "react-icons/ai";
 import { FaRegCalendarAlt, FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
 import { RiFileList3Line, RiMoneyDollarCircleLine, RiServiceLine, RiUserHeartLine, RiUserLine } from 'react-icons/ri';

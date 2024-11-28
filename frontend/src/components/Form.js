@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
 // dependencies - libraries
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import clsx from 'clsx'
 
 // icons - import 
@@ -36,7 +36,7 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
         </Field>}
         {/* fragment component */}
         {/* <div className="mx-auto w-full"> */}
-        <Listbox value={selectedPerson} onChange={setSelectedPerson}>
+        <Listbox value={selectedPerson} onChange={setSelectedPerson} as={Fragment}>
           {({ open }) => (
             <>
               <ListboxButton
@@ -425,20 +425,20 @@ export function Select({ children, selectedPerson, setSelectedPerson, datas, max
       </Field>
       <div className="flex text-sm relative w-full">
         <div className="w-full">
-          <Listbox value={selectedPerson} onChange={setSelectedPerson}>
-            <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
-            <Listbox.Options className={`flex flex-col top-14 z-50 absolute left-0 w-full h-auto max-h-${maxHeigth ? maxHeigth : '25'} overflow-y-scroll bg-white rounded shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none`}>
+          <Listbox value={selectedPerson} onChange={setSelectedPerson} as={Fragment}>
+            <ListboxButton className={'w-full'}>{children}</ListboxButton>
+            <ListboxOptions className={`flex flex-col top-14 z-50 absolute left-0 w-full h-auto max-h-${maxHeigth ? maxHeigth : '25'} overflow-y-scroll bg-white rounded shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none`}>
               {
                 datas.length > 0 ?
                   datas.map((person) => (
-                    <Listbox.Option
+                    <ListboxOption
                       className={`flex relative cursor-pointer text-sm hover:text-subMain hover:bg-black rounded hover:bg-opacity-5 py-2 px-2`}
                       key={person.id}
                       value={person}
                       disabled={person.unavailable}
                     >
                       {person.name} {person.UF && `(${person.UF})`} {person.type && `(${person.type})`}
-                    </Listbox.Option>
+                    </ListboxOption>
                   ))
                   :
                   <div className='h-8 flex text-center items-center justify-center'>
@@ -447,7 +447,7 @@ export function Select({ children, selectedPerson, setSelectedPerson, datas, max
                     </p>
                   </div>
               }
-            </Listbox.Options>
+            </ListboxOptions>
           </Listbox>
         </div>
       </div>
@@ -460,20 +460,20 @@ export function FilterSelect({ children, selectedPerson, setSelectedPerson, data
   return (
     <div className="text-sm relative w-full ">
       <div className="w-full">
-        <Listbox value={selectedPerson} onChange={setSelectedPerson}>
-          <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
-          <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none">
+        <Listbox value={selectedPerson} onChange={setSelectedPerson} as={Fragment}>
+          <ListboxButton className={'w-full'}>{children}</ListboxButton>
+          <ListboxOptions className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none">
             {datas.map((person) => (
-              <Listbox.Option
+              <ListboxOption
                 className={`cursor-pointer text-xs hover:text-subMain hover:bg-black hover:bg-opacity-5 py-2 px-1`}
                 key={person.id}
                 value={person}
                 disabled={person.unavailable}
               >
                 {person.name} {person.UF && `(${person.UF})`} {person.type && `(${person.type})`}
-              </Listbox.Option>
+              </ListboxOption>
             ))}
-          </Listbox.Options>
+          </ListboxOptions>
         </Listbox>
       </div>
     </div>
@@ -484,20 +484,20 @@ export function SelectProfessional({ children, selectedPerson, setSelectedPerson
   return (
     <div className="text-sm relative w-full ">
       <div className="w-full">
-        <Listbox value={selectedPerson} onChange={setSelectedPerson}>
-          <Listbox.Button className={'w-full'}>{children}</Listbox.Button>
-          <Listbox.Options className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none">
+        <Listbox value={selectedPerson} onChange={setSelectedPerson} as={Fragment}>
+          <ListboxButton className={'w-full'}>{children}</ListboxButton>
+          <ListboxOptions className="flex flex-col top-14 z-50 absolute left-0 w-full h-[10rem] overflow-y-scroll bg-white rounded shadow-lg py-2 px-2 ring-1 ring-border focus:outline-none">
             {datas.map((person) => (
-              <Listbox.Option
+              <ListboxOption
                 className={`cursor-pointer text-sm hover:text-subMain hover:bg-black rounded hover:bg-opacity-5 py-2 px-2`}
                 key={person.id}
                 value={person}
                 disabled={person.unavailable}
               >
                 {person.firstName} {person.lastName} ({specialties.specialty[person.specialty - 1].name})
-              </Listbox.Option>
+              </ListboxOption>
             ))}
-          </Listbox.Options>
+          </ListboxOptions>
         </Listbox>
       </div>
     </div>

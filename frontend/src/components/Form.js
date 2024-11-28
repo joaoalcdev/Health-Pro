@@ -15,7 +15,7 @@ import DatePicker from 'react-datepicker';
 import { InputMask } from 'primereact/inputmask';
 import { InputNumber } from 'primereact/inputnumber';
 import CurrencyInput from '@ericblade/react-currency-input';
-import { Menu, Switch, Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Label, Field, ComboboxButton, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
+import { Menu, Switch, Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Label, Field, ComboboxButton, Listbox, ListboxButton, ListboxOption, ListboxOptions, MenuButton } from '@headlessui/react'
 
 // datas - import
 import { specialties, sortsDatas } from './Datas';
@@ -392,7 +392,7 @@ export function MenuSelect({ children, datas, item: data }) {
   return (
     <div className="text-sm w-full relative">
       <Menu>
-        <Menu.Button>{children}</Menu.Button>
+        <MenuButton>{children}</MenuButton>
         <Menu.Items className="flex flex-col z-50 gap-4 absolute right-0  bg-white rounded shadow-lg py-4 px-6 ring-1 ring-border focus:outline-none">
           {datas.map((item, index) => (
             <button

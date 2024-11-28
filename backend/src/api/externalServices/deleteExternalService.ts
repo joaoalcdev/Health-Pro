@@ -1,8 +1,11 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 export const DeleteExternalService = async (app: FastifyInstance) => {
-  app.delete("/external-service/:id", async (req: FastifyRequest, res: FastifyReply) => {
+  app.delete("/external-service/:id", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const { id } = req.params as Company
 

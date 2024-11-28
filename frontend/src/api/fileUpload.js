@@ -1,6 +1,8 @@
 import axios from "axios"
 
 import { apiBaseUrl } from "./apiConfig"
+import { getTokenFromLocalStorage } from "../hooks/getTokenFromLocalStorage"
+
 
 // File Upload
 
@@ -13,6 +15,7 @@ export const uploadFile = async (file) => {
       headers: {
         "Content-Type": "multipart/form-data",
         "file": "file",
+        Authorization: `${getTokenFromLocalStorage()}`
       },
     })
 

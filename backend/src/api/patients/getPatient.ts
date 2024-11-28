@@ -1,8 +1,11 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 export const getPatient = async (app: FastifyInstance) => {
-  app.get("/patient/:id", async (req: FastifyRequest, res: FastifyReply) => {
+  app.get("/patient/:id", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       var arrayHistory = []
       const { id } = req.params as { id: string }
@@ -18,8 +21,11 @@ export const getPatient = async (app: FastifyInstance) => {
         .eq('eventStatus', 3)
         .order('startTime', { ascending: false })
 
-      if (error || errorPatientHistory) {
+      if (error) {
         throw error
+      }
+      if (errorPatientHistory) {
+        throw errorPatientHistory
       }
       if (data) {
         if (patientHistory && patientHistory.length > 10) {
@@ -37,7 +43,10 @@ export const getPatient = async (app: FastifyInstance) => {
         })
       }
     } catch (error) {
-      return res.status(400).send(error)
+      return res.send({
+        status: 400,
+        message: error
+      })
     }
   })
 

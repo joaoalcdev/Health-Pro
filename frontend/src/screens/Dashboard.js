@@ -15,12 +15,14 @@ function Dashboard() {
 
   // api - get patients
   const fetchPatients = async () => {
-    const responseDataPatient = await getPatients();
-    if (responseDataPatient.length === 0) {
+    const response = await getPatients();
+    if (response.status !== 200) {
       return
     }
-    setDataPatient(responseDataPatient)
-    setStatus(false)
+    if (response.status === 200) {
+      setDataPatient(response.data)
+      setStatus(false)
+    }
   }
 
   // dependencies
@@ -57,6 +59,7 @@ function Dashboard() {
     const percent = (difference / total) * 100;
     return percent.toFixed(2);
   }
+
 
   const dashboardCards = [
     {

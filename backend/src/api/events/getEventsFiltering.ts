@@ -1,9 +1,12 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 import moment from 'moment-timezone';
 
 export const GetEventsFiltering = async (app: FastifyInstance) => {
-  app.get("/events/get",async (req: FastifyRequest, res: FastifyReply) => {
+  app.get("/events/get",
+    {preHandler: auth}, 
+    async (req: FastifyRequest, res: FastifyReply) => {
     
     var { 
       professionalId,

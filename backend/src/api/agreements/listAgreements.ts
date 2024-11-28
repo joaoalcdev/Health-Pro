@@ -1,8 +1,11 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
+
 
 export const ListAgreements = async (app: FastifyInstance) => {
   app.get("/agreements",
+    {preHandler: auth},
   async (req: FastifyRequest, res: FastifyReply) => {
     try {
         let { data, error } = await supabase

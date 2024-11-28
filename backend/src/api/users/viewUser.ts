@@ -1,12 +1,15 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 interface RequestParams {
   id: string;
 }
 
 export const ViewUser = async (app: FastifyInstance) => {
-  app.get("/user/:id", async (req: FastifyRequest, res: FastifyReply) => {
+  app.get("/user/:id", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const userId = (req.params as RequestParams).id;
 

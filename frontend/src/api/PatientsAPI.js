@@ -1,14 +1,17 @@
 import axios from "axios"
-import moment from "moment"
-
-
 import { apiBaseUrl } from "./apiConfig"
+import { getTokenFromLocalStorage } from "../hooks/getTokenFromLocalStorage"
+
 
 // Patients
 
 export const getPatients = async (showDeleted) => {
   try {
-    const res = await axios.get(apiBaseUrl(`patients/${showDeleted ? showDeleted : false}`))
+    const res = await axios.get(apiBaseUrl(`patients/${showDeleted ? showDeleted : false}`), {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     const data = res.data
     return data
   } catch (error) {
@@ -18,7 +21,11 @@ export const getPatients = async (showDeleted) => {
 
 export const createPatient = async (newPatient) => {
   try {
-    const data = await axios.post(apiBaseUrl('patients'), newPatient)
+    const data = await axios.post(apiBaseUrl('patients'), newPatient, {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     return data
   } catch (error) {
     return error
@@ -27,7 +34,11 @@ export const createPatient = async (newPatient) => {
 
 export const updatePatient = async (patientId, patient) => {
   try {
-    const data = await axios.put(apiBaseUrl(`patients/${patientId}`), patient)
+    const data = await axios.put(apiBaseUrl(`patients/${patientId}`), patient, {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     return data
   } catch (error) {
     return error
@@ -36,7 +47,11 @@ export const updatePatient = async (patientId, patient) => {
 
 export const getPatient = async (patientId) => {
   try {
-    const res = await axios.get(apiBaseUrl(`patient/${patientId}`))
+    const res = await axios.get(apiBaseUrl(`patient/${patientId}`), {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
 
     return res.data
   } catch (error) {
@@ -46,7 +61,11 @@ export const getPatient = async (patientId) => {
 
 export const deletePatient = async (patientId, patient) => {
   try {
-    const data = await axios.delete(apiBaseUrl(`patients/${patientId}`, patient))
+    const data = await axios.delete(apiBaseUrl(`patients/${patientId}`), patient, {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     if (data) {
       return data
     } else {
@@ -59,7 +78,11 @@ export const deletePatient = async (patientId, patient) => {
 
 export const recoveryPatient = async (patientId) => {
   try {
-    const data = await axios.put(apiBaseUrl(`patients/recovery/${patientId}`))
+    const data = await axios.put(apiBaseUrl(`patients/recovery/${patientId}`), {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     return data
   } catch (error) {
     return error
@@ -68,7 +91,11 @@ export const recoveryPatient = async (patientId) => {
 
 export const getPatientRecords = async (patientId, monthRange) => {
   try {
-    const res = await axios.get(apiBaseUrl(`patient/${patientId}/records/${monthRange}`))
+    const res = await axios.get(apiBaseUrl(`patient/${patientId}/records/${monthRange}`), {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     return res.data
   } catch (error) {
     return error
@@ -79,7 +106,10 @@ export const getPatientRecordsExport = async (patientId, monthRange, patientFull
 
   try {
     const res = await axios.get(apiBaseUrl(`patient/${patientId}/records/${monthRange}/export`), {
-      responseType: 'blob'
+      responseType: 'blob',
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
     }).then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]))
       const link = document.createElement('a')

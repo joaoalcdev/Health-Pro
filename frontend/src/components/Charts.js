@@ -104,12 +104,14 @@ export function DashboardBigChart() {
 
   // api - get patients
   const fetchPatients = async () => {
-    const responseDataPatient = await getPatients();
-    if (responseDataPatient.length === 0) {
-      return
+    const response = await getPatients();
+    if (response.status !== 200) {
+      return setStatus(true)
     }
-    setDataPatient(responseDataPatient)
-    setStatus(false)
+    if (response.status === 200) {
+      setDataPatient(response.data)
+      setStatus(false)
+    }
   }
 
   const months = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];

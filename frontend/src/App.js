@@ -33,8 +33,6 @@ import CreatePatient from './screens/Patients/CreatePatient';
 import EditPatient from './screens/Patients/EditPatient';
 import Professionals from './screens/Professionals/Professionals';
 import ProfessionalProfile from './screens/Professionals/ProfessionalProfile';
-import Doctors from './screens/Doctors/Doctors';
-import DoctorProfile from './screens/Doctors/DoctorProfile';
 import Receptions from './screens/Receptions';
 import NewMedicalRecode from './screens/Patients/NewMedicalRecode';
 import NotFound from './screens/NotFound';
@@ -97,9 +95,6 @@ function App() {
               <Route path="/professionals/preview/:id" element={<ProtectedRoute roleId={1}><ProfessionalProfile /></ProtectedRoute>} />
               {/* events */}
               <Route path="/events/details/:id" element={<ProtectedRoute roleId={1}><EventDetails /></ProtectedRoute>} />
-              {/* doctors */}
-              <Route path="/doctors" element={<ProtectedRoute roleId={1}><Doctors /></ProtectedRoute>} />
-              <Route path="/doctors/preview/:id" element={<ProtectedRoute roleId={1}><DoctorProfile /></ProtectedRoute>} />
               {/* reception */}
               <Route path="/receptions" element={<ProtectedRoute roleId={1}><Receptions /></ProtectedRoute>} />
               {/* others */}

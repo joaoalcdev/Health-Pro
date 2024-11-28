@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate()
   // create state values for user data and loading
   const [user, setUser] = useState();
+  const [session, setSession] = useState();
   const [loading, setLoading] = useState(true);
 
 
@@ -19,12 +20,14 @@ export const AuthProvider = ({ children }) => {
     // get session data if there is an active session
     const { session, user, error } = getSession()
 
+    console.log(session)
     if (error) {
       setUser(null)
       setLoading(false);
       return;
     } else if (session) {
       setUser(user);
+      setSession(session.session);
       setLoading(false);
       return;
     }
@@ -42,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     },
     setUser: (user) => { setUser(user) },
     user,
-
+    session: session,
   };
 
   // use a provider to pass down the value

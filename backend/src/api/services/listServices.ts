@@ -1,8 +1,10 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 export const ListServices = async (app: FastifyInstance) => {
   app.get("/services",
+  {preHandler: auth}, 
   async (req: FastifyRequest, res: FastifyReply) => {
 
     var {specialtyId} = req.query as {specialtyId: string};
@@ -32,10 +34,17 @@ export const ListServices = async (app: FastifyInstance) => {
           result = result ? result?.filter((item: any) => item.specialtyId == specialtyId) : null
       }
 
-        return res.status(200).send(result ? result : null)
+        return res.send({
+          status: 200,
+          data: result,
+          message: "Services listed successfully"
+        })
 
     } catch (error) {
-      return res.status(400).send(error)
+      return res.send({
+        status: 400,
+        message: error
+      })
     }
   })
 }

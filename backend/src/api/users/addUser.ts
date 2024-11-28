@@ -1,8 +1,11 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 export const AddUser = async (app: FastifyInstance) => {
-  app.post("/users", async (req: FastifyRequest, res: FastifyReply) => {
+  app.post("/users", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const {
         firstName,

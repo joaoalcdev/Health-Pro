@@ -1,8 +1,11 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 export const RecoveryUser = async (app: FastifyInstance) => {
-  app.put("/user/recovery/:id", async (req: FastifyRequest, res: FastifyReply) => {
+  app.put("/user/recovery/:id", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
 
       const { id } = req.params as { id: string }

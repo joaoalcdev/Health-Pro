@@ -27,7 +27,7 @@ export default function ExternalServiceForm({ onClose, status, companies }) {
     const response = await addExternalService({
       companyId: company.id,
       professionalName,
-      value: Number(value.replace('R$ ', '').replace(',', '.')),
+      value: Number(value.replace('R$ ', '').replace(',', '.').replace('.', '')),
       service,
       date: date.toISOString(),
     });

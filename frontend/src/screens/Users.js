@@ -14,6 +14,7 @@ import { recoveryUser } from '../api/UsersAPI';
 import Tab from '../components/Tab';
 
 function Users() {
+
   //data
   const [allData, setAllData] = React.useState([])
   const [data, setData] = React.useState([]);
@@ -37,15 +38,17 @@ function Users() {
   const fetch = async () => {
     setLoading(true)
     const response = await getUsers(tab === 1 ? '' : 'true')
-    if (response.length === 0) {
+    if (response.status !== 200) {
       setNoData(true)
       setNoResult(true)
       setLoading(false)
     }
-    setData(response)
-    setAllData(response)
-    setLoading(false)
-    setStatus(false)
+    if (response.status === 200) {
+      setData(response.data)
+      setAllData(response.data)
+      setLoading(false)
+      setStatus(false)
+    }
   }
 
   useEffect(() => {

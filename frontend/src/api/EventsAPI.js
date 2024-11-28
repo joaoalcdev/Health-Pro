@@ -1,9 +1,14 @@
 import axios from "axios"
 import { apiBaseUrl } from "./apiConfig"
+import { getTokenFromLocalStorage } from "../hooks/getTokenFromLocalStorage"
 
 export const listEvents = async () => {
   try {
-    const data = await axios.get(apiBaseUrl('events'))
+    const data = await axios.get(apiBaseUrl('events'), {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     return data
   } catch (error) {
     return error
@@ -13,7 +18,11 @@ export const listEvents = async () => {
 
 export const createEvents = async (newEvent) => {
   try {
-    const data = await axios.post(apiBaseUrl('events'), newEvent)
+    const data = await axios.post(apiBaseUrl('events'), newEvent, {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     return data
   } catch (error) {
     return error
@@ -22,7 +31,11 @@ export const createEvents = async (newEvent) => {
 
 export const rescheduleEvents = async (eventData, eventId) => {
   try {
-    const data = await axios.put(apiBaseUrl(`event/reschedule/${eventId}`), eventData)
+    const data = await axios.put(apiBaseUrl(`event/reschedule/${eventId}`), eventData, {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     return data
   } catch (error) {
     return error
@@ -31,7 +44,11 @@ export const rescheduleEvents = async (eventData, eventId) => {
 
 export const deleteEvents = async (appointmentId) => {
   try {
-    const response = await axios.delete(apiBaseUrl(`events/delete/${appointmentId}`))
+    const response = await axios.delete(apiBaseUrl(`events/delete/${appointmentId}`), {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     return response
   } catch (error) {
     return error
@@ -47,7 +64,11 @@ export const getEventsFiltering = async (professionalId, patientId, start, end) 
       `${patientId ? `patientId=${patientId}&` : ''}` +
       `${start ? `start=${start}&` : ''}` +
       `${end ? `end=${end}` : ''}`
-    ))
+    ), {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     return res.data
   } catch (error) {
     return error
@@ -56,7 +77,11 @@ export const getEventsFiltering = async (professionalId, patientId, start, end) 
 
 export const getEventById = async (id) => {
   try {
-    const data = await axios.get(apiBaseUrl(`events/${id}`))
+    const data = await axios.get(apiBaseUrl(`events/${id}`), {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     return data
   } catch (error) {
     return error
@@ -65,7 +90,11 @@ export const getEventById = async (id) => {
 
 export const updateEvent = async (data, eventInstanceId) => {
   try {
-    const response = await axios.put(apiBaseUrl(`eventInstance/${eventInstanceId}`), data)
+    const response = await axios.put(apiBaseUrl(`eventInstance/${eventInstanceId}`), data, {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     return response
   } catch (error) {
     return error
@@ -74,9 +103,13 @@ export const updateEvent = async (data, eventInstanceId) => {
 
 export const eventCheckIn = async (formData, eventInstanceId) => {
   try {
-    const response = await axios.post(apiBaseUrl(`checkIn/${eventInstanceId}`), formData,
+    const response = await axios.post(apiBaseUrl(`checkIn/${eventInstanceId}`), formData, {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    }
     )
-    return response
+    return response.data
   } catch (error) {
     return error
   }
@@ -84,7 +117,11 @@ export const eventCheckIn = async (formData, eventInstanceId) => {
 
 export const cancelEvent = async (eventInstanceId, data) => {
   try {
-    const response = await axios.put(apiBaseUrl(`cancelEvent/${eventInstanceId}`), data)
+    const response = await axios.put(apiBaseUrl(`cancelEvent/${eventInstanceId}`), data, {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     return response
   } catch (error) {
     return error
@@ -93,7 +130,11 @@ export const cancelEvent = async (eventInstanceId, data) => {
 
 export const dischargeEvent = async (data, eventId) => {
   try {
-    const response = await axios.put(apiBaseUrl(`discharge/${eventId}`), data)
+    const response = await axios.put(apiBaseUrl(`discharge/${eventId}`), data, {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
     return response
   } catch (error) {
     return error

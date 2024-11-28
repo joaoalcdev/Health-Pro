@@ -1315,7 +1315,7 @@ export const eventsTab = [
 ];
 
 
-export const doctorTab = [
+export const professionalTab = [
   {
     id: 1,
     title: 'Calendário',
@@ -1333,8 +1333,8 @@ export const doctorTab = [
   },
   {
     id: 4,
-    title: 'Pagamentos',
-    icon: RiMoneyDollarCircleLine,
+    title: 'Histórico/Frequência',
+    icon: TbChartHistogram,
   },
   // {
   //   id: 5,
@@ -1351,11 +1351,11 @@ export const doctorTab = [
   //   title: 'Change Password',
   //   icon: RiLockPasswordLine,
   // },
-  {
-    id: 8,
-    title: 'Pacientes',
-    icon: BiUserPlus,
-  }
+  // {
+  //   id: 8,
+  //   title: 'Pacientes',
+  //   icon: BiUserPlus,
+  // }
 ];
 
 export const medicalRecodData = [

@@ -1,8 +1,11 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
+import auth from "../../middlewares/auth";
 
 export const ListUsers = async (app: FastifyInstance) => {
-  app.get("/users/:deleted", async (req: FastifyRequest, res: FastifyReply) => {
+  app.get("/users/:deleted",
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     
     let { deleted } = req.params as { deleted: string }
     
@@ -17,7 +20,11 @@ export const ListUsers = async (app: FastifyInstance) => {
         if (error) {
           throw error
         } else {
-          return res.status(200).send(data ? data : null)
+          return res.send({
+            status: 200,
+            data: data,
+            message: "Users listed successfully"
+          })
         }
       } else {
 
@@ -31,11 +38,19 @@ export const ListUsers = async (app: FastifyInstance) => {
       if (error) {
         throw error
       } else {
-        return res.status(200).send(data ? data : null)
+        return res.send({
+          status: 200,
+          data: data,
+          message: "Users listed successfully"
+        })
       }
     }
     } catch (error) {
-      return res.status(400).send(error)
+      return res.send
+      ({
+        status: 400,
+        message: error
+      })
     }
   })
 

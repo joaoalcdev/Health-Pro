@@ -1,12 +1,15 @@
 import {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import { supabase } from "../../supabaseConnection";
 import moment from 'moment';
+import auth from "../../middlewares/auth";
 
 const fs = require('fs');
 var pdf = require("pdf-creator-node");
 
 export const exportPayroll = async (app: FastifyInstance) => {
-  app.post("/payroll/export", async (req: FastifyRequest, res: FastifyReply) => {
+  app.post("/payroll/export", 
+  {preHandler: auth}, 
+  async (req: FastifyRequest, res: FastifyReply) => {
     try {
       const {payrollData} = req.body as {payrollData: PayrollData}
       var { monthRange} = req.body as {monthRange: string} 
@@ -25,6 +28,8 @@ export const exportPayroll = async (app: FastifyInstance) => {
       
       //get template html
       var html = fs.readFileSync("src/templatePdf/template.html", "utf8");
+      const bitmap = fs.readFileSync("public/images/logo_cedejom.png");
+      const logo = bitmap.toString('base64');
 
       //create pdf options
       var options = {
@@ -32,15 +37,14 @@ export const exportPayroll = async (app: FastifyInstance) => {
         orientation: "portrait",
         border: "10mm",
         header: {
-            height: "20mm",
-            contents: `<h1 style="font-size: medium; text-align: center; text-transform: uppercase;">RELATÓRIO ${monthRange}</h1>`
+            height: "1mm",
+            contents: ``
         },
         footer: {
             height: "10mm",
             contents: {
                 first: '',
-                2: 'Second page', // Any page number is working. 1-based index
-                default: '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>', // fallback value
+                default: '', // fallback value
                 last: ''
             }
           }  
@@ -65,9 +69,11 @@ export const exportPayroll = async (app: FastifyInstance) => {
       var doocument = {
         html: html,
         data: {
+          logo,
           professionalData: professionalData[0],
           payrollData: {...payrollData, professionalAmountDue: payrollData.professionalAmountDue.toFixed(2)},
-          servicesData: servicesData
+          servicesData: servicesData,
+          month: monthRange
         },
         path: "./payroll.pdf", //path of pdf file on server
         type:'',

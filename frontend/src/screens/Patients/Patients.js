@@ -4,10 +4,11 @@ import { toast } from 'react-hot-toast';
 
 // data - api
 import { deletePatient, getPatients, recoveryPatient } from '../../api/PatientsAPI';
+import { getProfessionals } from '../../api/ProfessionalsAPI';
 
 // icons
 import { HiOutlineTrash, HiMiniUserGroup, HiOutlineClock, HiOutlinePlus, HiMiniCalendarDays } from "react-icons/hi2";
-import { BiLoaderCircle } from 'react-icons/bi';
+import { BiLoaderCircle, BiChevronDown } from 'react-icons/bi';
 
 // components
 import Layout from '../../Layout';
@@ -17,6 +18,7 @@ import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
 import { PatientsTable } from '../../components/Tables/PatientTable';
+import { FilterSelect } from '../../components/Form';
 
 function Patients(superIndex) {
   const navigate = useNavigate();
@@ -25,6 +27,7 @@ function Patients(superIndex) {
   const [allData, setAllData] = useState([])
   const [data, setData] = useState([]);
   const [patient, setPatient] = useState();
+  const [professionals, setProfessionals] = useState([]);
 
   // controllers
   const [isOpen, setIsOpen] = useState(false);
@@ -36,10 +39,45 @@ function Patients(superIndex) {
   const [tab, setTab] = useState(1);
   const [status, setStatus] = useState(false);
 
+  //filter and search controllers
+  const [filterTerm, setFilterTerm] = useState({ id: 0, fullName: "Todos profissionais" });
+
+
   // api - get patients
   const fetch = async () => {
     setLoading(true)
     const response = await getPatients(tab === 1 ? '' : 'true')
+    const professionals = await getProfessionals()
+    if (response.status !== 200 || professionals.status !== 200) {
+      setNoData(true)
+      setNoResult(true)
+      setLoading(false)
+      return
+    }
+    if (response.status === 200 && professionals.status === 200) {
+      setData(response.data)
+      setAllData(response.data)
+      const allProfessionals = professionals.data.map((item) => {
+        return {
+          ...item,
+          name: item.firstName + ' ' + item.lastName + ' (' + item.specialtyName + ')',
+        }
+      })
+      setProfessionals(allProfessionals)
+      setNoResult(false)
+      setLoading(false)
+      setStatus(false)
+    }
+  }
+
+  // dependencies
+  useEffect(() => {
+    fetch()
+  }, [status, tab])
+
+  const fetchPatients = async () => {
+    setLoading(true)
+    const response = await getPatients(tab === 1 ? '' : 'true', filterTerm.id === 0 ? '' : filterTerm.id)
     if (response.status !== 200) {
       setNoData(true)
       setNoResult(true)
@@ -55,10 +93,9 @@ function Patients(superIndex) {
     }
   }
 
-  // dependencies
   useEffect(() => {
-    fetch()
-  }, [status, tab])
+    fetchPatients()
+  }, [filterTerm])
 
   // api - preview patient
   const preview = (id) => {
@@ -150,6 +187,7 @@ function Patients(superIndex) {
   // tab controllers
   const onChangeTab = (index) => {
     index === 1 ? setTab(1) : setTab(2);
+    setFilterTerm({ id: 0, fullName: "Todos profissionais" });
     setSearchTerm("");
   };
 
@@ -328,7 +366,7 @@ function Patients(superIndex) {
             // data-aos-offset="200"
             className="bg-white my-8 rounded-xl border-[1px] border-border px-5"
           >
-            <div className="grid lg:grid-cols-5 grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2 pt-5">
+            <div className="grid lg:grid-cols-4 grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2 pt-5">
               <input
                 type="text"
                 placeholder='Pesquisar por paciente...'
@@ -337,18 +375,21 @@ function Patients(superIndex) {
                 }}
                 className="h-14 w-full text-sm text-main rounded-md bg-dry border border-border px-4"
               />
-              {/* <Button
-                label="Filtrar"
-                Icon={MdFilterList}
-                onClick={() => {
-                  toast.error('Filtros não disponíveis no momento', { position: 'top-center' });
-                }}
-              /> */}
+              <FilterSelect
+                selectedPerson={filterTerm}
+                setSelectedPerson={setFilterTerm}
+                datas={professionals}
+              >
+                <div className="h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
+                  <p>{filterTerm.fullName}</p>
+                  <BiChevronDown className="text-xl" />
+                </div>
+              </FilterSelect>
             </div>
             <div className="w-full">
               {noResult ?
                 <>
-                  <div className="bg-greyed pt-8 pb-8 flex items-center justify-center h-auto">
+                  <div className="bg-greyed mt-8 pt-8 pb-8 flex items-center justify-center h-auto">
                     <p className="text-sm text-main">Nenhum paciente encontrado</p>
                   </div>
                 </>

@@ -17,7 +17,11 @@ export const ListPatients = async (app: FastifyInstance) => {
         if (error) {
           throw error
         } else {
-          return res.status(200).send(data ? data : null)
+          return res.send({
+            status: 200,
+            data: data,
+            message: "Patients fetched successfully",
+          })
         }
       } else {
         const { data, error } = await supabase
@@ -28,11 +32,18 @@ export const ListPatients = async (app: FastifyInstance) => {
         if (error) {
           throw error
         } else {
-          return res.status(200).send(data ? data : null)
+          return res.send({
+            status: 200,
+            data: data,
+            message: "Patients fetched successfully",
+          })
         }
       }
     } catch (error) {
-      return res.status(400).send(error)
-    }
+      return res.send({
+        status: 400,
+        message: error,
+    })
+  }
   })
 }

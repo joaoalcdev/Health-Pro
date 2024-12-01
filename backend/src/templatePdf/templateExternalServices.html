@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relatório</title>
+
+    <!-- <link
+      href="https://unpkg.com/tailwindcss/dist/tailwind.min.css"
+      rel="stylesheet"
+    /> -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      table {
+        width: 100%;
+        background-color: gray-200;
+        border-collapse: collapse;
+        border: 1px solid black;
+      }
+      #header {
+        width: 100%;
+        margin: 0 auto;
+        border: none;
+        margin-bottom: 30px;
+      }
+
+      th {
+        border: 1px solid black;
+        text-align: left;
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+      td {
+        border: 1px solid black;
+        line-height: 1;
+        padding: 4px 8px;
+      }
+      tr:nth-child(even) {
+        border: 1px solid black;
+      }
+
+      #header-row {
+        border: none;
+        margin-left: 20px;
+      }
+
+      #header-column {
+        border: none;
+        margin-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <table id="header">
+        <tr id="header-row">
+          <th id="header-column" style="text-align: right; padding-right: 25px">
+            <img
+              width="150px"
+              src="data:image/png;base64,{{logo}}"
+              alt="Logo"
+            />
+          </th>
+          <th id="header-column">
+            <p
+              style="
+                font-size: medium;
+                font-weight: 600;
+                text-align: left;
+                line-height: 12px;
+              "
+            >
+              CENTRO DE EDUCAÇÃO ESPECIALIZADA JOÃO MARTINS
+            </p>
+            <p
+              style="
+                font-size: medium;
+                font-weight: 600;
+                text-align: left;
+                line-height: 12px;
+              "
+            >
+              Av. Cel. Araújo Lima, 321 - Centro, Russas - CE, 62900-000
+            </p>
+            <p
+              style="
+                font-size: medium;
+                font-weight: 600;
+                text-align: left;
+                line-height: 12px;
+              "
+            >
+              Telefone: (88) 3411-3610
+            </p>
+          </th>
+        </tr>
+      </table>
+      <div style="text-align: center">
+        <p style="font-size: larger; font-weight: 600">
+          SERVIÇOS EXTERNOS
+          <span style="padding-left: 40px"> Período: {{ month }}</span>
+        </p>
+      </div>
+      <p style="font-size: larger; font-weight: 600">Resumo:</p>
+
+      <table style="font-size: medium">
+        <thead>
+          <tr style="background-color: #bad8d1">
+            <th>EMPRESA</th>
+            <th>Quantidade</th>
+            <th style="text-align: center">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each summaryData}}
+          <tr>
+            <td>{{ this.companyName }}</td>
+            <td>{{ this.qty }}</td>
+            <td style="text-align: right">R$ {{ this.totalValue }}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+
+        <tfoot>
+          <tr style="background-color: #bad8d1; font-weight: bold">
+            <td>Total</td>
+            <td>{{ summary.qty }}</td>
+            <td style="text-align: right">R$ {{ summary.totalValue }}</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <br />
+      <p style="font-size: larger; font-weight: 600">Relatório de Serviços:</p>
+
+      <table>
+        <thead>
+          <tr style="background-color: #bad8d1">
+            <th>#</th>
+            <th>Empresa</th>
+
+            <th>Serviço</th>
+            <th style="text-align: left">Profissional</th>
+            <th style="text-align: center">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each externalServices}}
+          <tr>
+            <td style="text-align: center">{{ this.index }}</td>
+            <td>{{ this.companyName }}</td>
+            <td>
+              {{ this.date }}<br />
+              {{ this.serviceName }}
+            </td>
+            <td style="text-align: left">{{ this.professionalName }}</td>
+            <td style="text-align: right">R$ {{ this.value }}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

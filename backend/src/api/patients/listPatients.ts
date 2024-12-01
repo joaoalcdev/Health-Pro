@@ -33,18 +33,31 @@ export const ListPatients = async (app: FastifyInstance) => {
         if (professional) {
           const { data: eventsByProfessional, error: eventsByProfessionalError } = await supabase
             .from("view_events")
-            .select("patientId")
+            .select("id,patientId, startTime, eventStatus,serviceName")
             .eq("professionalId", professional)
             .eq("eventStatus",1)
+            .gte("startTime", new Date().toISOString()) 
+            .order("startTime", { ascending: true })
 
           if (eventsByProfessionalError) {
             throw eventsByProfessionalError
           }
           if(eventsByProfessional && patients){
             const patientsData = patients?.filter((patient: any) => eventsByProfessional.find((event: any) => event.patientId === patient.id))
+            const patientsWithNextEvent = patientsData.map((patient: any) => {
+              const nextEvent = eventsByProfessional.find((event: any) => {
+                if (event.patientId === patient.id) {
+                  return event
+                }
+              })
+              return {
+                ...patient,
+                nextEvent: nextEvent
+              }
+            })
             return res.send({
               status: 200,
-              data: patientsData,
+              data: patientsWithNextEvent,
               message: "Patients listed successfully"
             })
           }

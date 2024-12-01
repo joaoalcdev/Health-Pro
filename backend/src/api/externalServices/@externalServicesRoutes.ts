@@ -5,6 +5,7 @@ import { UpdateCompany } from './updateCompany';
 import { AddExternalService } from './addExternalService';
 import { getExternalServices } from './getExternalServices';
 import { DeleteExternalService } from './deleteExternalService';
+import { exportExternalServices } from './exportExternalServices';
 
 export const ExternalServicesRoutes =  async (app: FastifyInstance) => {
   app.register(AddCompany);
@@ -13,4 +14,5 @@ export const ExternalServicesRoutes =  async (app: FastifyInstance) => {
   app.register(AddExternalService);
   app.register(getExternalServices);
   app.register(DeleteExternalService);
+  app.register(exportExternalServices);
 }

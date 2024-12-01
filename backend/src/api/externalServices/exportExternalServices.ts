@@ -54,11 +54,13 @@ export const exportExternalServices = async (app: FastifyInstance) => {
               totalValue += element.value
             }
           });
-          externalServicesData.push({
-            companyName: company.name,
-            qty: qtyByCompany,
-            totalValue: totalValueByCompany.toFixed(2)
-          });
+          if(qtyByCompany > 0){
+            externalServicesData.push({
+              companyName: company.name,
+              qty: qtyByCompany,
+              totalValue: totalValueByCompany.toFixed(2)
+            });
+          }
         });
 
         const rebaseData = data.map((element: any, index) => {
@@ -115,10 +117,8 @@ export const exportExternalServices = async (app: FastifyInstance) => {
         //pdf creation function
         await pdf.create(doocument, options)
         .then((res: any) => {
-            console.log(res)
         })
         .catch((error: any) => {
-            console.error(error)
             throw error;
         });
   

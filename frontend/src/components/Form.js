@@ -360,11 +360,11 @@ export function OutLinedButton({ label, onClick, loading, Icon, type, disabled }
       className={`w-full flex-rows gap-4 transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} border border-subMain  text-subMain text-sm font-medium px-2 py-4 rounded`}
     >
       {loading ? (
-        <BiLoaderCircle className="animate-spin text-white text-xl" />
+        <BiLoaderCircle className="animate-spin text-subMain text-xl" />
       ) : (
         <>
           {label}
-          {Icon && <Icon className="text-white text-xl" />}
+          {Icon && <Icon className="text-subMain text-xl" />}
         </>
       )}
     </button>

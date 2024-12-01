@@ -15,7 +15,7 @@ import CompaniesForm from '../../components/Forms/CompaniesForm';
 import ExternalServiceForm from '../../components/Forms/ExternalServiceForm';
 
 // utils - import
-import { getCompanies, getExternalServices, removeExternalService } from '../../api/ExternalServicesAPI';
+import { getCompanies, getExternalServices, removeExternalService, exportExternalServices } from '../../api/ExternalServicesAPI';
 import toast from 'react-hot-toast';
 import { MonthlyPicker } from '../../components/Form';
 import { moneyFormat2BR } from '../../utils/moneyFormatBR';
@@ -96,11 +96,19 @@ function ExternalServices() {
       return;
     }
   }
+  const handleExport = async () => {
+    const res = await exportExternalServices(`01-${monthRange.getMonth() + 1}-${monthRange.getFullYear()}`);
+    if (res.status === 200) {
+      toast.success('Relatórios exportado com sucesso');
+      return;
+    }
+  }
+
 
   const tabPanel = () => {
     switch (activeTab) {
       case 1:
-        return <ExternalServicesSummary data={externalServices} companies={companies} setIsDrawerOpen={onClose} remove={handleRemove} />;
+        return <ExternalServicesSummary data={externalServices} companies={companies} setIsDrawerOpen={onClose} remove={handleRemove} handleExport={handleExport} />;
       case 2:
         return <Companies companies={companies} setIsDrawerOpen={onClose} setDrawerData={setDrawerData} status={() => setStatus(!status)} setIsEdit={setIsEdit} />;
       default:

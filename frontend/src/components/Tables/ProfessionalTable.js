@@ -14,7 +14,7 @@ export default function ProfessionalTable({ data, functions, professional, noDat
   const [records, setRecords] = useState(data)
   const [specialtyData, setSpecialtyData] = useState(specialties)
   const [currentPage, setCurrentPage] = useState(1); // current page
-  const recordsPerPage = 5
+  const recordsPerPage = 20
 
   return (noData ?
     <div className="text-center pb-10 text-lg text-main">Nenhum profissional encontrado.</div> :

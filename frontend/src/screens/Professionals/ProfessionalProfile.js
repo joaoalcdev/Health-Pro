@@ -23,6 +23,7 @@ import ScheduleUsed from '../../components/UsedComp/ScheduleUsed';
 import AppointmentsUsed from '../../components/UsedComp/AppointmentsUsed';
 import ProfessionalInfo from '../../components/UsedComp/ProfessionalInfo';
 import ProfessionalRecord from './ProfessionalRecord';
+import ProfessionalPatientList from './ProfessionalPatientList';
 
 
 
@@ -65,7 +66,7 @@ function ProfessionalProfile() {
       case 2:
         return <ProfessionalInfo data={professional} onStatus={onStatus} />;
       case 3:
-        return <AppointmentsUsed doctor={true} />;
+        return <ProfessionalPatientList professional={professional} />;
       case 4:
         return <ProfessionalRecord data={professional} />;
       default:

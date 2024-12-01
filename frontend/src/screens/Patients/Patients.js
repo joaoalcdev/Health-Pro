@@ -263,7 +263,7 @@ function Patients(superIndex) {
   // pagination states
   const [records, setRecords] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 5;
+  const recordsPerPage = 20;
 
   superIndex = (currentPage * recordsPerPage) - recordsPerPage;
 

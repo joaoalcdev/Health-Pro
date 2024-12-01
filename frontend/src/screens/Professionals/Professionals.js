@@ -150,7 +150,7 @@ function Professionals() {
             className="bg-white my-8 rounded-xl border-[1px] border-border p-5"
           >
 
-            <div className="grid md:grid-cols-6 sm:grid-cols-2 grid-cols-1 gap-2">
+            <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-2">
               <input
                 type="text"
                 placeholder='Pesquise por nome...'

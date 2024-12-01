@@ -1327,8 +1327,8 @@ export const professionalTab = [
   },
   {
     id: 3,
-    title: 'Agenda',
-    icon: BiCalendar,
+    title: 'Pacientes',
+    icon: TbUsers,
   },
   {
     id: 4,

@@ -95,3 +95,25 @@ export const removeExternalService = async (externalServiceId) => {
     return error
   }
 }
+
+export const exportExternalServices = async (monthRange) => {
+  try {
+    const res = await axios.get(apiBaseUrl(`external-services/${monthRange}/export`), {
+      responseType: 'blob',
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `serviços-externos-${monthRange}.pdf`)
+      document.body.appendChild(link)
+      link.click()
+      return { status: 200 }
+    })
+    return res
+  } catch (error) {
+    return error
+  }
+}

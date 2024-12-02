@@ -65,7 +65,8 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/testpagination" element={<TestPagination />} />
-              <Route path="/" element={<ProtectedRoute roleId={3}><Dashboard /></ProtectedRoute>} />
+              <Route path="/" element={<ProtectedRoute roleId={3}><Schedule /></ProtectedRoute>} />
+              <Route path="/schedule" element={<ProtectedRoute roleId={3}><Schedule /></ProtectedRoute>} />
               <Route path="/home" element={<ProtectedRoute roleId={3}><Dashboard /></ProtectedRoute>} />
               <Route path="/imageuploader" element={<ProtectedRoute roleId={3}><ImageUploader /></ProtectedRoute>} />
               {/* users */}
@@ -76,7 +77,7 @@ function App() {
               <Route path="/invoices/edit/:id" element={<ProtectedRoute roleId={1}><EditInvoice /></ProtectedRoute>} />
               <Route path="/invoices/preview/:id" element={<ProtectedRoute roleId={1}><PreviewInvoice /></ProtectedRoute>} />
               {/* waitlist */}
-              <Route path="/waitlist" element={<ProtectedRoute roleId={1}><Waitlist /></ProtectedRoute>} />
+              <Route path="/waitlist" element={<ProtectedRoute roleId={2}><Waitlist /></ProtectedRoute>} />
               {/* external services */}
               <Route path="/external-services" element={<ProtectedRoute roleId={1}><ExternalServices /></ProtectedRoute>} />
 
@@ -94,16 +95,16 @@ function App() {
               <Route path="/professionals" element={<ProtectedRoute roleId={1}><Professionals /></ProtectedRoute>} />
               <Route path="/professionals/preview/:id" element={<ProtectedRoute roleId={1}><ProfessionalProfile /></ProtectedRoute>} />
               {/* events */}
-              <Route path="/events/details/:id" element={<ProtectedRoute roleId={1}><EventDetails /></ProtectedRoute>} />
+              <Route path="/events/details/:id" element={<ProtectedRoute roleId={3}><EventDetails /></ProtectedRoute>} />
               {/* reception */}
               <Route path="/receptions" element={<ProtectedRoute roleId={1}><Receptions /></ProtectedRoute>} />
               {/* others */}
-              <Route path="/schedule" element={<ProtectedRoute roleId={3}><Schedule /></ProtectedRoute>} />
+
               <Route path="/campaigns" element={<ProtectedRoute roleId={1}><Campaings /></ProtectedRoute>} />
               <Route path="/medicine" element={<ProtectedRoute roleId={1}><Medicine /></ProtectedRoute>} />
               <Route path="/specialties" element={<ProtectedRoute roleId={1}><Specialties /></ProtectedRoute>} />
 
-              <Route path="/settings" element={<ProtectedRoute roleId={3}><Settings /></ProtectedRoute>} />
+              {/* <Route path="/settings" element={<ProtectedRoute roleId={3}><Settings /></ProtectedRoute>} /> */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </RootLayout>

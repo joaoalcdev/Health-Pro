@@ -81,7 +81,7 @@ button:focus {
 .rbc-month-header .rbc-header {
   font-size: 12px !important;
   color: #183253;
-  height: 50px;
+  height: 30px;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
@@ -89,6 +89,10 @@ button:focus {
   background-color: #f8f9fa;
   text-transform: capitalize !important;
 }
+.rbc-allday-cell {
+  display: none !important;
+}
+
 .rbc-agenda-table .rbc-header {
   font-size: 12px !important;
   color: #183253;

@@ -50,7 +50,7 @@ function Login() {
         localStorage.setItem("session", JSON.stringify(authUser));
         setUser(authUser.user)
         toast.success("Usuário logado com sucesso!")
-        navigate("/home");
+        navigate("/");
       } else {
         setEmail('')
         setPassword('')

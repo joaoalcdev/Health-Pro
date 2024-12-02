@@ -40,7 +40,15 @@ function ProfessionalRecord({ data }) {
   const exportFrequency = async () => {
     setExportLoading(true);
     const res = await getProfessionalRecordsExport(data.id, `01-${monthRange.getMonth() + 1}-${monthRange.getFullYear()}`, data.fullName);
-    setExportLoading(false);
+    if (res.status !== 200) {
+      toast.error('Erro ao exportar frequência');
+      setExportLoading(false);
+      return;
+    }
+    if (res.status === 200) {
+      toast.success('Frequência exportada com sucesso');
+      setExportLoading(false);
+    }
   }
 
   return (
@@ -63,6 +71,7 @@ function ProfessionalRecord({ data }) {
             <Button
               label="Exportar"
               Icon={BiExport}
+              disabled={records.length > 0 ? false : true}
               onClick={() => {
                 exportFrequency();
               }}

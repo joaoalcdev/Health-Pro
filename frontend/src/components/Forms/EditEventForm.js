@@ -102,7 +102,6 @@ export default function EditEventForm({ event, onStatus }) {
           thousandSeparator={'.'}
           value={profit}
           onChange={(e) => {
-            console.log(e.target.value)
             setProfit(Number(e.target.value.split('R$ ').join('').split('.').join('').split(',').join('.')))
             setDisabled(false);
           }}

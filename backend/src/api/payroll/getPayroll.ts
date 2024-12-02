@@ -130,7 +130,6 @@ export const getPayroll = async (app: FastifyInstance) => {
 
             groupByService = groupByService.filter((v,i,a)=>a.findIndex(t=>(t.serviceId === v.serviceId))===i).sort((a,b) => a.serviceId - b.serviceId)
 
-            //console.log(eventsByProfessionals)
             var qtyEvents = 0;
             groupByService = groupByService.map((event) => {
 
@@ -227,10 +226,6 @@ export const getPayroll = async (app: FastifyInstance) => {
           }
         })
 
-        
-        //console.log('==============  FIM ==============')
-
-        //console.log(rebaseData)
         return res.status(200).send(
           { 
             professionals: rebaseData,

@@ -122,7 +122,6 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
 
   const handleResetPassword = () => {
     setPassword("senha1234")
-    console.log(datas.id)
     toast.success("Senha redefinida com sucesso!")
   };
 

@@ -54,7 +54,6 @@ export default function SpecialtyForm({ onClose, datas, agreements, status, isEd
       return toast.error('Especialidade é obrigatória');
     }
 
-    console.log('prices', prices)
     const response = isEdit ? await updateSpecialties(datas.id, { name, status: check, prices })
       : await addSpecialties({ name, status: check, prices });
     if (response.code) {

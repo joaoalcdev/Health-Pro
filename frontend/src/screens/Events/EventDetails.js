@@ -37,7 +37,6 @@ function EventDetails() {
     }
     setEventData(response.data[0])
     setLoading(false)
-    //console.log(response.data[0])
   }
 
   useEffect(() => {
@@ -90,7 +89,6 @@ function EventDetails() {
                 eventData.serviceName}
         </h1>
       </div>
-      :
       {viewEditDrawer && (
         <>
           <Drawer

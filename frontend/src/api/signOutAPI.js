@@ -14,7 +14,6 @@ export const userSignOut = async () => {
       return data
     }
   } catch (error) {
-    console.log(error)
     return error
   }
 }

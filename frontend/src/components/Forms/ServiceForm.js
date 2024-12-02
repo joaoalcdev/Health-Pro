@@ -23,8 +23,6 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
   useEffect(() => {
     setSpecialty(specialties[1])
 
-    console.log(datas)
-
     //If isAdd so pricesData is filled with default prices
     let pricesData = agreements.map((price) => {
       return {

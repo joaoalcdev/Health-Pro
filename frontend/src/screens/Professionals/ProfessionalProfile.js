@@ -47,7 +47,6 @@ function ProfessionalProfile() {
       setProfessional(response.data);
       setLoading(false);
     }
-    console.log(response)
   }
 
   useEffect(() => {

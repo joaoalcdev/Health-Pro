@@ -28,14 +28,7 @@ function Header() {
   const navigate = useNavigate();
   const DropDown1 = [
     {
-      title: 'Profile',
-      icon: TbUser,
-      onClick: () => {
-        navigate('/settings');
-      },
-    },
-    {
-      title: 'Logout',
+      title: 'Sair',
       icon: AiOutlinePoweroff,
       onClick: () => { handleLogout() },
     },
@@ -57,15 +50,6 @@ function Header() {
         </div>
         <div className="md:col-span-1 sm:col-span-1 col-span-2 items-center justify-end pr-4 md:pr-0">
           <div className="float-right flex gap-4 items-center justify-center">
-            <NotificationComp>
-              <div className="relative">
-                <MdOutlineNotificationsNone className="text-2xl hover:text-subMain" />
-                <span className="absolute -top-2.5 -right-2.5 font-semibold bg-subMain rounded-full px-1.5 py-0.5 text-xs text-white text-center">
-                  5
-                </span>
-              </div>
-            </NotificationComp>
-
             <div className=" items-center md:flex hidden">
               <MenuSelect datas={DropDown1}>
                 <div className="flex gap-4 items-center p-4 rounded-lg">

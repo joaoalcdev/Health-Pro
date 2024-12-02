@@ -1,10 +1,10 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 
 // components - import
-import { useNavigate, Link, redirect } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import EventHistoryShimmer from '../../components/Loadings/EventHistoryShimmer';
 import { UsedEventPatientInfo } from './UsedEventPatientInfo';
@@ -27,7 +27,9 @@ import { getSpecialties } from '../../api/specialtiesAPI';
 import { LiaGenderlessSolid } from "react-icons/lia";
 import { LiaTintSolid } from "react-icons/lia";
 import { HiMiniCalendarDays } from "react-icons/hi2";
-import { HiOutlineCalendarDays, HiOutlineIdentification, HiMiniPencilSquare, HiOutlineCreditCard, HiOutlineHomeModern, HiArrowRightOnRectangle } from 'react-icons/hi2';
+import { HiOutlineCalendarDays, HiOutlineIdentification, HiMiniPencilSquare, HiOutlineCreditCard, HiOutlineHomeModern } from 'react-icons/hi2';
+import { IoIosArrowForward } from 'react-icons/io';
+import { BsEye } from 'react-icons/bs';
 
 
 function EventDetailsPatientInfo({ data, onStatus }) {
@@ -35,10 +37,10 @@ function EventDetailsPatientInfo({ data, onStatus }) {
   const [loading, setLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  //data
   const [patientHistory, setPatientHistory] = useState([]);
-
+  const [patientNextEvents, setPatientNextEvents] = useState([]);
   const [patientData, setPatientData] = useState([]);
-
   const [specialties, setSpecialties] = useState([]);
 
   const fetch = async () => {
@@ -47,14 +49,17 @@ function EventDetailsPatientInfo({ data, onStatus }) {
       const response = await getPatient(data.patientId)
       const specialtiesData = await getSpecialties()
       setLoading(false)
-      if (response.lenght === 0) {
+      if (response.status !== 200) {
         setLoading(false)
         return
       }
-      setLoading(false)
-      setSpecialties(specialtiesData)
-      setPatientData(response.data)
-      setPatientHistory(response.data.history)
+      if (response.status === 200) {
+        setLoading(false)
+        setSpecialties(specialtiesData)
+        setPatientData(response.data)
+        setPatientHistory(response.data.history)
+        setPatientNextEvents(response.data.nextEvents)
+      }
     }
   }
 
@@ -76,10 +81,10 @@ function EventDetailsPatientInfo({ data, onStatus }) {
             </div>
             <div className="flex">
               <button
-                className="flex items-center gap-2 px-6 py-2 border border-subMain hover:border-main rounded-md text-subMain hover:text-main transitions"
+                className="flex items-center gap-2 px-6 py-2 border border-subMain hover:opacity-80 rounded-md text-subMain transitions"
                 onClick={handleViewPatientsDetails}
               >
-                <HiMiniPencilSquare className="text-xl" />
+                <BsEye className="text-xl" />
                 <p className="font-normal">Ver detalhes</p>
               </button>
             </div>
@@ -133,15 +138,14 @@ function EventDetailsPatientInfo({ data, onStatus }) {
       >
         <TabList className="flex flex-col w-full justify-end md:flex-row md:w-full items-center gap-4 py-3">
           <div className='flex flex-col w-full justify-start md:flex-row md:w-full items-center'>
-            <h1 className='flex flex-col font-semibold text-2xl text-black text-center md:text-left w-full text-wrap'>{selectedIndex ? "Agendamentos futuros" : "Histórico de Agendamentos"}</h1>
+            <h1 className='flex flex-col font-semibold text-2xl text-black text-center md:text-left w-full text-wrap'>{selectedIndex ? "Próximos agendamentos" : "Histórico"}</h1>
           </div>
           <div className='flex flex-col sm:flex-row gap-1 md:gap-2'>
             <Tab as={Fragment}>
               {({ hover, selected }) => (
                 <button
-                  className={clsx("flex w-full justify-center items-center gap-1 px-4 py-1 md:gap-2 md:px-6 md:py-2 border border-subMain text-subMain bg-gray-100 hover:border-main hover:text-main hover:bg-white rounded-md text-nowrap transitions", hover && "", selected && "bg-subMain text-white")}
+                  className={clsx("flex w-full justify-center items-center gap-1 px-4 py-1 md:gap-2 md:px-6 md:py-2 border border-subMain text-subMain bg-gray-100 hover:opacity-80 rounded-md text-nowrap transitions", hover && "", selected && "bg-subMain text-white")}
                 >
-                  <HiMiniPencilSquare className="text-xl" />
                   <p className="font-normal text-center">Histórico</p>
                 </button>
               )}
@@ -149,10 +153,10 @@ function EventDetailsPatientInfo({ data, onStatus }) {
             <Tab as={Fragment}>
               {({ hover, selected }) => (
                 <button
-                  className={clsx("flex w-full justify-center items-center gap-1 px-4 py-1 md:gap-2 md:px-6 md:py-2 border border-subMain text-subMain bg-gray-100 hover:border-main hover:text-main hover:bg-white rounded-md text-nowrap transitions", hover && "", selected && "bg-subMain text-white")}
+                  className={clsx("flex w-full justify-center items-center gap-1 px-4 py-1 md:gap-2 md:px-6 md:py-2 border border-subMain text-subMain bg-gray-100 hover:opacity-80 rounded-md text-nowrap transitions", hover && "", selected && "bg-subMain text-white")}
                 >
                   <HiMiniCalendarDays className="text-xl" />
-                  <p className="font-normal text-center">Proximas consultas</p>
+                  <p className="font-normal text-center">Proximos agendamentos</p>
                 </button>
               )}
             </Tab>
@@ -168,7 +172,7 @@ function EventDetailsPatientInfo({ data, onStatus }) {
           <>
             <TabPanels>
               <TabPanel className={`flex flex-col w-full justify-center items-center space-y-2`}>
-                {patientHistory.length > 0 && patientHistory.map((item, index) => (
+                {patientHistory.length > 0 ? patientHistory.map((item, index) => (
                   <div key={index} className="flex w-full justify-center items-center bg-greyed hover:bg-gray-200 rounded-lg p-4 group transitions" >
                     <div className="w-full flex justify-center items-center">
                       <div className="flex flex-col sm:flex-col justify-center items-center ">
@@ -186,7 +190,7 @@ function EventDetailsPatientInfo({ data, onStatus }) {
                         </div>
                         {/* Tipo de evento */}
                         <div className="flex text-center flex-col justify-center items-center sm:items-start">
-                          <p className='flex text-sm text-gray-500'>{item.serviceName}</p>
+                          <p className='flex text-sm text-gray-500'>{item.eventType <= 3 ? item.serviceName : item.eventType === 4 ? 'Consulta' : 'Retorno'}</p>
                         </div>
                         {/* Data */}
                         <div className="flex text-center flex-col justify-center items-center sm:items-start">
@@ -199,7 +203,7 @@ function EventDetailsPatientInfo({ data, onStatus }) {
                           <span data-tooltip-id="my-tooltip" data-tooltip-content="Ver detalhes" className="text-subMain">
                             <button className="flex justify-center items-center rounded-lg">
                               <Link replace to={`/events/details/${item.eventInstanceId}`} target='_blank'>
-                                <h3><HiArrowRightOnRectangle className="text-2xl text-black" /></h3>
+                                <h3><IoIosArrowForward className="text-2xl text-subMain" /></h3>
                               </Link>
                             </button>
                           </span>
@@ -208,12 +212,58 @@ function EventDetailsPatientInfo({ data, onStatus }) {
                       </div>
                     </div>
                   </div>
-                ))}
+                )) :
+                  <div>
+                    <p className="mt-8 text-black">Nenhum agendamento encontrado</p>
+                  </div>
+                }
               </TabPanel>
               <TabPanel className={`flex flex-col w-full justify-center items-center space-y-2`}>
-                <div className="flex">
-                  <p className="text-black">Proximas consultas</p>
-                </div>
+                {patientNextEvents.length > 0 ? patientNextEvents.map((item, index) => (
+                  <div key={index} className="flex w-full justify-center items-center bg-greyed hover:bg-gray-200 rounded-lg p-4 group transitions" >
+                    <div className="w-full flex justify-center items-center">
+                      <div className="flex flex-col sm:flex-col justify-center items-center ">
+                        <p className='flex justify-center items-center text-center bg-subMain size-9 group-hover:bg-opacity-85 text-white rounded-lg'>{(index + 1)}</p>
+                      </div>
+                      <div className="grid grid-cols-3 sm:grid-cols-3 gap-4 w-full justify-items-center">
+                        <div className="flex text-center flex-col justify-start items-center sm:items-start">
+                          <p className='flex text-sm text-black'>
+                            {specialties.find((specialty) => {
+                              if (specialty.id === item.specialtyId) {
+                                return specialty
+                              }
+                            }).name}</p>
+                          <p className='flex text-xs text-gray-500'>{item.professionalFirstName} {item.professionalLastName}</p>
+                        </div>
+                        {/* Tipo de evento */}
+                        <div className="flex text-center flex-col justify-center items-center sm:items-start">
+                          <p className='flex text-sm text-gray-500'>{item.eventType <= 3 ? item.serviceName : item.eventType === 4 ? 'Consulta' : 'Retorno'}</p>
+                        </div>
+                        {/* Data */}
+                        <div className="flex text-center flex-col justify-center items-center sm:items-start">
+                          <p className='flex text-sm text-gray-500'>{formatDate(item.startTime)}</p>
+                        </div>
+                      </div>
+                      <div className="flex flex-col justify-center items-center">
+                        <div className="w-6 h-6 cursor-pointer">
+                          {/* button redirect event */}
+                          <span data-tooltip-id="my-tooltip" data-tooltip-content="Ver detalhes" className="text-subMain">
+                            <button className="flex justify-center items-center rounded-lg">
+                              <Link replace to={`/events/details/${item.eventInstanceId}`} target='_blank'>
+                                <h3><IoIosArrowForward className="text-2xl text-subMain" /></h3>
+                              </Link>
+                            </button>
+                          </span>
+                          <Tooltip id="my-tooltip" className="!bg-subMain border-2 border-subMain" arrowColor="text-gray-300" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )) :
+                  <div>
+                    <p className="mt-8 text-black">Nenhum agendamento encontrado</p>
+                  </div>
+                }
               </TabPanel>
             </TabPanels>
           </>

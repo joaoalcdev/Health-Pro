@@ -46,7 +46,6 @@ function Login() {
     setLoading(true);
     try {
       const authUser = await userSignIn({ email, password });
-      console.log("authUser", authUser);
       if (authUser.session) {
         localStorage.setItem("session", JSON.stringify(authUser));
         setUser(authUser.user)
@@ -56,10 +55,10 @@ function Login() {
         setEmail('')
         setPassword('')
         setLoading(false)
-        toast.error(authUser.response.data.message)
+        toast.error('Não foi possível fazer login, verifique suas credenciais!')
       }
     } catch (error) {
-      console.log("Erro", error);
+      console.log('Não foi possível fazer login, verifique suas credenciais!');
     }
   };
 

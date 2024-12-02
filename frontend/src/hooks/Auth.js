@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }) => {
     // get session data if there is an active session
     const { session, user, error } = getSession()
 
-    console.log(session)
     if (error) {
       setUser(null)
       setLoading(false);
@@ -39,7 +38,6 @@ export const AuthProvider = ({ children }) => {
     signOut: async () => {
       const data = await userSignOut()
       if (data.status === 200) {
-        console.log(data.data)
         navigate("/login")
       }
     },

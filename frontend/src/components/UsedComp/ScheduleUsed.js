@@ -216,8 +216,6 @@ function ScheduleUsed() {
           ...item
         }
       })
-
-      console.log(rebaseData)
       setEventsData(rebaseData)
       setStatus(false)
       setLoading(false);

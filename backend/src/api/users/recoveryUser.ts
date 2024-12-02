@@ -16,8 +16,6 @@ export const RecoveryUser = async (app: FastifyInstance) => {
           deletedAt: null
         }).eq("id", id).select()
 
-        console.log(User? User[0].id : null)
-
         if(error) {
           throw error
         } else if((User[0] as unknown as { roleId: number }).roleId === 3){

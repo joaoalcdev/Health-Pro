@@ -2,7 +2,6 @@
 import { useState } from 'react';
 
 // components 
-import Pagination from '../Pagination';
 import AddPatientModal from '../Modals/AddPatientModal';
 
 // icons

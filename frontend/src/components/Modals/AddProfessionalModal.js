@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 // components - import
 import { toast } from 'react-hot-toast';
 import Modal from './Modal';
-import { Button, Input, Select, InputMaskComp, SelectListBox, InputFilterSelect } from '../Form';
+import { Button, Input, InputMaskComp, SelectListBox, InputFilterSelect } from '../Form';
 
 // datas - import
 import { sortsDatas, brStateDatas, councilDatas, genderDatas } from '../Datas';

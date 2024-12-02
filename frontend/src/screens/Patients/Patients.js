@@ -18,7 +18,7 @@ import ConfirmationModal from '../../components/Modals/ConfirmationModal';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
 import { PatientsTable } from '../../components/Tables/PatientTable';
-import { SelectListBox, InputFilterSelect } from '../../components/Form';
+import { SelectListBox } from '../../components/Form';
 
 function Patients(superIndex) {
   const navigate = useNavigate();

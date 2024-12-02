@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { Input, Button, Toggle } from '../Form';
 import { toast } from 'react-hot-toast';

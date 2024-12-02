@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { CurrencyInputMask, Button, CurrencyInputField } from "../Form";
+import { useState } from "react";
+import { Button, CurrencyInputField } from "../Form";
 import { editPayroll } from "../../api/PaymentsAPI";
 import toast from "react-hot-toast";
 

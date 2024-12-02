@@ -1,18 +1,17 @@
 // dependencies - import
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 // components - import 
-import { Button, DatePickerComp, Input, Select } from '../Form';
+import { Button, DatePickerComp, Input } from '../Form';
 import { toast } from 'react-hot-toast';
 import { InputMaskComp, SelectListBox, InputFilterSelect } from '../Form';
 
 // datas - import
-import { sortsDatas, bloodTypeFilter } from '../Datas';
+import { sortsDatas } from '../Datas';
 import { brStateDatas, genderDatas, maritalDatas, insuranceDatas } from '../Datas';
 
 // api - import
-import { updatePatient, getPatient } from '../../api/PatientsAPI';
+import { updatePatient } from '../../api/PatientsAPI';
 
 
 // icons - import

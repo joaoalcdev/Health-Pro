@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BiPlus, BiChevronDown } from 'react-icons/bi';
 import Layout from '../../Layout';
-import { SelectListBox, InputFilterSelect } from '../../components/Form';
+import { SelectListBox } from '../../components/Form';
 import { useNavigate } from 'react-router-dom';
 import AddProfessionalModal from '../../components/Modals/AddProfessionalModal';
 import { getProfessionals } from '../../api/ProfessionalsAPI';

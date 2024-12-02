@@ -9,9 +9,6 @@ import Layout from '../../Layout';
 import PatientRecord from './PatientRecord';
 import { Link, useParams } from 'react-router-dom';
 import PatientInfo from '../../components/UsedComp/PatientInfo';
-import InvoiceUsed from '../../components/UsedComp/InvoiceUsed';
-import PaymentsUsed from '../../components/UsedComp/PaymentUsed';
-import AppointmentsUsed from '../../components/UsedComp/AppointmentsUsed';
 
 // datas - import
 import { patientTab } from '../../components/Datas';
@@ -63,8 +60,6 @@ function PatientProfile() {
         return <PatientInfo titles={false} data={patientData} status={setStatus} />;
       case 2:
         return <PatientRecord data={patientData} />;
-      case 3:
-        return <AppointmentsUsed doctor={false} />;
       default:
         return;
     }

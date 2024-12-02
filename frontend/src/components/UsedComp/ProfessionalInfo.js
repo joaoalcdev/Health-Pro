@@ -47,26 +47,6 @@ function ProfessionalInfo({ data, onStatus }) {
   const [council, setCouncil] = useState(data.council ? councilDatas.council[data.council - 1] : '');
   const [councilNumber, setCouncilNumber] = useState(data.councilNumber || '');
 
-  //set data on edit mode
-  // useEffect(() => {
-  //   setFullName(data.fullName);
-  //   setFirstName(data.firstName);
-  //   setLastName(data.lastName);
-  //   setPhoneNumber(data.phoneNumber);
-  //   setEmail(data.email);
-  //   setAddress(data.address);
-  //   setRegion(data.region);
-  //   setCity(data.city);
-  //   setState(brStateDatas.states[data.state - 1]);
-  //   setRg(data.rg);
-  //   setRgInssuance(data.rgInssuance);
-  //   setCpf(data.cpf);
-  //   setGender(genderDatas.gender[data.gender - 1]);
-  //   setSpecialty(specialties.specialty[data.specialty - 1]);
-  //   setCouncil(councilDatas.council[data.council - 1]);
-  //   setCouncilNumber(data.councilNumber);
-  // }, [data]);
-
   //check if the data has changed in order to enable the save button
   useEffect(() => {
 

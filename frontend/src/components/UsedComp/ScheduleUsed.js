@@ -10,11 +10,11 @@ import { HiOutlineBookOpen, HiOutlineUserPlus, HiOutlineUser, HiOutlinePuzzlePie
 import { HiOutlineViewGrid } from 'react-icons/hi';
 
 // API's - imports
-import { getProfessionalById, getProfessionals } from '../../api/ProfessionalsAPI';
+import { getProfessionalById } from '../../api/ProfessionalsAPI';
 import { getEventsFiltering, listEvents } from '../../api/EventsAPI';
 
 // datas - imports
-import { eventTypes, eventStatus } from '../Datas';
+import { eventStatus } from '../Datas';
 
 // components - imports
 import { Calendar, momentLocalizer } from 'react-big-calendar';

@@ -3,7 +3,6 @@ import { Button } from '../../components/Form';
 import { BiExport } from 'react-icons/bi';
 import { toast } from 'react-hot-toast';
 import { MdFilterList } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
 import { getProfessionalRecords, getProfessionalRecordsExport } from '../../api/ProfessionalsAPI';
 import { MonthlyPicker } from '../../components/Form';
 import { formatDate, formatDateTime } from '../../utils/formatDate';

@@ -6,7 +6,6 @@ import { getTokenFromLocalStorage } from "../hooks/getTokenFromLocalStorage"
 //Users
 export const getUsers = async (showDeleted) => {
   try {
-    // const res = await axios.get(`${apiBaseUrl}`)
     const res = await axios.get(apiBaseUrl(`users/${showDeleted ? showDeleted : false}`), {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`

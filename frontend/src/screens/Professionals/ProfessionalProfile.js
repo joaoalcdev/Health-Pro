@@ -20,7 +20,6 @@ import { professionalTab } from '../../components/Datas';
 // components - imports
 import Layout from '../../Layout';
 import ScheduleUsed from '../../components/UsedComp/ScheduleUsed';
-import AppointmentsUsed from '../../components/UsedComp/AppointmentsUsed';
 import ProfessionalInfo from '../../components/UsedComp/ProfessionalInfo';
 import ProfessionalRecord from './ProfessionalRecord';
 import ProfessionalPatientList from './ProfessionalPatientList';

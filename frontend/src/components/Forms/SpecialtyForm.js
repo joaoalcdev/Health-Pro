@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { HiChevronDoubleRight } from 'react-icons/hi';
 import { FaTimes } from 'react-icons/fa';
 import { Input, Button, Toggle, CurrencyInputMask } from '../Form';
 import { toast } from 'react-hot-toast';
 import { addSpecialties, updateSpecialties } from '../../api/specialtiesAPI';
 import 'moment/locale/pt-br';
-import { set } from 'react-hook-form';
 
 export default function SpecialtyForm({ onClose, datas, agreements, status, isEdit }) {
 

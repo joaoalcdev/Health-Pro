@@ -7,7 +7,7 @@ import AddUserModal from '../components/Modals/AddUserModal';
 import ViewUserModal from '../components/Modals/ViewUserModal';
 import ConfirmationModal from '../components/Modals/ConfirmationModal';
 import { deleteUser, getUsers } from '../api/UsersAPI';
-import { SelectListBox, InputFilterSelect } from '../components/Form';
+import { SelectListBox } from '../components/Form';
 import { roleOptions } from '../components/Datas';
 import { BiChevronDown, BiLoaderCircle } from 'react-icons/bi';
 import { recoveryUser } from '../api/UsersAPI';

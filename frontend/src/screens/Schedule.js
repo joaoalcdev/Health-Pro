@@ -10,7 +10,7 @@ import { eventStatus } from '../components/Datas';
 import { SelectListBox } from '../components/Form';
 import Drawer from 'react-modern-drawer';
 import EventsForm from '../components/Forms/EventsForm';
-import { getEventsFiltering, listEvents } from '../api/EventsAPI';
+import { getEventsFiltering } from '../api/EventsAPI';
 import ViewEventModal from '../components/Modals/ViewEventModal';
 import 'moment/locale/pt-br';
 

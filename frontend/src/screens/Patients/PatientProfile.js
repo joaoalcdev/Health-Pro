@@ -9,6 +9,7 @@ import Layout from '../../Layout';
 import PatientRecord from './PatientRecord';
 import { Link, useParams } from 'react-router-dom';
 import PatientInfo from '../../components/UsedComp/PatientInfo';
+import PatientFutureEvents from './PatientFutureEvents';
 
 // datas - import
 import { patientTab } from '../../components/Datas';
@@ -60,6 +61,8 @@ function PatientProfile() {
         return <PatientInfo titles={false} data={patientData} status={setStatus} />;
       case 2:
         return <PatientRecord data={patientData} />;
+      case 3:
+        return <PatientFutureEvents datas={patientData.nextEvents} />;
       default:
         return;
     }

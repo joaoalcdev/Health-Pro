@@ -450,12 +450,15 @@ function PatientInfo({ titles, data, status }) {
               </div>
             </form>
             {/* submit */}
-            <div className="grid grid-cols-1 sm:grid-cols-1 gap-4 w-full" >
-              <Button
-                label={'Editar Informações'}
-                Icon={HiMiniPencilSquare}
-                onClick={handleChange2Edit}
-              />
+            <div className="grid lg:grid-cols-2 grid-cols-1 gap-4" >
+              <div className='w-full lg:col-start-2 '>
+                <Button
+                  label={'Editar'}
+                  Icon={HiMiniPencilSquare}
+                  onClick={handleChange2Edit}
+                  className='w-full'
+                />
+              </div>
             </div>
           </div>
         </>

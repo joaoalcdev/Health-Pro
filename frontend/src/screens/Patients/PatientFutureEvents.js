@@ -22,6 +22,8 @@ function PatientFutureEvents({ datas }) {
                 <div className="grid grid-cols-3 sm:grid-cols-3 gap-4 w-full justify-items-center">
                   <div className="flex text-center flex-col justify-center items-center sm:items-start">
                     <p className='flex text-sm text-main'>{item.professionalFirstName} {item.professionalLastName}</p>
+                    <p className='flex text-xs text-gray-500'>{item.specialtyName}</p>
+
                   </div>
                   {/* Tipo de evento */}
                   <div className="flex text-center flex-col justify-center items-center sm:items-start">

@@ -22,12 +22,11 @@ import { genderDatas, insuranceDatas, sortsDatas } from '../../components/Datas'
 import { getPatient } from '../../api/PatientsAPI';
 import { getSpecialties } from '../../api/specialtiesAPI';
 
-
 // icons - import
 import { LiaGenderlessSolid } from "react-icons/lia";
 import { LiaTintSolid } from "react-icons/lia";
 import { HiMiniCalendarDays } from "react-icons/hi2";
-import { HiOutlineCalendarDays, HiOutlineIdentification, HiMiniPencilSquare, HiOutlineCreditCard, HiOutlineHomeModern } from 'react-icons/hi2';
+import { HiOutlineCalendarDays, HiOutlineIdentification, HiOutlineCreditCard, HiOutlineHomeModern } from 'react-icons/hi2';
 import { IoIosArrowForward } from 'react-icons/io';
 import { BsEye } from 'react-icons/bs';
 

@@ -12,7 +12,6 @@ import { FiAlertTriangle } from "react-icons/fi";
 import { HiOutlineCheckCircle } from 'react-icons/hi';
 import { toast } from 'react-hot-toast';
 import { formatDate, formatDateTime } from '../../utils/formatDate';
-import { rescheduleAppointment, deleteAppointment } from '../../api/AppointmentsAPI';
 import { weekDays } from '../Datas';
 
 

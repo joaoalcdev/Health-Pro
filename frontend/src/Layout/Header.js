@@ -1,9 +1,6 @@
 import React from 'react';
 import { MenuSelect } from '../components/Form';
-import { TbUser } from 'react-icons/tb';
 import { AiOutlinePoweroff } from 'react-icons/ai';
-import { MdOutlineNotificationsNone } from 'react-icons/md';
-import NotificationComp from '../components/NotificationComp';
 import { useNavigate } from 'react-router-dom';
 import { BiMenu } from 'react-icons/bi';
 import MenuDrawer from '../components/Drawer/MenuDrawer';

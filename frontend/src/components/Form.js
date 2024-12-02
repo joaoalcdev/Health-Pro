@@ -94,7 +94,6 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
             </>
           )}
         </Listbox>
-        {/* </div> */}
       </div>
     </>
   )

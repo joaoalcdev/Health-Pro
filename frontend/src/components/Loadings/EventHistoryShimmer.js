@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
-
 // icons - imports
-import { HiEllipsisVertical, HiMiniCalendarDays } from "react-icons/hi2";
+import { HiEllipsisVertical } from "react-icons/hi2";
 
 const EventHistoryShimmer = () => {
   return (

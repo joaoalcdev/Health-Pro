@@ -9,7 +9,6 @@ import { getEventById } from '../../api/EventsAPI';
 import EventDetailsInfo from './EventDetailsInfo';
 import EventDetailsPatientInfo from './EventDetailsPatientInfo';
 import EventDetailsProfessionalInfo from './EventDetailsProfessionalInfo';
-import EventDetailsReminder from './EventDetailsReminder';
 import EventRecurringInfo from './EventRecurringInfo';
 import Drawer from 'react-modern-drawer';
 import EventsForm from '../../components/Forms/EventsForm';
@@ -62,8 +61,6 @@ function EventDetails() {
         return <EventDetailsProfessionalInfo data={eventData} doctor={true} onStatus={onStatus} />;
       case 4:
         return <EventRecurringInfo data={eventData} onStatus={onStatus} openEdit={openEditDrawer} />;
-      case 5:
-        return <EventDetailsReminder doctor={true} />;
       default:
         return;
     }

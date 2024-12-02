@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
 import {
   Button,
-  Checkbox,
   DatePickerComp,
   Input,
   Select,
   SelectProfessional,
-  Textarea,
   TimePickerComp,
 } from '../Form';
 import { BiChevronDown, BiPlus } from 'react-icons/bi';

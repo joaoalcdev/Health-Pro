@@ -10,7 +10,7 @@ import { EventDetailShimmerLoading } from '../../components/Loadings/EventDetail
 
 
 // datas - import
-import { brStateDatas, councilDatas, specialties } from '../../components/Datas';
+import { brStateDatas, councilDatas } from '../../components/Datas';
 
 // api - import
 import { getProfessionalById } from '../../api/ProfessionalsAPI';

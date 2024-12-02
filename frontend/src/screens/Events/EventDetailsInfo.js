@@ -16,7 +16,7 @@ import EventCancelationModal from "../../components/Modals/EventCancelationModal
 import { updateEvent, cancelEvent } from "../../api/EventsAPI";
 
 // datas - imports
-import { agreements, sortsDatas } from "../../components/Datas";
+import { agreements } from "../../components/Datas";
 import { eventTypes } from "../../components/Datas";
 
 // utils - imports

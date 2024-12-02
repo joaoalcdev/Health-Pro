@@ -1,5 +1,5 @@
 // dependencies - import
-import React, { useEffect, useState, forwardRef } from 'react';
+import React, { useState } from 'react';
 import ptBR from 'date-fns/locale/pt-BR';
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import clsx from 'clsx'

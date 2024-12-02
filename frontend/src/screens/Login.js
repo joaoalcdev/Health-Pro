@@ -8,7 +8,7 @@ import { userSignIn } from "../api/signInAPI";
 import { getSession } from "../utils/getSession";
 
 // icons
-import { HiEye, HiOutlineEye, HiEyeSlash, HiOutlineEyeSlash } from "react-icons/hi2";
+import { HiEye, HiEyeSlash } from "react-icons/hi2";
 import { BiLogInCircle } from "react-icons/bi";
 
 // components

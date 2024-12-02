@@ -14,10 +14,16 @@ import { GiThreeFriends } from 'react-icons/gi';
 
 
 export const MenuDatas = [
+  // {
+  //   title: 'Dashboard',
+  //   path: '/home',
+  //   icon: HiOutlineHome,
+  //   roleAllowed: 3
+  // },
   {
-    title: 'Dashboard',
-    path: '/home',
-    icon: HiOutlineHome,
+    title: 'Calendário',
+    path: '/schedule',
+    icon: FaRegCalendarAlt,
     roleAllowed: 3
   },
   {
@@ -39,12 +45,6 @@ export const MenuDatas = [
     roleAllowed: 1
   },
   {
-    title: 'Agendamentos',
-    path: '/schedule',
-    icon: FaRegCalendarAlt,
-    roleAllowed: 3
-  },
-  {
     title: 'Pagamentos',
     path: '/payments',
     icon: MdListAlt,
@@ -60,7 +60,7 @@ export const MenuDatas = [
     title: 'Lista de Espera',
     path: '/waitlist',
     icon: LuListStart,
-    roleAllowed: 1
+    roleAllowed: 2
   },
   {
     title: 'Serviços Externos',
@@ -69,12 +69,12 @@ export const MenuDatas = [
     roleAllowed: 1
   },
 
-  {
-    title: 'Settings',
-    path: '/settings',
-    icon: AiOutlineSetting,
-    roleAllowed: 3
-  },
+  // {
+  //   title: 'Settings',
+  //   path: '/settings',
+  //   icon: AiOutlineSetting,
+  //   roleAllowed: 3
+  // },
 ];
 
 export const eventTypes = [

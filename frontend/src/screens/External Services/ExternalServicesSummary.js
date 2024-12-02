@@ -3,7 +3,7 @@ import { ExternalServicesTable } from '../../components/Tables';
 import { MdOutlineCloudDownload } from 'react-icons/md';
 
 
-export default function ExternalServicesSummary({ data, setIsDrawerOpen, setDrawerData, status, remove, handleExport }) {
+export default function ExternalServicesSummary({ data, setIsDrawerOpen, setDrawerData, status, remove, handleExport, loading }) {
 
   return (
     <>
@@ -15,6 +15,7 @@ export default function ExternalServicesSummary({ data, setIsDrawerOpen, setDraw
             <OutLinedButton
               onClick={() => handleExport()}
               type={"button"}
+              loading={loading}
               disabled={data.length > 0 ? false : true}
               className="text-subMain rounded-lg"
               label='Exportar'

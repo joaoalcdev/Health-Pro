@@ -26,6 +26,7 @@ function ExternalServices() {
   const [activeTab, setActiveTab] = useState(1);
   const [status, setStatus] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [exportButtonLoading, setExportButtonLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -97,9 +98,16 @@ function ExternalServices() {
     }
   }
   const handleExport = async () => {
+    setExportButtonLoading(true);
     const res = await exportExternalServices(`01-${monthRange.getMonth() + 1}-${monthRange.getFullYear()}`);
     if (res.status === 200) {
       toast.success('Relatórios exportado com sucesso');
+      setExportButtonLoading(false);
+      return;
+    }
+    if (res.status !== 200) {
+      toast.error('Erro ao exportar relatórios');
+      setExportButtonLoading(false);
       return;
     }
   }
@@ -108,7 +116,7 @@ function ExternalServices() {
   const tabPanel = () => {
     switch (activeTab) {
       case 1:
-        return <ExternalServicesSummary data={externalServices} companies={companies} setIsDrawerOpen={onClose} remove={handleRemove} handleExport={handleExport} />;
+        return <ExternalServicesSummary data={externalServices} companies={companies} setIsDrawerOpen={onClose} remove={handleRemove} handleExport={handleExport} loading={exportButtonLoading} />;
       case 2:
         return <Companies companies={companies} setIsDrawerOpen={onClose} setDrawerData={setDrawerData} status={() => setStatus(!status)} setIsEdit={setIsEdit} />;
       default:

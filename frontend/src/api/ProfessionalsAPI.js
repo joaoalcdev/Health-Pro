@@ -104,8 +104,9 @@ export const getProfessionalRecordsExport = async (professionalId, monthRange, p
       link.setAttribute('download', `frequencia-${professionalFullName}-${monthRange}.pdf`)
       document.body.appendChild(link)
       link.click()
+      return { status: 200 }
     })
-    return res.data
+    return res
   } catch (error) {
     return error
   }

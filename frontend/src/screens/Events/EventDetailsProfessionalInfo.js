@@ -1,6 +1,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect, Fragment } from 'react';
+import { useAuth } from '../../hooks/Auth';
 
 // components - import
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +21,8 @@ import { getSpecialties } from '../../api/specialtiesAPI';
 import { HiOutlineIdentification, HiMiniPencilSquare } from 'react-icons/hi2';
 
 function EventDetailsProfessionalInfo({ data, onStatus }) {
+  const { user } = useAuth();
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [specialties, setSpecialties] = useState([]);
@@ -60,7 +63,7 @@ function EventDetailsProfessionalInfo({ data, onStatus }) {
             <div className="flex">
               <h1 className='flex flex-col font-semibold text-2xl text-black text-center md:text-left w-full text-wrap'>Dados do profissional</h1>
             </div>
-            <div className="flex">
+            <div className={`${user.roleId === 1 ? 'block' : 'hidden'}`} >
               <button
                 className="flex items-center gap-2 px-6 py-2 border border-subMain hover:border-main rounded-md text-subMain hover:text-main transitions"
                 onClick={handleViewProfessionalDetails}

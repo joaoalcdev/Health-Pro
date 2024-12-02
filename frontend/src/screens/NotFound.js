@@ -11,13 +11,13 @@ function NotFound() {
         alt="404"
         className="w-full max-h-96 object-contain"
       />
-      <h1 className="text-4xl font-bold mt-10">Page Not Found</h1>
+      <h1 className="text-4xl font-bold mt-10">Página não encontrada</h1>
       <p className="text-lg text-textGray my-3">
-        The page you are looking for does not exist or has been moved.
+        A página que você está procurando não existe ou você não tem permissão para acessa-la.
       </p>
       <div className="w-48">
         <Button
-          label={'Back to Home'}
+          label={'Voltar para o início'}
           Icon={null}
           onClick={() => navigate('/')}
         />

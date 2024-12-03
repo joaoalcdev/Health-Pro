@@ -1,5 +1,6 @@
 // react - imports
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../../hooks/Auth";
 
 // icons - imports  
 import { BiChevronDown, BiLoaderCircle, BiSave } from "react-icons/bi";
@@ -24,6 +25,8 @@ import { formatDate, formatDateTime } from "../../utils/formatDate";
 
 
 function EventDetailsInfo({ data, onStatus, openEdit }) {
+  const { user } = useAuth();
+
   const [loading, setLoading] = useState(true);
 
   const [disabled, setDisabled] = useState(true);
@@ -178,7 +181,7 @@ function EventDetailsInfo({ data, onStatus, openEdit }) {
           </div>
 
           {/* Box with Agreement data */}
-          {data.eventType !== 5 &&
+          {data.eventType !== 5 && user.roleId !== 3 &&
 
             <div className="flex flex-col border-[3px] border-subMain/70 rounded-lg p-4 gap-4">
               <div className="flex justify-between">
@@ -285,7 +288,7 @@ function EventDetailsInfo({ data, onStatus, openEdit }) {
         </div >
         <footer>
           {
-            data.eventStatus === 1 &&
+            data.eventStatus === 1 && user.roleId !== 3 &&
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="grid sm:grid-cols-2 gap-4">
                 <ButtonNegative

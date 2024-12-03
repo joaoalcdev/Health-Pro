@@ -61,7 +61,7 @@ export const getPatient = async (patientId) => {
 
 export const deletePatient = async (patientId, patient) => {
   try {
-    const data = await axios.delete(apiBaseUrl(`patients/${patientId}`), patient, {
+    const data = await axios.delete(apiBaseUrl(`patients/${patientId}`), {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
@@ -78,7 +78,7 @@ export const deletePatient = async (patientId, patient) => {
 
 export const recoveryPatient = async (patientId) => {
   try {
-    const data = await axios.put(apiBaseUrl(`patients/recovery/${patientId}`), {
+    const data = await axios.get(apiBaseUrl(`patients/recovery/${patientId}`), {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }

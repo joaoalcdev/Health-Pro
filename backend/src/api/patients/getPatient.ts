@@ -65,6 +65,20 @@ export const getPatient = async (app: FastifyInstance) => {
         } else {
           arrayNextEvents = patientNextEvents
         }
+        const arrayHistoryWithSpecialty = arrayHistory.map((event) => {
+          const specialty = specialties.find((specialty) => specialty.id === event.specialtyId)
+          return {
+            id: event.id,
+            eventInstanceId: event.eventInstanceId,
+            startTime: event.startTime,
+            eventType: event.eventType,
+            professionalFirstName: event.professionalFirstName,
+            professionalLastName: event.professionalLastName,
+            specialtyName: specialty?.name,
+            serviceName: event.serviceName
+          }
+        })
+
         const arrayNextEventsWithSpecialty = arrayNextEvents.map((event) => {
           const specialty = specialties.find((specialty) => specialty.id === event.specialtyId)
           return {
@@ -78,7 +92,7 @@ export const getPatient = async (app: FastifyInstance) => {
             serviceName: event.serviceName
           }
         })
-        data[0].history = arrayHistory
+        data[0].history = arrayHistoryWithSpecialty
         data[0].nextEvents = arrayNextEventsWithSpecialty
         return res.send({
           status: 200,

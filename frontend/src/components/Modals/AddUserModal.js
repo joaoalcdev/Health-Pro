@@ -61,7 +61,7 @@ function AddUserModal({ closeModal, isOpen, datas, isAdd, status }) {
     e.preventDefault();
     setLoading(true)
     if (!isAdd) {
-      await updateUser(
+      await updateUser(datas.id,
         {
           id: datas.id,
           firstName,

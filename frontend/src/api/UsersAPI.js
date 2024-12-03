@@ -35,9 +35,9 @@ export const createUser = async (newUser) => {
   }
 }
 
-export const updateUser = async (user) => {
+export const updateUser = async (userId, user) => {
   try {
-    const data = await axios.put(apiBaseUrl('users'), user, {
+    const data = await axios.put(apiBaseUrl(`users/${userId}`), user, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }

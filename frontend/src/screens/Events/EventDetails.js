@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../../hooks/Auth';
 import Layout from '../../Layout';
 import { BiLoaderCircle } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
@@ -16,6 +17,7 @@ import EventsForm from '../../components/Forms/EventsForm';
 import moment from 'moment';
 
 function EventDetails() {
+  const { user } = useAuth();
 
   //controllers
   const [loading, setLoading] = useState(false);
@@ -134,20 +136,25 @@ function EventDetails() {
           </div>
           {/* tabs */}
           <div className="flex-colo gap-3 w-full">
-            {eventsTab.map((tab, index) => (
-              <button
-                onClick={() => setActiveTab(tab.id)}
-                key={index}
-                className={`
+            {eventsTab.map((tab, index) => {
+              if (user.roleId === 3 && (tab.id === 4 || tab.id === 5)) {
+                return null
+              }
+              return (
+                <button
+                  onClick={() => setActiveTab(tab.id)}
+                  key={index}
+                  className={`
                 ${activeTab === tab.id
-                    ? 'bg-text text-subMain text-left text-balance '
-                    : 'bg-dry text-main hover:bg-text hover:text-subMain text-left text-balance'
-                  }
+                      ? 'bg-text text-subMain text-left text-balance '
+                      : 'bg-dry text-main hover:bg-text hover:text-subMain text-left text-balance'
+                    }
                 text-xs gap-4 flex items-center w-full p-4 rounded ${eventData.eventType !== 1 && tab.id === 4 ? 'hidden' : 'block'}`}
-              >
-                <tab.icon className={`text-lg `} /> {tab.id === 2 ? eventData.patientFullName : tab.id === 3 ? eventData.professionalFirstName + ' ' + eventData.professionalLastName : tab.title}
-              </button>
-            ))}
+                >
+                  <tab.icon className={`text-lg `} /> {tab.id === 2 ? eventData.patientFullName : tab.id === 3 ? eventData.professionalFirstName + ' ' + eventData.professionalLastName : tab.title}
+                </button>
+              )
+            })}
           </div>
 
         </div>

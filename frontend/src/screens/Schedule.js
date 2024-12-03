@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useAuth } from '../hooks/Auth';
 import Layout from '../Layout';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
@@ -150,6 +151,8 @@ const CustomToolbar = (toolbar) => {
 
 function Schedule() {
 
+  const { user } = useAuth();
+
   // config timezone
   moment.locale('pt-br');
 
@@ -169,7 +172,10 @@ function Schedule() {
   const [end, setEnd] = useState(moment().endOf('week').format('DD/MM/YYYY'));
 
   //filter controllers
-  const [filterTerm, setFilterTerm] = useState({ id: 0, name: "Todos" });
+  const [filterTerm, setFilterTerm] = useState(
+    user.roleId === 3 ? { id: user.professionalId, name: user.firstName + ' ' + user.lastName } :
+      { id: 0, name: "Todos" }
+  );
 
   const fetchProfessionals = async () => {
     setLoading(true);
@@ -300,13 +306,16 @@ function Schedule() {
           />
         )
       }
+
       {/* calender */}
-      <button
-        onClick={handleClose}
-        className="w-16 animate-bounce h-16 border border-border z-40 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
-      >
-        <BiPlus className="text-2xl" />
-      </button>
+      {user.roleId !== 3 &&
+        <button
+          onClick={handleClose}
+          className="w-16 animate-bounce h-16 border border-border z-40 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
+        >
+          <BiPlus className="text-2xl" />
+        </button>
+      }
 
       <div className='flex flex-col gap-6 mb-8'>
         <h1 key={''} className="items-start text-xl font-semibold">Agendamentos</h1>
@@ -317,6 +326,7 @@ function Schedule() {
               color={true}
               selectedPerson={filterTerm}
               setSelectedPerson={setFilterTerm}
+              disabled={user.roleId === 3}
               datas={professionalsList}
               iconButton={<BiChevronDown className="size-6 text-subMain group-data-[hover]:fill-subMain" />}
             />

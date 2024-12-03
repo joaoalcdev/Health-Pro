@@ -26,7 +26,20 @@ export const UserSignIn = async (app: FastifyInstance) => {
           await supabase.auth.signOut()
           return res.status(401).send({ message: "Usuário Deletado!" })
         }
-        
+        if(User.roleId === 3) { 
+          const { data:professionalData, error: errorProfessionalData } = await supabase
+          .from('professionals')
+          .select('*')
+          .eq('userId', User.id)
+          .single()
+
+          if (errorProfessionalData) {
+            throw errorProfessionalData
+          }
+          if(professionalData) {
+            return res.status(200).send(data ? {session: data, userData: {...User, professionalId: professionalData.id}} : null)
+          }
+        }
        return res.status(200).send(data ? {session: data, userData: User} : null)
       }
     } catch (error) {

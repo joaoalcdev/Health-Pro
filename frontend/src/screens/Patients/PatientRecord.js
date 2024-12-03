@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../../hooks/Auth';
 import { Button } from '../../components/Form';
 import { BiExport } from 'react-icons/bi';
 import { toast } from 'react-hot-toast';
@@ -8,6 +9,7 @@ import { MonthlyPicker } from '../../components/Form';
 import { formatDate, formatDateTime } from '../../utils/formatDate';
 
 function PatientRecord({ data }) {
+  const { user } = useAuth();
   const today = new Date();
 
   const [loading, setLoading] = useState(false);
@@ -58,13 +60,14 @@ function PatientRecord({ data }) {
             bg="bg-dry"
             onChange={(update) => setMonthRange(update)}
           />
-          <div className='col-start-4'>
+          <div className={`${user.roleId === 1 ? '' : 'hidden'} col-start-4`}>
             <Button
               label="Exportar"
               Icon={BiExport}
               onClick={() => {
                 exportFrequency();
               }}
+              disabled={records.length === 0}
               loading={exportLoading}
             />
           </div>

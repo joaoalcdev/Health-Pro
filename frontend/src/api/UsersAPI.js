@@ -51,7 +51,7 @@ export const updateUser = async (userId, user) => {
 export const deleteUser = async (user) => {
 
   try {
-    const data = await axios.delete(apiBaseUrl(`user/${user.id}`), user, {
+    const data = await axios.delete(apiBaseUrl(`user/${user.id}`), {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
@@ -68,7 +68,7 @@ export const deleteUser = async (user) => {
 
 export const recoveryUser = async (userId) => {
   try {
-    const data = await axios.put(apiBaseUrl(`user/recovery/${userId}`), {
+    const data = await axios.get(apiBaseUrl(`user/recovery/${userId}`), {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }

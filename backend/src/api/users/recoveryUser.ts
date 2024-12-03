@@ -3,7 +3,7 @@ import { supabase } from "../../supabaseConnection";
 import auth from "../../middlewares/auth";
 
 export const RecoveryUser = async (app: FastifyInstance) => {
-  app.put("/user/recovery/:id", 
+  app.get("/user/recovery/:id", 
   {preHandler: auth}, 
   async (req: FastifyRequest, res: FastifyReply) => {
     try {

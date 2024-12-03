@@ -208,43 +208,6 @@ function Patients(superIndex) {
     return date.toDateString() === new Date().toDateString();
   });
 
-  // component - boxes data
-  const boxes = tab === 1 ? [
-    {
-      id: 1,
-      title: 'Pacientes Diários',
-      value: ['+', diaryPatients.length, ''],
-      text: 'No Data :(',
-      color: ['bg-subMain', 'text-subMain'],
-      icon: HiOutlineClock,
-    },
-    {
-      id: 2,
-      title: 'Pacientes Mensais',
-      value: ['+', last30DaysPatients, ''],
-      text: 'novos pacientes',
-      color: ['bg-orange-500', 'text-orange-500'],
-      icon: HiMiniCalendarDays,
-    },
-    {
-      id: 3,
-      title: 'Pacientes Ativos (Total)',
-      value: ['', data.length, ' pacientes'],
-      text: 'ativos',
-      color: ['bg-green-500', 'text-green-500'],
-      icon: HiMiniUserGroup,
-    },
-  ] : [
-    {
-      id: 4,
-      title: 'Pacientes Arquivados (Total)',
-      value: ['', archivedPatients, ''],
-      text: ['pacientes arquivados'],
-      color: ['bg-red-500', 'text-red-500'],
-      icon: HiOutlineTrash,
-    },
-  ];
-
   // dynamic used patients
   const [dynamicUsed, setDynamicUsed] = useState(true);
   useEffect(() => {
@@ -311,47 +274,6 @@ function Patients(superIndex) {
           functions={{ onChangeTab }}
         />
       </div>
-      {/* boxes */}
-      {
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-          {boxes.map((box) => (
-            <div
-              // data-aos="fade-up"
-              // data-aos-duration="800"
-              // data-aos-delay="10"
-              // data-aos-offset="100"
-              // data-aos-easing="ease"
-              // data-aos-once="true"
-              className=""
-              key={box.id}
-            >
-              <div
-                className="select-text bg-white flex-btn gap-4 rounded-xl border-[1px] border-border p-5 hover:-translate-y-2 hover:shadow-md transition-all duration-300 ease-in-out"
-              >
-                <div className="w-3/4">
-                  <h2 className="text-sm font-medium">{box.title}</h2>
-                  <h2 className="text-xl my-6 font-medium">{box.value}</h2>
-                  <p className="text-xs text-textGray">
-                    <span className={box.color[1]}> {box.value} {box.text}</span>{' '}
-                    {
-                      box.title === 'Pacientes Diários'
-                        ? ''
-                        : box.title === 'Pacientes Mensais'
-                          ? 'esse mês'
-                          : 'na clínica'
-                    }
-                  </p>
-                </div>
-                <div
-                  className={`w-10 h-10 flex-colo rounded-md text-white text-md ${box.color[0]}`}
-                >
-                  <box.icon />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      }
       {/* datas */}
       {loading ?
         <div className="flex relative w-full h-1/2 top-20 justify-center items-center"> {/* resolve style: generating scroll x = flex absolute items-center justify-center w-full h-1/2*/}

@@ -41,9 +41,9 @@ export function SelectListBox({ iconButton, children, label, color, selectedPers
             <>
               <ListboxButton
                 className={clsx(
-                  `group relative block w-full ${disabled ? 'bg-gray-100 text-gray-500 hover:cursor-no-drop' : 'bg-white'} text-sm p-4 font-light text-left rounded`,
+                  `group relative block w-full ${disabled ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'bg-white hover:cursor-pointer'} text-sm p-4 font-light text-left rounded`,
                   // 'flex w-full z-50 bg-white transitions text-sm p-4 font-light rounded hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed',
-                  'hover:cursor-pointer caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed'
+                  ' caret-subMain border border-border focus:border focus:border-subMain focus:ring-0 focus:cursor-text focus:bg-greyed'
                 )}
                 disabled={disabled}
               >

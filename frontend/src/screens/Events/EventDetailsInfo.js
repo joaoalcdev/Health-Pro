@@ -154,7 +154,7 @@ function EventDetailsInfo({ data, onStatus, openEdit }) {
 
       <div className="flex flex-col gap-6 ">
         <header className="">
-          <h1 className="text-xl ">Detalhes do Agendamento</h1>
+          <h1 className='text-md mb-4 font-medium'>Detalhes do Agendamento</h1>
         </header>
         <div className="flex flex-col gap-4">
           <div className="grid sm:grid-cols-2 gap-4">

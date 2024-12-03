@@ -187,7 +187,7 @@ function Patients(superIndex) {
   // tab controllers
   const onChangeTab = (index) => {
     index === 1 ? setTab(1) : setTab(2);
-    setFilterTerm({ id: 0, fullName: "Todos profissionais" });
+    setFilterTerm({ id: 0, name: "Todos profissionais" });
     setSearchTerm("");
   };
 

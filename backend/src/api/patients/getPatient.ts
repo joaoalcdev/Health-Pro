@@ -32,6 +32,11 @@ export const getPatient = async (app: FastifyInstance) => {
       .gte('startTime', moment().format())
       .order('startTime', { ascending: true })
 
+      const {data: specialties, error: errorSpecialities} = await supabase
+        .from('specialties')
+        .select('*')
+
+
       if (error) {
         throw error
       }
@@ -40,6 +45,9 @@ export const getPatient = async (app: FastifyInstance) => {
       }
       if (errorPatientNextEvents) {
         throw errorPatientNextEvents
+      }
+      if (errorSpecialities) {
+        throw errorSpecialities
       }
 
       if (data) {
@@ -57,8 +65,35 @@ export const getPatient = async (app: FastifyInstance) => {
         } else {
           arrayNextEvents = patientNextEvents
         }
-        data[0].history = arrayHistory
-        data[0].nextEvents = arrayNextEvents
+        const arrayHistoryWithSpecialty = arrayHistory.map((event) => {
+          const specialty = specialties.find((specialty) => specialty.id === event.specialtyId)
+          return {
+            id: event.id,
+            eventInstanceId: event.eventInstanceId,
+            startTime: event.startTime,
+            eventType: event.eventType,
+            professionalFirstName: event.professionalFirstName,
+            professionalLastName: event.professionalLastName,
+            specialtyName: specialty?.name,
+            serviceName: event.serviceName
+          }
+        })
+
+        const arrayNextEventsWithSpecialty = arrayNextEvents.map((event) => {
+          const specialty = specialties.find((specialty) => specialty.id === event.specialtyId)
+          return {
+            id: event.id,
+            eventInstanceId: event.eventInstanceId,
+            startTime: event.startTime,
+            eventType: event.eventType,
+            professionalFirstName: event.professionalFirstName,
+            professionalLastName: event.professionalLastName,
+            specialtyName: specialty?.name,
+            serviceName: event.serviceName
+          }
+        })
+        data[0].history = arrayHistoryWithSpecialty
+        data[0].nextEvents = arrayNextEventsWithSpecialty
         return res.send({
           status: 200,
           message: 'Patient found',

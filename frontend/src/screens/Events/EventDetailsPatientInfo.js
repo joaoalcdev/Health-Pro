@@ -40,13 +40,11 @@ function EventDetailsPatientInfo({ data, onStatus }) {
   const [patientHistory, setPatientHistory] = useState([]);
   const [patientNextEvents, setPatientNextEvents] = useState([]);
   const [patientData, setPatientData] = useState([]);
-  const [specialties, setSpecialties] = useState([]);
 
   const fetch = async () => {
     setLoading(true)
     if (data) {
       const response = await getPatient(data.patientId)
-      const specialtiesData = await getSpecialties()
       setLoading(false)
       if (response.status !== 200) {
         setLoading(false)
@@ -54,7 +52,6 @@ function EventDetailsPatientInfo({ data, onStatus }) {
       }
       if (response.status === 200) {
         setLoading(false)
-        setSpecialties(specialtiesData)
         setPatientData(response.data)
         setPatientHistory(response.data.history)
         setPatientNextEvents(response.data.nextEvents)
@@ -180,11 +177,8 @@ function EventDetailsPatientInfo({ data, onStatus }) {
                       <div className="grid grid-cols-3 sm:grid-cols-3 gap-4 w-full justify-items-center">
                         <div className="flex text-center flex-col justify-start items-center sm:items-start">
                           <p className='flex text-sm text-black'>
-                            {specialties.find((specialty) => {
-                              if (specialty.id === item.specialtyId) {
-                                return specialty
-                              }
-                            }).name}</p>
+                            {item.specialtyName}
+                          </p>
                           <p className='flex text-xs text-gray-500'>{item.professionalFirstName} {item.professionalLastName}</p>
                         </div>
                         {/* Tipo de evento */}
@@ -227,11 +221,8 @@ function EventDetailsPatientInfo({ data, onStatus }) {
                       <div className="grid grid-cols-3 sm:grid-cols-3 gap-4 w-full justify-items-center">
                         <div className="flex text-center flex-col justify-start items-center sm:items-start">
                           <p className='flex text-sm text-black'>
-                            {specialties.find((specialty) => {
-                              if (specialty.id === item.specialtyId) {
-                                return specialty
-                              }
-                            }).name}</p>
+                            {item.specialtyName}
+                          </p>
                           <p className='flex text-xs text-gray-500'>{item.professionalFirstName} {item.professionalLastName}</p>
                         </div>
                         {/* Tipo de evento */}

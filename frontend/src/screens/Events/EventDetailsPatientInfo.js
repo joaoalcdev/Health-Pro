@@ -76,7 +76,7 @@ function EventDetailsPatientInfo({ data, onStatus }) {
         <div className="flex justify-end w-full">
           <div className="w-full md:col-span-1 flex sm:justify-between items-center">
             <div className="flex">
-              <h1 className='flex flex-col font-semibold text-2xl text-black text-center md:text-left w-full text-wrap'>Dados do paciente</h1>
+              <h1 className='flex flex-col text-md  font-medium text-black text-center md:text-left w-full text-wrap'>Dados do paciente</h1>
             </div>
             <div className={`${user.roleId === 3 ? 'hidden' : ''} flex`}>
               <button

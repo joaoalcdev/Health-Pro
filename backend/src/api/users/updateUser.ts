@@ -6,9 +6,10 @@ export const UpdateUser = async (app: FastifyInstance) => {
   app.put("/users/:id", 
   {preHandler: auth}, 
   async (req: FastifyRequest, res: FastifyReply) => {
+
+
     try {
       const {
-        id,
         firstName,
         lastName,
         email,
@@ -19,6 +20,8 @@ export const UpdateUser = async (app: FastifyInstance) => {
         city,
         state
       } = req.body as Users
+
+      const { id } = req.params as { id: string }
 
       const { data: User, error } = await supabase
       .from("users")

@@ -46,6 +46,7 @@ export const getProfessionalRecordsExport = async (app: FastifyInstance) => {
             checkInSignature: `${url}${record.checkInSignature}`,
             checkInDate: moment(record.checkInDate).format('DD/MM/YYYY - HH:mm a'),
             startTime: moment(record.startTime).format('DD/MM/YYYY - HH:mm a'),
+            agreementName: record.agreementName,
             index: index + 1	
           }
         })

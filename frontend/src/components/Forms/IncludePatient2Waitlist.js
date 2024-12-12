@@ -96,7 +96,7 @@ export default function IncludePatient2Waitlist({ onClose, datas, agreements, st
           <div className="flex absolute items-center justify-center w-full h-full">
             <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
           </div> :
-          <div className='flex flex-col border border-subMain rounded-lg p-2 gap-2 overflow-y-scroll'>
+          <div className='flex flex-col border border-subMain rounded-lg p-2 gap-2 overflow-y-auto'>
             {
               data.length > 0 ?
                 data.map((patient, index) => (

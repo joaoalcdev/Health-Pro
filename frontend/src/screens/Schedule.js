@@ -107,7 +107,7 @@ const CustomToolbar = (toolbar) => {
           <button onClick={goToBack} className="text-2xl text-subMain">
             <BiChevronLeft />
           </button>
-          <span className="text-xl font-semibold">
+          <span className="text-xl font-semibold text-center">
             {/* {moment(toolbar.date).format('DD MMMM YYYY')}  */}
             {toolbar.view === 'day' && moment(toolbar.date).format(`DD [de] MMMM, YYYY`)}
             {toolbar.view === 'month' && ` ${moment(toolbar.date).startOf('month').format(`DD [de] MMMM, YYYY`)} - ${moment(toolbar.date).endOf('month').format(`DD [de] MMMM, YYYY`)}`}
@@ -319,7 +319,7 @@ function Schedule() {
 
       <div className='flex flex-col gap-6 mb-8'>
         <h1 key={''} className="items-start text-xl font-semibold">Agendamentos</h1>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row items-center justify-between">
           <div className='w-80'>
             <SelectListBox
               label={'Filtrar por Profissional'}

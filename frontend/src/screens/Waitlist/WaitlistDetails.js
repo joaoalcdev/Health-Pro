@@ -45,8 +45,8 @@ export function WaitlistDetail({ data, onStatus, hideOtherDisclosuresHandle, inc
             </div> :
             <WaitlistDetailsContent specialtyId={data.id} data={patients} />
           }
-          <div className='w-full grid grid-cols-5'>
-            <div className='col-start-5'>
+          <div className='w-full grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5'>
+            <div className='col-start-1 sm:col-start-3 lg:col-start-5'>
               <Button
                 label="Incluir Pacientes"
                 onClick={() => includePatient(data)}
@@ -175,7 +175,7 @@ export function WaitlistDetailsContent({ specialtyId, data }) {
         onConfirm={handleRemovePatients}
         type='remove'
       />}
-      <div className='grid grid-cols-11 gap-2 items-center '>
+      <div className='grid md:grid-cols-11 gap-2 items-center '>
         <div className='flex flex-col h-full col-span-5 border border-subMain p-4 rounded-lg gap-2'>
           <p className='text-center text-subMain mb-2'>
             Pacientes Ativos
@@ -200,15 +200,15 @@ export function WaitlistDetailsContent({ specialtyId, data }) {
             </p>
           }
         </div>
-        <div className='flex flex-col gap-4 box-border'>
+        <div className='flex flex-col gap-4 box-border col-start-2 col-end-5 md:col-start-6 md:col-end-6'>
 
-          <button className={`col-span-1 justify-items-center hover:bg-subMain border border-subMain rounded-full items-center p-2 cursor-pointer text-2xl ${disabled ? 'opacity-30 hover:cursor-not-allowed hover:bg-white hover:text-subMain' : 'hover:opacity-80 hover:text-white'} text-subMain transition ease-in-out duration-250`}
+          <button className={`col-span-1 justify-items-center hover:bg-subMain border px-6 border-subMain rounded-full items-center p-2 cursor-pointer text-2xl ${disabled ? 'opacity-30 hover:cursor-not-allowed hover:bg-white hover:text-subMain' : 'hover:opacity-80 hover:text-white'} text-subMain transition ease-in-out duration-250`}
             onClick={() => handleMovePatientsToActive()}
             disabled={disabled}
           >
             <HiSwitchHorizontal />
           </button>
-          <button className={`col-span-1 justify-items-center  border border-red-500 rounded-full items-center p-2 cursor-pointer   text-2xl ${disabled ? 'opacity-30 hover:cursor-not-allowed hover:bg-white hover:text-red-500 ' : 'hover:opacity-80 hover:bg-red-500 hover:text-white'} text-red-500 transition ease-in-out duration-250`}
+          <button className={`col-span-1 justify-items-center  border border-red-500 px-6 rounded-full items-center p-2 cursor-pointer   text-2xl ${disabled ? 'opacity-30 hover:cursor-not-allowed hover:bg-white hover:text-red-500 ' : 'hover:opacity-80 hover:bg-red-500 hover:text-white'} text-red-500 transition ease-in-out duration-250`}
             onClick={() => handleOpenConfirmationModal()}
             disabled={disabled}
           >

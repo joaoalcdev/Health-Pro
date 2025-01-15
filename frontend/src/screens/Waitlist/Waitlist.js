@@ -92,7 +92,7 @@ function Waitlist() {
           open={isOpen}
           onClose={handleClose}
           direction='right'
-          size={400}
+          size={350}
           zIndex={40}
           enableOverlay={true}
         >
@@ -120,8 +120,8 @@ function Waitlist() {
             className="bg-white my-8 rounded-xl border-[1px] border-border p-5 "
           >
 
-            <div className="grid md:grid-cols-6 grid-cols-1 gap-2">
-              <div className="md:col-span-5 grid lg:grid-cols-4 xs:grid-cols-2 items-center gap-2">
+            <div className="grid grid-cols-1 gap-2">
+              <div className="md:col-span-5 grid lg:grid-cols-4 sm:grid-cols-2 items-center gap-2">
                 <input
                   type="text"
                   placeholder='Pesquise por especialidade...'

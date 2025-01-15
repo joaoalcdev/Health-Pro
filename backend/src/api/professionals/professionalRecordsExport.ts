@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { supabase } from "../../supabaseConnection";
-import moment from 'moment';
+import moment from 'moment-timezone';
 import auth from "../../middlewares/auth";
 
 const fs = require('fs');
@@ -44,8 +44,9 @@ export const getProfessionalRecordsExport = async (app: FastifyInstance) => {
           return {
             ...record,
             checkInSignature: `${url}${record.checkInSignature}`,
-            checkInDate: moment(record.checkInDate).format('DD/MM/YYYY - HH:mm a'),
-            startTime: moment(record.startTime).format('DD/MM/YYYY - HH:mm a'),
+            checkInDate: moment(moment.tz(record.checkInDate, "America/Fortaleza")).format('DD/MM/YYYY - HH:mm a'),
+            startTime: moment(moment.tz(record.startTime,"America/Fortaleza")).format('DD/MM/YYYY - HH:mm a'),
+            agreementName: record.agreementName,
             index: index + 1	
           }
         })

@@ -44,6 +44,7 @@ export const UpdateSpecialty = async (app: FastifyInstance) => {
             .from("regularPrices")
             .update({
               price: price.price, 
+              professionalPayment: price.professionalPayment ? price.professionalPayment : 0,
             })
             .eq("id", regularPrices[priceIndex].id)
           }else {

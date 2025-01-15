@@ -1,6 +1,7 @@
 // react & dep - imports
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Drawer from 'react-modern-drawer';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
@@ -23,6 +24,7 @@ import ScheduleUsed from '../../components/UsedComp/ScheduleUsed';
 import ProfessionalInfo from '../../components/UsedComp/ProfessionalInfo';
 import ProfessionalRecord from './ProfessionalRecord';
 import ProfessionalPatientList from './ProfessionalPatientList';
+import ExceptionForm from '../../components/Forms/ExceptionForm';
 
 
 
@@ -32,6 +34,7 @@ function ProfessionalProfile() {
   const [professional, setProfessional] = useState({});
   const [status, setStatus] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const { id } = useParams()
 
@@ -62,7 +65,7 @@ function ProfessionalProfile() {
       case 1:
         return <ScheduleUsed />;
       case 2:
-        return <ProfessionalInfo data={professional} onStatus={onStatus} />;
+        return <ProfessionalInfo data={professional} onStatus={onStatus} onDrawer={handleDrawer} />;
       case 3:
         return <ProfessionalPatientList professional={professional} />;
       case 4:
@@ -72,8 +75,24 @@ function ProfessionalProfile() {
     }
   };
 
+  const handleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
+
   return (
     <Layout>
+      {isDrawerOpen && (
+        <Drawer
+          open={isDrawerOpen}
+          onClose={handleDrawer}
+          direction='right'
+          size={360}
+          zIndex={40}
+          enableOverlay={true}
+        >
+          <ExceptionForm onClose={handleDrawer} datas={professional} onStatus={onStatus} />
+        </Drawer>
+      )}
       <div className="flex items-center gap-4">
         <Link
           to="/professionals"

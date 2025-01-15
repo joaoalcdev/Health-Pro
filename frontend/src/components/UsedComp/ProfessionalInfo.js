@@ -15,12 +15,12 @@ import { updateProfessional, deleteProfessional } from '../../api/ProfessionalsA
 
 // icons
 import { BiChevronDown, BiArchiveIn } from 'react-icons/bi';
-import { HiOutlineCheckCircle, HiOutlinePencilAlt } from 'react-icons/hi';
+import { HiOutlineCheckCircle, HiOutlinePencilAlt, HiPlus } from 'react-icons/hi';
 
 // utils
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber';
 
-function ProfessionalInfo({ data, onStatus }) {
+function ProfessionalInfo({ data, onStatus, onDrawer }) {
   //controllers
   const [isEdit, setIsEdit] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
@@ -72,6 +72,7 @@ function ProfessionalInfo({ data, onStatus }) {
     } else {
       setIsDisabled(true);
     }
+    console.log(data)
   }, [fullName, firstName, lastName, phoneNumber, email, address, region, city, state, rg, rgInssuance, cpf, councilNumber, data.fullName, data.firstName, data.lastName, data.phoneNumber, data.email, data.address, data.region, data.city, data.rg, data.rgInssuance, data.cpf, data.councilNumber, data.council, council.id, data.state, data.specialty, data.gender, specialty.id, gender.id])
 
   //edit professional
@@ -149,6 +150,7 @@ function ProfessionalInfo({ data, onStatus }) {
     }
   }
 
+
   //close confirmation modal
   const onCloseModal = () => {
     setIsConfirmationOpen(false);
@@ -182,6 +184,7 @@ function ProfessionalInfo({ data, onStatus }) {
             question={"Você tem certeza que deseja deletar esse profissional?"}
           />
         )}
+
       <h1 className='text-md mb-4 font-medium'>Informações do Profissional</h1>
       <div className="grid sm:grid-cols-2 gap-4 w-full">
         <div className="flex w-full flex-col gap-3">
@@ -242,6 +245,50 @@ function ProfessionalInfo({ data, onStatus }) {
           <h1 className="text-black text-sm">Conselho</h1>
           <p className="text-black text-md font-semibold">{data.council ? councilDatas.council[data.council - 1].name : ""} - {data.councilNumber}</p>
         </div>
+        <div className="grid sm:grid-cols-2 gap-4 w-full">
+          <div className="flex w-full flex-col gap-3">
+            <h1 className="text-black text-sm">Bairro</h1>
+            <p className="text-black text-md font-semibold">{data.region}</p>
+          </div>
+          <div className="flex w-full flex-col gap-3">
+            <h1 className="text-black text-sm">Cidade</h1>
+            <p className="text-black text-md font-semibold">{data.city} - {data.state ? brStateDatas.states[data.state - 1].UF : ""}</p>
+          </div>
+        </div>
+      </div >
+      <h1 className='text-md mt-4 mb-2 font-medium'>Repasse</h1>
+      <div className="flex flex-col gap-4 w-full border-[3px] border-subMain/70 rounded-lg p-4">
+        <div className='grid sm:grid-cols-4 gap-4 w-full'>
+
+          <Button
+            label={'Adicionar Excessão'}
+            Icon={HiPlus}
+            onClick={() => onDrawer()}
+          />
+        </div>
+        <div className='flex flex-col gap-4 w-full'>
+
+          {
+            data.professionalPayments ? (
+              <>
+                {data.professionalPayments.map((payment, index) => (
+                  <div key={index} className="flex w-full flex-col gap-1">
+                    <h1 className="text-black text-sm font-semibold">{payment.agreementName}</h1>
+                    <p className="text-black text-md font-light">{payment.professionalPayment}% é o valor repassado para a clínica.</p>
+                  </div>
+                ))
+                }
+              </>
+            ) : (
+              <div className="flex w-full flex-col gap-3">
+                <h1 className="text-black text-sm">Profissional sem repasse</h1>
+              </div>
+            )
+          }
+        </div>
+      </div>
+
+      <div className="grid sm:grid-cols-2 gap-4 mt-4 w-full">
         {/* buttons */}
         {data.deletedAt ?
           <Button
@@ -264,7 +311,7 @@ function ProfessionalInfo({ data, onStatus }) {
           Icon={HiOutlinePencilAlt}
           onClick={handleChange2Edit}
         />
-      </div >
+      </div>
     </>
     :
     <>
@@ -424,6 +471,26 @@ function ProfessionalInfo({ data, onStatus }) {
             type="text"
           />
 
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-4 w-full border-[3px] border-subMain/70 rounded-lg p-4">
+          {
+            data.professionalPayments ? (
+              <>
+                {data.professionalPayments.map((payment, index) => (
+                  <div key={index} className="flex w-full flex-col gap-1">
+                    <h1 className="text-black text-sm">{payment.agreementName}</h1>
+                    <p className="text-black text-md font-semibold">{payment.agreementId === 1 ? `${payment.professionalPayment}%` : `R$${payment.professionalPayment.toFixed(2)}`}</p>
+                  </div>
+                ))
+                }
+              </>
+            ) : (
+              <div className="flex w-full flex-col gap-3">
+                <h1 className="text-black text-sm">Profissional sem repasse</h1>
+              </div>
+            )
+          }
         </div>
 
         {/* submit */}

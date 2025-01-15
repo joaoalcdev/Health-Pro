@@ -23,6 +23,24 @@ export const getPayroll = async (monthRange) => {
     return error
   }
 }
+export const getSummaryYearly = async (monthRange) => {
+  try {
+    const res = await axios.get(apiBaseUrl(`summary/${monthRange}`),
+      {
+        body: {
+          monthRange: monthRange
+        },
+        headers: {
+          Authorization: `${getTokenFromLocalStorage()}`
+        }
+      }
+    )
+    const data = res.data
+    return data
+  } catch (error) {
+    return error
+  }
+}
 
 export const editPayroll = async (eventId, data) => {
   try {

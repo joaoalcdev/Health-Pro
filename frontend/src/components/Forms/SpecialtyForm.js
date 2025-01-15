@@ -76,9 +76,9 @@ export default function SpecialtyForm({ onClose, datas, agreements, status, isEd
   const onPriceChange = (e, index, type) => {
     let newPrices = [...prices];
     if (type === CHANGE_PRICE)
-      newPrices[index].price = e.value < 0 ? 0 : e.value;
+      newPrices[index].price = e.target.value < 0 ? 0 : e.target.value;
     if (type === CHANGE_REPASSE)
-      newPrices[index].professionalPayment = e.value < 0 ? 0 : e.value;
+      newPrices[index].professionalPayment = e.target.value < 0 ? 0 : e.target.value;
     setPrices(newPrices);
     setDisabled(false);
 
@@ -143,32 +143,43 @@ export default function SpecialtyForm({ onClose, datas, agreements, status, isEd
                   required={false}
                   inputId={'currency-brazil'}
                   value={item.price}
-                  onChange={(e) => { onPriceChange(e, index, CHANGE_PRICE) }}
+                  onValueChange={(e) => { onPriceChange(e, index, CHANGE_PRICE) }}
                   mode={'currency'}
                   currency={'BRL'}
                   locale={'pt-BR'}
                   allowEmpty={true}
                   inputClassName={`w-full bg-white transitions text-sm p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
                 />
-                <CurrencyInputMask
-                  label={'Repasse'}
-                  color={true}
-                  inputStyle={{ color: 'black' }}
-                  unstyled={true}
-                  autoClear={false}
-                  maxFractionDigits={2}
-                  maxLength={12}
-                  unmask={true}
-                  required={false}
-                  inputId={'currency-brazil'}
-                  value={item.professionalPayment}
-                  onChange={(e) => { onPriceChange(e, index, CHANGE_REPASSE) }}
-                  mode={'currency'}
-                  currency={'BRL'}
-                  locale={'pt-BR'}
-                  allowEmpty={true}
-                  inputClassName={`w-full bg-white transitions text-sm p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
-                />
+                {item?.agreementId === 1 ?
+                  <Input
+                    label="p/ Clínica (%)"
+                    type="number"
+                    color={true}
+                    value={item.professionalPayment}
+                    placeholder="Digite o valor"
+                    onChange={(e) => { onPriceChange(e, index, CHANGE_REPASSE) }}
+                  />
+                  :
+                  <CurrencyInputMask
+                    label={'p/ o Profissional'}
+                    color={true}
+                    inputStyle={{ color: 'black' }}
+                    unstyled={true}
+                    autoClear={false}
+                    maxFractionDigits={2}
+                    maxLength={12}
+                    unmask={true}
+                    required={false}
+                    inputId={'currency-brazil'}
+                    value={item.professionalPayment}
+                    onValueChange={(e) => { onPriceChange(e, index, CHANGE_REPASSE) }}
+                    mode={'currency'}
+                    currency={'BRL'}
+                    locale={'pt-BR'}
+                    allowEmpty={true}
+                    inputClassName={`w-full bg-white transitions text-sm p-4 border  'border-border font-light' 'border-white text-white' rounded focus:border focus:border-subMain focus:ring-0 hover:cursor-pointer focus:cursor-text focus:bg-greyed caret-subMain`}
+                  />
+                }
               </div>
             ))}
           </div>

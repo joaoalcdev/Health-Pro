@@ -8,16 +8,18 @@ import {
 } from 'react-icons/md';
 import { toast } from 'react-hot-toast';
 import { PaymentsAgreementsDisclosure, PaymentsProfessionalsDisclosure, PaymentsProfessionalsDisclosureSubTitle, PaymentsAgreementsDisclosureSubTitle, PaymentsAgreementsDisclosureChildren } from '../../components/Disclosures';
-import { getPayroll, exportPayroll } from '../../api/PaymentsAPI'
+import { getPayroll, exportPayroll, getSummaryYearly } from '../../api/PaymentsAPI'
 import { GiPayMoney, GiReceiveMoney, GiTakeMyMoney } from 'react-icons/gi';
 import { TbUserDollar } from 'react-icons/tb';
 import Drawer from 'react-modern-drawer';
 import DrawerContent from '../../components/DrawerContent';
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp } from "react-icons/io";
 
 
 function Payments() {
   const today = new Date();
+
+  const [expandSummary, setExpandSummary] = useState(false);
 
   //states
   const [monthRange, setMonthRange] = useState(new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0));
@@ -31,9 +33,14 @@ function Payments() {
   const [payroll, setPayroll] = useState([]);
   const [filteredPayroll, setFilteredPayroll] = useState([]);
   const [summary, setSummary] = useState({});
+  const [yearlySummary, setYearlySummary] = useState({});
+
 
   const fetchPayroll = async () => {
     setLoading(true);
+    setYearlySummary({});
+    setExpandSummary(false);
+
     const response = await getPayroll(`01-${monthRange.getMonth() + 1}-${monthRange.getFullYear()}`);
     if (response.error || response.length === 0) {
       toast.error('Nenhum pagamento encontrado');
@@ -69,28 +76,32 @@ function Payments() {
     {
       id: 1,
       title: 'Total de Receitas',
-      value: summary.totalGrossValue ? moneyFormat2BR(summary.totalGrossValue) : '0,00',
+      value: summary?.totalGrossValue ? moneyFormat2BR(summary.totalGrossValue) : '0,00',
+      yearlyValue: yearlySummary?.totalGrossValue ? moneyFormat2BR(yearlySummary.totalGrossValue) : '0,00',
       color: ['bg-subMain', 'text-subMain'],
       icon: GiTakeMyMoney,
     },
     {
       id: 2,
       title: 'Pagamentos',
-      value: summary.totalAmountDue ? moneyFormat2BR(summary.totalAmountDue) : '0,00',
+      value: summary?.totalAmountDue ? moneyFormat2BR(summary.totalAmountDue) : '0,00',
+      yearlyValue: yearlySummary?.totalAmountDue ? moneyFormat2BR(yearlySummary.totalAmountDue) : '0,00',
       color: ['bg-orange-500', 'text-orange-500'],
       icon: TbUserDollar,
     },
     {
       id: 3,
       title: 'Impostos',
-      value: summary.totalTax ? moneyFormat2BR(summary.totalTax) : '0,00',
+      value: summary?.totalTax ? moneyFormat2BR(summary.totalTax) : '0,00',
+      yearlyValue: yearlySummary?.totalTax ? moneyFormat2BR(yearlySummary.totalTax) : '0,00',
       color: ['bg-orange-500', 'text-orange-500'],
       icon: GiPayMoney,
     },
     {
       id: 4,
       title: 'Saldo da Clínica',
-      value: summary.totalProfit ? moneyFormat2BR(summary.totalProfit) : '0,00',
+      value: summary?.totalProfit ? moneyFormat2BR(summary.totalProfit) : '0,00',
+      yearlyValue: yearlySummary?.totalProfit ? moneyFormat2BR(yearlySummary.totalProfit) : '0,00',
       color: ['bg-green-500', 'text-green-500'],
       icon: GiReceiveMoney,
     },
@@ -128,6 +139,17 @@ function Payments() {
     await exportPayroll(data, monthRange);
     setLoadingExportButton(false);
   };
+
+  const handleExpandSummary = async () => {
+    if (!expandSummary) {
+      const response = await getSummaryYearly(`01-${monthRange.getMonth() + 1}-${monthRange.getFullYear()}`);
+      if (response.status === 200) {
+        setYearlySummary(response.data);
+      }
+    }
+
+    setExpandSummary(!expandSummary);
+  };
   return (
     <Layout>
       {openDrawer && (
@@ -158,14 +180,14 @@ function Payments() {
         {boxes.map((box) => (
           <div
             key={box.id}
-            className="bg-white flex-btn gap-4 rounded-xl border-[1px] border-border p-5 hover:-translate-y-2 hover:shadow-md transition-all duration-300 ease-in-out"
+            className="bg-white flex-btn gap-4 rounded-xl border-[1px] border-border p-4 hover:-translate-y-2 hover:shadow-md transition-all duration-300 ease-in-out"
           >
             <div className="w-3/4  ">
               <h2 className="text-sm font-medium">{box.title}</h2>
-              <h2 className="text-xl my-6 font-medium">{box.value}</h2>
-              <p className="text-xs text-textGray">
-
-              </p>
+              <h2 className="text-xl my-2 font-medium">{box.value}</h2>
+              <h2 className={`text-md text-textGray ${expandSummary ? 'block' : 'hidden'} transition-all duration-300 ease-in-out`}>
+                {box.yearlyValue} / {monthRange.getFullYear()}
+              </h2>
             </div>
             <div
               className={`w-10 h-10 flex-colo rounded-md text-white text-2xl ${box.color[0]}`}
@@ -174,6 +196,19 @@ function Payments() {
             </div>
           </div>
         ))}
+      </div>
+      <div className='flex justify-center'>
+        <button
+          onClick={() => { handleExpandSummary() }}
+          className="text-subMain text-3xl flex items-center gap-2 mt-2"
+        >
+          {expandSummary ?
+            <IoIosArrowUp />
+            :
+            <IoIosArrowDown />
+
+          }
+        </button>
       </div>
       {/* datas */}
       <div

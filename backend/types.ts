@@ -234,6 +234,13 @@ type ExternalService = {
   service: string,
 }
 
+interface ProfessionalPayment {
+  professionalId: number,
+  agreementId: number,
+  professionalPayment: number,
+  agreementName?: string,
+}
+
 
 
 interface SingleEvent {

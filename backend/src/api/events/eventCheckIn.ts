@@ -26,8 +26,6 @@ export const EventCheckIn = async (app: FastifyInstance) => {
     });
     
     try {
-
-      
       //Upload signature to storage
       const { data: fileData, error } = await supabaseAdmin
       .storage
@@ -59,32 +57,36 @@ export const EventCheckIn = async (app: FastifyInstance) => {
         var tax = 0 as number;
         var profit = 0 as number;
 
+        //get professional rate
 
-        if(eventInstance[0].eventType in [1,2,3]){
-           // Check event type is 1,2 or 3
+
+        // Check event type is 1,2 or 3
+        if(eventInstance[0].eventType <= 3){
+
           const servicePrice = await getServicePrice(eventInstance[0].specialtyId, eventInstance[0].agreementId, eventInstance[0].serviceId).then((servicePrice) => {
             return servicePrice;
           });  
           if (servicePrice) {
             grossValue = servicePrice.price;
             
-            if(servicePrice.professionalPayment > 0){
-              professionalRate = servicePrice.professionalPayment;
+            const taxData = await getTax(eventInstance[0].agreementId).then((taxData) => {
+              return taxData;
+            });
+            if(taxData){
+              tax = grossValue * (taxData.tax/100);
+            }
+
+            const professionalPaymentException = await getProfessionalPaymentExceptions(eventInstance[0].agreementId, eventInstance[0].professionalId)
+
+            if(professionalPaymentException){
+              console.log('ppp',professionalPaymentException)
+              professionalRate = Math.round(grossValue - grossValue * (professionalPaymentException.professionalPayment/100) - tax);
             }else{
-              const fee = await getFee(eventInstance[0].agreementId, eventInstance[0].professionalId).then((fee) => {
-                return fee;
-              });
-              if(fee){
-                professionalRate = Math.round(grossValue - grossValue * (fee.fee/100));
-              }
+              console.log('ssp',servicePrice)
+              professionalRate = eventInstance[0].agreementId === 1 ? Math.round(grossValue - grossValue * (servicePrice.professionalPayment/100)) : servicePrice.professionalPayment;
             }
           }
-          const taxData = await getTax(eventInstance[0].agreementId).then((taxData) => {
-            return taxData;
-          });
-          if(taxData){
-            tax = grossValue * (taxData.tax/100);
-          }
+          
           profit = grossValue - professionalRate - tax;
         }
 
@@ -95,25 +97,23 @@ export const EventCheckIn = async (app: FastifyInstance) => {
           });
           if(regularPrice){
             grossValue = regularPrice.price;
+            
+            const taxData = await getTax(eventInstance[0].agreementId).then((taxData) => {
+              return taxData;
+            });
+            if(taxData){
+              tax =  grossValue * (taxData.tax/100);
+            }
+            
+            const professionalPaymentException = await getProfessionalPaymentExceptions(eventInstance[0].agreementId, eventInstance[0].professionalId)
 
-            if(regularPrice.professionalPayment > 0){
-              professionalRate = regularPrice.professionalPayment;
-
+            if(professionalPaymentException){
+              professionalRate = Math.round(grossValue - grossValue * (professionalPaymentException.professionalPayment/100) - tax);
             }else{
-              const fee = await getFee(eventInstance[0].agreementId, eventInstance[0].professionalId).then((fee) => {
-                return fee;
-              });
-              if(fee){
-                professionalRate = Math.round(grossValue - grossValue * (fee.fee/100));
-              }
+              professionalRate = eventInstance[0].agreementId === 1 ? Math.round(grossValue - grossValue * (regularPrice.professionalPayment/100)) : regularPrice.professionalPayment;
             }
           }
-          const taxData = await getTax(eventInstance[0].agreementId).then((taxData) => {
-            return taxData;
-          });
-          if(taxData){
-            tax =  grossValue * (taxData.tax/100);
-          }
+          
           profit = grossValue - professionalRate - tax;
         }
 
@@ -130,7 +130,7 @@ export const EventCheckIn = async (app: FastifyInstance) => {
           grossValue,
           professionalRate,
           tax,
-          profit,
+          profit: profit.toFixed(2),
         })
         .eq('id', id)
         .select()
@@ -186,17 +186,17 @@ const getServicePrice = async (specialtyId: number, agreementId: number, service
   return servicePrices[0] as ServicePrice;
 };
 
-const getFee = async (agreementId: number, professionalId: number) => {
-  const { data: fees, error: feesError } = await supabase
-  .from('fees')
+const getProfessionalPaymentExceptions = async (agreementId: number, professionalId: number) => {
+  const { data: professionalException, error: errorProfessionalException } = await supabase
+  .from('professionalPaymentExceptions')
   .select()
   .eq('agreementId', agreementId)
   .eq('professionalId', professionalId)
 
-  if(feesError){
-    throw feesError;
+  if(errorProfessionalException){
+    throw errorProfessionalException;
   }
-  return fees[0];
+  return professionalException[0];
 };
 
 const getTax = async (agreementId: number) => {
@@ -210,4 +210,6 @@ const getTax = async (agreementId: number) => {
   }
   return tax[0];
 }
+
+
 

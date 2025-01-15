@@ -26,16 +26,11 @@ export const getPayroll = async (app: FastifyInstance) => {
       .select()
       .order('id', {ascending: true})
 
-      const { data: fees, error: errorFees } = await supabase
-      .from('fees')
-      .select()
-
       if (error) {
         throw error
       }
 
-    
-      if(data && agreements && fees) {
+      if(data && agreements ) {
 
         var totalAmountDue = 0 as number; // Valor total a ser pago a todos os Profissionais
         var totalGrossValue = 0 as number; // Valor da receita bruta total do mês

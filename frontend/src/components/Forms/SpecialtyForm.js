@@ -24,7 +24,7 @@ export default function SpecialtyForm({ onClose, datas, agreements, status, isEd
         agreementId: price.id,
         name: price.name,
         price: price.defaultPrice,
-        professionalPayment: 0
+        professionalPayment: price.professionalPaymentDefault
       }
     })
 

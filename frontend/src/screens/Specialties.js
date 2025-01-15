@@ -35,7 +35,9 @@ function Specialties() {
   const fetch = async () => {
     setLoading(true);
     const response = await getSpecialties()
-    const agreementsData = await getAgreements()
+    await getAgreements().then((res) => {
+      setAgreements(res)
+    })
     if (response.length === 0) {
       setNoData(true);
       setNoResult(true);
@@ -44,7 +46,6 @@ function Specialties() {
     }
     setDatas(response)
     setSpecialties(response)
-    setAgreements(agreementsData)
     setAllData(response)
     setLoading(false)
     setNoResult(false)

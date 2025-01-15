@@ -78,18 +78,49 @@ export const AddProfessional = async (app: FastifyInstance) => {
             throw pError
           }
           else {
-            return res.status(200).send(createdUser ? createdUser[0] : null)
+            const { data: agreements,  error: aError } = await supabase
+            .from("agreements")
+            .select()
+
+            if (aError) {
+              throw aError
+            } 
+
+            if (agreements) {
+              let professionalPayments: ProfessionalPayment[] = [];
+              agreements.forEach((agreement) => {
+                professionalPayments.push({
+                  professionalId: createdProfessional[0].id,
+                  agreementId: agreement.id,
+                  professionalPayment: agreement.professionalPaymentDefault,
+                })
+              })
+
+              const { data: createdProfessionalPayments, error: ppError } = await supabase
+              .from("professionalPayments")
+              .insert(professionalPayments)
+              .select()
+
+              if (ppError) {
+                throw ppError
+              } else {
+                return res.send(
+                  {
+                    status: 200,
+                    data: createdUser,
+                    message: "Professional created successfully"
+                  }
+                )
+              }
+            }
           }
         }
       }
-
-      if (error) {
-        throw error
-      } else {
-        return res.status(200).send(data ? data : null)
-      }
     } catch (error) {
-      return res.status(400).send(error)
+      return res.send({
+        status: 400,
+        message: error
+      })
     }
   })
   

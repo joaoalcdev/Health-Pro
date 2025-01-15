@@ -111,3 +111,16 @@ export const getProfessionalRecordsExport = async (professionalId, monthRange, p
     return error
   }
 }
+
+export const addPaymentException = async (professionalId, datas) => {
+  try {
+    const res = await axios.post(apiBaseUrl(`professional/${professionalId}/exception`), datas, {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
+    return res.data
+  } catch (error) {
+    return error
+  }
+}

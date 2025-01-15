@@ -6,7 +6,6 @@ import {
   MdFilterList,
   MdOutlineCloudDownload,
 } from 'react-icons/md';
-import { RiArrowDownWideFill } from "react-icons/ri";
 import { toast } from 'react-hot-toast';
 import { PaymentsAgreementsDisclosure, PaymentsProfessionalsDisclosure, PaymentsProfessionalsDisclosureSubTitle, PaymentsAgreementsDisclosureSubTitle, PaymentsAgreementsDisclosureChildren } from '../../components/Disclosures';
 import { getPayroll, exportPayroll, getSummaryYearly } from '../../api/PaymentsAPI'
@@ -15,7 +14,6 @@ import { TbUserDollar } from 'react-icons/tb';
 import Drawer from 'react-modern-drawer';
 import DrawerContent from '../../components/DrawerContent';
 import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp } from "react-icons/io";
-import { BiPlus } from 'react-icons/bi';
 
 
 function Payments() {

@@ -350,13 +350,13 @@ export function Button({ label, onClick, loading, Icon, type, disabled, children
   );
 }
 
-export function OutLinedButton({ label, onClick, loading, Icon, type, disabled }) {
+export function OutLinedButton({ label, onClick, loading, Icon, type, disabled, }) {
   return (
     <button
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className={`w-full flex-rows gap-4 transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} border border-subMain  text-subMain text-sm font-medium px-2 py-4 rounded`}
+      className={`w-full flex-rows gap-4 transitions ${disabled ? 'opacity-30 hover:cursor-not-allowed' : 'hover:opacity-80'} border border-subMain  text-subMain text-sm font-medium px-2 py-4 rounded `}
     >
       {loading ? (
         <BiLoaderCircle className="animate-spin text-subMain text-xl" />

@@ -42,6 +42,19 @@ export const rescheduleEvents = async (eventData, eventId) => {
   }
 }
 
+export const rescheduleSingleEvent = async (eventData, eventInstanceId) => {
+  try {
+    const res = await axios.put(apiBaseUrl(`eventInstance/reschedule/${eventInstanceId}`), eventData, {
+      headers: {
+        Authorization: `${getTokenFromLocalStorage()}`
+      }
+    })
+    return res.data
+  } catch (error) {
+    return error
+  }
+}
+
 export const deleteEvents = async (appointmentId) => {
   try {
     const response = await axios.delete(apiBaseUrl(`events/delete/${appointmentId}`), {

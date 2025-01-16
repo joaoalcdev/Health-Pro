@@ -22,7 +22,7 @@ export const RescheduleEvents = async (app: FastifyInstance) => {
       } = req.body as ScheduleEvent & { timecodes: {  day: number, time: object}}
 
       //convert timecodes to moment objects
-      timecodes.forEach((item) => {
+      timecodes?.forEach((item) => {
         item.time = moment.tz(item.time, "America/Fortaleza")
       })
 

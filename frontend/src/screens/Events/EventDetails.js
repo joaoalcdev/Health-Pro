@@ -13,6 +13,7 @@ import EventDetailsProfessionalInfo from './EventDetailsProfessionalInfo';
 import EventRecurringInfo from './EventRecurringInfo';
 import Drawer from 'react-modern-drawer';
 import EventsForm from '../../components/Forms/EventsForm';
+import RescheduleEventsForm from '../../components/Forms/RescheduleEventsForm';
 
 import moment from 'moment';
 
@@ -22,6 +23,7 @@ function EventDetails() {
   //controllers
   const [loading, setLoading] = useState(false);
   const [viewEditDrawer, setViewEditDrawer] = useState(false);
+  const [scheduleForm, setScheduleForm] = useState(false);
 
   const [activeTab, setActiveTab] = useState(1);
   const [eventData, setEventData] = useState({});
@@ -50,13 +52,19 @@ function EventDetails() {
   }
 
   const openEditDrawer = () => {
+    setScheduleForm(false)
+    setViewEditDrawer(true)
+  }
+
+  const openRescheduleDrawer = () => {
+    setScheduleForm(true)
     setViewEditDrawer(true)
   }
 
   const tabPanel = () => {
     switch (activeTab) {
       case 1:
-        return <EventDetailsInfo data={eventData} onStatus={onStatus} openEdit={openEditDrawer} />;
+        return <EventDetailsInfo data={eventData} onStatus={onStatus} openEdit={openEditDrawer} openReschedule={openRescheduleDrawer} />;
       case 2:
         return <EventDetailsPatientInfo data={eventData} onStatus={onStatus} />;
       case 3:
@@ -98,7 +106,11 @@ function EventDetails() {
             zIndex={40}
             enableOverlay={true}
           >
-            <EventsForm datas={eventData} onClose={() => setViewEditDrawer(false)} status={onStatus} isEdit={true} />
+            {scheduleForm ?
+              <RescheduleEventsForm datas={eventData} onClose={() => setViewEditDrawer(false)} status={onStatus} />
+              :
+              <EventsForm datas={eventData} onClose={() => setViewEditDrawer(false)} status={onStatus} isEdit={true} />
+            }
           </Drawer>
         </>
       )}

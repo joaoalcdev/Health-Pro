@@ -8,6 +8,7 @@ import { EventCheckIn } from './eventCheckIn';
 import { CancelEvents } from './cancelEvents';
 import { RescheduleEvents } from './rescheduleEvents';
 import { DischargeEvents } from './dischargeEvents';
+import { RescheduleSingleEvent } from './rescheduleSingleEvent';
 
 export const EventsRoutes =  async (app: FastifyInstance) => {
  app.register(AddEvents);
@@ -19,4 +20,5 @@ export const EventsRoutes =  async (app: FastifyInstance) => {
  app.register(CancelEvents);
  app.register(RescheduleEvents);
  app.register(DischargeEvents);
+  app.register(RescheduleSingleEvent);
 }

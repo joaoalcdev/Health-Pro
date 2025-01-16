@@ -130,6 +130,21 @@ export const updateSingleEvent = ( eventId: number, startDate: moment.Moment) =>
     .select()
 }
 
+export const updateSingleEventInstance = ( eventInstanceId: number, startDate: moment.Moment) => {
+  let currentDay = moment(startDate);
+  let updatedEvent = {
+    startTime: moment(currentDay).format(),
+    endTime: moment(currentDay).add(30, 'm').format(),
+    timecodes: currentDay.day()
+  }
+  
+  return supabase
+    .from("eventInstances")
+    .update(updatedEvent)
+    .eq("id", eventInstanceId)
+    .select()
+}
+
 export const createOngoingEvents = async (eventId: number) => {
   let { data: eventData, error: eventDataError } = await supabase
     .from("events")

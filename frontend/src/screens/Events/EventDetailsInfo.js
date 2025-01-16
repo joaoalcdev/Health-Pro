@@ -24,7 +24,7 @@ import { eventTypes } from "../../components/Datas";
 import { formatDate, formatDateTime } from "../../utils/formatDate";
 
 
-function EventDetailsInfo({ data, onStatus, openEdit }) {
+function EventDetailsInfo({ data, onStatus, openEdit, openReschedule }) {
   const { user } = useAuth();
 
   const [loading, setLoading] = useState(true);
@@ -51,6 +51,7 @@ function EventDetailsInfo({ data, onStatus, openEdit }) {
     data.agPreCode ? setPrePassword(data.agPreCode) : setPrePassword('');
     data.agPreCodeDate ? setPrePasswordDate(new Date(data.agPreCodeDate)) : setPrePasswordDate('');
     data.eventStatus ? setEventStatus(data.eventStatus) : setEventStatus('');
+    console.log(data)
   }, [data]);
 
   //Update Agreement data
@@ -298,13 +299,21 @@ function EventDetailsInfo({ data, onStatus, openEdit }) {
                   onClick={() => { handleOpenCancelationModal() }}
                 />
                 <OutLinedButton
-                  label="Reagendar"
+                  label="Remarcar"
                   className="flex-1"
                   //disabled={true}
-                  onClick={openEdit}
+                  onClick={openReschedule}
                 />
               </div>
-              <div className="grid sm:grid-cols-1 gap-4">
+              <div className={`grid  gap-4 ${data.eventType <= 2 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                <div className={`${data.eventType <= 2 ? 'block' : 'hidden'}`}>
+                  <OutLinedButton
+                    label="Editar Recorrência"
+                    className="flex-1"
+                    //disabled={true}
+                    onClick={openEdit}
+                  />
+                </div>
                 <Button
                   label="Realizar check-in"
                   className="flex"

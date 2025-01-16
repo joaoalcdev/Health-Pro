@@ -93,6 +93,7 @@ type ScheduleEvent = {
   professionalId: number,
   serviceId?: number,
   startDate: object,
+  startTime?: object
   agreementId: number,
   agAuthCode?: string,
   agAuthDate?: string,

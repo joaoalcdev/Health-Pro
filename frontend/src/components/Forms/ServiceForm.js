@@ -27,7 +27,7 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
         agreementId: price.id,
         name: price.name,
         price: price.defaultPrice,
-        professionalPayment: 0
+        professionalPayment: price.professionalPaymentDefault
       }
     })
 
@@ -65,12 +65,12 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
         setLoading(false);
         return
       }
-      toast.error(`Erro ao ${isEdit ? 'editar' : 'adicionar'} especialidade`);
+      toast.error(`Erro ao ${isEdit ? 'editar' : 'adicionar'} serviço`);
       setLoading(false);
       return
     }
     status(true);
-    toast.success(`Especialidade ${isEdit ? 'atualizada' : 'adicionada'} com sucesso`);
+    toast.success(`Serviço ${isEdit ? 'atualizada' : 'adicionada'} com sucesso`);
     onClose();
     setLoading(false);
   };

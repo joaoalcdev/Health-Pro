@@ -12,6 +12,7 @@ export const AddService = async (app: FastifyInstance) => {
         status,
         specialtyId,
         prices,
+        duration,
       } = req.body as Service & { prices: Price[] }
 
       const { data, error } = await supabase
@@ -19,6 +20,7 @@ export const AddService = async (app: FastifyInstance) => {
       .insert([{
         name,
         specialtyId,
+        customDuration: duration,
         deletedAt: status === true ? null : new Date(), 
       }]).select()
 

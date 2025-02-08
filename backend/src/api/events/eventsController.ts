@@ -4,6 +4,8 @@ import moment from 'moment-timezone';
 
 export const createEvent = (patientId: number, professionalId: number, startDate: string,  eventType: number, agreementId: number,serviceId?: number, timecodes?:{ day: number, time: object }, eventsQty?: number ) => {
   const finalAgreementId = agreementId === 0 ? null : agreementId;
+  
+
   return supabase
     .from("events")
     .insert({
@@ -18,12 +20,29 @@ export const createEvent = (patientId: number, professionalId: number, startDate
     }).select()
 }
 
-export const createInfinityEvents = ( eventId: number, startDate: moment.Moment, timecodes: { time: object, day: number }[], agreementId: number) => {
+export const createInfinityEvents = async ( eventId: number, startDate: moment.Moment, timecodes: { time: object, day: number }[], agreementId: number, serviceId: number) => {
+
+  console.log('SERVICE ID',serviceId)
 
   const maxEventInstancesQty = 10; //default number of events
   let currentDay = moment(startDate);
   let createdEventsQty = 0;
   let createdEvents: SingleEvent[] = [];
+  let duration = 30;
+  if (serviceId){
+    await supabase
+      .from("services")
+      .select("customDuration")
+      .eq("id", serviceId)
+      .single()
+      .then(({ data, error }) => {
+        if (error) {
+          console.error(error);
+        } else {
+          duration = data?.customDuration>0 ? data.customDuration : duration;
+        }
+      });
+  }
   
   while (createdEventsQty < maxEventInstancesQty){
     timecodes.forEach((item: {
@@ -36,7 +55,7 @@ export const createInfinityEvents = ( eventId: number, startDate: moment.Moment,
         let instance = {
           eventId: eventId,
           startTime: moment(currentDay).format(),
-          endTime: moment(currentDay).add(30, 'm').format(),
+          endTime: moment(currentDay).add(duration, 'm').format(),
           agreementId,
           timecodes: currentDay.day()
         }
@@ -53,12 +72,27 @@ export const createInfinityEvents = ( eventId: number, startDate: moment.Moment,
     .select()
 }
 
-export const createRecurringEvents = ( eventId: number, startDate: moment.Moment, timecodes: { time: object, day: number }[], agreementId: number, eventQty: number, dischargedDate?: moment.Moment) => {
+export const createRecurringEvents = async ( eventId: number, startDate: moment.Moment, timecodes: { time: object, day: number }[], agreementId: number, eventQty: number,serviceId?: number, dischargedDate?: moment.Moment, ) => {
 
   const maxEventInstancesQty = eventQty; 
   let currentDay = moment(startDate);
   let createdEventsQty = 0;
   let createdEvents: SingleEvent[] = [];
+  let duration = 30;
+  if (serviceId){
+    await supabase
+      .from("services")
+      .select("customDuration")
+      .eq("id", serviceId)
+      .single()
+      .then(({ data, error }) => {
+        if (error) {
+          console.error(error);
+        } else {
+          duration = data?.customDuration>0 ? data.customDuration : duration;
+        }
+      });
+  }
   
   while (createdEventsQty < maxEventInstancesQty){
     timecodes.forEach((item: {
@@ -77,7 +111,7 @@ export const createRecurringEvents = ( eventId: number, startDate: moment.Moment
         let instance = {
           eventId: eventId,
           startTime: moment(currentDay).format(),
-          endTime: moment(currentDay).add(30, 'm').format(),
+          endTime: moment(currentDay).add(duration, 'm').format(),
           agreementId,
           timecodes: currentDay.day()
         }
@@ -98,13 +132,28 @@ export const createRecurringEvents = ( eventId: number, startDate: moment.Moment
     .select()
 }
 
-export const createSingleEvent = ( eventId: number, startDate: moment.Moment,  agreementId: number) => {
+export const createSingleEvent = async ( eventId: number, startDate: moment.Moment,  agreementId: number, serviceId?: number) => {
   const finalAgreementId = agreementId === 0 ? null : agreementId;
   let currentDay = moment(startDate);
+  let duration = 30;
+  if (serviceId){
+    await supabase
+      .from("services")
+      .select("customDuration")
+      .eq("id", serviceId)
+      .single()
+      .then(({ data, error }) => {
+        if (error) {
+          console.error(error);
+        } else {
+          duration = data?.customDuration>0 ? data.customDuration : duration;
+        }
+      });
+  }
   let createdEvent = {
     eventId: eventId,
     startTime: moment(currentDay).format(),
-    endTime: moment(currentDay).add(30, 'm').format(),
+    endTime: moment(currentDay).add(duration, 'm').format(),
     agreementId: finalAgreementId,
     timecodes: currentDay.day()
   }
@@ -115,11 +164,27 @@ export const createSingleEvent = ( eventId: number, startDate: moment.Moment,  a
     .select()
 }
 
-export const updateSingleEvent = ( eventId: number, startDate: moment.Moment) => {
+export const updateSingleEvent = async ( eventId: number, startDate: moment.Moment, serviceId?: number) => {
   let currentDay = moment(startDate);
+  let duration = 30;
+  if (serviceId){
+    await supabase
+      .from("services")
+      .select("customDuration")
+      .eq("id", serviceId)
+      .single()
+      .then(({ data, error }) => {
+        if (error) {
+          console.error(error);
+        } else {
+          duration = data?.customDuration>0 ? data.customDuration : duration;
+        }
+      });
+  }
+
   let updatedEvent = {
     startTime: moment(currentDay).format(),
-    endTime: moment(currentDay).add(30, 'm').format(),
+    endTime: moment(currentDay).add(duration, 'm').format(),
     timecodes: currentDay.day()
   }
   
@@ -130,11 +195,27 @@ export const updateSingleEvent = ( eventId: number, startDate: moment.Moment) =>
     .select()
 }
 
-export const updateSingleEventInstance = ( eventInstanceId: number, startDate: moment.Moment) => {
+export const updateSingleEventInstance = async ( eventInstanceId: number, startDate: moment.Moment, serviceId?:number) => {
   let currentDay = moment(startDate);
+
+  let duration = 30;
+  if (serviceId){
+    await supabase
+      .from("services")
+      .select("customDuration")
+      .eq("id", serviceId)
+      .single()
+      .then(({ data, error }) => {
+        if (error) {
+          console.error(error);
+        } else {
+          duration = data?.customDuration>0 ? data.customDuration : duration;
+        }
+      });
+  }
   let updatedEvent = {
     startTime: moment(currentDay).format(),
-    endTime: moment(currentDay).add(30, 'm').format(),
+    endTime: moment(currentDay).add(duration, 'm').format(),
     timecodes: currentDay.day()
   }
   
@@ -149,7 +230,8 @@ export const createOngoingEvents = async (eventId: number) => {
   let { data: eventData, error: eventDataError } = await supabase
     .from("events")
     .select("*")
-    .eq("id", eventId);
+    .eq("id", eventId)
+    .single();
 
   if (eventDataError) {
     console.error(eventDataError);
@@ -165,7 +247,7 @@ export const createOngoingEvents = async (eventId: number) => {
 
     
     if(eventData && eventInstances && eventInstances.length > 0){
-      return createRecurringEvents(eventId, moment(eventInstances[0].startTime), eventData[0]?.timecodes, eventData[0].agreementId, 10-eventInstances.length, moment(eventData[0].dischargedDate ? eventData[0].dischargedDate : null));
+      return createRecurringEvents(eventId, moment(eventInstances[0].startTime), eventData?.timecodes, eventData.agreementId, 10-eventInstances.length, eventData.serviceId, moment(eventData.dischargedDate ? eventData.dischargedDate : null));
     }
 }
 

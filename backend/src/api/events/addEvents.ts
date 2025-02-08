@@ -44,14 +44,15 @@ export const AddEvents = async (app: FastifyInstance) => {
             timecodes
           );
           
-          if (error) {
+          if (error || serviceId === undefined) {
             throw error
           } else {
             const {data: eventInstances, error: eventInstancesError} = await createInfinityEvents(
               eventData[0].id,
               moment(startDate),
               timecodes, 
-              agreementId
+              agreementId,
+              serviceId
             )
             if (eventInstancesError) {
               throw eventInstancesError
@@ -82,7 +83,8 @@ export const AddEvents = async (app: FastifyInstance) => {
               moment(startDate),
               timecodes, 
               agreementId,
-              eventsQty?? 1
+              eventsQty?? 1,
+              serviceId
             )
             if (eventInstancesError) {
               throw eventInstancesError
@@ -110,6 +112,7 @@ export const AddEvents = async (app: FastifyInstance) => {
               eventData[0].id,
               moment(startDate),
               agreementId,
+              serviceId
             )
             if (eventInstancesError) {
               throw eventInstancesError

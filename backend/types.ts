@@ -84,6 +84,7 @@ type Service = {
   specialtyId: number,
   initialPrice: number,
   recurringPrice: number,
+  duration: number,
 }
 
 type ScheduleEvent = {

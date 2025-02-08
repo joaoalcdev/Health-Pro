@@ -6,6 +6,8 @@ import { rescheduleSingleEvent } from '../../api/EventsAPI';
 import { toast } from 'react-hot-toast';
 import { weekDays } from '../Datas';
 import 'moment/locale/pt-br';
+import { getServices } from '../../api/ServicesAPI';
+import { set } from 'rsuite/esm/internals/utils/date';
 
 export default function RescheduleEventsForm({ datas, onClose, status, isEdit }) {
 
@@ -17,9 +19,22 @@ export default function RescheduleEventsForm({ datas, onClose, status, isEdit })
 
   //input data
   const [startDate, setStartDate] = useState(new Date(datas.startTime));
+  const [customDuration, setCustomDuration] = useState(0)
+
+  const fetch = async () => {
+    setLoading(true)
+    const servicesResponse = await getServices()
+    if (servicesResponse.status === 200) {
+      const duration = servicesResponse.data.filter(service => service.id === datas.serviceId)[0].customDuration
+      setCustomDuration(duration)
+    }
+    setLoading(false)
+  }
 
   useEffect(() => {
-    console.log(datas)
+    if (datas.serviceId) {
+      fetch()
+    }
   }, [datas])
 
   const handleSave = async () => {
@@ -27,6 +42,7 @@ export default function RescheduleEventsForm({ datas, onClose, status, isEdit })
 
     const data = {
       startTime: startDate,
+      serviceId: datas.serviceId,
     };
 
     await rescheduleSingleEvent(data, datas.eventInstanceId).then(response => {
@@ -70,6 +86,7 @@ export default function RescheduleEventsForm({ datas, onClose, status, isEdit })
                     minDate={today}
                     color={'red-600'}
                     dateFormat={'dd/MM/yyyy - hh:mm aa'}
+                    timeIntervals={customDuration && customDuration > 0 ? customDuration : 30}
                     placeholderText={"Selecionar data"}
                     locale={'pt-BR'}
                     startDate={startDate}

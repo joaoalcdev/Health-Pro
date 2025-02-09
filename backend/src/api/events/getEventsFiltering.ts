@@ -53,8 +53,7 @@ export const GetEventsFiltering = async (app: FastifyInstance) => {
             id: item.eventInstanceId,
             startTime: item.startTime,
             endTime: item.endTime,
-            title: `${item.patientFullName} | ${
-              item.eventType === 4 ? 'Consulta' :  (item.eventType === 5? 'Retorno': item.serviceName) } | ${item.professionalFirstName} ${item.professionalLastName}`,
+            title: `${item.eventType === 4 ? 'Consulta' :  (item.eventType === 5? 'Retorno':  item.serviceName) } | ${item.professionalFirstName} | ${item.patientFullName} | ${item.agreementName}`,
             type: item.eventType,
             hasConflict: false,
             ...item

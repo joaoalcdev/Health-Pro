@@ -8,7 +8,9 @@ import { addServices, updateServices } from '../../api/ServicesAPI';
 export default function ServiceForm({ onClose, datas, agreements, specialties, specialtyId, status, isEdit }) {
 
   const [check, setCheck] = useState(true);
+  const [hasCustomDuration, setHasCustomDuration] = useState(false);
   const [name, setName] = useState('');
+  const [duration, setDuration] = useState(datas.customDuration ? datas.customDuration : 30);
   const [prices, setPrices] = useState([]);
   const [specialty, setSpecialty] = useState({});
 
@@ -36,6 +38,10 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
       setName(datas.name);
       setCheck(datas.deletedAt ? false : true);
       setSpecialty(specialties.find((item) => item.id === datas.specialtyId))
+      if (datas.customDuration) {
+        setHasCustomDuration(true)
+        setDuration(datas.customDuration)
+      }
       agreements.forEach((agreement, index) => {
         datas.prices.forEach((price, index) => {
           if (agreement.id === price.agreementId) {
@@ -57,8 +63,8 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
       setLoading(false);
       return toast.error('Nome do Serviço é obrigatória');
     }
-    const response = isEdit ? await updateServices(datas.id, { name, status: check, specialtyId: specialty.id, prices })
-      : await addServices({ name, status: check, specialtyId: specialty.id, prices });
+    const response = isEdit ? await updateServices(datas.id, { name, status: check, specialtyId: specialty.id, prices, duration: hasCustomDuration ? duration : null })
+      : await addServices({ name, status: check, specialtyId: specialty.id, prices, duration: hasCustomDuration ? duration : null });
     if (response.code) {
       if (response.response.data.code === "23505") {
         toast.error('Especialidade já existe');
@@ -88,6 +94,12 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
     setDisabled(false);
   }
 
+  // useEffect(() => {
+  //   if (!hasCustomDuration) {
+  //     setDuration(30)
+  //   }
+  // }, [hasCustomDuration])
+
   return (
     <div className='relative h-full z-50 grid grid-cols-1'>
       {/* Header */}
@@ -115,30 +127,67 @@ export default function ServiceForm({ onClose, datas, agreements, specialties, s
         </div>
         {/* Service */}
         <div className={`flex w-full flex-col gap-4`}>
-          <Input
-            label="Nome do Serviço"
-            color={true}
-            value={name}
-            placeholder={'Digite o nome do Serviço'}
-            onChange={(e) => {
-              setName(e.target.value)
-              setDisabled(false)
-            }}
-          />
+          <div className='grid grid-cols-3 gap-4'>
+            <div className='col-span-2'>
+              <Input
+                label="Nome do Serviço"
+                color={true}
+                value={name}
+                placeholder={'Digite o nome do Serviço'}
+                onChange={(e) => {
+                  setName(e.target.value)
+                  setDisabled(false)
+                }}
+              />
+            </div>
 
-          <div className="flex items-center gap-2 w-full">
-            <Toggle
-              label="Status"
-              checked={check}
-              onChange={() => {
-                setCheck(!check)
-                setDisabled(false)
-              }}
-            />
-            <p className={`text-sm ${check ? 'text-subMain' : 'text-textGray'}`}>
-              {check ? 'Ativado' : 'Desativado'}
-            </p>
+            <div className="flex flex-col gap-4 w-full items-center">
+              <p className={`text-sm ${check ? 'text-subMain' : 'text-textGray'}`}>
+                {check ? 'Ativado' : 'Desativado'}
+              </p>
+              <Toggle
+                label="Status"
+                checked={check}
+                onChange={() => {
+                  setCheck(!check)
+                  setDisabled(false)
+                }}
+              />
+
+            </div>
           </div>
+          <div className='grid grid-cols-2 gap-4'>
+            <div className="flex flex-col gap-4 w-full items-start">
+              <p className={`text-sm ${hasCustomDuration ? 'text-subMain' : 'text-textGray'}`}>
+                Duração personalizada?
+              </p>
+              <Toggle
+                label="Status"
+                checked={hasCustomDuration}
+                onChange={() => {
+                  if (hasCustomDuration) {
+                    setDuration(30)
+                  }
+                  setHasCustomDuration(!hasCustomDuration)
+                  setDisabled(false)
+                }}
+              />
+            </div>
+            <div >
+              <Input
+                label="Duração (min)"
+                color={true}
+                value={duration}
+                disabled={!hasCustomDuration}
+                placeholder={'30 minutos'}
+                onChange={(e) => {
+                  setDuration(e.target.value)
+                  setDisabled(false)
+                }}
+              />
+            </div>
+          </div>
+
           <div className='flex flex-col gap-2 border border-subMain p-4 rounded-lg'>
             <h1 className='text-subMain '>
               Defina os preços para Consultas/Avaliações:

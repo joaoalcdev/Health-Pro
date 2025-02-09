@@ -203,6 +203,38 @@ function Schedule() {
   }, [])
 
 
+  //customized event
+  const WeekEvent = ({ event }) => (
+    <div className=''>
+      <div className='flex gap-2 items-center justify-between'>
+        <p className='text-xs truncate'>{event.eventType <= 3 ? event.serviceName : event.eventType = 4 ? 'Consulta' : 'Retorno'}</p>
+        {event.agreementId === 2 ? <div className='text-xs rounded-sm font-bold bg-white text-subMain px-1'>U</div>
+          : event.agreementId === 1 ? <div className='text-xs rounded-sm font-bold bg-white text-black px-1'>P</div>
+            : <div className='text-xs rounded-sm font-bold bg-white text-subMain px-1'>C</div>}
+      </div>
+      <div className='flex flex-col '>
+        <div className='text-xs truncate font-bold'>{event.professionalFirstName}</div>
+        <div className='text-xs truncate italic'>{event.patientFullName}</div>
+      </div>
+    </div>
+  );
+
+  const DayEvent = ({ event }) => (
+    <div className=''>
+      <div className='flex gap-2 items-center justify-between'>
+        <p className='text-xs truncate'>{event.eventType <= 3 ? event.serviceName : event.eventType = 4 ? 'Consulta' : 'Retorno'}</p>
+        {event.agreementId === 2 ? <div className='text-xs rounded-sm font-bold bg-white text-subMain px-1'>U</div>
+          : event.agreementId === 1 ? <div className='text-xs rounded-sm font-bold bg-white text-black px-1'>P</div>
+            : <div className='text-xs rounded-sm font-bold bg-white text-subMain px-1'>C</div>}
+      </div>
+      <div className='flex flex-col '>
+        <div className='text-xs truncate font-bold'>{event.professionalFirstName}</div>
+        <div className='text-xs truncate italic'>{event.patientFullName}</div>
+      </div>
+    </div>
+  );
+
+
 
   const fetch = async () => {
     setLoading(true);
@@ -219,6 +251,7 @@ function Schedule() {
         start: moment(item.startTime).toDate(),
         end: moment(item.endTime).toDate(),
         title: item.title,
+        //title: `${item.patientName} | ${item.serviceName} | ${item.professionalName} ${}`,
         color: item.eventStatus === 1 ? eventStatus[0].color : eventStatus[1].color,
         ...item
       })
@@ -267,15 +300,12 @@ function Schedule() {
       //day view
       setStart(moment(range[0]).format('DD/MM/YYYY'));
       setEnd(moment(range[0]).format('DD/MM/YYYY'));
-
     }
   }
 
   useEffect(() => {
     fetch()
   }, [onNavigate, start])
-
-
 
   return (
     <Layout>
@@ -419,7 +449,11 @@ function Schedule() {
           }}
           // custom toolbar
           toolbar={true}
-          components={{ toolbar: CustomToolbar }}
+          components={{
+            toolbar: CustomToolbar,
+            week: { event: WeekEvent },
+            day: { event: DayEvent },
+          }}
           onRangeChange={(range) => handleRangeChange(range)}
           // custom view
           views={['month', 'day', 'week', 'agenda']}

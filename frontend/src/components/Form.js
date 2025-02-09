@@ -300,7 +300,7 @@ export function Input({ label, name, type, color, placeholder, register, value, 
     <div className="text-sm w-full">
       <Field className={`flex w-full flex-col`}>
         <Label
-          className={`${color ? 'select-none text-black text-sm pl-1 pb-1 text-sm text-black' : 'text-white font-semibold'
+          className={`${color ? 'select-none text-black text-sm pl-1 pb-1 ' : 'text-gray-500 font-semibold'
             } `}
         >
           {label}{isRequired}
@@ -585,7 +585,7 @@ export function DatePickerComp({ label, startDate, onChange, color, locale, show
   );
 }
 
-export function MultiplesDatePickers({ key, label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll, showTimeSelect, highlightWithRanges, minDate, maxDate }) {
+export function MultiplesDatePickers({ key, label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll, showTimeSelect, highlightWithRanges, minDate, maxDate, timeIntervals }) {
   return <DatePickerEvents
     key={key}
     label={label}
@@ -595,6 +595,7 @@ export function MultiplesDatePickers({ key, label, startDate, onChange, color, l
     maxDate={maxDate}
     color={color}
     dateFormat={dateFormat}
+    timeIntervals={timeIntervals}
     placeholderText={placeholderText}
     locale={locale}
     onChange={onChange}
@@ -606,7 +607,7 @@ export function MultiplesDatePickers({ key, label, startDate, onChange, color, l
   />
 }
 
-export function DatePickerEvents({ label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll, showTimeSelect, highlightWithRanges, minDate, maxDate }) {
+export function DatePickerEvents({ label, startDate, onChange, color, locale, showYearDropdown, scrollableYearDropdown, yearDropdownItemNumber, dateFormat, placeholderText, closeOnScroll, showTimeSelect, highlightWithRanges, minDate, maxDate, timeIntervals }) {
   return (
     <div className="flex flex-col text-sm w-full">
       <label
@@ -624,6 +625,7 @@ export function DatePickerEvents({ label, startDate, onChange, color, locale, sh
         placeholderText={placeholderText}
         minDate={minDate}
         maxDate={maxDate}
+        timeIntervals={timeIntervals}
         showYearDropdown={showYearDropdown}
         showTimeSelect={showTimeSelect}
         highlightDates={highlightWithRanges}
@@ -641,7 +643,7 @@ export function DatePickerEvents({ label, startDate, onChange, color, locale, sh
 
 // time picker
 
-export function TimePickerComp({ label, startDate, onChange, placeholderText }) {
+export function TimePickerComp({ label, startDate, onChange, placeholderText, timeIntervals }) {
   return (
     <div className="flex flex-col text-sm w-full">
       <label className={'text-black text-sm'}>{label}</label>
@@ -650,15 +652,17 @@ export function TimePickerComp({ label, startDate, onChange, placeholderText }) 
         onChange={onChange}
         showTimeSelect
         showTimeSelectOnly
-        timeIntervals={30}
+        timeIntervals={timeIntervals}
         placeholderText={placeholderText}
         //minTime={new Date().setHours(6, 0)}
         //maxTime={new Date().setHours(21, 0)}
         filterTime={date => date.getHours() > 5 && date.getHours() < 20}
         timeCaption="Time"
-        dateFormat="H:mm aa"
+        dateFormat="HH:mm"
+        timeFormat="HH:mm aa"
         className="transitions flex w-full bg-transparent text-sm  p-4 border border-border font-light rounded-lg focus:border focus:border-subMain"
       />
+
     </div>
   );
 }

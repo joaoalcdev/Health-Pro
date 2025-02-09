@@ -312,14 +312,6 @@ function ScheduleUsed() {
     setStatus(status);
   }
 
-  const DrawerBody = () => {
-    return (
-      <div style={{ padding: 20 }}>
-        <h1 style={{ fontWeight: 'bold' }}>Hello World! 🚀🥳</h1>
-      </div>
-    )
-  }
-
   return (
 
     <>
@@ -349,40 +341,8 @@ function ScheduleUsed() {
           />
         )
       }
-      {/* calender */}
-      {/* <button
-        onClick={handleClose}
-        className="w-16 animate-bounce h-16 border border-border z-50 bg-subMain text-white rounded-full flex-colo fixed bottom-8 right-12 button-fb"
-      >
-        <BiPlus className="text-2xl" />
-      </button> */}
-
-      {/* <div className='flex flex-col gap-6 mb-8'>
-        <h1 key={''} className="items-start text-xl font-semibold">Agendamentos</h1>
-        <div className="flex flex-col md:flex-row items-center justify-between">
-          <div className='flex flex-row w-80'>
-            <div className="flex flex-row h-14 w-full text-xs text-main rounded-md bg-dry border border-border px-4 flex items-center justify-between">
-              <p className="flex text-xs text-left">Agenda:<span className='flex text-subMain ml-1 break-words text-pretty'>{professional.fullName}</span></p>
-            </div>
-          </div>
-          <div className="flex flex-row gap-2 items-center">
-            <h1 className="text-xs font-semibold">Legenda:</h1>
-            {
-              eventStatus.map((item, index) => (
-                <div key={index} className="flex gap-2 items-center">
-                  <div
-                    className="w-3 h-3 rounded"
-                    style={{ backgroundColor: item.color }}
-                  ></div>
-                  <span className='text-xs'>{item.name}</span>
-                  {index === eventTypes.length - 1 ? '' : ''}
-                </div>
-              ))}
-          </div>
-        </div>
-      </div> */}
       {loading ?
-        <div className="flex relative w-full h-1/2 top-20 justify-center items-center"> {/* resolve style: generating scroll x = flex absolute items-center justify-center w-full h-1/2*/}
+        <div className="flex w-full h-1/2 top-20 justify-center items-center"> {/* resolve style: generating scroll x = flex absolute items-center justify-center w-full h-1/2*/}
           <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
         </div>
         :

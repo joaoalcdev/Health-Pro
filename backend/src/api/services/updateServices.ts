@@ -13,13 +13,15 @@ export const UpdateService = async (app: FastifyInstance) => {
         name,
         status,
         specialtyId,
-        prices, 
+        prices,
+        duration 
       } = req.body as Service & { prices: Price[] }	
 
       const { data, error } = await supabase
       .from("services")
       .update([{
         name,
+        customDuration: duration,
         deletedAt: status === true ? null : new Date(), 
       }])
       .eq("id", id)

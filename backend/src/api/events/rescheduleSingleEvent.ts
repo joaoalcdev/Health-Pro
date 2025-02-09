@@ -12,9 +12,10 @@ export const RescheduleSingleEvent = async (app: FastifyInstance) => {
       const {id} = req.params as {id: number}
       var {
         startTime,
+        serviceId
       } = req.body as ScheduleEvent 
 
-      const {data , error } = await updateSingleEventInstance(id, moment.tz(startTime, "America/Fortaleza"))
+      const {data , error } = await updateSingleEventInstance(id, moment.tz(startTime, "America/Fortaleza"),serviceId)
 
       if (error) {
         throw error

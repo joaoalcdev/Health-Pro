@@ -18,6 +18,7 @@ export const RescheduleEvents = async (app: FastifyInstance) => {
         agreementId,
         eventsPerWeek,
         eventsQty,
+        serviceId,
         timecodes
       } = req.body as ScheduleEvent & { timecodes: {  day: number, time: object}}
 
@@ -46,7 +47,7 @@ export const RescheduleEvents = async (app: FastifyInstance) => {
         if (error) {
           throw error
         } else {
-          const {data: eventInstances, error: eventInstancesError} = await createRecurringEvents(parseInt(id), moment.tz(startDate, "America/Fortaleza"), timecodes, agreementId, data?.length || 1)
+          const {data: eventInstances, error: eventInstancesError} = await createRecurringEvents(parseInt(id), moment.tz(startDate, "America/Fortaleza"), timecodes, agreementId,data?.length || 1, serviceId)
 
           await supabase
           .from("events")
@@ -67,7 +68,7 @@ export const RescheduleEvents = async (app: FastifyInstance) => {
 
       default:
         {
-          const {data: eventInstances, error: eventInstancesError} = await updateSingleEvent(parseInt(id), moment.tz(startDate, "America/Fortaleza"))
+          const {data: eventInstances, error: eventInstancesError} = await updateSingleEvent(parseInt(id), moment.tz(startDate, "America/Fortaleza"), serviceId)
 
           await supabase
           .from("events")

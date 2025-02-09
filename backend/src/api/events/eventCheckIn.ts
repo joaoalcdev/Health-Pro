@@ -79,10 +79,8 @@ export const EventCheckIn = async (app: FastifyInstance) => {
             const professionalPaymentException = await getProfessionalPaymentExceptions(eventInstance[0].agreementId, eventInstance[0].professionalId)
 
             if(professionalPaymentException){
-              console.log('ppp',professionalPaymentException)
-              professionalRate = Math.round(grossValue - grossValue * (professionalPaymentException.professionalPayment/100) - tax);
+              professionalRate = Number((grossValue - grossValue * (professionalPaymentException.professionalPayment/100) - tax).toFixed(2));
             }else{
-              console.log('ssp',servicePrice)
               professionalRate = eventInstance[0].agreementId === 1 ? Math.round(grossValue - grossValue * (servicePrice.professionalPayment/100)) : servicePrice.professionalPayment;
             }
           }

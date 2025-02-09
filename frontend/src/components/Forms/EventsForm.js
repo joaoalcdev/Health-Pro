@@ -11,6 +11,7 @@ import { getServices } from '../../api/ServicesAPI';
 import { createEvents, rescheduleEvents } from '../../api/EventsAPI';
 import { toast } from 'react-hot-toast';
 import { weekDays, timeOptions } from '../Datas';
+import moment from 'moment';
 import 'moment/locale/pt-br';
 import { waitlist } from '../../api/specialtiesAPI';
 
@@ -46,6 +47,7 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
   const [agreement, setAgreement] = useState({ id: 0, name: 'Selecione alguma opção...' });
   const [eventType, setEventType] = useState(isEdit ? eventTypes[datas.eventType - 1] : { id: 0, name: 'Selecione uma opção...' },
   );
+  const [customDuration, setCustomDuration] = useState(0);
   const [eventsQty, setEventsQty] = useState(isEdit ? datas.eventsQty : 1)
   const [eventsPerWeek, setEventsPerWeek] = useState(isEdit && datas.eventType <= 2 ? timeOptions[datas.timecodes.length - 1] : timeOptions[0]);
   const [filteredServices, setFilteredServices] = useState([]);
@@ -68,6 +70,10 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
       setProfessionalsData(professionalsResponse.data)
       setServicesData(servicesResponse.data)
       setFilteredServices(servicesResponse.data)
+      if (isEdit) {
+        const duration = servicesResponse.data.filter(service => service.id === datas.serviceId)[0].customDuration
+        setCustomDuration(duration)
+      }
       setLoading(false)
     }
 
@@ -75,6 +81,12 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
   useEffect(() => {
     fetch()
   }, [])
+
+  useEffect(() => {
+    if (service.id === 0) return
+    const duration = servicesData.filter(item => item.id === service.id)[0].customDuration
+    setCustomDuration(duration)
+  }, [service])
 
   const fetchPatients = async (specialtyId) => {
 
@@ -115,11 +127,12 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
       const data = {
         eventInstanceId: datas.eventInstanceId,
         eventType: datas.eventType,
-        startDate: startDate,
+        startDate: moment(startDate).startOf('day').format(),
         agreementId: datas.agreementId,
         eventsPerWeek: eventsPerWeek.id,
         eventsQty: Number(eventsQty),
-        timecodes: arrayDates
+        timecodes: arrayDates,
+        serviceId: datas.serviceId,
       };
 
       const response = await rescheduleEvents(data, datas.id);
@@ -217,7 +230,7 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
   //Build Array of datepickers based on eventsPerWeek
   useEffect(() => {
     buildArray();
-  }, [arrayWeekDays, arrayTimes])
+  }, [arrayWeekDays, arrayTimes, customDuration])
 
   //if isEdit, update arrays based on datas
   const updateArrays = () => {
@@ -256,6 +269,7 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
 
   //Update array of times
   const handleAddTime = (time, index) => {
+    console.log(time)
     const newArray = [...arrayTimes];
     newArray[index] = time;
     setArrayTimes(newArray);
@@ -298,6 +312,7 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
               showTimeSelect={true}
               minDate={new Date()}
               color={'red-600'}
+              timeIntervals={customDuration && customDuration > 0 ? customDuration : 30}
               placeholderText={"Selecionar data"}
               locale={'pt-BR'}
               onChange={(time) => {
@@ -482,6 +497,7 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
                           dateFormat={'dd/MM/yyyy - hh:mm aa'}
                           placeholderText={"Selecionar data"}
                           locale={'pt-BR'}
+                          timeIntervals={customDuration && customDuration > 0 ? customDuration : 30}
                           startDate={startDate}
                           onChange={(date) => {
                             setStartDate(date)

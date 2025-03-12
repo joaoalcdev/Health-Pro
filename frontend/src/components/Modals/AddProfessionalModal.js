@@ -310,7 +310,7 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
                   autoClear={true}
                   placeholder={'___.___.___-__'}
                   unmask={true}
-                  required={false}
+                  required={true}
                   value={cpf}
                   onChange={(e) =>
                     setCpf(e.target.value)

@@ -126,6 +126,7 @@ function ProfessionalProfile() {
               <button
                 onClick={() => setActiveTab(tab.id)}
                 key={index}
+                disabled={loading}
                 className={`
                 ${activeTab === tab.id
                     ? ' text-left text-pretty bg-text text-subMain'

@@ -6,63 +6,90 @@ export const AddProfessional = async (app: FastifyInstance) => {
   app.post("/professionals", 
   {preHandler: auth}, 
   async (req: FastifyRequest, res: FastifyReply) => {
-    try {
-      const {
-        firstName,
-        lastName,
-        phoneNumber,
-        email,
-        password,
-        address,
-        city,
-        region,
-        state,
-        gender,
-      } = req.body as Users
+    const {
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      password,
+      address,
+      city,
+      region,
+      state,
+      gender,
+    } = req.body as Users
 
-      const roleId = 3;
-       
-      const {
-        fullName,
-        rg,
-        rgInssuance,
-        cpf,
-        specialty,
-        council,
-        councilNumber,
+    const roleId = 3;
+    
+    const {
+      fullName,
+      rg,
+      rgInssuance,
+      cpf,
+      specialty,
+      council,
+      councilNumber,
       } = req.body as Professionals
-
-      const { data, error } = await supabase
-      .auth
-      .signUp({
-        email,
-        password
-      })
-      if (error) {
-        throw error
+      
+      
+      const checkIsDuplicated =  (email: string, cpf: string) => {
+        return supabase
+        .from("view_professionals")
+        .select("*")
+        .or(`email.eq.${email},cpf.eq.${cpf}`)
+        .then((response) => {
+          if (response.data && response.data[0]) {
+            return true
+          }
+          return false
+        })
       }
-
-      if(data) {
-        const { data: createdUser, error } = await supabase
+      const isDuplicated = await checkIsDuplicated(email, cpf)
+      if (isDuplicated) {
+        return res.send({
+          status: 400,
+          message: "Já existe um profissional com esse e-mail ou cpf."
+        })
+      }
+      
+      try {
+        await supabase
         .from("users")
-        .insert([{
-          id: data.user?.id,
-          firstName,
-          lastName,
-          phoneNumber,
-          email,
-          password,
-          roleId,
-          address,
-          city,
-          region,
-          state,
-          gender,
-        }]).select()
+        .select("*")
+        .eq("email", email)
+        
 
+        const { data, error } = await supabase
+        .auth
+        .signUp({
+          email,
+          password
+        })
         if (error) {
           throw error
-        } else {
+        }
+
+        if(data) {
+          const { data: createdUser, error } = await supabase
+          .from("users")
+          .insert([{
+            id: data.user?.id,
+            firstName,
+            lastName,
+            phoneNumber,
+            email,
+            password,
+            roleId,
+            address,
+            city,
+            region,
+            state,
+            gender,
+          }]).select()
+
+          if (error) {
+            throw error
+          } else {
             const { data: createdProfessional, error: pError  } = await supabase.from("professionals").insert([{
               userId: data.user?.id,
               fullName,
@@ -74,55 +101,27 @@ export const AddProfessional = async (app: FastifyInstance) => {
               councilNumber,
             }]).select()
         
-          if (pError) {
-            throw pError
-          }
-          else {
-            const { data: agreements,  error: aError } = await supabase
-            .from("agreements")
-            .select()
+            if (pError) {
+              throw pError
+            }
+            else {
 
-            if (aError) {
-              throw aError
-            } 
-
-            if (agreements) {
-              let professionalPayments: ProfessionalPayment[] = [];
-              agreements.forEach((agreement) => {
-                professionalPayments.push({
-                  professionalId: createdProfessional[0].id,
-                  agreementId: agreement.id,
-                  professionalPayment: agreement.professionalPaymentDefault,
-                })
-              })
-
-              const { data: createdProfessionalPayments, error: ppError } = await supabase
-              .from("professionalPayments")
-              .insert(professionalPayments)
-              .select()
-
-              if (ppError) {
-                throw ppError
-              } else {
-                return res.send(
-                  {
-                    status: 200,
-                    data: createdUser,
-                    message: "Professional created successfully"
-                  }
-                )
-              }
+              return res.send(
+                {
+                  status: 200,
+                  data: createdUser,
+                  message: "Professional created successfully"
+                }
+              )
             }
           }
         }
+      } catch (error) {
+        return res.send({
+          status: 400,
+          message: 'erro',
+          error: error
+        })
       }
-    } catch (error) {
-      return res.send({
-        status: 400,
-        message: error
-      })
-    }
   })
-  
-
 }

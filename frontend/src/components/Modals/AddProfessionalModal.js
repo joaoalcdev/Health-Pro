@@ -65,7 +65,7 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const { data, error } = await createProfessional(
+    const res = await createProfessional(
       {
         firstName,
         lastName,
@@ -87,16 +87,11 @@ function AddProfessionalModal({ closeModal, isOpen, professional, datas, status 
       }
     )
 
-    if (error) {
-      if (error.response.status === 422) {
-        toast.error("Email já cadastrado!")
-      } else {
-        toast.error("Erro ao criar profissional!")
-      }
+    if (res.status !== 200) {
+      toast.error(res.message)
       setLoading(false)
       return
     }
-
 
     closeModal(true)
     status(true)

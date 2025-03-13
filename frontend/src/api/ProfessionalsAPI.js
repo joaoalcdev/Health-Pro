@@ -36,15 +36,12 @@ export const getProfessionalById = async (professional) => {
 
 export const createProfessional = async (newProfessional) => {
   try {
-    const { data, error } = await axios.post(apiBaseUrl('professionals'), newProfessional, {
+    const res = await axios.post(apiBaseUrl('professionals'), newProfessional, {
       headers: {
         Authorization: `${getTokenFromLocalStorage()}`
       }
     })
-    if (error) {
-      throw error
-    }
-    return data
+    return res.data
   } catch (error) {
     return { error }
   }

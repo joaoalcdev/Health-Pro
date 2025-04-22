@@ -35,6 +35,7 @@ export const getPayroll = async (app: FastifyInstance) => {
         var totalAmountDue = 0 as number; // Valor total a ser pago a todos os Profissionais
         var totalGrossValue = 0 as number; // Valor da receita bruta total do mês
         var totalTax = 0 as number; // Valor total de impostos
+        var totalUnimed = 0 as number; // Valor total de unimed
         var totalProfit = 0 as number; // Valor total de lucro
         var totalEvents = 0 as number; // Quantidade total de eventos
         
@@ -194,6 +195,7 @@ export const getPayroll = async (app: FastifyInstance) => {
           return {
             agreementId: event.agreementId,
             agreementName: agreements.find((agreement) => agreement.id === event.agreementId)?.name,
+            agreementTaxPercent: agreements.find((agreement) => agreement.id === event.agreementId)?.tax,
             agreementGrossValue: data.reduce((acc, e) => {
               if(e.agreementId === event.agreementId){
                 return acc + e.grossValue

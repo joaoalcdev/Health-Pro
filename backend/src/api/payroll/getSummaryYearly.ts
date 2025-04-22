@@ -24,13 +24,24 @@ export const getSummaryYearly = async (app: FastifyInstance) => {
       .lte('endTime', endDate)
       .order('startTime', {ascending: true})
 
+      const { data: unimedData, error: agreementsError } = await supabase
+      .from('agreements')
+      .select()
+      .eq('id', 2)
+
       if(error){
         throw error
+      }
+
+      if(agreementsError){
+        throw agreementsError
       }
       var totalAmountDue = 0 as number; // Valor total a ser pago a todos os Profissionais
       var totalGrossValue = 0 as number; // Valor da receita bruta total do mês
       var totalTax = 0 as number; // Valor total de impostos
       var totalProfit = 0 as number; // Valor total de lucro
+      var totalUnimed = 0 as number; // Valor total de unimed
+
 
       if(data){
         data.forEach((event: any) => {
@@ -38,6 +49,7 @@ export const getSummaryYearly = async (app: FastifyInstance) => {
           totalGrossValue += event.grossValue;
           totalTax += event.tax;
           totalProfit += event.profit;
+          totalUnimed += event.agreementId === 2 ? event.grossValue : 0;
         });
 
       }
@@ -48,6 +60,8 @@ export const getSummaryYearly = async (app: FastifyInstance) => {
           totalGrossValue: Number(totalGrossValue.toFixed(2)),
           totalTax: Number(totalTax.toFixed(2)),
           totalProfit: Number(totalProfit.toFixed(2)),
+          totalUnimed: Number(totalUnimed.toFixed(2)),
+          unimedTaxPercent: Number(unimedData[0].tax),
         },
         message: 'Yearly summary retrieved successfully'
       })

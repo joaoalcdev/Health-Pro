@@ -33,6 +33,7 @@ function Payments() {
   const [payroll, setPayroll] = useState([]);
   const [filteredPayroll, setFilteredPayroll] = useState([]);
   const [summary, setSummary] = useState({});
+  const [unimedTax, setUnimedTax] = useState(0);
   const [yearlySummary, setYearlySummary] = useState({});
 
 
@@ -47,6 +48,9 @@ function Payments() {
       return;
     }
     if (response) {
+      const unimed = response.summary.summaryPerAgreement
+        .filter((item) => item.agreementId === 2)
+      setUnimedTax(unimed[0])
       setPayroll(response.professionals);
       setFilteredPayroll(response.professionals);
       setSummary(response.summary);
@@ -91,9 +95,10 @@ function Payments() {
     },
     {
       id: 3,
-      title: 'Impostos',
-      value: summary?.totalTax ? moneyFormat2BR(summary.totalTax) : '0,00',
-      yearlyValue: yearlySummary?.totalTax ? moneyFormat2BR(yearlySummary.totalTax) : '0,00',
+      title: 'Imposto UNIMED',
+      // value: summary?.totalTax ? moneyFormat2BR(summary.totalTax) : '0,00',
+      value: unimedTax ? moneyFormat2BR(unimedTax.agreementGrossValue * unimedTax.agreementTaxPercent / 100) : '0,00',
+      yearlyValue: yearlySummary?.totalUnimed ? moneyFormat2BR(Number(yearlySummary?.totalUnimed * yearlySummary?.unimedTaxPercent / 100)) : '0,00',
       color: ['bg-orange-500', 'text-orange-500'],
       icon: GiPayMoney,
     },

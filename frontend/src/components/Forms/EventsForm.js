@@ -492,7 +492,7 @@ export default function EventsForm({ datas, onClose, status, isEdit }) {
                       <div className='px-4'>
                         <MultiplesDatePickers
                           showTimeSelect={true}
-                          minDate={today}
+                          //minDate={today}
                           color={'red-600'}
                           dateFormat={'dd/MM/yyyy - hh:mm aa'}
                           placeholderText={"Selecionar data"}

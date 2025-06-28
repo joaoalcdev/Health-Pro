@@ -237,13 +237,13 @@ function ProfessionalInfo({ data, onStatus, onDrawer }) {
             <div className="grid sm:grid-cols-2 gap-4 w-full">
               <div className="flex w-full flex-col gap-3">
                 <h1 className="text-black text-sm">Email</h1>
-                <p className="text-black text-md font-semibold">{data.email}</p>
+                <p className="text-black text-md font-semibold overflow-hidden overflow-ellipsis">{data.email}</p>
               </div>
               <div className="flex w-full flex-col gap-3">
                 <h1 className="text-black text-sm">Telefone de Contato</h1>
                 <p className="text-black text-md font-semibold">{formatPhoneNumber(data.phoneNumber)}</p>
               </div>
-            </div>
+            </div >
             <div className="grid sm:grid-cols-2 gap-4 w-full">
               <div className="flex w-full flex-col gap-3">
                 <h1 className="text-black text-sm">RG</h1>

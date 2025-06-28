@@ -43,7 +43,7 @@ export const getProfessionalRecordsExport = async (app: FastifyInstance) => {
         const rebaseData = data.map((record: any, index) => {
           return {
             ...record,
-            checkInSignature: `${url}${record.checkInSignature}`,
+            checkInSignature: record.checkInSignature ? `${url}${record.checkInSignature}` : null,
             checkInDate: moment(moment.tz(record.checkInDate, "America/Fortaleza")).format('DD/MM/YYYY - HH:mm a'),
             startTime: moment(moment.tz(record.startTime,"America/Fortaleza")).format('DD/MM/YYYY - HH:mm a'),
             agreementName: record.agreementName,

@@ -6,6 +6,13 @@ import { createOngoingEvents } from '../events/eventsController';
 import auth from "../../middlewares/auth";
 import 'moment/locale/pt-br';
 
+
+//1 - Sessão recorrente continua
+//2 - Sessão recorrente 
+//3 - Sessão simples
+//4 - Consulta
+//5 - Retorno
+
 export const EventCheckIn = async (app: FastifyInstance) => {
   app.post("/checkIn/:id", 
     {preHandler: auth}, 
@@ -19,26 +26,8 @@ export const EventCheckIn = async (app: FastifyInstance) => {
     } = req.body as {eventId: number, eventType: number, checkInName: string, checkInSignature: string};
 
     //Convert base64 to buffer
-    const buffer = Buffer.from(checkInSignature, "base64");
-    Jimp.read(buffer, (err, res) => {
-      if (err) throw new Error(err.message);
-      res.quality(5);
-    });
     
     try {
-      //Upload signature to storage
-      const { data: fileData, error } = await supabaseAdmin
-      .storage
-      .from('cedejom')
-      .upload(`signatures/sign${id}.png`, buffer as Buffer , { 
-        cacheControl: '3600', 
-        upsert: true, 
-        contentType: "image/png",
-      });
-
-      if (error) {
-        throw error;
-      }
 
       //get EventInstance data
       const { data: eventInstance, error: eventInstanceError } = await supabase
@@ -122,7 +111,6 @@ export const EventCheckIn = async (app: FastifyInstance) => {
         .from('eventInstances')
         .update({
           checkInName,
-          checkInSignature: fileData.path,
           checkInDate: moment().tz('America/Sao_Paulo').format(),
           eventStatus: 3,
           grossValue,
@@ -132,6 +120,44 @@ export const EventCheckIn = async (app: FastifyInstance) => {
         })
         .eq('id', id)
         .select()
+
+
+        //Convert base64 to buffer
+        if(checkInSignature){
+          const buffer = Buffer.from(checkInSignature, "base64");
+          Jimp.read(buffer, (err, res) => {
+            if (err) throw new Error(err.message);
+            res.quality(5);
+          });
+
+          //Upload signature to storage
+          const { data: fileData, error } = await supabaseAdmin
+          .storage
+          .from('cedejom')
+          .upload(`signatures/sign${id}.png`, buffer as Buffer , { 
+            cacheControl: '3600', 
+            upsert: true, 
+            contentType: "image/png",
+          });
+    
+          if (error) {
+            throw error;
+          }
+          
+          //Update event instance
+          const { data, error: insertError } = await supabase
+          .from('eventInstances')
+          .update({
+            checkInSignature: fileData.path,
+          })
+          .eq('id', id)
+          .select()
+
+          if (insertError) {
+            return res.status(500).send({ error: insertError });
+          }
+
+        }
 
         //Verificar o envent type antes de criar ongoing events
         if(eventType === 1){

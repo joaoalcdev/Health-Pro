@@ -29,7 +29,7 @@ export const getProfessionalRecords = async (app: FastifyInstance) => {
         const rebaseData = data.map((record: any) => {
           return {
             ...record,
-            checkInSignature: `${url}${record.checkInSignature}`	
+            checkInSignature: record.checkInSignature ? `${url}${record.checkInSignature}` : null,
           }
         })
 

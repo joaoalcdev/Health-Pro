@@ -10,9 +10,8 @@ import { TbReload } from "react-icons/tb";
 import { toast } from 'react-hot-toast';
 import { eventCheckIn } from '../../api/EventsAPI';
 
-
-
 function EventCheckInModal({ closeModal, isOpen, datas, status }) {
+
 
   //controllers
   const [confirmationResponse, setConfirmationResponse] = useState(false);
@@ -46,7 +45,7 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
       eventId: datas.id,
       eventType: datas.eventType,
       checkInName: checkInName,
-      checkInSignature: finalSignature.split(';base64,')[1],
+      checkInSignature: finalSignature === "" ? null : finalSignature.split(';base64,')[1],
     }, datas.eventInstanceId);
 
     if (response.status !== 200) {
@@ -157,25 +156,28 @@ function EventCheckInModal({ closeModal, isOpen, datas, status }) {
                 setCheckInName(e.target.value);
               }}
             />
-            {finalSignature === "" ?
-
-              <div>
-                <Button
-                  label={'Assinar'}
-                  onClick={() => {
-                    setIsSignatureModalOpen(true)
-                  }}
-                  disabled={checkInName === "" || loading || disabled}
-                  className='w-full'
-                />
-              </div>
-              :
-              <div className='relative w-full flex justify-center items-center border border-subMain rounded-lg p-4'>
-                <img src={finalSignature} alt="assinatura" className='w-full max-h-[40vh]' />
-                <span className='absolute top-0 right-0 p-2 text-subMain cursor-pointer' onClick={() => setIsSignatureModalOpen(true)}>
-                  <TbReload className='w-7 h-7' />
-                </span>
-              </div>
+            {process.env.REACT_APP_IS_SIGNATURE_ENABLED === "true" &&
+              <>
+                {finalSignature === "" ?
+                  <div>
+                    <Button
+                      label={'Assinar'}
+                      onClick={() => {
+                        setIsSignatureModalOpen(true)
+                      }}
+                      disabled={checkInName === "" || loading || disabled}
+                      className='w-full'
+                    />
+                  </div>
+                  :
+                  <div className='relative w-full flex justify-center items-center border border-subMain rounded-lg p-4'>
+                    <img src={finalSignature} alt="assinatura" className='w-full max-h-[40vh]' />
+                    <span className='absolute top-0 right-0 p-2 text-subMain cursor-pointer' onClick={() => setIsSignatureModalOpen(true)}>
+                      <TbReload className='w-7 h-7' />
+                    </span>
+                  </div>
+                }
+              </>
             }
             <div className='w-full flex justify-end items-end'>
               <div className="w-full grid grid-cols-2 gap-4 justify-end">

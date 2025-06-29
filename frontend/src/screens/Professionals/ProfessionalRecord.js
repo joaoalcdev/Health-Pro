@@ -27,6 +27,7 @@ function ProfessionalRecord({ data }) {
       return;
     }
     if (response.status === 200) {
+      console.log(response.data);
       setRecords(response.data);
       setLoading(false);
     }
@@ -34,6 +35,7 @@ function ProfessionalRecord({ data }) {
 
   useEffect(() => {
     fetch();
+
   }, [monthRange]);
 
   const exportFrequency = async () => {
@@ -115,7 +117,7 @@ function ProfessionalRecord({ data }) {
 
                     </div>
                     <div className="flex flex-col gap-2">
-                      <img src={data.checkInSignature} alt="assinatura" className=" rounded-lg object-cover bg-white border border-dashed border-subMain" />
+                      {data.checkInSignature ? <img src={data.checkInSignature} alt="assinatura" className=" rounded-lg object-cover bg-white border border-dashed border-subMain" /> : <p className="text-xs text-black font-medium italic">Sem assinatura</p>}
                       <p className="text-xs  text-gray-500 font-medium italic">{data.checkInName} - {formatDate(data.checkInDate)} às {formatDateTime(data.checkInDate)} </p>
                     </div>
                   </div>

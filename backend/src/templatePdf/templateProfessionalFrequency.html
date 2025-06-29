@@ -149,11 +149,15 @@
               {{ this.agreementName }}
             </td>
             <td style="text-align: center">
+              {{#ifCond this.checkInSignature '&&' true }}
               <img
                 src="{{ this.checkInSignature }}"
                 alt="assinatura"
                 style="width: 150px; height: 20px"
               />
+              {{else}}
+              <p class="text-xs text-black font-medium italic">---</p>
+              {{/ifCond}}
               <!-- <br /><br />
               {{ this.checkInName }} - {{ this.checkInDate }} -->
             </td>

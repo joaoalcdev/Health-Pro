@@ -60,7 +60,7 @@ export const getPatient = async (app: FastifyInstance) => {
         }
         if(patientNextEvents && patientNextEvents.length > 10) {
           for (let i = 0; i < 10; i++) {
-            arrayHistory.push(patientNextEvents[i])
+            arrayNextEvents.push(patientNextEvents[i])
           }
         } else {
           arrayNextEvents = patientNextEvents
@@ -75,7 +75,8 @@ export const getPatient = async (app: FastifyInstance) => {
             professionalFirstName: event.professionalFirstName,
             professionalLastName: event.professionalLastName,
             specialtyName: specialty?.name,
-            serviceName: event.serviceName
+            serviceName: event.serviceName,
+            eventStatus: event.eventStatus
           }
         })
 
@@ -89,7 +90,8 @@ export const getPatient = async (app: FastifyInstance) => {
             professionalFirstName: event.professionalFirstName,
             professionalLastName: event.professionalLastName,
             specialtyName: specialty?.name,
-            serviceName: event.serviceName
+            serviceName: event.serviceName,
+            eventStatus: event.eventStatus
           }
         })
         data[0].history = arrayHistoryWithSpecialty

@@ -1,0 +1,40 @@
+{
+  "name": "Clínica Cedejom 🧩",
+  "short_name": "Cedejom",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Cedejom - Centro de Serviços de Saúde e Educação João Martins",
+  "icons": [
+    {
+      "src": "../images/favicons/favicon-cedejom.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "../images/favicons/favicon-cedejom.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "../images/favicons/favicon-cedejom.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "../images/favicons/favicon-cedejom.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "../images/favicons/favicon-cedejom.png",
+      "sizes": "168x168",
+      "type": "image/png"
+    },
+    {
+      "src": "../images/favicons/favicon-cedejom.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

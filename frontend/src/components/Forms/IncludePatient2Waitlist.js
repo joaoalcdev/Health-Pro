@@ -4,12 +4,15 @@ import { Button, Checkbox } from '../Form';
 import { getPatientListBySpecialty, includePatientToWaitlist } from '../../api/specialtiesAPI';
 import { BiLoaderCircle } from 'react-icons/bi';
 import toast from 'react-hot-toast';
+import { set } from 'rsuite/esm/internals/utils/date';
 
 export default function IncludePatient2Waitlist({ onClose, datas, agreements, status, isEdit }) {
   const [data, setData] = useState({});
 
   //controllers
   const [loading, setLoading] = useState(false);
+
+  const [filterData, setFilterData] = useState([]);
 
   const fetch = async () => {
     setLoading(true);
@@ -20,6 +23,7 @@ export default function IncludePatient2Waitlist({ onClose, datas, agreements, st
     }
     if (response.status === 200) {
       setData(response.data)
+      setFilterData(response.data);
       setLoading(false)
     }
   }
@@ -82,7 +86,6 @@ export default function IncludePatient2Waitlist({ onClose, datas, agreements, st
           <FaTimes />
         </button>
       </div>
-
       {/* Body */}
       <div className={`fixed inset-x-0 top-16 grid grid-cols-1 gap-4 content-start p-4 h-calc overflow-auto `}>
         <div>
@@ -97,26 +100,42 @@ export default function IncludePatient2Waitlist({ onClose, datas, agreements, st
             <BiLoaderCircle className="animate-spin text-subMain text-2xl" />
           </div> :
           <div className='flex flex-col border border-subMain rounded-lg p-2 gap-2 overflow-y-auto'>
-            {
-              data.length > 0 ?
-                data.map((patient, index) => (
-                  <Checkbox
-                    key={index}
-                    label={patient.fullName}
-                    name='patient'
-                    value={patient.id}
-                    className={`flex justify-between items-center  px-4 py-2 hover:bg-gray-200 rounded-lg cursor-pointer `}
-                    checked={patient.checked}
-                    onChange={() => includePatient(patient.id)}
-                  >
-
-                  </Checkbox>
-                ))
-                :
-                <div className='flex justify-center items-center h-20'>
-                  <p className='text-sm text-main'>Nenhum paciente encontrado</p>
-                </div>
-            }
+            <div className='flex items-center mb-2'>
+              {/* search bar to filter patients */}
+              <input
+                type='text'
+                placeholder='Buscar paciente...'
+                className='flex-1 border border-gray-300 rounded-lg px-4 py-2'
+                onChange={(e) => {
+                  const value = e.target.value.toLowerCase();
+                  const filteredData = filterData.filter((patient) =>
+                    patient.fullName.toLowerCase().includes(value)
+                  );
+                  setData(filteredData);
+                }}
+              />
+            </div>
+            <div>
+              {
+                data.length > 0 ?
+                  data.map((patient, index) => (
+                    <Checkbox
+                      key={index}
+                      label={patient.fullName}
+                      name='patient'
+                      value={patient.id}
+                      className={`flex justify-between items-center px-4 py-2 hover:bg-gray-200 rounded-lg cursor-pointer `}
+                      checked={patient.checked || false}
+                      onChange={() => includePatient(patient.id)}
+                    >
+                    </Checkbox>
+                  ))
+                  :
+                  <div className='flex justify-center items-center h-20'>
+                    <p className='text-sm text-main'>Nenhum paciente encontrado</p>
+                  </div>
+              }
+            </div>
           </div>
         }
 
